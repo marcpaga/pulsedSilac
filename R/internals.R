@@ -48,16 +48,82 @@ setMethod('hasRowData', 'ProteomicsExperiment', function(x){
 })
 
 
+###### Metaoptions =============================================================
+setGeneric('metaoptions', function(x){
+  standardGeneric('metaoptions')
+})
 
+setMethod('metaoptions', 'ProteinExperiment', function(x){
 
-###### ProteinExperiment =======================================================
+  metaoptions_names <- c('conditionCol',
+                         'timeCol',
+                         'replicateIntCol',
+                         'replicateTimeCol')
 
+  return(metadata(x)[metaoptions_names])
 
+})
 
-###### PeptideExperiment =======================================================
+setMethod('metaoptions', 'PeptideExperiment', function(x){
 
+  metaoptions_names <- c('conditionCol',
+                         'timeCol',
+                         'replicateIntCol',
+                         'replicateTimeCol')
 
+  return(metadata(x)[metaoptions_names])
 
-###### ProteomicsExperiment ====================================================
+})
 
+setMethod('metaoptions', 'ProteomicsExperiment', function(x){
 
+  metaoptions_names <- c('conditionCol',
+                         'timeCol',
+                         'replicateIntCol',
+                         'replicateTimeCol',
+                         'idColProt',
+                         'idColPep',
+                         'linkedSubset',
+                         'subsetMode')
+
+  return(metadata(x)[metaoptions_names])
+
+})
+
+###### Specific metaoptions ====================================================
+
+hasMetaoption <- function(x, option) {
+
+  op <- metadata(x)[[option]]
+  if (is.na(op)) {
+    txt <- sprintf('Not defined in metadata: %s.', option)
+    stop(txt)
+  } else {
+    return(TRUE)
+  }
+
+}
+
+metaoptionInColData <- function(x, option) {
+
+  if (hasMetaoption(x, option)) {
+    op <- metadata(x)[[option]]
+
+    if (op %in% names(colData(x))) {
+      return(TRUE)
+    } else {
+      txt <- sprintf('Column not found in colData: %s.', op)
+      stop(txt)
+    }
+  }
+
+}
+
+giveMetaoption <- function(x, option) {
+
+  if (metaoptionInColData(x, option)) {
+    op <- metadata(x)[[option]]
+    return(op)
+  }
+
+}
