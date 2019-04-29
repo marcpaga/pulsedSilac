@@ -173,7 +173,7 @@ setValidity2('PeptideExperiment', .valid.PeptideExperiment)
   }
 
   ## duplicated metaoptions entries
-  if (sum(names(metadata(x)) %in% metaoptions_names) > 4) {
+  if (sum(names(metadata(x)) %in% metaoptions_names) > 8) {
 
     names_pos <- which(names(metadata(x)) %in% metaoptions_names)
     names_met <- names(metadata(x))[names_pos]
