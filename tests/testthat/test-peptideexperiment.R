@@ -44,20 +44,6 @@ expect_silent(pepExp <- PeptideExperiment(assays = assays_list,
                                           metadata = list(author = 'me'),
                                           conditionCol = 'sample'))
 expect_equal(length(metadata(pepExp)), 5)
-expect_error(pepExp <- PeptideExperiment(assays = assays_list,
-                                          rowData = rowData,
-                                          colData = colData,
-                                          metadata = list(author = 'me'),
-                                          conditionCol = '1',
-                                          timeCol = '2',
-                                          replicateIntCol = '3',
-                                          replicateTimeCol = '4'))
-
-expect_error(pepExp <- PeptideExperiment(assays = assays_list,
-                                         rowData = rowData,
-                                         colData = colData,
-                                         metadata = list(author = 'me'),
-                                         replicateTimeCol = 5))
 
 colData <- data.frame(sample = LETTERS[1:3],
                       time = c(1:3),
@@ -85,7 +71,7 @@ expect_silent(pepExp <- PeptideExperiment(assays = assays_list,
                                           replicateTimeCol = 4))
 
 ## metaoptions target the same colData columns
-expect_error(pepExp <- PeptideExperiment(assays = assays_list,
+expect_silent(pepExp <- PeptideExperiment(assays = assays_list,
                                           rowData = rowData,
                                           colData = colData,
                                           metadata = list(author = 'me'),
@@ -93,33 +79,6 @@ expect_error(pepExp <- PeptideExperiment(assays = assays_list,
                                           timeCol = 2,
                                           replicateIntCol = 'repInt',
                                           replicateTimeCol = 4))
-
-expect_error(pepExp <- PeptideExperiment(assays = assays_list,
-                                         rowData = rowData,
-                                         colData = colData,
-                                         metadata = list(author = 'me'),
-                                         conditionCol = 'repInt',
-                                         timeCol = 2,
-                                         replicateIntCol = 'repInt',
-                                         replicateTimeCol = 4))
-
-expect_error(pepExp <- PeptideExperiment(assays = assays_list,
-                                         rowData = rowData,
-                                         colData = colData,
-                                         metadata = list(author = 'me'),
-                                         conditionCol = 'repInt',
-                                         timeCol = 'repInt',
-                                         replicateIntCol = 'repInt',
-                                         replicateTimeCol = 'repInt'))
-
-expect_error(pepExp <- PeptideExperiment(assays = assays_list,
-                                         rowData = rowData,
-                                         colData = colData,
-                                         metadata = list(author = 'me'),
-                                         conditionCol = 1,
-                                         timeCol = 'repInt',
-                                         replicateIntCol = 1,
-                                         replicateTimeCol = 'repInt'))
 
 ## metaoptions in both direct argument and metadata argument
 

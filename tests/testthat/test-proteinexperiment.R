@@ -44,20 +44,6 @@ test_that("constructor works", {
                                             metadata = list(author = 'me'),
                                             conditionCol = 'sample'))
   expect_equal(length(metadata(proExp)), 5)
-  expect_error(proExp <- ProteinExperiment(assays = assays_list,
-                                           rowData = rowData,
-                                           colData = colData,
-                                           metadata = list(author = 'me'),
-                                           conditionCol = '1',
-                                           timeCol = '2',
-                                           replicateIntCol = '3',
-                                           replicateTimeCol = '4'))
-
-  expect_error(proExp <- ProteinExperiment(assays = assays_list,
-                                           rowData = rowData,
-                                           colData = colData,
-                                           metadata = list(author = 'me'),
-                                           replicateTimeCol = 5))
 
   colData <- data.frame(sample = LETTERS[1:3],
                         time = c(1:3),
@@ -85,7 +71,7 @@ test_that("constructor works", {
                                             replicateTimeCol = 4))
 
   ## metaoptions target the same colData columns
-  expect_error(proExp <- ProteinExperiment(assays = assays_list,
+  expect_silent(proExp <- ProteinExperiment(assays = assays_list,
                                            rowData = rowData,
                                            colData = colData,
                                            metadata = list(author = 'me'),
@@ -94,32 +80,6 @@ test_that("constructor works", {
                                            replicateIntCol = 'repInt',
                                            replicateTimeCol = 4))
 
-  expect_error(proExp <- ProteinExperiment(assays = assays_list,
-                                           rowData = rowData,
-                                           colData = colData,
-                                           metadata = list(author = 'me'),
-                                           conditionCol = 'repInt',
-                                           timeCol = 2,
-                                           replicateIntCol = 'repInt',
-                                           replicateTimeCol = 4))
-
-  expect_error(proExp <- ProteinExperiment(assays = assays_list,
-                                           rowData = rowData,
-                                           colData = colData,
-                                           metadata = list(author = 'me'),
-                                           conditionCol = 'repInt',
-                                           timeCol = 'repInt',
-                                           replicateIntCol = 'repInt',
-                                           replicateTimeCol = 'repInt'))
-
-  expect_error(proExp <- ProteinExperiment(assays = assays_list,
-                                           rowData = rowData,
-                                           colData = colData,
-                                           metadata = list(author = 'me'),
-                                           conditionCol = 1,
-                                           timeCol = 'repInt',
-                                           replicateIntCol = 1,
-                                           replicateTimeCol = 'repInt'))
 
   ## metaoptions in both direct argument and metadata argument
 
