@@ -14,7 +14,7 @@ setMethod('metadata', 'ProteomicsExperiment', function(x, ...){
 #' @export
 setMethod('metadata<-', 'ProteomicsExperiment', function(x, ..., value){
 
-  x <- metadata(x, ..., value)
+  x@metadata <- value
   validObject(x)
   return(x)
 
