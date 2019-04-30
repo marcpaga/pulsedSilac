@@ -116,7 +116,7 @@ setMethod('rowDataPept<-', 'PeptideExperiment', function(x, value) {
 #' @export
 setMethod('rowDataPept', 'ProteomicsExperiment', function(x) {
 
-  return(rowData(x@ProteinExperiment))
+  return(rowData(x@PeptideExperiment))
 
 })
 
