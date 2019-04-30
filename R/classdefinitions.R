@@ -3,10 +3,11 @@
 #' @importClassesFrom SummarizedExperiment SummarizedExperiment
 #' @export
 .ProteinExperiment <- setClass(Class = 'ProteinExperiment',
+                               slots = representation(metaoptions = 'list'),
                                contains = 'SummarizedExperiment'
 )
 
-.valid.ProteinExperiment.metaoptions<- function(x) {
+.valid.ProteinExperiment.metaoptions <- function(x) {
 
   metaoptions_names <- c('conditionCol',
                          'timeCol',
@@ -14,29 +15,44 @@
                          'replicateTimeCol')
 
   ## missing one or more of the metaoptions
-  if (!all(metaoptions_names %in% names(metadata(x)))) {
-    missing_names_pos <- which(!metaopions_names %in% names(metadata(x)))
-    missing_names <- metaopions_names[missing_names_pos]
+  if (!all(metaoptions_names %in% names(metaoptions(x)))) {
+    missing_names_pos <- which(!metaoptions_names %in% names(metaoptions))
+    missing_names <- metaoptions_names[missing_names_pos]
 
     txt <- sprintf(
-      'Incomplete metadata, the following are missing: %s',
+      'Incomplete metaoptions, the following are missing: %s',
       paste(missing_names, collapse = ' ')
     )
     return(txt)
   }
 
   ## duplicated metaoptions entries
-  if (sum(names(metadata(x)) %in% metaoptions_names) > 4) {
+  if (sum(names(metaoptions(x)) %in% metaoptions_names) > 4) {
 
-    names_pos <- which(names(metadata(x)) %in% metaoptions_names)
-    names_met <- names(metadata(x))[names_pos]
+    names_pos <- which(names(metaoptions(x)) %in% metaoptions_names)
+    names_met <- names(metaoptions(x))[names_pos]
     dup <- names_met[which(table(names_met) > 1)]
 
     txt <- sprintf(
-      'Duplicated metadata, the following are duplicated: %s',
+      'Duplicated metaoptions, the following are duplicated: %s',
       paste(dup, collapse = ' ')
     )
     return(txt)
+  }
+
+  ## metaoptions have to be NA, numeric or character
+  ## checking if the column is at the colData/rowData is done on function call
+  ## not on validity because it could cause problems when changing those
+  ## DataFrames
+
+  for (mopt in metaoptions_names) {
+    val <- metaoptions(x)[[mopt]]
+    if (any(is.na(val), is.character(val), is.numeric(val))) {
+      next
+    } else {
+      txt <- sprintf('%s must be character, numeric or NA', mopt)
+      return(txt)
+    }
   }
 
   ## all validity is passed
@@ -61,6 +77,7 @@ setValidity2('ProteinExperiment', .valid.ProteinExperiment)
 #' @import SummarizedExperiment
 #' @export
 .PeptideExperiment <- setClass(Class = 'PeptideExperiment',
+                               slots = representation(metaoptions = 'list'),
                                contains = 'SummarizedExperiment'
 )
 
@@ -70,32 +87,48 @@ setValidity2('ProteinExperiment', .valid.ProteinExperiment)
   metaoptions_names <- c('conditionCol',
                          'timeCol',
                          'replicateIntCol',
-                         'replicateTimeCol')
+                         'replicateTimeCol',
+                         'proteinCol')
 
   ## missing one or more of the metaoptions
-  if (!all(metaoptions_names %in% names(metadata(x)))) {
-    missing_names_pos <- which(!metaopions_names %in% names(metadata(x)))
-    missing_names <- metaopions_names[missing_names_pos]
+  if (!all(metaoptions_names %in% names(metaoptions(x)))) {
+    missing_names_pos <- which(!metaoptions_names %in% names(metaoptions(x)))
+    missing_names <- metaoptions_names[missing_names_pos]
 
     txt <- sprintf(
-      'Incomplete metadata, the following are missing: %s',
+      'Incomplete metaoptions, the following are missing: %s',
       paste(missing_names, collapse = ' ')
     )
     return(txt)
   }
 
   ## duplicated metaoptions entries
-  if (sum(names(metadata(x)) %in% metaoptions_names) > 4) {
+  if (sum(names(metaoptions(x)) %in% metaoptions_names) > 5) {
 
-    names_pos <- which(names(metadata(x)) %in% metaoptions_names)
-    names_met <- names(metadata(x))[names_pos]
+    names_pos <- which(names(metaoptions(x)) %in% metaoptions_names)
+    names_met <- names(metaoptions(x))[names_pos]
     dup <- names_met[which(table(names_met) > 1)]
 
     txt <- sprintf(
-      'Duplicated metadata, the following are duplicated: %s',
+      'Duplicated metaoptions, the following are duplicated: %s',
       paste(dup, collapse = ' ')
     )
     return(txt)
+  }
+
+  ## metaoptions have to be NA, numeric or character
+  ## checking if the column is at the colData/rowData is done on function call
+  ## not on validity because it could cause problems when changing those
+  ## DataFrames
+
+  for (mopt in metaoptions_names) {
+    val <- metaoptions(x)[[mopt]]
+    if (any(is.na(val), is.character(val), is.numeric(val))) {
+      next
+    } else {
+      txt <- sprintf('%s must be character, numeric or NA', mopt)
+      return(txt)
+    }
   }
 
   ## all validity is passed
@@ -127,7 +160,8 @@ setValidity2('PeptideExperiment', .valid.PeptideExperiment)
                          PeptideExperiment = 'PeptideExperiment',
                          colData = 'DataFrame',
                          linkerDf = 'data.frame',
-                         metadata = 'list')
+                         metadata = 'list',
+                         metaoptions = 'list')
 
 )
 
@@ -158,32 +192,69 @@ setValidity2('PeptideExperiment', .valid.PeptideExperiment)
                          'idColProt',
                          'idColPep',
                          'linkedSubset',
-                         'subsetMode')
+                         'subsetMode',
+                         'proteinCol')
 
   ## missing one or more of the metaoptions
-  if (!all(metaoptions_names %in% names(metadata(x)))) {
-    missing_names_pos <- which(!metaopions_names %in% names(metadata(x)))
-    missing_names <- metaopions_names[missing_names_pos]
+  if (!all(metaoptions_names %in% names(metaoptions(x)))) {
+    missing_names_pos <- which(!metaoptions_names %in% names(metaoptions(x)))
+    missing_names <- metaoptions_names[missing_names_pos]
 
     txt <- sprintf(
-      'Incomplete metadata, the following are missing: %s',
+      'Incomplete metaoptions, the following are missing: %s',
       paste(missing_names, collapse = ' ')
     )
     return(txt)
   }
 
   ## duplicated metaoptions entries
-  if (sum(names(metadata(x)) %in% metaoptions_names) > 8) {
+  if (sum(names(metaoptions(x)) %in% metaoptions_names) > 9) {
 
-    names_pos <- which(names(metadata(x)) %in% metaoptions_names)
-    names_met <- names(metadata(x))[names_pos]
+    names_pos <- which(names(metaoptions(x)) %in% metaoptions_names)
+    names_met <- names(metaoptions(x))[names_pos]
     dup <- names_met[which(table(names_met) > 1)]
 
     txt <- sprintf(
-      'Duplicated metadata, the following are duplicated: %s',
+      'Duplicated metaoptions, the following are duplicated: %s',
       paste(dup, collapse = ' ')
     )
     return(txt)
+  }
+
+  ## metaoptions have to be NA, numeric or character
+  ## checking if the column is at the colData/rowData is done on function call
+  ## not on validity because it could cause problems when changing those
+  ## DataFrames
+
+  for (mopt in metaoptions_names) {
+    val <- metaoptions(x)[[mopt]]
+
+    ## hardcode two special metaoptions
+    if (mopt == 'subsetMode') {
+      if (val %in% c('protein', 'peptide')) {
+        next
+      } else {
+        txt <- 'subsetMode must be a character: "protein" or "peptide"'
+        return(txt)
+      }
+    }
+
+    if (mopt == 'linkedSubset') {
+      if (val %in% c(TRUE, FALSE)) {
+        next
+      } else {
+        txt <- 'linkedSubset must be a logical: TRUE or FALSE'
+        return(txt)
+      }
+    }
+
+    ## the rest is all either numeric, character or NA
+    if (any(is.na(val), is.character(val), is.numeric(val))) {
+      next
+    } else {
+      txt <- sprintf('%s must be character, numeric or NA', mopt)
+      return(txt)
+    }
   }
 
 }
