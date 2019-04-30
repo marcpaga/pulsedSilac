@@ -59,11 +59,31 @@
   return(NULL)
 }
 
+.valid.ProteinExperiment.rowData <- function(x) {
+
+  if (is.null(x@elementMetadata)) {
+    return(NULL)
+  }
+
+  rd_rows <- nrow(x@elementMetadata)
+  if (rd_rows != nrow(x)) {
+    txt <- sprintf(
+      paste('The number of rows of rowData (%d) does not match with the',
+            'number of rows of the ProteinExperiment (%d)'),
+      rd_rows, nrow(x))
+    return(txt)
+  }
+
+  return(NULL)
+
+}
+
 
 ## Wrapper for all the validity check functions
 .valid.ProteinExperiment <- function(x) {
 
-  c(.valid.ProteinExperiment.metaoptions(x))
+  c(.valid.ProteinExperiment.metaoptions(x),
+    .valid.ProteinExperiment.rowData(x))
 
 }
 
@@ -135,11 +155,30 @@ setValidity2('ProteinExperiment', .valid.ProteinExperiment)
   return(NULL)
 }
 
+.valid.PeptideExperiment.rowData <- function(x) {
+
+  if (is.null(x@elementMetadata)) {
+    return(NULL)
+  }
+
+  rd_rows <- nrow(x@elementMetadata)
+  if (rd_rows != nrow(x)) {
+    txt <- sprintf(
+      paste('The number of rows of rowData (%d) does not match with the',
+            'number of rows of the PeptideExperiment (%d)'),
+      rd_rows, nrow(x))
+    return(txt)
+  }
+
+  return(NULL)
+
+}
 
 ## Wrapper for all the validity check functions
 .valid.PeptideExperiment <- function(x) {
 
-  c(.valid.PeptideExperiment.metaoptions(x))
+  c(.valid.PeptideExperiment.metaoptions(x),
+    .valid.PeptideExperiment.rowData(x))
 
 }
 
