@@ -15,23 +15,25 @@ ProteomicsExperiment <- function(ProteinExperiment,
                                  conditionCol = NA,
                                  timeCol = NA,
                                  replicateIntCol = NA,
-                                 replicateTimeCol = NA) {
+                                 replicateTimeCol = NA,
+                                 proteinCol = NA) {
 
   ## initialize metaoptions list
-  metaoptions <- list(idColProt = idColProt,
-                      idColPep = idColPep,
-                      linkedSubset = linkedSubset,
-                      subsetMode = subsetMode,
-                      conditionCol = conditionCol,
-                      timeCol = timeCol,
-                      replicateIntCol = replicateIntCol,
-                      replicateTimeCol = replicateTimeCol)
+  PEmetaoptions <- list(idColProt = idColProt,
+                        idColPep = idColPep,
+                        linkedSubset = linkedSubset,
+                        subsetMode = subsetMode,
+                        conditionCol = conditionCol,
+                        timeCol = timeCol,
+                        replicateIntCol = replicateIntCol,
+                        replicateTimeCol = replicateTimeCol,
+                        proteinCol = proteinCol)
 
   ## linkedSubset only relevant if both levels are present
   if (any(missing(ProteinExperiment),
           missing(PeptideExperiment),
           missing(linkerDf))) {
-    metaoptions[['linkedSubset']] <- FALSE
+    PEmetaoptions[['linkedSubset']] <- FALSE
   }
 
 
@@ -39,7 +41,7 @@ ProteomicsExperiment <- function(ProteinExperiment,
   ## no protein data
   if (missing(ProteinExperiment)) {
 
-    metaoptions[['subsetMode']] <- 'peptide'
+    PEmetaoptions[['subsetMode']] <- 'peptide'
 
     ## use the peptide data if not given
     if (missing(colData)) {
@@ -52,7 +54,7 @@ ProteomicsExperiment <- function(ProteinExperiment,
   ## no peptide data
   } else if (missing(PeptideExperiment)){
 
-    metaoptions[['subsetMode']] <- 'protein'
+    PEmetaoptions[['subsetMode']] <- 'protein'
 
     ## use the protein data if not given
     if (missing(colData)) {
@@ -83,31 +85,25 @@ ProteomicsExperiment <- function(ProteinExperiment,
     if (missing(metadata)) {
       metadataProt <- ProteinExperiment@metadata
       metadataPept <- PeptideExperiment@metadata
-      if (identical(metadataProt, metadataPept)) {
-        metadata <- metadataProt
-      } else {
-        stop('"metadata" from ProteinExperiment and PeptideExperiment are not',
-             ' equal')
-      }
-    }
-  }
 
-  if (is.null(metadata)) {
-    metadata <- metaoptions
-  } else {
-    metadata <- merge.list(metadata, metaoptions)
+      metadata <- merge.list(metadataProt, metadataPept)
+    }
   }
 
   if (missing(linkerDf)) {
     linkerDf <- data.frame()
   }
 
+  metaoptions <- .mergeMetaoptions(PEmetaoptions, ProteinExperiment@metaoptions)
+  metaoptions <- .mergeMetaoptions(metaoptions, PeptideExperiment@metaoptions)
+
   PE <- new(Class = 'ProteomicsExperiment',
             ProteinExperiment = ProteinExperiment,
             PeptideExperiment = PeptideExperiment,
             colData = colData,
             linkerDf = linkerDf,
-            metadata = metadata)
+            metadata = metadata,
+            metaoptions = metaoptions)
 
   return(PE)
 }

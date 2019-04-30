@@ -17,25 +17,12 @@ ProteinExperiment <- function(assays,
                       replicateIntCol = replicateIntCol,
                       replicateTimeCol = replicateTimeCol)
 
-  if (any(c('conditionCol', 'timeCol',
-            'replicateIntCol', 'replicateTimeCol') %in% names(metadata))) {
-    stop('Metadata elements cannot have the following names: "conditionCol", ',
-         '"timeCol", "replicateIntCol" or "replicateTimeCol"')
-  }
-
-  if (is.null(metadata)) {
-    metadata <- metaoptions
-  } else {
-    metadata <- c(metadata, metaoptions)
-  }
-
-
 
   se <- SummarizedExperiment(assays = assays,
                              colData = colData,
                              rowData = rowData,
                              metadata = metadata)
 
-  return(.ProteinExperiment(se))
+  return(.ProteinExperiment(se, metaoptions = metaoptions))
 
 }

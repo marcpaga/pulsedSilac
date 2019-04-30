@@ -9,25 +9,22 @@ PeptideExperiment <- function(assays,
                               timeCol = NA,
                               replicateIntCol = NA,
                               replicateTimeCol = NA,
+                              proteinCol = NA,
                               metadata = NULL) {
 
   ## initialize the metadata
   metaoptions <- list(conditionCol = conditionCol,
                       timeCol = timeCol,
                       replicateIntCol = replicateIntCol,
-                      replicateTimeCol = replicateTimeCol)
+                      replicateTimeCol = replicateTimeCol,
+                      proteinCol = proteinCol)
 
-  if (is.null(metadata)) {
-    metadata <- metaoptions
-  } else {
-    metadata <- c(metadata, metaoptions)
-  }
 
   se <- SummarizedExperiment(assays = assays,
                              colData = colData,
                              rowData = rowData,
                              metadata = metadata)
 
-  return(.PeptideExperiment(se))
+  return(.PeptideExperiment(se, metaoptions = metaoptions))
 
 }
