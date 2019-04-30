@@ -156,12 +156,12 @@ setValidity2('PeptideExperiment', .valid.PeptideExperiment)
 #' @import methods
 .ProteomicsExperiment <- setClass('ProteomicsExperiment',
 
-  slots = representation(ProteinExperiment = 'ProteinExperiment',
-                         PeptideExperiment = 'PeptideExperiment',
-                         colData = 'DataFrame',
-                         linkerDf = 'data.frame',
-                         metadata = 'list',
-                         metaoptions = 'list')
+                                  slots = representation(ProteinExperiment = 'ProteinExperiment',
+                                                         PeptideExperiment = 'PeptideExperiment',
+                                                         colData = 'DataFrame',
+                                                         linkerDf = 'data.frame',
+                                                         metadata = 'list',
+                                                         metaoptions = 'list')
 
 )
 
