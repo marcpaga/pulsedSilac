@@ -18,7 +18,8 @@ test_that("constructor works", {
   expect_equal(ncol(rowData(proExp)), 1)
   expect_equal(nrow(colData(proExp)), 3)
   expect_equal(ncol(colData(proExp)), 1)
-  expect_equal(length(metadata(proExp)), 4)
+  expect_equal(length(metadata(proExp)), 0)
+  expect_equal(length(metaoptions(proExp)), 4)
 
   ## without assays
   expect_error(proExp <- ProteinExperiment(rowData = rowData,
@@ -26,7 +27,7 @@ test_that("constructor works", {
 
   ## without rowData
   expect_silent(proExp <- ProteinExperiment(assays = assays_list,
-                                             colData = colData))
+                                            colData = colData))
 
   ## without colData
   expect_error(proExp <- ProteinExperiment(assays = assays_list,
@@ -37,13 +38,14 @@ test_that("constructor works", {
                                             rowData = rowData,
                                             colData = colData,
                                             metadata = list(author = 'me')))
-  expect_equal(length(metadata(proExp)), 5)
+  expect_equal(length(metadata(proExp)), 1)
   expect_silent(proExp <- ProteinExperiment(assays = assays_list,
                                             rowData = rowData,
                                             colData = colData,
                                             metadata = list(author = 'me'),
                                             conditionCol = 'sample'))
-  expect_equal(length(metadata(proExp)), 5)
+  expect_equal(length(metadata(proExp)), 1)
+  expect_equal(length(metaoptions(proExp)), 4)
 
   colData <- data.frame(sample = LETTERS[1:3],
                         time = c(1:3),
@@ -83,7 +85,7 @@ test_that("constructor works", {
 
   ## metaoptions in both direct argument and metadata argument
 
-  expect_error(proExp <- ProteinExperiment(assays = assays_list,
+  expect_silent(proExp <- ProteinExperiment(assays = assays_list,
                                            rowData = rowData,
                                            colData = colData,
                                            metadata = list(author = 'me', timeCol = 2),

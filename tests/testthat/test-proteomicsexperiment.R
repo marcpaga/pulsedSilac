@@ -24,7 +24,8 @@ test_that("constructor works", {
 
   expect_silent(PE <- ProteomicsExperiment(ProteinExperiment = proExp,
                                            PeptideExperiment = pepExp))
-  expect_equal(length(metadata(PE)), 8)
+  expect_equal(length(metadata(PE)), 0)
+  expect_equal(length(metaoptions(PE)), 9)
 
 
 })
