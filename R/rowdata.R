@@ -47,15 +47,6 @@ setMethod('rowData<-', 'ProteomicsExperiment', function(x, ..., value){
   return(x)
 })
 
-#' @export
-setGeneric('rowDataProt', function(x){
-  standardGeneric('rowDataProt')
-})
-
-#' @export
-setGeneric('rowDataProt<-', function(x, value){
-  standardGeneric('rowDataProt<-')
-})
 
 #' @export
 setMethod('rowDataProt', 'ProteinExperiment', function(x) {
@@ -88,15 +79,7 @@ setMethod('rowDataProt<-', 'ProteomicsExperiment', function(x, value) {
 
 })
 
-#' @export
-setGeneric('rowDataPept', function(x){
-  standardGeneric('rowDataPept')
-})
 
-#' @export
-setGeneric('rowDataPept<-', function(x, value){
-  standardGeneric('rowDataPept<-')
-})
 
 #' @export
 setMethod('rowDataPept', 'PeptideExperiment', function(x) {

@@ -1,14 +1,3 @@
-#' @title Generic to get or set metaoptions
-#' @export
-setGeneric('metaoptions', function(x){
-  standardGeneric('metaoptions')
-})
-
-#' @export
-setGeneric('metaoptions<-', function(x, value){
-  standardGeneric('metaoptions<-')
-})
-
 #' @export
 setMethod('metaoptions', 'ProteinExperiment', function(x){
 

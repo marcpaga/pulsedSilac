@@ -1,4 +1,5 @@
 #' @export
+#' @importFrom SummarizedExperiment assays
 setMethod('assays', 'ProteinExperiment', function(x, ..., withDimnames){
 
   return(callNextMethod())
@@ -6,6 +7,7 @@ setMethod('assays', 'ProteinExperiment', function(x, ..., withDimnames){
 })
 
 #' @export
+#' @importFrom SummarizedExperiment assays<-
 setMethod('assays<-',
           'ProteinExperiment', function(x, ..., withDimnames, value){
 
@@ -14,6 +16,7 @@ setMethod('assays<-',
 })
 
 #' @export
+#' @importFrom SummarizedExperiment assays
 setMethod('assays', 'PeptideExperiment', function(x, ..., withDimnames){
 
   return(callNextMethod())
@@ -21,6 +24,7 @@ setMethod('assays', 'PeptideExperiment', function(x, ..., withDimnames){
 })
 
 #' @export
+#' @importFrom SummarizedExperiment assays<-
 setMethod('assays<-',
           'PeptideExperiment', function(x, ..., withDimnames, value){
 
@@ -50,15 +54,6 @@ setMethod('assays<-',
   return(x)
 })
 
-#' @export
-setGeneric('assaysProt', function(x){
-  standardGeneric('assaysProt')
-})
-
-#' @export
-setGeneric('assaysProt<-', function(x, value){
-  standardGeneric('assaysProt<-')
-})
 
 #' @export
 setMethod('assaysProt', 'ProteinExperiment', function(x) {
@@ -91,15 +86,6 @@ setMethod('assaysProt<-', 'ProteomicsExperiment', function(x, value) {
 
 })
 
-#' @export
-setGeneric('assaysPept', function(x){
-  standardGeneric('assaysPept')
-})
-
-#' @export
-setGeneric('assaysPept<-', function(x, value){
-  standardGeneric('assaysPept<-')
-})
 
 #' @export
 setMethod('assaysPept', 'PeptideExperiment', function(x) {

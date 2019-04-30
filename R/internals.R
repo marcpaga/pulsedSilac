@@ -1,10 +1,5 @@
 ###### Logical checks ==========================================================
 
-##### hasAssays
-setGeneric('hasRowData', function(x){
-  standardGeneric('hasRowData')
-})
-
 setMethod('hasRowData', 'ProteinExperiment', function(x){
 
   rd <- rowData(x)
