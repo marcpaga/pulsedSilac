@@ -29,42 +29,19 @@ ProteomicsExperiment <- function(ProteinExperiment,
                         replicateTimeCol = replicateTimeCol,
                         proteinCol = proteinCol)
 
-  ## linkedSubset only relevant if both levels are present
-  if (any(missing(ProteinExperiment),
-          missing(PeptideExperiment),
-          missing(linkerDf))) {
+  ## linkedSubset only relevant if linkerDf is there
+  if (missing(linkerDf)) {
     PEmetaoptions[['linkedSubset']] <- FALSE
+    linkerDf <- data.frame()
   }
 
 
-  ## how to deal with the slots if only one level is present
-  ## no protein data
-  if (missing(ProteinExperiment)) {
+  ## both experiments are mandatory, otherwise you would use the other classes
+  if (missing(ProteinExperiment) | missing(PeptideExperiment)) {
 
-    PEmetaoptions[['subsetMode']] <- 'peptide'
-
-    ## use the peptide data if not given
-    if (missing(colData)) {
-      colData <- PeptideExperiment@colData
-    }
-    if (missing(metadata)) {
-      metadata <- PeptideExperiment@metadata
-    }
-
-  ## no peptide data
-  } else if (missing(PeptideExperiment)){
-
-    PEmetaoptions[['subsetMode']] <- 'protein'
-
-    ## use the protein data if not given
-    if (missing(colData)) {
-      colData <- ProteinExperiment@colData
-    }
-    if (missing(metadata)) {
-      metadata <- ProteinExperiment@metadata
-    }
-
-  ## both levels of data given
+    stop('For a ProteomicsExperiment you need both a ProteinExperiment and a ',
+         'PeptideExperiment.')
+  ## both present
   } else {
 
     ## if not given colData check that the two levels have the same colData and
@@ -88,10 +65,6 @@ ProteomicsExperiment <- function(ProteinExperiment,
 
       metadata <- merge.list(metadataProt, metadataPept)
     }
-  }
-
-  if (missing(linkerDf)) {
-    linkerDf <- data.frame()
   }
 
   metaoptions <- .mergeMetaoptions(PEmetaoptions, ProteinExperiment@metaoptions)
