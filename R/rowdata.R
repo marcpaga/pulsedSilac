@@ -5,10 +5,20 @@ setMethod('rowData', 'ProteinExperiment', function(x, use.names, ...){
 
 })
 
+#' @importFrom S4Vectors DataFrame
 #' @export
 setMethod('rowData<-', 'ProteinExperiment', function(x, ..., value){
 
-  return(callNextMethod())
+  if (is(value, 'data.frame')) {
+    value <- DataFrame(value)
+  }
+
+  if (is(value, 'DataFrame')) {
+    x@elementMetadata <- value
+  }
+
+  validObject(x)
+  return(x)
 
 })
 
@@ -19,10 +29,20 @@ setMethod('rowData', 'PeptideExperiment', function(x, use.names, ...){
 
 })
 
+#' @importFrom S4Vectors DataFrame
 #' @export
 setMethod('rowData<-', 'PeptideExperiment', function(x, ..., value){
 
-  return(callNextMethod())
+  if (is(value, 'data.frame')) {
+    value <- DataFrame(value)
+  }
+
+  if (is(value, 'DataFrame')) {
+    x@elementMetadata <- value
+  }
+
+  validObject(x)
+  return(x)
 
 })
 
