@@ -1,5 +1,5 @@
 #' @export
-setMethod('length', 'ProteinExperiment', function(x, ..., withDimnames){
+setMethod('length', 'ProteinExperiment', function(x){
 
   return(callNextMethod())
 
@@ -7,7 +7,7 @@ setMethod('length', 'ProteinExperiment', function(x, ..., withDimnames){
 
 
 #' @export
-setMethod('length', 'PeptideExperiment', function(x, ..., withDimnames){
+setMethod('length', 'PeptideExperiment', function(x){
 
   return(callNextMethod())
 
@@ -15,7 +15,7 @@ setMethod('length', 'PeptideExperiment', function(x, ..., withDimnames){
 
 
 #' @export
-setMethod('length', 'ProteomicsExperiment', function(x, ..., withDimnames){
+setMethod('length', 'ProteomicsExperiment', function(x){
 
   return(c(protein = length(x@ProteinExperiment),
            peptide = length(x@PeptideExperiment)))
