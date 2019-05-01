@@ -10,7 +10,7 @@ setMethod('metaoptions<-', 'ProteinExperiment', function(x, value){
 
   x@metaoptions <- value
   validObject(x)
-  return(x@metaoptions)
+  return(x)
 
 })
 
@@ -26,7 +26,7 @@ setMethod('metaoptions<-', 'PeptideExperiment', function(x, value){
 
   x@metaoptions <- value
   validObject(x)
-  return(x@metaoptions)
+  return(x)
 
 })
 
@@ -41,7 +41,7 @@ setMethod('metaoptions<-', 'ProteomicsExperiment', function(x, value){
 
   x@metaoptions <- value
   validObject(x)
-  return(x@metaoptions)
+  return(x)
 
 })
 
