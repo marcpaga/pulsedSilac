@@ -40,20 +40,6 @@ setMethod('assays', 'ProteomicsExperiment', function(x, ..., withDimnames){
 
 })
 
-#' @export
-setMethod('assays<-',
-          'ProteomicsExperiment', function(x, ..., withDimnames, value){
-
-  if (!is.list(value) | length(value) != 2) {
-    stop('Value must be a list of length 2')
-  }
-
-  assays(x@ProteinExperiment) <- value[[1]]
-  assays(x@PeptideExperiment) <- value[[2]]
-  validObject(x)
-  return(x)
-})
-
 
 #' @export
 setMethod('assaysProt', 'ProteinExperiment', function(x) {
