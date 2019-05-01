@@ -141,3 +141,45 @@ giveMetaoption <- function(x, option) {
     return(x)
   }
 }
+
+###### Specific linkerDf
+
+## check integrity of the linkerDf
+
+#' @keywords internal
+checkLinkerDf <- function(m){
+
+  # peptides have links to proteins not in the data
+  missingLinksPepToProt <- sum(is.na(m[,3]))
+  # proteins have links to peptides not in the data
+  missingLinksProtToPep <- sum(is.na(m[,4]))
+
+  # there are no missing links
+  if (sum(missingLinksPepToProt, missingLinksProtToPep) == 0) {
+    return(m)
+  }
+
+  # missing links are removed
+  if (missingLinksPepToProt > 0) {
+
+    m <- m[-which(is.na(m[,3])),]
+    message(paste0(missingLinksPepToProt,
+                   ' links between given peptides are not matched to proteins'))
+
+  }
+
+  # check again if there are still missing links since they could have already
+  # been removed in the previous step
+  missingLinksProtToPep <- sum(is.na(m[,4]))
+  # missing links are removed
+  if (missingLinksProtToPep > 0) {
+
+    m <- m[-which(is.na(m[,4])),]
+    message(paste0(missingLinksProtToPep,
+                   ' links between given proteins are not matched to peptides'))
+
+  }
+
+  return(m)
+
+}
