@@ -15,7 +15,8 @@ setMethod('dim', 'PeptideExperiment', function(x){
 #' @export
 setMethod('dim', 'ProteomicsExperiment', function(x){
 
-  return(matrix(c(dim(proExp), dim(pepExp)), ncol = 2, byrow = T,
+  return(matrix(c(dim(x@ProteinExperiment), dim(x@PeptideExperiment)),
+                ncol = 2, byrow = T,
                 dimnames = list(c('protein', 'peptide'), c('row', 'column'))))
 
 })
