@@ -63,6 +63,18 @@ setGeneric('rowDataPept<-', function(x, value){
   standardGeneric('rowDataPept<-')
 })
 
+###### LinkerDf
+
+#' @export
+setGeneric('linkerDf', function(x){
+  standardGeneric('linkerDf')
+})
+
+#' @export
+setGeneric('linkerDf<-', function(x, value){
+  standardGeneric('linkerDf<-')
+})
+
 ###### Metaoptions
 
 #' @title Generic to get or set metaoptions
