@@ -13,6 +13,8 @@ test_that("linkerDf getter", {
 
 test_that("linkerDf setter", {
 
+  testPE <- testList[[3]]
+
   df <- linkerDf(testPE)
   expect_silent(linkerDf(testPE) <- df)
   expect_error(linkerDf(testPE) <- df[,1:3])
