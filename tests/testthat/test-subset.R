@@ -88,3 +88,131 @@ test_that("subset operator works", {
   expect_equal(as.vector(dim(PE[2:3,1:3])), c(2, 2, 3, 3))
 
 })
+
+
+test_that("subset method works", {
+
+  ## test objects
+  testProtExp <- testList[[1]]
+  testPeptExp <- testList[[2]]
+  testPE <- testList[[3]]
+
+  ## ProteinExperiment
+  expect_equal(dim(subset(testProtExp, id == 'A')), c(1, 4))
+  expect_equal(dim(subset(testProtExp, id %in% c('A', 'B'))), c(2, 4))
+  expect_equal(dim(subset(testProtExp, id %in% c('A', 'B') & name == 'P1')), c(1, 4))
+  expect_equal(dim(subset(testProtExp, id %in% c('A', 'B') & name == 'P3')), c(0, 4))
+  expect_error(subset(testProtExp, od %in% c('A', 'B')))
+
+  ## PeptideExperiment
+  expect_equal(dim(subset(testPeptExp, id == 'a')), c(1, 4))
+  expect_equal(dim(subset(testPeptExp, id %in% c('a', 'b'))), c(2, 4))
+  expect_equal(dim(subset(testPeptExp, id %in% c('a', 'b') & name == 'p1')), c(1, 4))
+  expect_equal(dim(subset(testPeptExp, id %in% c('a', 'b') & name == 'p3')), c(0, 4))
+  expect_error(subset(testPeptExp, od %in% c('A', 'B')))
+
+  ## ProteomicsExperiment
+  metaoptions(testPE)[['subsetMode']] <- 'protein'
+  metaoptions(testPE)[['linkedSubset']] <- TRUE
+
+  expect_equal(as.vector(dim(subset(testPE, id == 'A'))), c(1, 2, 4, 4))
+  expect_equal(as.vector(dim(subset(testPE, id %in% c('A', 'B')))), c(2, 3, 4, 4))
+  expect_equal(as.vector(dim(subset(testPE, id %in% c('A', 'B') & name == 'P1'))), c(1, 2, 4, 4))
+  expect_equal(as.vector(dim(subset(testPE, id %in% c('A', 'B') & name == 'P3'))), c(0, 0, 4, 4))
+  expect_error(subset(testPE, od %in% c('A', 'B') & name == 'P3'))
+
+  metaoptions(testPE)[['subsetMode']] <- 'protein'
+  metaoptions(testPE)[['linkedSubset']] <- FALSE
+
+  expect_equal(as.vector(dim(subset(testPE, id == 'A'))), c(1, 5, 4, 4))
+  expect_equal(as.vector(dim(subset(testPE, id %in% c('A', 'B')))), c(2, 5, 4, 4))
+  expect_equal(as.vector(dim(subset(testPE, id %in% c('A', 'B') & name == 'P1'))), c(1, 5, 4, 4))
+  expect_equal(as.vector(dim(subset(testPE, id %in% c('A', 'B') & name == 'P3'))), c(0, 5, 4, 4))
+  expect_error(subset(testPE, od %in% c('A', 'B') & name == 'P3'))
+
+  metaoptions(testPE)[['subsetMode']] <- 'peptide'
+  metaoptions(testPE)[['linkedSubset']] <- TRUE
+
+  expect_equal(as.vector(dim(subset(testPE, id == 'a'))), c(1, 1, 4, 4))
+  expect_equal(as.vector(dim(subset(testPE, id %in% c('a', 'b')))), c(1, 2, 4, 4))
+  expect_equal(as.vector(dim(subset(testPE, id %in% c('a', 'b') & name == 'p1'))), c(1, 1, 4, 4))
+  expect_equal(as.vector(dim(subset(testPE, id %in% c('a', 'b') & name == 'p3'))), c(0, 0, 4, 4))
+  expect_error(subset(testPE, od %in% c('a', 'b') & name == 'p3'))
+
+  metaoptions(testPE)[['subsetMode']] <- 'peptide'
+  metaoptions(testPE)[['linkedSubset']] <- FALSE
+
+  expect_equal(as.vector(dim(subset(testPE, id == 'a'))), c(3, 1, 4, 4))
+  expect_equal(as.vector(dim(subset(testPE, id %in% c('a', 'b')))), c(3, 2, 4, 4))
+  expect_equal(as.vector(dim(subset(testPE, id %in% c('a', 'b') & name == 'p1'))), c(3, 1, 4, 4))
+  expect_equal(as.vector(dim(subset(testPE, id %in% c('a', 'b') & name == 'p3'))), c(3, 0, 4, 4))
+  expect_error(subset(testPE, od %in% c('a', 'b') & name == 'p3'))
+
+})
+
+test_that("subsetProt method works", {
+
+  ## test objects
+  testProtExp <- testList[[1]]
+  testPeptExp <- testList[[2]]
+  testPE <- testList[[3]]
+
+  expect_equal(dim(subsetProt(testProtExp, id == 'A')), c(1, 4))
+  expect_equal(dim(subsetProt(testProtExp, id %in% c('A', 'B'))), c(2, 4))
+  expect_equal(dim(subsetProt(testProtExp, id %in% c('A', 'B') & name == 'P1')), c(1, 4))
+  expect_equal(dim(subsetProt(testProtExp, id %in% c('A', 'B') & name == 'P3')), c(0, 4))
+  expect_error(subsetProt(testProtExp, od %in% c('A', 'B')))
+
+  metaoptions(testPE)[['subsetMode']] <- 'protein'
+  metaoptions(testPE)[['linkedSubset']] <- TRUE
+
+  expect_equal(as.vector(dim(subsetProt(testPE, id == 'A'))), c(1, 2, 4, 4))
+  expect_equal(as.vector(dim(subsetProt(testPE, id %in% c('A', 'B')))), c(2, 3, 4, 4))
+  expect_equal(as.vector(dim(subsetProt(testPE, id %in% c('A', 'B') & name == 'P1'))), c(1, 2, 4, 4))
+  expect_equal(as.vector(dim(subsetProt(testPE, id %in% c('A', 'B') & name == 'P3'))), c(0, 0, 4, 4))
+  expect_error(subsetProt(testPE, od %in% c('A', 'B') & name == 'P3'))
+
+  metaoptions(testPE)[['subsetMode']] <- 'protein'
+  metaoptions(testPE)[['linkedSubset']] <- FALSE
+
+  expect_equal(as.vector(dim(subsetProt(testPE, id == 'A'))), c(1, 5, 4, 4))
+  expect_equal(as.vector(dim(subsetProt(testPE, id %in% c('A', 'B')))), c(2, 5, 4, 4))
+  expect_equal(as.vector(dim(subsetProt(testPE, id %in% c('A', 'B') & name == 'P1'))), c(1, 5, 4, 4))
+  expect_equal(as.vector(dim(subsetProt(testPE, id %in% c('A', 'B') & name == 'P3'))), c(0, 5, 4, 4))
+  expect_error(subsetProt(testPE, od %in% c('A', 'B') & name == 'P3'))
+
+})
+
+test_that("subsetPept method works", {
+
+  ## test objects
+  testProtExp <- testList[[1]]
+  testPeptExp <- testList[[2]]
+  testPE <- testList[[3]]
+
+  expect_equal(dim(subsetPept(testPeptExp, id == 'a')), c(1, 4))
+  expect_equal(dim(subsetPept(testPeptExp, id %in% c('a', 'b'))), c(2, 4))
+  expect_equal(dim(subsetPept(testPeptExp, id %in% c('a', 'b') & name == 'p1')), c(1, 4))
+  expect_equal(dim(subsetPept(testPeptExp, id %in% c('a', 'b') & name == 'p3')), c(0, 4))
+  expect_error(subsetPept(testPeptExp, od %in% c('A', 'B')))
+
+  metaoptions(testPE)[['subsetMode']] <- 'peptide'
+  metaoptions(testPE)[['linkedSubset']] <- TRUE
+
+  expect_equal(as.vector(dim(subsetPept(testPE, id == 'a'))), c(1, 1, 4, 4))
+  expect_equal(as.vector(dim(subsetPept(testPE, id %in% c('a', 'b')))), c(1, 2, 4, 4))
+  expect_equal(as.vector(dim(subsetPept(testPE, id %in% c('a', 'b') & name == 'p1'))), c(1, 1, 4, 4))
+  expect_equal(as.vector(dim(subsetPept(testPE, id %in% c('a', 'b') & name == 'p3'))), c(0, 0, 4, 4))
+  expect_error(subsetPept(testPE, od %in% c('a', 'b') & name == 'p3'))
+
+  metaoptions(testPE)[['subsetMode']] <- 'peptide'
+  metaoptions(testPE)[['linkedSubset']] <- FALSE
+
+  expect_equal(as.vector(dim(subsetPept(testPE, id == 'a'))), c(3, 1, 4, 4))
+  expect_equal(as.vector(dim(subsetPept(testPE, id %in% c('a', 'b')))), c(3, 2, 4, 4))
+  expect_equal(as.vector(dim(subsetPept(testPE, id %in% c('a', 'b') & name == 'p1'))), c(3, 1, 4, 4))
+  expect_equal(as.vector(dim(subsetPept(testPE, id %in% c('a', 'b') & name == 'p3'))), c(3, 0, 4, 4))
+  expect_error(subsetPept(testPE, od %in% c('a', 'b') & name == 'p3'))
+
+
+})
