@@ -59,7 +59,7 @@ test_that("metaoptions ProteomicsExperiment", {
                                    'replicateIntCol',
                                    'replicateTimeCol',
                                    'idColProt',
-                                   'idColPep',
+                                   'idColPept',
                                    'linkedSubset',
                                    'subsetMode',
                                    'proteinCol')))
