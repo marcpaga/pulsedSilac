@@ -20,6 +20,27 @@ setGeneric('assaysPept<-', function(x, value){
   standardGeneric('assaysPept<-')
 })
 
+
+#' @export
+setGeneric('assayNamesProt', function(x){
+  standardGeneric('assayNamesProt')
+})
+
+#' @export
+setGeneric('assayNamesProt<-', function(x, value){
+  standardGeneric('assayNamesProt<-')
+})
+
+#' @export
+setGeneric('assayNamesPept', function(x){
+  standardGeneric('assayNamesPept')
+})
+
+#' @export
+setGeneric('assayNamesPept<-', function(x, value){
+  standardGeneric('assayNamesPept<-')
+})
+
 ###### rowDataProt and rowDataPept
 
 #' @export
