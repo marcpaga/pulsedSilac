@@ -49,11 +49,12 @@ setMethod('hasRowData', 'ProteomicsExperiment', function(x){
 
 ## retrieve metaoptions =====
 
+#' @keywords internal
 hasMetaoption <- function(x, option) {
 
   op <- metaoptions(x)[[option]]
   if (is.na(op)) {
-    txt <- sprintf('Not defined in metadata: %s.', option)
+    txt <- sprintf('Not defined in metaoptions: %s.', option)
     stop(txt)
   } else {
     return(TRUE)
@@ -61,6 +62,7 @@ hasMetaoption <- function(x, option) {
 
 }
 
+#' @keywords internal
 metaoptionInColData <- function(x, option) {
 
   if (hasMetaoption(x, option)) {
@@ -76,7 +78,42 @@ metaoptionInColData <- function(x, option) {
 
 }
 
+#' @keywords internal
+metaoptionInRowData <- function(x, option) {
+
+  if (hasMetaoption(x, option)) {
+    op <- metaoptions(x)[[option]]
+
+    if (option == 'idColProt' & op %in% colnames(rowDataProt(x))) {
+      return(TRUE)
+    } else if (option == 'idColPept' & op %in% colnames(rowDataPept(x))) {
+      return(TRUE)
+    } else {
+      txt <- sprintf('Column not found in colData: %s.', op)
+      stop(txt)
+    }
+  }
+
+}
+
+#' @keywords internal
 giveMetaoption <- function(x, option) {
+
+  ## hardcode for ProteomicsExperiment unique options
+  if (option == 'subsetMode') {
+    return(metaoptions(x)[[option]])
+  }
+
+  if (option == 'linkedSubset') {
+    return(metaoptions(x)[[option]])
+  }
+
+  if (option %in% c('idColProt', 'idColPept')) {
+    if (metaoptionInRowData(x, option)) {
+      op <- metaoptions(x)[[option]]
+      return(op)
+    }
+  }
 
   if (metaoptionInColData(x, option)) {
     op <- metaoptions(x)[[option]]
@@ -87,7 +124,8 @@ giveMetaoption <- function(x, option) {
 
 ## merge metaoptions lists ====
 
-.mergeMetaoptions <- function(x, y) {
+#' @keywords internal
+mergeMetaoptions <- function(x, y) {
 
   finalLength <- max(length(x), length(y))
   finalNames <- unique(c(names(x), names(y)))
@@ -95,9 +133,9 @@ giveMetaoption <- function(x, option) {
 
   for (i in seq_len(finalLength)) {
 
-    new_metaoptions[[i]] <- .compareOptions(x[[finalNames[i]]],
-                                            y[[finalNames[i]]],
-                                            finalNames[i])
+    new_metaoptions[[i]] <- compareOptions(x[[finalNames[i]]],
+                                           y[[finalNames[i]]],
+                                           finalNames[i])
 
   }
 
@@ -105,7 +143,8 @@ giveMetaoption <- function(x, option) {
   return(new_metaoptions)
 }
 
-.compareOptions <- function(x, y, option) {
+#' @keywords internal
+compareOptions <- function(x, y, option) {
 
   ## one of the elements is not in the other list
   if (is.null(x)) {
