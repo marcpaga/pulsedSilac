@@ -9,7 +9,7 @@ ProteomicsExperiment <- function(ProteinExperiment,
                                  linkerDf,
                                  metadata,
                                  idColProt = NA,
-                                 idColPep = NA,
+                                 idColPept = NA,
                                  linkedSubset = TRUE,
                                  subsetMode = 'protein',
                                  conditionCol = NA,
@@ -20,7 +20,7 @@ ProteomicsExperiment <- function(ProteinExperiment,
 
   ## initialize metaoptions list
   PEmetaoptions <- list(idColProt = idColProt,
-                        idColPep = idColPep,
+                        idColPept = idColPept,
                         linkedSubset = linkedSubset,
                         subsetMode = subsetMode,
                         conditionCol = conditionCol,
@@ -67,8 +67,12 @@ ProteomicsExperiment <- function(ProteinExperiment,
     }
   }
 
-  metaoptions <- .mergeMetaoptions(PEmetaoptions, ProteinExperiment@metaoptions)
-  metaoptions <- .mergeMetaoptions(metaoptions, PeptideExperiment@metaoptions)
+  if (is(colData, 'data.frame')) {
+    colData <- DataFrame(colData)
+  }
+
+  metaoptions <- mergeMetaoptions(PEmetaoptions, ProteinExperiment@metaoptions)
+  metaoptions <- mergeMetaoptions(metaoptions, PeptideExperiment@metaoptions)
 
   PE <- new(Class = 'ProteomicsExperiment',
             ProteinExperiment = ProteinExperiment,

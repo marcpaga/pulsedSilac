@@ -13,6 +13,7 @@ setMethod('ncol', 'PeptideExperiment', function(x){
 })
 
 #' @export
+#' @importFrom SummarizedExperiment colData
 setMethod('ncol', 'ProteomicsExperiment', function(x){
 
   return(nrow(colData(x)))
