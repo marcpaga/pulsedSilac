@@ -1,4 +1,4 @@
-###### assaysProt and assaysPept
+###### assaysProt and assaysPept ----
 
 #' @export
 setGeneric('assaysProt', function(x){
@@ -41,7 +41,7 @@ setGeneric('assayNamesPept<-', function(x, value){
   standardGeneric('assayNamesPept<-')
 })
 
-###### rowDataProt and rowDataPept
+###### rowDataProt and rowDataPept ----
 
 #' @export
 setGeneric('rowDataProt', function(x){
@@ -63,7 +63,7 @@ setGeneric('rowDataPept<-', function(x, value){
   standardGeneric('rowDataPept<-')
 })
 
-###### LinkerDf
+###### LinkerDf ----
 
 #' @export
 setGeneric('linkerDf', function(x){
@@ -75,7 +75,7 @@ setGeneric('linkerDf<-', function(x, value){
   standardGeneric('linkerDf<-')
 })
 
-###### Metaoptions
+###### Metaoptions ----
 
 #' @title Generic to get or set metaoptions
 #' @export
@@ -89,8 +89,20 @@ setGeneric('metaoptions<-', function(x, value){
 })
 
 
-###### hasRowData
+###### hasRowData ----
 
 setGeneric('hasRowData', function(x){
   standardGeneric('hasRowData')
+})
+
+
+###### subsetProt and subsetPept ----
+#' @export
+setGeneric('subsetProt', function(x, ...){
+  standardGeneric('subsetProt')
+})
+
+#' @export
+setGeneric('subsetPept', function(x, ...){
+  standardGeneric('subsetPept')
 })
