@@ -7,7 +7,7 @@ setMethod('linkerDf', 'ProteomicsExperiment', function(x){
 
 
 #' @export
-setMethod('linkerDf<-', 'ProteomicsExperiment', function(x){
+setMethod('linkerDf<-', 'ProteomicsExperiment', function(x, value){
 
   x@linkerDf <- value
   validObject(x)
