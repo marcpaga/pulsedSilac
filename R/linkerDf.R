@@ -1,5 +1,5 @@
 #' @export
-linkerDf <- setMethod('linkerDf', 'ProteomicsExperiment', function(x){
+setMethod('linkerDf', 'ProteomicsExperiment', function(x){
 
   return(x@linkerDf)
 
@@ -7,7 +7,7 @@ linkerDf <- setMethod('linkerDf', 'ProteomicsExperiment', function(x){
 
 
 #' @export
-linkerDf <- setMethod('linkerDf<-', 'ProteomicsExperiment', function(x){
+setMethod('linkerDf<-', 'ProteomicsExperiment', function(x){
 
   x@linkerDf <- value
   validObject(x)
