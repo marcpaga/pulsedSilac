@@ -298,11 +298,44 @@ setValidity2('PeptideExperiment', .valid.PeptideExperiment)
 
 }
 
+.valid.ProteomicsExperiment.linkerDf <- function(x){
+
+  linkM <- x@linkerDf
+
+  # no linker matrix, no need to check
+  if (nrow(linkM) == 0) {
+    return(NULL)
+  }
+
+  if (!is.data.frame(linkM)) {
+    return('The linkerDf should be a data.frame')
+  }
+
+  if (ncol(linkM) != 4) {
+    return('The linkerDf should have 4 columns')
+  }
+
+  if (x@metaoptions[['linkedSubset']]) {
+
+    if (length(unique(linkM[, 3])) < nrow(rowDataProt(x))) {
+      return('Not all proteins have a link')
+    }
+
+    if (length(unique(linkM[, 4])) < nrow(rowDataPept(x))) {
+      return('Not all peptides have a link')
+    }
+  }
+
+  return(NULL)
+
+}
+
 ## Wrapper for all the validity check functions
 .valid.ProteomicsExperiment <- function(x) {
 
   c(.valid.ProteomicsExperiment.colData(x),
-    .valid.ProteomicsExperiment.metaoptions(x))
+    .valid.ProteomicsExperiment.metaoptions(x),
+    .valid.ProteomicsExperiment.linkerDf(x))
 
 }
 
