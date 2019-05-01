@@ -229,7 +229,7 @@ setValidity2('PeptideExperiment', .valid.PeptideExperiment)
                          'replicateIntCol',
                          'replicateTimeCol',
                          'idColProt',
-                         'idColPep',
+                         'idColPept',
                          'linkedSubset',
                          'subsetMode',
                          'proteinCol')
