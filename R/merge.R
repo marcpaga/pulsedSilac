@@ -7,7 +7,7 @@ setMethod('merge', 'ProteinExperiment', function(x, y,
   ## by.x and by.y are mandatory, if missing try to guess them from rownames
   ## of rowData
   if (missing(by)) {
-    by = intersect(names(rowData(x)), names(rowData(y)))
+    by = intersect(colnames(rowData(x)), colnames(rowData(y)))
     if (is.null(by)) {
       stop('by undefined, which columns should be used for merging?')
     }
@@ -134,7 +134,7 @@ setMethod('merge', 'PeptideExperiment', function(x, y,
   ## by.x and by.y are mandatory, if missing try to guess them from rownames
   ## of rowData
   if (missing(by)) {
-    by = intersect(names(rowData(x)), names(rowData(y)))
+    by = intersect(colnames(rowData(x)), colnames(rowData(y)))
     if (is.null(by)) {
       stop('by undefined, which columns should be used for merging?')
     }
@@ -264,6 +264,33 @@ setMethod('merge', 'ProteomicsExperiment', function(x, y,
                                                     by.pept.y = by.pept,
                                                     all = TRUE, ...) {
 
+  if (missing(by.prot)) {
+    by.prot = intersect(colnames(rowDataProt(x)), colnames(rowDataProt(y)))
+    if (is.null(by.prot)) {
+      stop('by undefined, which columns should be used for merging?')
+    }
+    if (missing(by.prot.x)) {
+      by.prot.x <- by.prot
+    }
+    if (missing(by.prot.y)) {
+      by.prot.y <- by.prot
+    }
+  }
+
+  if (missing(by.pept)) {
+    by.pept = intersect(colnames(rowDataProt(x)), colnames(rowDataProt(y)))
+    if (is.null(by.pept)) {
+      stop('by undefined, which columns should be used for merging?')
+    }
+    if (missing(by.pept.x)) {
+      by.pept.x <- by.pept
+    }
+    if (missing(by.pept.y)) {
+      by.pept.y <- by.pept
+    }
+  }
+
+
   ## do each merge separately from their correspondent merge methods
   new.ProteinExperiment <- merge(x = x@ProteinExperiment,
                                  y = y@ProteinExperiment,
@@ -279,6 +306,7 @@ setMethod('merge', 'ProteomicsExperiment', function(x, y,
                                  by.y = by.pept.y,
                                  all = all, ...)
 
+
   ## both have linkerDf
   if (nrow(x@linkerDf) != 0 & nrow(x@linkerDf) != 0) {
     new.linkerDf <- rbindLinkerDf(x = x@linkerDf,
@@ -291,7 +319,7 @@ setMethod('merge', 'ProteomicsExperiment', function(x, y,
             ProteinExperiment = new.ProteinExperiment,
             PeptideExperiment = new.PeptideExperiment,
             colData = colData(new.ProteinExperiment),
-            linkerDf = x@linkerDf,
+            linkerDf = new.linkerDf,
             metadata = x@metadata,
             metaoptions = x@metaoptions)
 
