@@ -42,7 +42,16 @@ setMethod('hasRowData', 'ProteomicsExperiment', function(x){
   return(outVec)
 })
 
+#' @keywords internal
+hasAssayNames <- function(x) {
 
+  if (is.null(assayNames(x))) {
+    return(FALSE)
+  } else {
+    return(TRUE)
+  }
+
+}
 
 
 ###### Specific metaoptions ====================================================
@@ -181,9 +190,9 @@ compareOptions <- function(x, y, option) {
   }
 }
 
-###### Specific linkerDf
+###### Specific linkerDf -----
 
-## check integrity of the linkerDf
+## check integrity of the linkerDf----
 
 #' @keywords internal
 checkLinkerDf <- function(m){
@@ -222,3 +231,138 @@ checkLinkerDf <- function(m){
   return(m)
 
 }
+
+## rbind two linker data frames
+
+#' @keywords internal
+rbindLinkerDf <- function(x, y) {
+
+
+  ## need to remove NA, they can be a results of a subset function
+  if (sum(is.na(x[,3])) > 0) {
+    x <- x[-which(is.na(x[,3])),]
+  }
+  if (sum(is.na(y[,3])) > 0) {
+    y <- y[-which(is.na(y[,3])),]
+  }
+
+  proteinIntersect <- intersect(x[which(!is.na(x[, 3])), 1],
+                                y[which(!is.na(y[, 3])), 1])
+  peptideIntersect <- intersect(x[which(!is.na(x[, 4])), 2],
+                                y[which(!is.na(y[, 4])), 2])
+
+  temp.pr <- subset(x, !is.na(x[, 3]))
+  max.pr <- length(unique(temp.pr[, 3]))
+  temp.pe <- subset(x, !is.na(x[, 4]))
+  max.pe <- length(unique(temp.pe[, 4]))
+
+
+  ## different protein IDs and different peptide IDs
+  if (length(proteinIntersect) == 0 & length(peptideIntersect) == 0) {
+    new.y <- y
+    new.y[, 3] <- max.pr + y[, 3]
+    new.y[, 4] <- max.pe + y[, 4]
+
+    new.lm <- rbind(x, new.y)
+    rownames(new.lm) <- seq_len(nrow(new.lm))
+    return(new.lm)
+  }
+
+  ## protein overlap, but different peptide IDs
+  if (length(proteinIntersect) != 0 & length(peptideIntersect) == 0) {
+
+    new.y <- y
+    for (row in seq_len(nrow(new.y))) {
+      e <- new.y[row, 1]
+      if (e %in% proteinIntersect){
+        new.row <- unique(x[which(x[, 1] == e), 3])
+        if (!is.na(new.row)) {
+          new.y[which(y[, 1] == e), 3] <- new.row
+        } else {
+          new.y[row, 3] <- y[row, 3] + max.pr - length(proteinIntersect)
+        }
+        new.y[row, 4] <- y[row, 4] + max.pe
+      } else {
+        new.y[row, 3] <- y[row, 3] + max.pr - length(proteinIntersect)
+        new.y[row, 4] <- y[row, 4] + max.pe
+      }
+
+    }
+
+    new.lm <- rbind(x, new.y)
+    rownames(new.lm) <- seq_len(nrow(new.lm))
+    return(new.lm)
+  }
+
+  ## different protein IDs, but overlap in peptide IDs
+  if (length(proteinIntersect) == 0 & length(peptideIntersect) != 0) {
+
+    new.y <- y
+    for (row in seq_len(nrow(new.y))) {
+
+      e <- new.y[row, 2]
+      if (e %in% peptideIntersect){
+        new.row <- unique(x[which(x[, 2] == e), 4])
+        if (!is.na(new.row)) {
+          new.y[which(y[, 2] == e), 4] <- new.row
+        } else {
+          new.y[row, 4] <- y[row, 4] + max.pe - length(peptideIntersect)
+        }
+
+        new.y[row, 3] <- y[row, 3] + max.pr
+      } else {
+        new.y[row, 3] <- y[row, 3] + max.pr
+        new.y[row, 4] <- y[row, 4] + max.pe - length(peptideIntersect)
+      }
+
+    }
+
+    new.lm <- rbind(x, new.y)
+    rownames(new.lm) <- seq_len(nrow(new.lm))
+    return(new.lm)
+  }
+
+  ## protein ID overlap and peptide ID overlap
+  if (length(proteinIntersect) != 0 & length(peptideIntersect) != 0) {
+
+    new.y <- y
+    for (row in seq_len(nrow(new.y))) {
+
+      e <- new.y[row, 1]
+      if (e %in% proteinIntersect){
+        new.row <- unique(x[which(x[, 1] == e), 3])
+        if (!is.na(new.row)) {
+          new.y[row, 3] <- new.row
+        } else {
+          new.y[row, 3] <- y[row, 3] + max.pr - length(proteinIntersect)
+        }
+      } else {
+        new.y[row, 3] <- y[row, 3] + max.pr - length(proteinIntersect)
+      }
+
+      e <- new.y[row, 2]
+      if (e %in% peptideIntersect){
+        new.row <- unique(x[which(x[, 2] == e), 4])
+        if (!is.na(new.row)) {
+          new.y[row, 4] <- new.row
+        } else {
+          new.y[row, 4] <- y[row, 4] + max.pe - length(peptideIntersect)
+        }
+      } else {
+        new.y[row, 4] <- y[row, 4] + max.pe - length(peptideIntersect)
+      }
+
+    }
+
+    new.lm <- rbind(x, new.y)
+    if (sum(duplicated(new.lm)) > 0) {
+      new.lm <- new.lm[-which(duplicated(new.lm)),]
+    }
+
+    rownames(new.lm) <- seq_len(nrow(new.lm))
+    return(new.lm)
+  }
+
+}
+
+
