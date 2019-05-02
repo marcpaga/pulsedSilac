@@ -63,36 +63,41 @@ buildLinkerDf <- function(protIDs,
       linkerDfA <- matrix(data = c(rep(protIDs, vapply(protToPep, length, 1)),
                                    unname(unlist(protToPep))), ncol = 2)
 
-      linkerDfA <- cbind(linkerDfA, match(linkerDfA[,1], protIDs))
-      linkerDfA <- cbind(linkerDfA, match(linkerDfA[,2], pepIDs))
+      linkerDfA <- cbind(linkerDfA, match(linkerDfA[, 1], protIDs))
+      linkerDfA <- cbind(linkerDfA, match(linkerDfA[, 2], pepIDs))
 
       colnames(linkerDfA) <- c('protID', 'pepID', 'protRow', 'pepRow')
 
       linkerDfA <- checkLinkerDf(linkerDfA)
 
       linkerDfA <- as.data.frame(linkerDfA)
-      linkerDfA[,3:4] <- apply(linkerDfA[,3:4], 2, as.numeric)
+      linkerDfA[, 3:4] <- apply(linkerDfA[, 3:4], 2, as.numeric)
 
 
       linkerDfB <- matrix(data = c(unname(unlist(pepToProt)),
                                    rep(pepIDs, vapply(pepToProt, length, 1))),
                           ncol = 2)
 
-      linkerDfB <- cbind(linkerDfB, match(linkerDfB[,1], protIDs))
-      linkerDfB <- cbind(linkerDfB, match(linkerDfB[,2], pepIDs))
+      linkerDfB <- cbind(linkerDfB, match(linkerDfB[, 1], protIDs))
+      linkerDfB <- cbind(linkerDfB, match(linkerDfB[, 2], pepIDs))
 
       colnames(linkerDfB) <- c('protID', 'pepID', 'protRow', 'pepRow')
 
       linkerDfB <- checkLinkerDf(linkerDfB)
 
       linkerDfB <- as.data.frame(linkerDfB)
-      linkerDfB[,3:4] <- apply(linkerDfB[,3:4], 2, as.numeric)
+      linkerDfB[, 3:4] <- apply(linkerDfB[, 3:4], 2, as.numeric)
 
       # we use this method to compare them because they can just be disordered
       # but have the same relationships
 
-      ch1 <- paste(linkerDfA[,1], linkerDfA[,2], sep = '-')
-      ch2 <- paste(linkerDfB[,1], linkerDfB[,2], sep = '-')
+      ch1 <- paste(linkerDfA[, 1], linkerDfA[, 2], sep = '-')
+      ch2 <- paste(linkerDfB[, 1], linkerDfB[, 2], sep = '-')
+
+      linkerDfA[, 1] <- as.character(linkerDfA[, 1])
+      linkerDfA[, 2] <- as.character(linkerDfA[, 2])
+      linkerDfA[, 3] <- as.numeric(linkerDfA[, 3])
+      linkerDfA[, 4] <- as.numeric(linkerDfA[, 4])
 
       if (all(ch1 %in% ch2) & all(ch2 %in% ch1)) {
         return(linkerDfA)
@@ -122,6 +127,11 @@ buildLinkerDf <- function(protIDs,
       linkerDf <- as.data.frame(linkerDf)
       linkerDf[,3:4] <- apply(linkerDf[,3:4], 2, as.numeric)
 
+      linkerDf[, 1] <- as.character(linkerDf[, 1])
+      linkerDf[, 2] <- as.character(linkerDf[, 2])
+      linkerDf[, 3] <- as.numeric(linkerDf[, 3])
+      linkerDf[, 4] <- as.numeric(linkerDf[, 4])
+
       return(linkerDf)
 
     } else if (!missing(pepToProt)) {
@@ -145,6 +155,11 @@ buildLinkerDf <- function(protIDs,
 
       linkerDf <- as.data.frame(linkerDf)
       linkerDf[,3:4] <- apply(linkerDf[,3:4], 2, as.numeric)
+
+      linkerDf[, 1] <- as.character(linkerDf[, 1])
+      linkerDf[, 2] <- as.character(linkerDf[, 2])
+      linkerDf[, 3] <- as.numeric(linkerDf[, 3])
+      linkerDf[, 4] <- as.numeric(linkerDf[, 4])
 
       return(linkerDf)
 
