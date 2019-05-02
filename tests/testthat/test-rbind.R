@@ -2,10 +2,6 @@ context("test-rbind")
 
 test_that("rbind works", {
 
-  testProtExp <- testList[[1]]
-  testPeptExp <- testList[[2]]
-  testPE <- testList[[3]]
-
   ## ProteinExperiment
   testPE <- testList[[1]]
 
