@@ -3,7 +3,9 @@ setMethod('rbind', 'ProteinExperiment', function(..., deparse.level = 1) {
 
   x <- unname(list(...))[[1]]
   out <- callNextMethod()
+
   metaoptions(out) <- metaoptions(x)
+  metadata(out) <- metadata(x)
   return(out)
 
 })
@@ -13,7 +15,9 @@ setMethod('rbind', 'PeptideExperiment', function(..., deparse.level = 1) {
 
   x <- unname(list(...))[[1]]
   out <- callNextMethod()
+
   metaoptions(out) <- metaoptions(x)
+  metadata(out) <- metadata(x)
   return(out)
 
 })
