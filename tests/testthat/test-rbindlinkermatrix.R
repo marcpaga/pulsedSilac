@@ -19,7 +19,7 @@ test_that("rbindlinkerdf works, no overlap", {
                                         list('4' = c(5), '5' = c(6),
                                              '6' = c(7, 8))))
 
-  expect_silent(lm <- rbind_linkerDf(linkM1, linkM2))
+  expect_silent(lm <- rbindLinkerDf(linkM1, linkM2))
   expect_equal(lm, new.lm)
 })
 
@@ -41,7 +41,7 @@ test_that("rbindlinkerdf works, protein overlap", {
                                              '3' = c(3, 4, 5)),
                                         list('4' = c(6), '5' = c(7, 8))))
 
-  expect_silent(lm <- rbind_linkerDf(linkM1, linkM2))
+  expect_silent(lm <- rbindLinkerDf(linkM1, linkM2))
   expect_equal(lm, new.lm)
 })
 
@@ -65,7 +65,7 @@ test_that("rbindlinkerdf works, peptide overlap", {
                                         list('4' = c(3), '5' = c(4),
                                              '6' = c(5, 6), '7' = c(7, 8))))
 
-  expect_silent(lm <- rbind_linkerDf(linkM1, linkM2))
+  expect_silent(lm <- rbindLinkerDf(linkM1, linkM2))
   expect_equal(lm, new.lm)
 })
 
@@ -95,6 +95,6 @@ test_that("rbindlinkerdf works, both overlap", {
                                              '6' = c(5, 6),
                                              '7' = c(7, 8))))
 
-  expect_silent(lm <- rbind_linkerDf(linkM1, linkM2))
+  expect_silent(lm <- rbindLinkerDf(linkM1, linkM2))
   expect_equal(lm, new.lm)
 })
