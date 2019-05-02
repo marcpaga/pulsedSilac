@@ -78,12 +78,23 @@
 
 }
 
+.valid.ProteinExperiment.colData <- function(x) {
+
+  if (any(duplicated(colData(x)))) {
+    return('colData cannot have duplicated entries')
+  } else {
+    return(NULL)
+  }
+
+}
+
 
 ## Wrapper for all the validity check functions
 .valid.ProteinExperiment <- function(x) {
 
   c(.valid.ProteinExperiment.metaoptions(x),
-    .valid.ProteinExperiment.rowData(x))
+    .valid.ProteinExperiment.rowData(x),
+    .valid.ProteinExperiment.colData(x))
 
 }
 
@@ -174,11 +185,22 @@ setValidity2('ProteinExperiment', .valid.ProteinExperiment)
 
 }
 
+.valid.PeptideExperiment.colData <- function(x) {
+
+  if (any(duplicated(colData(x)))) {
+    return('colData cannot have duplicated entries')
+  } else {
+    return(NULL)
+  }
+
+}
+
 ## Wrapper for all the validity check functions
 .valid.PeptideExperiment <- function(x) {
 
   c(.valid.PeptideExperiment.metaoptions(x),
-    .valid.PeptideExperiment.rowData(x))
+    .valid.PeptideExperiment.rowData(x),
+    .valid.PeptideExperiment.colData(x))
 
 }
 
@@ -195,17 +217,17 @@ setValidity2('PeptideExperiment', .valid.PeptideExperiment)
 #' @import methods
 .ProteomicsExperiment <- setClass('ProteomicsExperiment',
 
-                                  slots = representation(ProteinExperiment = 'ProteinExperiment',
-                                                         PeptideExperiment = 'PeptideExperiment',
-                                                         colData = 'DataFrame',
-                                                         linkerDf = 'data.frame',
-                                                         metadata = 'list',
-                                                         metaoptions = 'list')
+  slots = representation(ProteinExperiment = 'ProteinExperiment',
+                         PeptideExperiment = 'PeptideExperiment',
+                         colData = 'DataFrame',
+                         linkerDf = 'data.frame',
+                         metadata = 'list',
+                         metaoptions = 'list')
 
 )
 
 
-.valid.ProteomicsExperiment.colData <- function(x) {
+.valid.ProteomicsExperiment.ncol <- function(x) {
 
   ncol_prot <- ncol(x@ProteinExperiment)
   ncol_pept <- ncol(x@PeptideExperiment)
@@ -330,12 +352,23 @@ setValidity2('PeptideExperiment', .valid.PeptideExperiment)
 
 }
 
+.valid.ProteomicsExperiment.colData <- function(x) {
+
+  if (any(duplicated(colData(x)))) {
+    return('colData cannot have duplicated entries')
+  } else {
+    return(NULL)
+  }
+
+}
+
 ## Wrapper for all the validity check functions
 .valid.ProteomicsExperiment <- function(x) {
 
-  c(.valid.ProteomicsExperiment.colData(x),
+  c(.valid.ProteomicsExperiment.ncol(x),
     .valid.ProteomicsExperiment.metaoptions(x),
-    .valid.ProteomicsExperiment.linkerDf(x))
+    .valid.ProteomicsExperiment.linkerDf(x),
+    .valid.ProteomicsExperiment.colData(x))
 
 }
 
