@@ -9,7 +9,7 @@ setMethod('calculateIsotopeRatio', 'ProteinExperiment',
                    assayNameB = 'light_intensity') {
 
   ratio_assay <- assays(x)[[assayNameA]]/assays(x)[[assayNameB]]
-  assays(x)[['ratio']] < ratio_assay
+  assays(x)[['ratio']] <- ratio_assay
   return(x)
 
 })
@@ -20,7 +20,7 @@ setMethod('calculateIsotopeRatio', 'PeptideExperiment',
                    assayNameB = 'light_intensity') {
 
   ratio_assay <- assays(x)[[assayNameA]]/assays(x)[[assayNameB]]
-  assays(x)[['ratio']] < ratio_assay
+  assays(x)[['ratio']] <- ratio_assay
   return(x)
 
 })
