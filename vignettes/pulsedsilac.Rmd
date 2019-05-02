@@ -1,0 +1,52 @@
+---
+title: "Pulsed-SILAC data analysis"
+author: 
+    name: "Marc Pagès-Gallego"
+    affiliation: University Medical Center Utrecht, the Netherlands
+date: "`r Sys.Date()`"
+bibliography: bibliography.bib
+nocite: '@*'
+abstract: "This document will contain a tutorial on how to perform basic pulsed SILAC data analysis using the pulsedSilac package."
+output:
+  BiocStyle::html_document:
+    toc_float: true
+  BiocStyle::pdf_document: default
+vignette: >
+  %\VignetteIndexEntry{Pulsed-SILAC data analysis}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Introduction
+
+SILAC (Stable Isotope Label by Amino acids in Cell culture) is a method to differentially compare protein expression between samples. To measure protein turnover, the SILAC technique is applied over time by changing the medium and harvesting the cells at different time points. Each sample is then be analyzed by mass spectrometry. The isotope ratio at each time point can then be used to calculate the turnover rate of each measured protein. This package contains a set of functions to analyze pulsed SILAC quantitative data.
+
+ADD IMAGE
+
+Functions are provided to organize the data, calculate isotope ratios/fractions, estimace cell growth, model protein turnover, compare turnover models and estimate isotope recycling. Several visualization tools are also included to explore the results: isotope incorporation, overall proteome turnover, individual protein/peptide models, comparison of turnover and expression.
+
+# Data organization
+
+
+
+
+
+# Ratio and fraction calculation
+
+
+
+# Cell growth estimation
+
+
+
+# Model protein turnover
+
+
+# Isotope recycling estimation
+
+
+# Session info
+
+```{r}
+sessionInfo()
+```
