@@ -278,7 +278,7 @@ setMethod('merge', 'ProteomicsExperiment', function(x, y,
   }
 
   if (missing(by.pept)) {
-    by.pept = intersect(colnames(rowDataProt(x)), colnames(rowDataProt(y)))
+    by.pept = intersect(colnames(rowDataPept(x)), colnames(rowDataPept(y)))
     if (is.null(by.pept)) {
       stop('by undefined, which columns should be used for merging?')
     }
