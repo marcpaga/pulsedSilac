@@ -47,7 +47,7 @@ setMethod('show',
   ## assaysProt
   nms <- assayNamesProt(object)
   if (is.null(nms)) {
-    nms <- character(length(assaysProt(object, withDimnames=FALSE)))
+    nms <- character(length(assaysProt(object)))
   }
   scat("|-- assays(%d): %s\n", nms, startSpace = TRUE)
 
@@ -55,7 +55,7 @@ setMethod('show',
   dimnames <- rownames(rowDataProt(object))
   dlen <- sapply(dimnames, length)
   if (length(dlen) > 0) {
-    scat("|-- rownames(%d): %s\n", dimnames[[1]], startSpace = TRUE)
+    scat("|-- rownames(%d): %s\n", dimnames, startSpace = TRUE)
   } else {
     scat("|-- rownames: NULL\n", startSpace = TRUE)
   }
@@ -70,7 +70,7 @@ setMethod('show',
 
   nms <- assayNamesPept(object)
   if (is.null(nms)) {
-    nms <- character(length(assaysPept(object, withDimnames=FALSE)))
+    nms <- character(length(assaysPept(object)))
   }
   scat("|-- assays(%d): %s\n", nms, startSpace = TRUE)
 
@@ -78,7 +78,7 @@ setMethod('show',
   dimnames <- rownames(rowDataPept(object))
   dlen <- sapply(dimnames, length)
   if (length(dlen) > 0) {
-    scat("|-- rownames(%d): %s\n", dimnames[[1]], startSpace = TRUE)
+    scat("|-- rownames(%d): %s\n", dimnames, startSpace = TRUE)
   } else {
     scat("|-- rownames: NULL\n", startSpace = TRUE)
   }
@@ -94,4 +94,3 @@ setMethod('show',
 
 })
 
-testList[[3]]
