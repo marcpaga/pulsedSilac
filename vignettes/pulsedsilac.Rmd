@@ -4,17 +4,17 @@ author:
     name: "Marc Pagès-Gallego"
     affiliation: University Medical Center Utrecht, the Netherlands
 date: "`r Sys.Date()`"
-bibliography: bibliography.bib
+bibliography:
 nocite: '@*'
 abstract: "This document will contain a tutorial on how to perform basic pulsed SILAC data analysis using the pulsedSilac package."
 output:
+  BiocStyle::pdf_document: default
   BiocStyle::html_document:
     toc_float: true
-  BiocStyle::pdf_document: default
 vignette: >
   %\VignetteIndexEntry{Pulsed-SILAC data analysis}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
 ---
 
 # Introduction
@@ -23,13 +23,371 @@ SILAC (Stable Isotope Label by Amino acids in Cell culture) is a method to diffe
 
 ADD IMAGE
 
-Functions are provided to organize the data, calculate isotope ratios/fractions, estimace cell growth, model protein turnover, compare turnover models and estimate isotope recycling. Several visualization tools are also included to explore the results: isotope incorporation, overall proteome turnover, individual protein/peptide models, comparison of turnover and expression.
+Functions are provided to organize the data, calculate isotope ratios/fractions, estimate cell growth, model protein turnover, compare turnover models and estimate isotope recycling. Several visualization tools are also included to explore the results: isotope incorporation, overall proteome turnover, individual protein/peptide models, comparison of turnover and expression.
 
 # Data organization
 
+Many Bioconductor packages use `SummarizedExperiment` objects or derivatives from it as input and/or output. This is a rectangular class of object that contains assays (matrix-like organized data) in which rows represent features (genes, proteins, metabolites, ...) and columns represent samples. Features are described in the `rowData` slot and samples are described in the `colData` slot, both contain data frames that fit with the dimensions of the assays. If you are unfamiliar with this format, please read this introductory [vignette](https://bioconductor.org/packages/3.8/bioc/vignettes/SummarizedExperiment/inst/doc/SummarizedExperiment.html).
+
+ADD IMAGE
+
+This package uses three `SummarizedExperiment` derived classes: `ProteinExperiment`, `PeptideExperiment` and `ProteomicsExperiment`.
+
+## `ProteinExperiment` and `PeptideExperiment`
+
+The `ProteinExperiment` and `PeptideExperiment` are, as their name indicates, to store either protein or peptide related data. These two objects are almost identical to a `SummarizedExperiment` object. Their only difference is the addition of a new slot called `metaoptions`. This slot contains a name `list` which contains values that are indicative of where certain information, required for the analysis, is located in the object. For example, the `conditionCol` value is used to indicate which column of `colData` has the information about the different experiment conditions.
+
+### Object construction
+
+Constructing a `ProteinExperiment` or a `PeptideExperiment` is extremely similar to constructing a `SummarizedExperiment`. The only additional arguments are the different `metaoptions` values. 
+
+Here is an example of constructing a `ProteinExperiment`:
+
+```{r}
+
+require(pulsedSilac)
+## construct very small toy experiments
+
+## assays
+assays_protein <- list(expression = matrix(1:9, ncol = 3))
+
+## colData
+colData <- data.frame(sample = c('A1', 'A2', 'A3'),
+                      condition = c('A', 'A', 'A'),
+                      time = c(1, 2, 3))
+## rowData
+rowData_protein <- data.frame(prot_id = LETTERS[1:3])
+
+## construct the ProteinExperiment
+protExp <- ProteinExperiment(assays = assays_protein, 
+                             rowData = rowData_protein, 
+                             colData = colData, 
+                             conditionCol = 'condition', 
+                             timeCol = 'time')
+
+protExp
+```
+
+Here is an example of constructing a `PeptideExperiment`:
+
+```{r}
+
+## assays
+assays_peptide <- list(expression = matrix(1:15, ncol = 3))
+
+## colData
+colData <- data.frame(sample = c('A1', 'A2', 'A3'),
+                      condition = c('A', 'A', 'A'),
+                      time = c(1, 2, 3))
+## rowData
+rowData_peptide <- data.frame(pept_id = letters[1:5], 
+                              prot_id = c('A', 'A', 'B', 'C', 'C')) 
+## construct the ProteinExperiment
+peptExp <- PeptideExperiment(assays = assays_peptide, 
+                             rowData = rowData_peptide, 
+                             colData = colData, 
+                             conditionCol = 'condition', 
+                             timeCol = 'time')
+
+peptExp
+```
+
+### Accessor functions
+
+The accessor functions are exactly the same as in a `SummarizedExperiment` object, these are mainly: `rowData()`, `colData()`, `assays()` and `metadata()`. To access the `metaoptions` slot we can use the `metaoptions()` function.
+
+```{r}
+
+## assays
+assays(protExp)
+assays(peptExp)
+
+```
+
+```{r}
+
+## rowData
+rowData(protExp)
+rowData(peptExp)
+
+```
+
+```{r}
+
+## colData
+colData(protExp)
+colData(peptExp)
+
+```
+
+```{r}
+
+## metaoptions
+metaoptions(protExp)
+
+metaoptions(peptExp)[['proteinCol']] <- 'prot_id'
+metaoptions(peptExp)
+
+```
+
+### Subsetting and aggregation
+
+Similarly to the accessor function, most of the `SummarizedExperiment` operations, such as subsetting and aggregating, will also apply to the two classes. For subsetting these are mainly: `[`, `subset()`, `$`; and for aggregation these are mainly: `cbind`, `rbind` and `merge`. For more detailed explanation please refer to the package manual. 
+
+```{r}
+
+## subsetting by rows and columns
+protExp[1, 1:2]
+peptExp[1, 1:2]
+
+## subsetting by rows based on rowData
+subset(protExp, prot_id == 'A')
+subset(peptExp, pept_id %in% c('a', 'b'))
+
+## quick acces to colData
+protExp$sample
+peptExp$condition
+
+```
+
+```{r}
+
+## combining by columns
+cbind(protExp[, 1], protExp[, 2:3])
+
+## combining by rows
+rbind(peptExp[1:3, ], peptExp[4:5, ])
+
+## combine rows and columns
+merge(peptExp[1:3, 1], peptExp[3:5, 2:3])
+
+```
 
 
+## `ProteomicsExperiment`
 
+The `ProteomicsExperiment` object contains both a `ProteinExperiment` and a `PeptideExperiment` object. Therefore it can be used to store both levels of information in a single object. The protein and peptide level are aligned/linked by the `colData` slot and by the `linkerDf` slot. The `linkerDf` slot contains a `data.frame` that indicates which indicates which peptides are assigned to each protein and *vice versa*.
+
+### Object construction
+
+To construct a `ProteomicsExperiment` we need at least a `ProteinExperiment` and a `PeptideExperiment`.
+
+```{r}
+
+ProteomicsExp <- ProteomicsExperiment(ProteinExperiment = protExp, 
+                                      PeptideExperiment = peptExp)
+
+ProteomicsExp
+
+```
+
+In this case, the levels are only aligned by columns. There is no information on which are the relationships between proteins and peptides. This information can be added in the `linkerDf` slot. Which contains a `data.frame` that indicates the relationships between the two levels features. One can be easily constructed with the `buildLinkerDf` function.
+
+```{r}
+
+## list with the relationships
+protein_to_peptide <- list(A = c('a', 'b'), B = c('c'), C = c('d', 'e'))
+
+linkerDf <- buildLinkerDf(protIDs = LETTERS[1:3], 
+                          pepIDs  = letters[1:5], 
+                          protToPep = protein_to_peptide)
+
+linkerDf
+
+ProteomicsExp <- ProteomicsExperiment(ProteinExperiment = protExp, 
+                                      PeptideExperiment = peptExp, 
+                                      linkerDf = linkerDf)
+
+```
+
+### Accessor functions
+
+If the slot is general to the `ProteomicsExperiment` object then the same functions as in a `SummarizedExperiment` can be used.
+
+```{r}
+
+## colData
+colData(ProteomicsExp)
+
+```
+
+
+```{r}
+
+## linkerDf
+linkerDf(ProteomicsExp)
+
+```
+
+```{r}
+
+## metadata
+metadata(ProteomicsExp)
+
+```
+
+
+```{r}
+
+## metao
+metaoptions(ProteomicsExp)
+
+```
+
+But for protein/peptide shared slots there are two options to access them. Using the `SummarizedExperiment` generic will return a named list with the two elements.
+
+```{r}
+
+## assays
+assays(ProteomicsExp)
+
+```
+
+```{r}
+
+## rowData
+rowData(ProteomicsExp)
+
+```
+
+To access specifically a slot of protein or peptide level one can use the same functions and just add `Prot` or `Pept` as suffixes.
+
+```{r}
+
+## assays of protein level
+assaysProt(ProteomicsExp)
+
+## assays of peptide level
+assaysPept(ProteomicsExp)
+
+```
+
+```{r}
+
+## rowData of protein level
+rowDataProt(ProteomicsExp)
+
+## rowData of peptide level
+rowDataPept(ProteomicsExp)
+
+```
+
+### Subsetting and aggregation
+
+When subsetting row-wise on a `ProteomicsExperiment` there will be two main questions: 
+
+- To which level is the subset applied?
+- Is the subset from one level applied also to the other?
+
+The answer to these questions is written in the `metaoptions` values. The first one is `subsetMode` which can be `protein` or `peptide`. The second one is `linkedSubset`, which can be `TRUE` or `FALSE`. Moreover, if the latter is set to `TRUE` then the `idColProt` and `idColPept` will also be required.
+
+Here are some examples of using the `[` in different situations.
+
+Subset at protein level without affecting the peptide level.
+
+```{r}
+
+## indicate which rowDat columns have unique ids for proteins and peptides
+metaoptions(ProteomicsExp)[['idColProt']] <- 'prot_id'
+metaoptions(ProteomicsExp)[['idColPept']] <- 'pept_id'
+## indicate that we want to apply the subset at protein level
+metaoptions(ProteomicsExp)[['subsetMode']] <- 'protein'
+## and not extend it to the peptide level
+metaoptions(ProteomicsExp)[['linkedSubset']] <- FALSE
+
+ProteomicsExp[1:2,]
+
+```
+
+It can be seen that the protein level has two proteins while the peptide level kept all five peptides.
+Subset at protein level and extending the subset to the peptide level.
+
+```{r}
+## to extend we set the metaoption to TRUE
+metaoptions(ProteomicsExp)[['linkedSubset']] <- TRUE
+
+ProteomicsExp[1:2,]
+
+```
+
+In this case the protein level has two proteins and the peptide level has also been subset to the three peptides that are assigned to the two proteins in the `linkerDf`. 
+
+The same process can also be applied at peptide level.
+```{r}
+## indicate that we want to apply the subset at protein level
+metaoptions(ProteomicsExp)[['subsetMode']] <- 'peptide'
+## to extend we set the metaoption to TRUE
+metaoptions(ProteomicsExp)[['linkedSubset']] <- TRUE
+
+ProteomicsExp[1:2,]
+
+```
+In this case, the first two peptides are selected, these belong to the first protein which is also selected.
+
+Other subset operations can be done using `subsetProt()` and `subsetPep()`, which call the generic `subset()` on the `rowData` slot of the protein and peptide level respectively. Note that `subsetProt()` and `subsetPep()` will behave differently depending on the metaoption `linkedSubset` as seen above with `[`.
+
+
+```{r}
+
+## without linked Subset
+metaoptions(ProteomicsExp)[['linkedSubset']] <- FALSE
+subsetProt(ProteomicsExp, prot_id == 'B')
+
+```
+
+```{r}
+
+## with linked Subset
+metaoptions(ProteomicsExp)[['linkedSubset']] <- TRUE
+subsetProt(ProteomicsExp, prot_id == 'B')
+
+```
+
+Finally for aggregating `cbind`, `rbind` and `merge` can be used.
+
+```{r}
+
+## cbind
+cbind(ProteomicsExp[,1], ProteomicsExp[,2])
+
+```
+
+```{r}
+
+## rbind
+rbind(ProteomicsExp[1:2,], ProteomicsExp[3,])
+
+
+```
+
+```{r}
+
+## merge
+merge(ProteomicsExp[1:3,1], ProteomicsExp[3:4, 2:3])
+
+```
+
+
+## `metaoptions`
+
+The `metaoptions` slot contains a `list` with a set of "option" values used to indicate where critical analysis information is required. The idea is that these values are defined at the beginning of the analysis so that it is not required to give them as arguments in each function call. Nevertheless, all the analysis functions can have these values passed as arguments. There are several `metaoptions` values by default some or them are shared between the three classes while others are unique.
+
+The following are related to data analysis:
+
+- `conditionCol`: which column in `colData` indicates the different experiment conditions.
+- `timeCol`: which column in `colData` indicates the different timepoints of the experiment.
+- `replicateIntCol`: which column in `colData` indicates expression/intensity replicates.
+- `replicateTimeCol`: which column in `colData` indicates timepoint replicates.
+- `proteinCol`:  which column in `rowData` indicates the assigned protein to a peptide. (unique to `PeptideExperiment`)
+
+The following are related to `ProteomicsExperiment` subsetting operations:
+
+- `idColProt`: which column in `rowDataProt` indicates unique protein IDs. (unique to `ProteomicsExperiment`)
+- `idColPept`: which column in `rowDataPept` indicates unique peptide IDs. (unique to `ProteomicsExperiment`)
+- `linkedSubset`: logical that indicates if the subsetting operation should be applied to both data levels (protein and peptide). (unique to `ProteomicsExperiment`)
+- `subsetMode`: which level should be used for reference when subsetting (protein or peptide). (unique to `ProteomicsExperiment`)
+
+These can be extended by the user to accomodate other experiment design and data analysis philosophies.
 
 # Ratio and fraction calculation
 

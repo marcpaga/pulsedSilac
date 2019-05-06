@@ -366,3 +366,99 @@ rbindLinkerDf <- function(x, y) {
 }
 
 
+###### Experiment looping ======================================================
+
+## wrapper for the following 3 functions
+
+#' @keywords internal
+experimentLoopWrapper <- function(x, type) {
+
+  proCD <- processColData(x, type = type)
+  expCols <- getExperimentCols(proCD)
+  loopCols <- getLoopCols(expCols, type = type)
+  return(loopCols)
+
+}
+
+
+## The following are 3 functions called in the following order:
+##    1. processColData
+##    2. getExperimentCols
+##    3. getLoopCols
+## This functions process the colData from a SummarizedExperiment-like object
+## together with the metaoptions and return a list of columns to loop over.
+## The columns are different depending on the analysis that is being done.
+
+### processColData ====
+processColData <- function(x, type) {
+
+  df <- colData(x)
+
+  ## looping that goes over each experiment condition and time replicates
+  ## for this type we need 'conditionCol' and 'replicateTimeCol'
+  if (type == 'cond.timerep') {
+
+    conditionCol <- giveMetaoption(x = x, option = 'conditionCol')
+    replicateTimeCol <- giveMetaoption(x = x, option = 'replicateTimeCol')
+
+    i <- which(colnames(colData(x)) == conditionCol)
+    colnames(df)[i] <- 'conditionCol'
+    i <- which(colnames(colData(x)) == replicateTimeCol)
+    colnames(df)[i] <- 'replicateTimeCol'
+
+  }
+
+  df <- data.frame(lapply(df, as.factor))
+
+  i <- which(colnames(df) %in% c('conditionCol', 'timeCol',
+                                 'replicateIntCol', 'replicateTimeCol'))
+  df <- df[, i]
+
+  return(df)
+
+}
+
+### getExperimentCols ====
+getExperimentCols <- function(x) {
+
+
+  experimentCols <- as.list(x)
+  if (!'conditionCol' %in% names(experimentCols)) {
+    experimentCols$conditionCol <- factor(NULL)
+  }
+  if (!'timeCol' %in% names(experimentCols)) {
+    experimentCols$timeCol <- factor(NULL)
+  }
+  if (!'replicateTimeCol' %in% names(experimentCols)) {
+    experimentCols$replicateTimeCol <- factor(NULL)
+  }
+  if (!'replicateIntCol' %in% names(experimentCols)) {
+    experimentCols$replicateIntCol <- factor(NULL)
+  }
+
+  return(experimentCols)
+
+}
+
+### getLoopCols ====
+getLoopCols <- function(x, type) {
+
+  listnames <- c('conditionCol', 'timeCol',
+                 'replicateIntCol', 'replicateTimeCol')
+  if (!all(listnames %in% names(x))) {
+    stop('Input must be a list with the following names: conditionalCol, ',
+         'timeCol, replicateIntCol and replicateTimeCol')
+  }
+
+  if (type == 'cond.timerep') {
+
+    samples <- factor(paste0(x[['conditionCol']], x[['replicateTimeCol']]))
+    cols <- lapply(levels(samples), function(x) which(samples == x))
+
+    return(cols)
+  }
+
+  stop('Please provide a type to group the columns')
+
+}
+
