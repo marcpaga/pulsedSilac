@@ -41,6 +41,7 @@ setMethod('metaoptions<-', 'ProteomicsExperiment', function(x, value){
 
   x@metaoptions <- value
   validObject(x)
+  x <- synchronizeMetaoptions(x)
   return(x)
 
 })

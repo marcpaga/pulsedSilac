@@ -190,6 +190,29 @@ compareOptions <- function(x, y, option) {
   }
 }
 
+## synchronize metaoptions =====
+
+#' This function sends the values from the metaoptions of ProteomicsExperiment
+#' to the ProteinExperiment and PeptideExperiment
+#' @keywords internal
+synchronizeMetaoptions <- function(x) {
+
+  for (meta in names(metaoptions(x))) {
+
+    value <- metaoptions(x)[[meta]]
+    if (meta %in% names(metaoptions(x@ProteinExperiment))) {
+      metaoptions(x@ProteinExperiment)[[meta]] <- value
+    }
+
+    if (meta %in% names(metaoptions(x@PeptideExperiment))) {
+      metaoptions(x@PeptideExperiment)[[meta]] <- value
+    }
+  }
+  validObject(x)
+  return(x)
+
+}
+
 ###### Specific linkerDf -----
 
 ## check integrity of the linkerDf----

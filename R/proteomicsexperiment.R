@@ -82,6 +82,8 @@ ProteomicsExperiment <- function(ProteinExperiment,
             metadata = metadata,
             metaoptions = metaoptions)
 
+  PE <- synchronizeMetaoptions(PE)
+
   return(PE)
 }
 
