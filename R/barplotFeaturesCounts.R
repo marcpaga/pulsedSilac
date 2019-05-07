@@ -19,6 +19,11 @@ setMethod('barplotFeaturesCounts',
                    return = 'plot',
                    conditionCol) {
 
+  if (!assayName %in% names(assays(x))) {
+    txt <- sprintf('%s not found in assay names', assayName)
+    stop(txt)
+  }
+
   ## count how many proteins per sample
   mat <- assays(x)[[assayName]]
   counts <- apply(mat, 2, function(x) sum(!is.na(x)))
@@ -37,6 +42,8 @@ setMethod('barplotFeaturesCounts',
     metaoptions(x)[['conditionCol']] <- conditionCol
   }
 
+  ## use trycatch since giveMetaoption raises and error if it does not find it,
+  ## but for plotting metaoptions are not strictly necessary
   plotDfList <- tryCatch(
     {
       colname <- giveMetaoption(x, 'conditionCol')
@@ -51,8 +58,10 @@ setMethod('barplotFeaturesCounts',
     }
   )
   plotDf <- plotDfList[[1]]
+  ## name in the legend
   oldname <- plotDfList[[2]]
 
+  ## early return without plot
   if (return == 'data.frame') {
     return(plotDf)
   }
@@ -98,6 +107,11 @@ setMethod('barplotFeaturesCounts',
                    return = 'plot',
                    conditionCol) {
 
+  if (!assayName %in% names(assays(x))) {
+    txt <- sprintf('%s not found in assay names', assayName)
+    stop(txt)
+  }
+
   ## count how many proteins per sample
   mat <- assays(x)[[assayName]]
   counts <- apply(mat, 2, function(x) sum(!is.na(x)))
@@ -116,6 +130,8 @@ setMethod('barplotFeaturesCounts',
     metaoptions(x)[['conditionCol']] <- conditionCol
   }
 
+  ## use trycatch since giveMetaoption raises and error if it does not find it,
+  ## but for plotting metaoptions are not strictly necessary
   plotDfList <- tryCatch(
     {
       colname <- giveMetaoption(x, 'conditionCol')
@@ -130,8 +146,10 @@ setMethod('barplotFeaturesCounts',
     }
   )
   plotDf <- plotDfList[[1]]
+  ## name in the legend
   oldname <- plotDfList[[2]]
 
+  ## early return with no plot
   if (return == 'data.frame') {
     return(plotDf)
   }
@@ -160,7 +178,6 @@ setMethod('barplotFeaturesCounts',
 
 })
 
-#' @import gridExtra
 #' @export
 setMethod('barplotFeaturesCounts',
           'ProteomicsExperiment',
@@ -187,8 +204,10 @@ setMethod('barplotFeaturesCounts',
   plotDf <- rbind(protPart, peptPart)
   plotDf$mode <- factor(plotDf$mode, levels = c('Protein', 'Peptide'))
 
+  ## name in the legend
   oldname <- colnames(colData(x))[which(colnames(plotDf) == 'conditionCol')]
 
+  ## early return with no plot
   if (return == 'data.frame') {
     return(plotDf)
   }
@@ -201,7 +220,8 @@ setMethod('barplotFeaturesCounts',
       xlab('Sample') +
       ylab('Counts') +
       theme(panel.border = element_rect(fill = NA)) +
-      scale_fill_manual(values = cbPalette)
+      scale_fill_manual(values = cbPalette) +
+      facet_wrap(~mode, scales = 'free')
   } else {
     ggplot(data = plotDf,
            aes(x = sample,
