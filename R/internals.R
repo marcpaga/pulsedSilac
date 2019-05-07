@@ -429,13 +429,20 @@ processColData <- function(x, type) {
     i <- which(colnames(colData(x)) == replicateTimeCol)
     colnames(df)[i] <- 'replicateTimeCol'
 
+  } else if (type == 'cond') {
+
+    conditionCol <- giveMetaoption(x = x, option = 'conditionCol')
+
+    i <- which(colnames(colData(x)) == conditionCol)
+    colnames(df)[i] <- 'conditionCol'
+
   }
 
   df <- data.frame(lapply(df, as.factor))
 
   i <- which(colnames(df) %in% c('conditionCol', 'timeCol',
                                  'replicateIntCol', 'replicateTimeCol'))
-  df <- df[, i]
+  df <- df[, i, drop = FALSE]
 
   return(df)
 
@@ -477,7 +484,12 @@ getLoopCols <- function(x, type) {
 
     samples <- factor(paste0(x[['conditionCol']], x[['replicateTimeCol']]))
     cols <- lapply(levels(samples), function(x) which(samples == x))
+    return(cols)
 
+  } else if (type == 'cond') {
+
+    samples <- factor(x[['conditionCol']])
+    cols <- lapply(levels(samples), function(x) which(samples == x))
     return(cols)
   }
 
