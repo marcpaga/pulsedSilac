@@ -1,14 +1,14 @@
 #' @export
-setGeneric('calculateIsotopeRatio', function(x, assayNameA, assayNameB, ...){
+setGeneric('calculateIsotopeRatio', function(x, newIsotopeAssay, oldIsotopeAssay, ...){
   standardGeneric('calculateIsotopeRatio')
 })
 
 #' @export
 setMethod('calculateIsotopeRatio', 'ProteinExperiment',
-          function(x, assayNameA = 'heavy_intensity',
-                   assayNameB = 'light_intensity') {
+          function(x, newIsotopeAssay = 'heavy_intensity',
+                   oldIsotopeAssay = 'light_intensity') {
 
-  ratio_assay <- assays(x)[[assayNameA]]/assays(x)[[assayNameB]]
+  ratio_assay <- assays(x)[[newIsotopeAssay]]/assays(x)[[oldIsotopeAssay]]
   assays(x)[['ratio']] <- ratio_assay
   return(x)
 
@@ -16,10 +16,10 @@ setMethod('calculateIsotopeRatio', 'ProteinExperiment',
 
 #' @export
 setMethod('calculateIsotopeRatio', 'PeptideExperiment',
-          function(x, assayNameA = 'heavy_intenisty',
-                   assayNameB = 'light_intensity') {
+          function(x, newIsotopeAssay = 'heavy_intenisty',
+                   oldIsotopeAssay = 'light_intensity') {
 
-  ratio_assay <- assays(x)[[assayNameA]]/assays(x)[[assayNameB]]
+  ratio_assay <- assays(x)[[newIsotopeAssay]]/assays(x)[[oldIsotopeAssay]]
   assays(x)[['ratio']] <- ratio_assay
   return(x)
 
@@ -27,24 +27,24 @@ setMethod('calculateIsotopeRatio', 'PeptideExperiment',
 
 #' @export
 setMethod('calculateIsotopeRatio', 'ProteomicsExperiment',
-          function(x, assayNameA = 'heavy_intenisty',
-                   assayNameB = 'light_intensity') {
+          function(x, newIsotopeAssay = 'heavy_intenisty',
+                   oldIsotopeAssay = 'light_intensity') {
 
-  if (length(assayNameA) == 1) {
-    assayNameA <- rep(assayNameA, 2)
+  if (length(newIsotopeAssay) == 1) {
+    newIsotopeAssay <- rep(newIsotopeAssay, 2)
   }
 
-  if (length(assayNameB) == 1) {
-    assayNameB <- rep(assayNameB, 2)
+  if (length(oldIsotopeAssay) == 1) {
+    oldIsotopeAssay <- rep(oldIsotopeAssay, 2)
   }
 
   x@ProteinExperiment <- calculateIsotopeRatio(x@ProteinExperiment,
-                                               assayNameA = assayNameA[1],
-                                               assayNameB = assayNameB[1])
+                                               newIsotopeAssay = newIsotopeAssay[1],
+                                               oldIsotopeAssay = oldIsotopeAssay[1])
 
   x@PeptideExperiment <- calculateIsotopeRatio(x@PeptideExperiment,
-                                               assayNameA = assayNameA[2],
-                                               assayNameB = assayNameB[2])
+                                               newIsotopeAssay = newIsotopeAssay[2],
+                                               oldIsotopeAssay = oldIsotopeAssay[2])
 
   return(x)
 
