@@ -18,45 +18,45 @@
 #'
 #' @seealso \code{\link{ProteomicsExperiment-class}}
 #' @export
-setGeneric('calculateIsotopeFraction', function(x, assayName, ...){
+setGeneric('calculateIsotopeFraction', function(x, ratioAssay, ...){
   standardGeneric('calculateIsotopeFraction')
 })
 
 #' @export
 setMethod('calculateIsotopeFraction', 'ProteinExperiment',
-          function(x, assayName = 'ratio') {
+          function(x, ratioAssay = 'ratio') {
 
-  fraction_assay <- assays(x)[[assayName]]/
-    ( 1 + assays(x)[[assayName]] )
-  assays(x)[['fraction']] < fraction_assay
+  fraction_assay <- assays(x)[[ratioAssay]]/( 1 + assays(x)[[ratioAssay]] )
+  assays(x)[['fraction']] <- fraction_assay
+
   return(x)
 
 })
 
 #' @export
 setMethod('calculateIsotopeFraction', 'PeptideExperiment',
-          function(x, assayName = 'ratio') {
+          function(x, ratioAssay = 'ratio') {
 
-  fraction_assay <- assays(x)[[assayName]]/
-    ( 1 + assays(x)[[assayName]] )
-  assays(x)[['fraction']] < fraction_assay
+  fraction_assay <- assays(x)[[ratioAssay]]/( 1 + assays(x)[[ratioAssay]] )
+  assays(x)[['fraction']] <- fraction_assay
+
   return(x)
 
 })
 
 #' @export
 setMethod('calculateIsotopeFraction', 'ProteomicsExperiment',
-          function(x, assayName = 'ratio') {
+          function(x, ratioAssay = 'ratio') {
 
-  if (length(assayName) == 1) {
-    assayName <- rep(assayName, 2)
+  if (length(ratioAssay) == 1) {
+    ratioAssay <- rep(ratioAssay, 2)
   }
 
   x@ProteinExperiment <- calculateIsotopeFraction(x@ProteinExperiment,
-                                                  assayName = assayName[1])
+                                                  ratioAssay = ratioAssay[1])
 
   x@PeptideExperiment <- calculateIsotopeFraction(x@PeptideExperiment,
-                                                  assayName = assayName[2])
+                                                  ratioAssay = ratioAssay[2])
 
   return(x)
 
