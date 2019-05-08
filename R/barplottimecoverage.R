@@ -279,11 +279,16 @@ setMethod('barplotTimeCoverage',
                                     conditionCol = conditionCol,
                                     replicateTimeCol = replicateTimeCol)
 
+
   ## join the data.frames
   protPart$mode <- 'Protein'
   peptPart$mode <- 'Peptide'
   plotDf <- rbind(protPart, peptPart)
   plotDf$mode <- factor(plotDf$mode, levels = c('Protein', 'Peptide'))
+
+  ## fix unordered counts when not all possibilities are there
+  plotDf$counts <- factor(plotDf$counts,
+                          levels = sort(unique(as.numeric(as.character(plotDf$counts)))))
 
   ## early return with no plot
   if (return == 'data.frame') {
