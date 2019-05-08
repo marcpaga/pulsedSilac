@@ -44,22 +44,17 @@ setMethod('barplotFeaturesCounts',
 
   ## use trycatch since giveMetaoption raises and error if it does not find it,
   ## but for plotting metaoptions are not strictly necessary
-  plotDfList <- tryCatch(
+  plotDf <- tryCatch(
     {
       colname <- giveMetaoption(x, 'conditionCol')
-      oldname <- colnames(plotDf)[colnames(plotDf) == colname]
       colnames(plotDf)[colnames(plotDf) == colname] <- 'conditionCol'
-      list(plotDf, oldname)
+      plotDf
     },
     error = function(cond){
-      oldname <- NA
       plotDf$conditionCol <- NA
-      list(plotDf, oldname)
+      plotDf
     }
   )
-  plotDf <- plotDfList[[1]]
-  ## name in the legend
-  oldname <- plotDfList[[2]]
 
   ## early return without plot
   if (return == 'data.frame') {
@@ -77,6 +72,10 @@ setMethod('barplotFeaturesCounts',
       theme(panel.border = element_rect(fill = NA)) +
       scale_fill_manual(values = cbPalette)
   } else {
+
+    colname <- giveMetaoption(x, 'conditionCol')
+    oldname <- colnames(plotDf)[colnames(plotDf) == colname]
+
     ggplot(data = plotDf,
            aes(x = factor(rownames(plotDf), levels = rownames(plotDf)),
                y = counts, fill = conditionCol)) +
@@ -132,23 +131,17 @@ setMethod('barplotFeaturesCounts',
 
   ## use trycatch since giveMetaoption raises and error if it does not find it,
   ## but for plotting metaoptions are not strictly necessary
-  plotDfList <- tryCatch(
+  plotDf <- tryCatch(
     {
       colname <- giveMetaoption(x, 'conditionCol')
-      oldname <- colnames(plotDf)[colnames(plotDf) == colname]
       colnames(plotDf)[colnames(plotDf) == colname] <- 'conditionCol'
-      list(plotDf, oldname)
+      plotDf
     },
     error = function(cond){
-      oldname <- NA
       plotDf$conditionCol <- NA
-      list(plotDf, oldname)
+      plotDf
     }
   )
-  plotDf <- plotDfList[[1]]
-  ## name in the legend
-  oldname <- plotDfList[[2]]
-
   ## early return with no plot
   if (return == 'data.frame') {
     return(plotDf)
@@ -165,6 +158,10 @@ setMethod('barplotFeaturesCounts',
       theme(panel.border = element_rect(fill = NA)) +
       scale_fill_manual(values = cbPalette)
   } else {
+
+    colname <- giveMetaoption(x, 'conditionCol')
+    oldname <- colnames(plotDf)[colnames(plotDf) == colname]
+
     ggplot(data = plotDf,
            aes(x = factor(rownames(plotDf), levels = rownames(plotDf)),
                y = counts, fill = conditionCol)) +
