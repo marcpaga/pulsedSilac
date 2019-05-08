@@ -31,6 +31,7 @@ Imports:
     S4Vectors,
     limma,
     SummarizedExperiment,
+    ggplot2,
     stats,
     utils
 RoxygenNote: 6.1.1
