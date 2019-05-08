@@ -49,12 +49,8 @@ setMethod('barplotTimeCoverage',
       condCol <- giveMetaoption(x, 'conditionCol')
       timeRepCol <- giveMetaoption(x, 'replicateTimeCol')
 
-      plotCol <- paste(colData(x)[, condCol],
-                       colData(x)[, timeRepCol], sep = '.')
-
-      plotCol <- insertElems(plotCol,
-                             pos = vapply(loopCols, '[[', 1, 1),
-                             elems = unique(plotCol))
+      plotCol <- unique(paste(colData(x)[, condCol],
+                       colData(x)[, timeRepCol], sep = '.'))
 
       list(loopCols = loopCols, plotCol = plotCol)
     },
@@ -62,17 +58,13 @@ setMethod('barplotTimeCoverage',
       tryCatch(
         {
           loopCols <- experimentLoopWrapper(x, 'cond')
-          plotCol <- condCol
-
-          plotCol <- insertElems(plotCol,
-                                 pos = vapply(loopCols, '[[', 1, 1),
-                                 elems = unique(plotCol))
+          plotCol <- unique(condCol)
 
           list(loopCols = loopCols, plotCol = plotCol)
         },
         error = function(c){
           loopCols <- list(seq_len(ncol(x)))
-          plotCol <- rep(NA, ncol(x) + 1)
+          plotCol <- NA
           list(loopCols = loopCols, plotCol = plotCol)
         }
       )
@@ -90,12 +82,12 @@ setMethod('barplotTimeCoverage',
 
     counts <- apply(mat[, loopCols[[i]]], 1, function(x) sum(!is.na(x)))
     plotDf <- data.frame(table(counts))
+    plotDf$group <- rep(outList[[2]][i], nrow(plotDf))
 
     plotDfList[[i]] <- plotDf
 
     if (i == length(loopCols)) {
       plotDf <- do.call('rbind', plotDfList)
-      plotDf$group <- outList[[2]]
     }
 
   }
@@ -186,12 +178,8 @@ setMethod('barplotTimeCoverage',
       condCol <- giveMetaoption(x, 'conditionCol')
       timeRepCol <- giveMetaoption(x, 'replicateTimeCol')
 
-      plotCol <- paste(colData(x)[, condCol],
-                       colData(x)[, timeRepCol], sep = '.')
-
-      plotCol <- insertElems(plotCol,
-                             pos = vapply(loopCols, '[[', 1, 1),
-                             elems = unique(plotCol))
+      plotCol <- unique(paste(colData(x)[, condCol],
+                       colData(x)[, timeRepCol], sep = '.'))
 
       list(loopCols = loopCols, plotCol = plotCol)
     },
@@ -199,17 +187,13 @@ setMethod('barplotTimeCoverage',
       tryCatch(
         {
           loopCols <- experimentLoopWrapper(x, 'cond')
-          plotCol <- condCol
-
-          plotCol <- insertElems(plotCol,
-                                 pos = vapply(loopCols, '[[', 1, 1),
-                                 elems = unique(plotCol))
+          plotCol <- unique(condCol)
 
           list(loopCols = loopCols, plotCol = plotCol)
         },
         error = function(c){
           loopCols <- list(seq_len(ncol(x)))
-          plotCol <- rep(NA, ncol(x) + 1)
+          plotCol <- NA
           list(loopCols = loopCols, plotCol = plotCol)
         }
       )
@@ -227,12 +211,12 @@ setMethod('barplotTimeCoverage',
 
     counts <- apply(mat[, loopCols[[i]]], 1, function(x) sum(!is.na(x)))
     plotDf <- data.frame(table(counts))
+    plotDf$group <- rep(outList[[2]][i], nrow(plotDf))
 
     plotDfList[[i]] <- plotDf
 
     if (i == length(loopCols)) {
       plotDf <- do.call('rbind', plotDfList)
-      plotDf$group <- outList[[2]]
     }
 
   }
