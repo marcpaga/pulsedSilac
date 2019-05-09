@@ -58,7 +58,8 @@ setMethod('barplotTimeCoverage',
       tryCatch(
         {
           loopCols <- experimentLoopWrapper(x, 'cond')
-          plotCol <- unique(condCol)
+          condCol <- giveMetaoption(x, 'conditionCol')
+          plotCol <- unique(colData(x)[, condCol])
 
           list(loopCols = loopCols, plotCol = plotCol)
         },

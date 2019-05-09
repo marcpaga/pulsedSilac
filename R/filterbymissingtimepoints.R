@@ -77,6 +77,7 @@ setMethod('filterByMissingTimepoints',
     }
 
     nacounts <- apply(mat[, loopCols[[i]]], 1, function(x) sum(is.na(x)))
+    ## TRUE if there are less or equal missing as maxMissing
     logMatrix[, i] <- (nacounts <= maxMissing)
 
   }
