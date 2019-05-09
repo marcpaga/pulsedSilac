@@ -108,8 +108,7 @@ setValidity2('ProteinExperiment', .valid.ProteinExperiment)
 #' @import SummarizedExperiment
 #' @export
 .PeptideExperiment <- setClass(Class = 'PeptideExperiment',
-                               slots = representation(metaoptions = 'list'),
-                               contains = 'SummarizedExperiment'
+                               contains = 'ProteinExperiment'
 )
 
 

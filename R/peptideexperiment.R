@@ -20,11 +20,16 @@ PeptideExperiment <- function(assays,
                       proteinCol = proteinCol)
 
 
-  se <- SummarizedExperiment(assays = assays,
-                             colData = colData,
-                             rowData = rowData,
-                             metadata = metadata)
+  pe <- ProteinExperiment(assays = assays,
+                          colData = colData,
+                          rowData = rowData,
+                          metadata = metadata,
+                          conditionCol = conditionCol,
+                          timeCol = timeCol,
+                          replicateIntCol = replicateIntCol,
+                          replicateTimeCol = replicateTimeCol)
 
-  return(.PeptideExperiment(se, metaoptions = metaoptions))
+  metaoptions(pe)[['proteinCol']] <- proteinCol
+  pe <- .PeptideExperiment(pe)
 
 }
