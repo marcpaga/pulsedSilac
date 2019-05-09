@@ -106,72 +106,7 @@ setMethod('barplotFeaturesCounts',
                    return = 'plot',
                    conditionCol) {
 
-  if (!assayName %in% names(assays(x))) {
-    txt <- sprintf('%s not found in assay names', assayName)
-    stop(txt)
-  }
-
-  ## count how many proteins per sample
-  mat <- assays(x)[[assayName]]
-  counts <- apply(mat, 2, function(x) sum(!is.na(x)))
-
-  plotDf <- as.data.frame(colData(x))
-  plotDf$counts <- counts
-
-  ## cb palette
-  cbPalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73",
-                 "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
-
-  ## if the metaoptions are not given, try to get them from the slot
-  ## if there are also not present, then the plot does not take into account
-  ## conditions.
-  if (!missing(conditionCol)) {
-    metaoptions(x)[['conditionCol']] <- conditionCol
-  }
-
-  ## use trycatch since giveMetaoption raises and error if it does not find it,
-  ## but for plotting metaoptions are not strictly necessary
-  plotDf <- tryCatch(
-    {
-      colname <- giveMetaoption(x, 'conditionCol')
-      colnames(plotDf)[colnames(plotDf) == colname] <- 'conditionCol'
-      plotDf
-    },
-    error = function(cond){
-      plotDf$conditionCol <- NA
-      plotDf
-    }
-  )
-  ## early return with no plot
-  if (return == 'data.frame') {
-    return(plotDf)
-  }
-
-  ## plot with fill depending if we have the conditionCol column
-  if (all(is.na(plotDf$conditionCol))) {
-    ggplot(data = plotDf,
-           aes(x = factor(rownames(plotDf), levels = rownames(plotDf)),
-               y = counts)) +
-      geom_bar(stat = 'identity') +
-      xlab('Sample') +
-      ylab('Counts') +
-      theme(panel.border = element_rect(fill = NA)) +
-      scale_fill_manual(values = cbPalette)
-  } else {
-
-    colname <- giveMetaoption(x, 'conditionCol')
-    oldname <- colnames(plotDf)[colnames(plotDf) == colname]
-
-    ggplot(data = plotDf,
-           aes(x = factor(rownames(plotDf), levels = rownames(plotDf)),
-               y = counts, fill = conditionCol)) +
-      geom_bar(stat = 'identity') +
-      xlab('Sample') +
-      ylab('Counts') +
-      theme(panel.border = element_rect(fill = NA)) +
-      scale_fill_manual(values = cbPalette) +
-      labs(fill = oldname)
-  }
+  callNextMethod()
 
 })
 
