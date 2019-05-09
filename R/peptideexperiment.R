@@ -1,6 +1,5 @@
 #' @title PeptideExperiment constructor
 #'
-#' @importFrom SummarizedExperiment SummarizedExperiment
 #' @export
 PeptideExperiment <- function(assays,
                               rowData = NULL,
