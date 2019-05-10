@@ -125,7 +125,6 @@ setMethod('overlapFeatures',
 
 })
 
-#' @importFrom cowplot plot_grid
 #' @importFrom grid grid.edit
 #' @importFrom grid grid.grab
 #' @export
