@@ -97,8 +97,10 @@ metaoptionInRowData <- function(x, option) {
       return(TRUE)
     } else if (option == 'idColPept' & op %in% colnames(rowDataPept(x))) {
       return(TRUE)
+    } else if (option == 'proteinCol' & op %in% colnames(rowDataPept(x))){
+      return(TRUE)
     } else {
-      txt <- sprintf('Column not found in colData: %s.', op)
+      txt <- sprintf('Column not found in rowData: %s.', op)
       stop(txt)
     }
   }
@@ -117,7 +119,7 @@ giveMetaoption <- function(x, option) {
     return(metaoptions(x)[[option]])
   }
 
-  if (option %in% c('idColProt', 'idColPept')) {
+  if (option %in% c('idColProt', 'idColPept', 'proteinCol')) {
     if (metaoptionInRowData(x, option)) {
       op <- metaoptions(x)[[option]]
       return(op)
