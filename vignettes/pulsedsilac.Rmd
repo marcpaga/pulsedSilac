@@ -4,13 +4,13 @@ author:
     name: "Marc Pagès-Gallego"
     affiliation: University Medical Center Utrecht, the Netherlands
 date: "`r Sys.Date()`"
-bibliography:
+bibliography: 'bibliography.bib'
 nocite: '@*'
 abstract: "This document will contain a tutorial on how to perform basic pulsed SILAC data analysis using the pulsedSilac package."
 output:
-  BiocStyle::pdf_document: default
   BiocStyle::html_document:
     toc_float: true
+  pdf_document: default
 vignette: >
   %\VignetteIndexEntry{Pulsed-SILAC data analysis}
   %\VignetteEncoding{UTF-8}
@@ -94,7 +94,7 @@ peptExp
 
 ### Accessor functions
 
-The accessor functions are exactly the same as in a `SummarizedExperiment` object, these are mainly: `rowData()`, `colData()`, `assays()` and `metadata()`. To access the `metaoptions` slot we can use the `metaoptions()` function.
+The accessor functions are exactly the same as in a `SummarizedExperiment` object, these are mainly: `rowData()`, `colData()`, `assays()` and `metadata()`. To access the `metaoptions` slot the `metaoptions()` function can be used.
 
 ```{r}
 
@@ -132,7 +132,7 @@ metaoptions(peptExp)
 
 ### Subsetting and aggregation
 
-Similarly to the accessor function, most of the `SummarizedExperiment` operations, such as subsetting and aggregating, will also apply to the two classes. For subsetting these are mainly: `[`, `subset()`, `$`; and for aggregation these are mainly: `cbind`, `rbind` and `merge`. For more detailed explanation please refer to the package manual. 
+Similarly to the accessor function, most of the `SummarizedExperiment` operations, such as subsetting and aggregating, can be applied to the two classes. For subsetting these are mainly: `[`, `subset()`, `$`; and for aggregation these are mainly: `cbind`, `rbind` and `merge`. For a more detailed explanation please refer to the package manual. 
 
 ```{r}
 
@@ -170,7 +170,7 @@ The `ProteomicsExperiment` object contains both a `ProteinExperiment` and a `Pep
 
 ### Object construction
 
-To construct a `ProteomicsExperiment` we need at least a `ProteinExperiment` and a `PeptideExperiment`.
+To construct a `ProteomicsExperiment` we need at least a `ProteinExperiment` object and a `PeptideExperiment` object.
 
 ```{r}
 
@@ -181,7 +181,7 @@ ProteomicsExp
 
 ```
 
-In this case, the levels are only aligned by columns. There is no information on which are the relationships between proteins and peptides. This information can be added in the `linkerDf` slot. Which contains a `data.frame` that indicates the relationships between the two levels features. One can be easily constructed with the `buildLinkerDf` function.
+In this case, the levels are only aligned by columns. There is no information on which are the relationships between proteins and peptides. This information can be added in the `linkerDf` slot. Which contains a `data.frame` that indicates the relationships between the two levels features. One can be easily constructed with the `buildLinkerDf()` function.
 
 ```{r}
 
@@ -229,12 +229,12 @@ metadata(ProteomicsExp)
 
 ```{r}
 
-## metao
+## metaoptions
 metaoptions(ProteomicsExp)
 
 ```
 
-But for protein/peptide shared slots there are two options to access them. Using the `SummarizedExperiment` generic will return a named list with the two elements.
+But for protein/peptide shared slots names, like `assays` and `rowData`, there are two options to access them. Using the `SummarizedExperiment` generic will return a named list with the two elements.
 
 ```{r}
 
@@ -300,6 +300,7 @@ ProteomicsExp[1:2,]
 ```
 
 It can be seen that the protein level has two proteins while the peptide level kept all five peptides.
+
 Subset at protein level and extending the subset to the peptide level.
 
 ```{r}
@@ -370,7 +371,7 @@ merge(ProteomicsExp[1:3,1], ProteomicsExp[3:4, 2:3])
 
 ## `metaoptions`
 
-The `metaoptions` slot contains a `list` with a set of "option" values used to indicate where critical analysis information is required. The idea is that these values are defined at the beginning of the analysis so that it is not required to give them as arguments in each function call. Nevertheless, all the analysis functions can have these values passed as arguments. There are several `metaoptions` values by default some or them are shared between the three classes while others are unique.
+The `metaoptions` slot contains a `list` with a set of "option" values used to indicate where critical analysis information is required. The idea is that these values are defined at the beginning of the analysis so that it is not required to give them as arguments in each function call. Nevertheless, all the analysis functions can have these values passed as arguments. There are several `metaoptions` values by default, some or them are shared between the three classes while others are unique.
 
 The following are related to data analysis:
 
@@ -387,21 +388,209 @@ The following are related to `ProteomicsExperiment` subsetting operations:
 - `linkedSubset`: logical that indicates if the subsetting operation should be applied to both data levels (protein and peptide). (unique to `ProteomicsExperiment`)
 - `subsetMode`: which level should be used for reference when subsetting (protein or peptide). (unique to `ProteomicsExperiment`)
 
-These can be extended by the user to accomodate other experiment design and data analysis philosophies.
+These can be extended by the user to accomodate other experiment design and data analysis operations.
+
+# Example data
+
+To demonstrate the use of the package functions a reduced version of the pulsed-SILAC dataset from @Visscher2016 has been built into a `ProteomicsExperiment` object. It is stored in an object named `wormsPE`. This object has been constructed from the output files from MaxQuant 'proteinGroups.txt' and 'peptides.txt'.
+
+```{r}
+
+wormsPE
+
+```
+
+The dataset contains only the first 250 proteins and their corresponding peptides. It has already been filtered for possible contaminants and low quality proteins. It has 4 assays with the total intensity, light isotope and heavy isotope intensities and heavy/light isotope ratio. In the experiment there are 2 cell lines: OW40, which express $\alpha$-synuclein-YFP (model for Parkinson's Disease) and OW450, which express YFP only. Worms were harvested after 4h, 6h, 8h, 13h, 24h, 28h and 32h of light to heavy isotope medium transition.
+
+
+# Filtering
+
+## Measurements across time
+
+To model a protein's turnover several timepoints are required. Ideally a protein would be measured in all the timepoints of the experiment, but this is rarely the case. To count how many proteins/peptides have been measured in each sample the `barplotFeaturesCounts()` can be used.
+
+```{r}
+
+barplotFeaturesCounts(wormsPE, assayName = 'ratio')
+
+```
+
+There is some variability between samples, but more importantly is knowing if the a protein has been measured across different timepoints. The function `barplotTimeCoverage()` can be used to visualize in how many timepoints each protein has been measured per condition.
+
+```{r}
+
+barplotTimeCoverage(wormsPE, assayName = 'ratio')
+
+```
+
+As it can be seen, most of the proteins are not measured at all timepoints. In this case there is a majority for proteins that have not been measured in any timepoint, this is because the dataset has been truncated for only the OW40 and OW450 lines. The original search was one with additional worm lines and these missing proteins are probably detected in the excluded lines.
+
+To filter proteins that have not been detected in enough timepoints the `filterByMissingTimepoints()` function can be used. With `maxMissing` the amount of missing values can be tuned. With `strict` proteins have to meet the maxMissing criteria only in one condition or in all.
+
+```{r}
+
+wormsPE2 <- filterByMissingTimepoints(wormsPE, 
+                                      assayName = 'ratio', 
+                                      maxMissing = 2, 
+                                      strict = FALSE)
+
+barplotTimeCoverage(wormsPE2, assayName = 'ratio')
+
+```
+
+Because `strict` is set to `FALSE`, there are still some proteins that have been detected in less than 5 timepoints in one of the conditions. To visualize the overlap between conditions, the `overlapFeatures()` function can be used. This can be specially useful when more the experiment contains more than two conditions. Here the overlap of proteins is shown.
+
+```{r}
+
+overlapFeatures(wormsPE2@ProteinExperiment, 
+                assayName = 'ratio', 
+                maxMissing = 2)
+
+```
+
+In this case there are 68 proteins that have been measured in at least 5 out of 7 timepoints in both conditions. These would be proteins for which turnover models can be compared betwee conditions.
+
+Filtering by missing timepoints can also be done at peptide level if desired by changing `subsetMode` to `peptide`.
+
+## Other filters
+
+Other filters can be easily applied using the `subset` method. For example, proteins with a low amount of unique peptides can be filtered out.
+
+```{r, eval = FALSE}
+
+subsetProt(wormsPE, Unique.peptides > 2)
+
+```
+
+Also proteins that are known contaminants or identified using the reverse database.
+
+```{r, eval = FALSE}
+
+subsetProt(wormsPE, Potential.contaminant != '+')
+subsetProt(wormsPE, Reverse != '+')
+
+
+```
 
 # Ratio and fraction calculation
 
+To model protein turnover the isotope fractions at each timepoint are used. The isotope fraction can be calculated in many ways. A simple approach is to derive them from isotope ratios, which many raw mass spectrometry data analysis software report. If not, one can use the `calculateIsotopeRatio()` function, which will add a new assay named `ratio` to the object. In this example, the ratio of newly synthesized protein (heavy isotope) over old protein (light isotope) will be used.
 
+```{r, eval = FALSE}
 
-# Cell growth estimation
+## calculate the ratio of new istope over old isotope
+wormsPE <- calculateIsotopeRatio(x = wormsPE, 
+                                 assayNameA = 'int_heavy', 
+                                 assayNameB = 'int_light')
 
+```
+
+$$ratio = \frac{isotope_{A}}{isotope_{B}}$$
+
+And then the fraction can be calculated as follows:
+
+$$fraction_{A} = \frac{ratio}{1 + ratio}$$
+
+This can be easily done using the `calculateIsotopeFraction()` function, which adds a new assay named `fraction`. In this case the heavy isotope fraction is calculated, the light isotope fraction would just be 1-fraction<sub>A</sub>. 
+
+```{r, eval = TRUE}
+
+wormsPE <- calculateIsotopeFraction(wormsPE, ratioAssay = 'ratio')
+
+assaysProt(wormsPE)
+assaysPept(wormsPE)
+
+```
+
+Unfortunately, this approach might miss some values because of the mass spectrometry nature (bias towards high abundance). For example: if a protein has a very slow turnover rate, it might be that at the earliest timepoint, the new isotope signal was under the detection limit and a ratio could not be calculated. To also account for these proteins the `calculateIsotopeFraction` function has additional arguments to indicate which assays contain each isotope's expression data and which timepoints are considered "early" or "late". 
+
+```{r, eval = FALSE}
+
+wormsPE <- calculateIsotopeFraction(wormsPE, 
+                                    newIsoAssay = 'int_heavy',
+                                    oldIsoAssay = 'int_light',
+                                    earlyTimepoints = 1,
+                                    lateTimepoints = 7)
+
+```
 
 
 # Model protein turnover
 
+To estimate protein turnover rate the `modelTurnover()` function can be used. Parameter fitting is done using the `nls` function, or the `nlrob` function from `robustbase` for robust modelling. The `formula`, `start` and `...` arguments are passed into these functions. By default an exponential decay model is used, but it has been shown that some proteins do not follow such model @McShane2016.
+
+```{r}
+
+modelList <- modelTurnover(x = wormsPE, 
+                           assayName = 'fraction',
+                           formula = 'fraction ~ 1 - exp(-k*t)',
+                           start = list(k = 0.02),
+                           mode = 'protein')
+
+```
+
+## Output of `modelTurnover()`
+
+The output of `modelTurnover()` is a list with the main model metrics: 
+
+- `residuals`: a matrix of the same dimensions as `x` with the model residuals.
+- `stderror`: a matrix with the standard error of each model.
+- `param_values`: a matrix with the estimated parameter values of each model.
+- `param_pval`: a matrix with the p-value of each parameter of each model.
+- `param_tval`: a matrix with the t-statistic of each parameter of each model.
+- `param_stderror`: a matrix with the standard error of each parameter of each model.
+
+It is not rare that a model fails to converge, failed models have `NA` as their output metrics. 
+
+There are more options to tune `modelTurnover()`, such as: `robust`, to use robust modelling; `returnModel`, which will return the actual model objects instead of the metrics; `verbose`, to output a progress bar. For more information please refer to the manual.
+
+## Plots
+
+The output of `modelTurnover()` with `returnModel = TRUE` can be used as input in the following functions to plot either individual protein/peptides models or the overall experiment distributions.
+
+### Individual proteins
+
+```{r}
+
+modelList <- modelTurnover(x = wormsPE, 
+                           assayName = 'fraction',
+                           formula = 'fraction ~ 1 - exp(-k*t)',
+                           start = list(k = 0.02),
+                           mode = 'protein', 
+                           returnModel = TRUE)
+
+plotIndividualModel(modelList, num = 2)
+
+```
+
+### Distributions
+
+## Comparing models
+
+It might be that some proteins follow a specific turnover model, while other follow a different one. In that case, one can run `modelTurnover()` for each different model and then compare the models for each protein. One metric often used to compare models is the Akaike Information Criteria (AIC). It can be calculated using the `calculateAIC()` function. Afterwards the probability of each model relative to the rest can be calculated with the `compareAIC()` function.
+
+
+# Cell growth estimation
+
+During most pulsed-SILAC experiment cells will keep dividing. This means that protein synthesis will be greater than protein degradation. When comparing conditions in which cells divide at similar rates this effect might not be a problem. But if cell growth is different between conditions then steady-state protein turnover will be ofuscated by the difference in protein synthesis due to cell growth.
+
+This issue can be corrected by using a turnover model which takes cell growth into consideration. For example in exponential degradation (where t<sub>cc</sub> is the cell division average time):
+
+$$f(H) = 1 - e^{-(k + \frac{log 2}{t_{cc}})t}$$
+
+If this information is not available, the `estimateCellGrowth()` function can be used. This function will fit an exponential degradation model based on the `n` most stable proteins (proteins which are measured in all time points and have the slowest new isotope incorporation). 
+
+
+For the current dataset, cell division was not an issue since adult worms do no longer divide. To illustrate the effects of cell growth we will use data of mouse embryonic fibroblasts (MEFs) cultured in two medium conditions: with and without serum. MEFs that are cultured with serum will grow at a "normal" rate while MEFs cultured without serum will grow at a neglegible rate. This can be seen in the heavy fraction over time plot.
+
 
 # Isotope recycling estimation
 
+# Further analysis
+
+## Gene set/pathway enrichment analysis
+
+## Differential expression analysis
 
 # Session info
 
