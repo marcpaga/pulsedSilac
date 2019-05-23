@@ -229,7 +229,6 @@ setMethod('modelTurnover',
     outList[['weights']] <- weight_matrix
   }
 
-
   return(outList)
 })
 
@@ -434,7 +433,7 @@ setMethod('modelTurnover',
           wei <- matrix(modeldata[['weights']],
                         ncol = length(loopCols[[i]]),
                         nrow = nrow(fracs))
-          weight_matrix[which(rowData(x)[,proteinCol] == id), loopCols[[i]]] <- wei
+          weight_matrix[which(rowData(x)[, proteinCol] == id), loopCols[[i]]] <- wei
         }
 
       }
@@ -464,7 +463,6 @@ setMethod('modelTurnover',
     outList[['weights']] <- weight_matrix
   }
 
-  attributes(outList)[['loopCols']] <- loopCols
   return(outList)
 
 })
@@ -505,7 +503,23 @@ setMethod('modelTurnover',
                              replicateTimeCol = replicateTimeCol,
                              ...)
 
-  } else if (mode %in% c('grouped', 'peptide')) {
+  } else if (mode == 'peptide') {
+
+    outList <- modelTurnover(x = x@PeptideExperiment,
+                             assayName = assayName,
+                             formula = formula,
+                             start = start,
+                             robust = robust,
+                             mode = mode,
+                             verbose = verbose,
+                             returnModel = returnModel,
+                             conditionCol = conditionCol,
+                             timeCol = timeCol,
+                             replicateTimeCol = replicateTimeCol,
+                             proteinCol = proteinCol,
+                             ...)
+
+  } else if (mode == 'grouped') {
 
     outList <- modelTurnover(x = x@PeptideExperiment,
                              assayName = assayName,

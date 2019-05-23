@@ -33,6 +33,7 @@ Imports:
     SummarizedExperiment,
     ggplot2,
     stats,
-    utils
+    utils,
+    UpSetR
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr

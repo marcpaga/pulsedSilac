@@ -257,7 +257,7 @@ checkLinkerDf <- function(m){
 
 }
 
-## rbind two linker data frames
+## rbind two linker data frames -----------------------------
 
 #' @keywords internal
 rbindLinkerDf <- function(x, y) {

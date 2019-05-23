@@ -312,7 +312,7 @@ setMethod('merge', 'ProteomicsExperiment', function(x, y,
     new.linkerDf <- rbindLinkerDf(x = x@linkerDf,
                                   y = y@linkerDf)
   } else {
-    new.linkerDf <- NULL
+    new.linkerDf <- data.frame()
   }
 
   PE <- new(Class = 'ProteomicsExperiment',
