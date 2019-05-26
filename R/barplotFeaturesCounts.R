@@ -9,6 +9,8 @@ setGeneric('barplotFeaturesCounts', function(x, ...){
 #' @description How many proteins/peptides are detected in each sample. Anything
 #' else than NA is considered detected.
 #'
+#' @param x A \code{ProteinExperiment}, \code{PeptideExperiment} or a 
+#' \code{ProteomicsExperiment} object.
 #' @return A barplot or a \code{data.frame}.
 #' @export
 #' @import ggplot2
