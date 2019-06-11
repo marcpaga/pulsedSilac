@@ -525,7 +525,8 @@ modelList <- modelTurnover(x = wormsPE,
                            assayName = 'fraction',
                            formula = 'fraction ~ 1 - exp(-k*t)',
                            start = list(k = 0.02),
-                           mode = 'protein')
+                           mode = 'protein',
+                           returnModel = TRUE)
 
 ```
 
@@ -559,7 +560,9 @@ modelList <- modelTurnover(x = wormsPE,
                            mode = 'protein', 
                            returnModel = TRUE)
 
-plotIndividualModel(modelList, num = 2)
+plotIndividualModel(x = wormsPE, 
+                    modelList = modelList, 
+                    num = 2)
 
 ```
 
