@@ -549,7 +549,9 @@ There are more options to tune `modelTurnover()`, such as: `robust`, to use robu
 
 The output of `modelTurnover()` with `returnModel = TRUE` can be used as input in the following functions to plot either individual protein/peptides models or the overall experiment distributions.
 
-### Individual proteins
+### Individual models
+
+To plot individual models the `plotIndividualModel()` method can be used. As input it requires the object that was used in the `modelTurnover()` call, it cam be a `ProteinExperiment`, `PeptideExperiment` or a `ProteomicsExperiment` object; it also requires the output from the `modelTurnover()` call and a number indicating which model should be plotted.
 
 ```{r}
 
@@ -558,6 +560,23 @@ modelList <- modelTurnover(x = wormsPE,
                            formula = 'fraction ~ 1 - exp(-k*t)',
                            start = list(k = 0.02),
                            mode = 'protein', 
+                           returnModel = TRUE)
+
+plotIndividualModel(x = wormsPE, 
+                    modelList = modelList, 
+                    num = 2)
+
+```
+
+The plot shows the actual values as dots and the fitted model as a curve. If the models are based on grouped peptide data then the values of each peptide are plotted as dots. Here is an example.
+
+```{r}
+
+modelList <- modelTurnover(x = wormsPE, 
+                           assayName = 'fraction',
+                           formula = 'fraction ~ 1 - exp(-k*t)',
+                           start = list(k = 0.02),
+                           mode = 'grouped', 
                            returnModel = TRUE)
 
 plotIndividualModel(x = wormsPE, 
