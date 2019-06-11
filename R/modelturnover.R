@@ -48,6 +48,7 @@ setMethod('modelTurnover',
                    formula = 'fraction ~ 1-exp(-k*t)',
                    start = list(k = 0.02),
                    robust = FALSE,
+                   mode = 'protein',
                    verbose = FALSE,
                    returnModel = FALSE,
                    conditionCol,
@@ -215,6 +216,8 @@ setMethod('modelTurnover',
     attributes(modelList)[['loopCols']] <- loopCols
     attributes(modelList)[['time']] <- timeAttr
     attributes(modelList)[['cond']] <- condAttr
+    attributes(modelList)[['assayName']] <- assayName
+    attributes(modelList)[['mode']] <- mode
     return(modelList)
   }
 
@@ -449,6 +452,8 @@ setMethod('modelTurnover',
     attributes(modelList)[['time']] <- timeAttr
     attributes(modelList)[['cond']] <- condAttr
     attributes(modelList)[['prot']] <- protAttr
+    attributes(modelList)[['assayName']] <- assayName
+    attributes(modelList)[['mode']] <- mode
     return(modelList)
   }
 
