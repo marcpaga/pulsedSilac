@@ -11,11 +11,12 @@ setGeneric('plotIndividualModel', function(x, ...){
 #'
 #' @param x A \code{ProteinExperiment}, \code{PeptideExperiment} or
 #' \code{ProteomicsExperiment} object.
-#' @param modelList A list containing all the model objects, the output of
-#' \link{\code{modelTurnover}} with returnModel as TRUE.
+#' @param modelList A list containing all the model objects, this should be the
+#' output of \link{\code{modelTurnover}} with returnModel as TRUE.
 #' @param num The feature number to be plotted.
 #' @param return A \code{character} indicating whether to return a plot ('plot')
 #' or a \code{data.frame} ('data.frame'); (default = 'plot').
+#'
 #' @return A scatter plot with a fitted line or a \code{data.frame}.
 #' @export
 #' @import ggplot2
