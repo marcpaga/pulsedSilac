@@ -21,7 +21,8 @@ Suggests:
     rmarkdown,
     UpSetR,
     gridExtra,
-    ggplot2
+    ggplot2,
+    ggridges
 Imports: 
     robustbase,
     methods,
@@ -32,6 +33,7 @@ Imports:
     limma,
     SummarizedExperiment,
     ggplot2,
+    ggridges,
     stats,
     utils,
     UpSetR
