@@ -107,7 +107,7 @@ setMethod('modelTurnover',
   ## conditionNames
   condAttr <- loopList[[2]]
   ## time
-  timeAttr  <- colData(x)[,timeCol]
+  timeAttr  <- colData(x)[, timeCol]
 
   ## if models are returned, then we need a list of lists
   ## else then we need lists and matrices
@@ -121,18 +121,30 @@ setMethod('modelTurnover',
                               ncol = length(loopCols))
     ## there will be a value per condition and parameter, therefore they
     ## are multiplicative
-    param_values <- matrix(data = NA,
-                           nrow = nrow(x),
-                           ncol = length(loopCols)*length(start))
-    param_stderror <- matrix(data = NA,
-                             nrow = nrow(x),
-                             ncol = length(loopCols)*length(start))
-    param_tval <- matrix(data = NA,
-                         nrow = nrow(x),
-                         ncol = length(loopCols)*length(start))
-    param_pval <- matrix(data = NA,
-                         nrow = nrow(x),
-                         ncol = length(loopCols)*length(start))
+    param_values <- list()
+    param_stderror <- list()
+    param_tval <- list()
+    param_pval <- list()
+    for (i in seq_len(length(start))) {
+      param_values[[i]] <- matrix(data = NA,
+                                  nrow = nrow(x),
+                                  ncol = length(loopCols))
+      param_stderror[[i]] <- matrix(data = NA,
+                                    nrow = nrow(x),
+                                    ncol = length(loopCols))
+      param_tval[[i]] <- matrix(data = NA,
+                                nrow = nrow(x),
+                                ncol = length(loopCols))
+      param_pval[[i]] <- matrix(data = NA,
+                                nrow = nrow(x),
+                                ncol = length(loopCols))
+    }
+    names(param_values) <- names(start)
+    names(param_stderror) <- names(start)
+    names(param_tval) <- names(start)
+    names(param_pval) <- names(start)
+
+
     ## weights are only with robust modelling
     if (robust) {
       weight_matrix <- matrix(data = NA, nrow = nrow(x), ncol = ncol(x))
@@ -189,16 +201,15 @@ setMethod('modelTurnover',
           next
         }
 
-        chunk <- function(x,n) split(x, factor(sort(rank(x)%%n)))
-
         residual_matrix[j, loopCols[[i]]] <- modeldata[['residuals']]
         stderror_matrix[j, i] <- modeldata[['stderror']]
 
-        chunks <- chunk(seq_len(ncol(param_values)), length(loopCols))
-        param_values[j, chunks[[i]]] <- modeldata[['params.vals']]
-        param_tval[j, chunks[[i]]] <- modeldata[['params.tval']]
-        param_pval[j, chunks[[i]]] <- modeldata[['params.pval']]
-        param_stderror[j, chunks[[i]]] <- modeldata[['params.stderror']]
+        for (param in seq_len(length(start))) {
+          param_values[[param]][j, i] <- modeldata[['params.vals']][param]
+          param_tval[[param]][j, i] <- modeldata[['params.tval']][param]
+          param_pval[[param]][j, i] <- modeldata[['params.pval']][param]
+          param_stderror[[param]][j, i] <- modeldata[['params.stderror']][param]
+        }
 
         if (robust) {
           weight_matrix[j, loopCols[[i]]] <- modeldata[['weights']]
@@ -231,6 +242,13 @@ setMethod('modelTurnover',
   if (robust) {
     outList[['weights']] <- weight_matrix
   }
+
+  attributes(outList)[['loopCols']] <- loopCols
+  attributes(outList)[['time']] <- timeAttr
+  attributes(outList)[['cond']] <- condAttr
+  attributes(outList)[['assayName']] <- assayName
+  attributes(outList)[['mode']] <- mode
+
 
   return(outList)
 })
@@ -321,7 +339,6 @@ setMethod('modelTurnover',
   ## this requires the proteinCol metaoption
   proteinCol <- giveMetaoption(x, 'proteinCol')
   proteinIds <- unique(rowData(x)[, proteinCol])
-
   ## attributes for plotting
   loopCols <- loopList[[1]]
   ## conditionNames
@@ -345,18 +362,29 @@ setMethod('modelTurnover',
                               ncol = length(loopCols))
     ## there will be a value per condition and parameter, therefore they
     ## are multiplicative
-    param_values <- matrix(data = NA,
-                           nrow = length(proteinIds),
-                           ncol = length(loopCols)*length(start))
-    param_stderror <- matrix(data = NA,
-                             nrow = length(proteinIds),
-                             ncol = length(loopCols)*length(start))
-    param_tval <- matrix(data = NA,
-                         nrow = length(proteinIds),
-                         ncol = length(loopCols)*length(start))
-    param_pval <- matrix(data = NA,
-                         nrow = length(proteinIds),
-                         ncol = length(loopCols)*length(start))
+    param_values <- list()
+    param_stderror <- list()
+    param_tval <- list()
+    param_pval <- list()
+    for (i in seq_len(length(start))) {
+      param_values[[i]] <- matrix(data = NA,
+                                  nrow = length(proteinIds),
+                                  ncol = length(loopCols))
+      param_stderror[[i]] <- matrix(data = NA,
+                                    nrow = length(proteinIds),
+                                    ncol = length(loopCols))
+      param_tval[[i]] <- matrix(data = NA,
+                                nrow = length(proteinIds),
+                                ncol = length(loopCols))
+      param_pval[[i]] <- matrix(data = NA,
+                                nrow = length(proteinIds),
+                                ncol = length(loopCols))
+    }
+    names(param_values) <- names(start)
+    names(param_stderror) <- names(start)
+    names(param_tval) <- names(start)
+    names(param_pval) <- names(start)
+
     ## weights are only with robust modelling
     if (robust) {
       weight_matrix <- matrix(data = NA, nrow = nrow(x), ncol = ncol(x))
@@ -417,8 +445,6 @@ setMethod('modelTurnover',
           next
         }
 
-        chunk <- function(x,n) split(x, factor(sort(rank(x)%%n)))
-
         res <- matrix(modeldata[['residuals']],
                       ncol = length(loopCols[[i]]),
                       nrow = nrow(fracs))
@@ -426,11 +452,12 @@ setMethod('modelTurnover',
         residual_matrix[which(rowData(x)[,proteinCol] == id), loopCols[[i]]] <- res
         stderror_matrix[j, i] <- modeldata[['stderror']]
 
-        chunks <- chunk(seq_len(ncol(param_values)), length(loopCols))
-        param_values[j, chunks[[i]]] <- modeldata[['params.vals']]
-        param_tval[j, chunks[[i]]] <- modeldata[['params.tval']]
-        param_pval[j, chunks[[i]]] <- modeldata[['params.pval']]
-        param_stderror[j, chunks[[i]]] <- modeldata[['params.stderror']]
+        for (param in seq_len(length(start))) {
+          param_values[[param]][j, i] <- modeldata[['params.vals']][param]
+          param_tval[[param]][j, i] <- modeldata[['params.tval']][param]
+          param_pval[[param]][j, i] <- modeldata[['params.pval']][param]
+          param_stderror[[param]][j, i] <- modeldata[['params.stderror']][param]
+        }
 
         if (robust) {
           wei <- matrix(modeldata[['weights']],
@@ -467,6 +494,13 @@ setMethod('modelTurnover',
   if (robust) {
     outList[['weights']] <- weight_matrix
   }
+
+  attributes(outList)[['loopCols']] <- loopCols
+  attributes(outList)[['time']] <- timeAttr
+  attributes(outList)[['cond']] <- condAttr
+  attributes(outList)[['prot']] <- protAttr
+  attributes(outList)[['assayName']] <- assayName
+  attributes(outList)[['mode']] <- mode
 
   return(outList)
 
