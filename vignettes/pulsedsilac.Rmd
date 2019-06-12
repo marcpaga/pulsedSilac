@@ -572,6 +572,8 @@ The plot shows the actual values as dots and the fitted model as a curve. If the
 
 ```{r}
 
+## to indicate which column of rowDataPept indicates the assigned protein
+metaoptions(wormsPE)[['proteinCol']] <- 'Protein.group.IDs'
 modelList <- modelTurnover(x = wormsPE, 
                            assayName = 'fraction',
                            formula = 'fraction ~ 1 - exp(-k*t)',
@@ -586,6 +588,70 @@ plotIndividualModel(x = wormsPE,
 ```
 
 ### Distributions
+
+It can be interesting also to plot the overall distributions of the model metrics per condition. This can show global changes between conditions and/or can be used for quality control. 
+Some metrics that might be interesting to check are the R<sup>2</sup> error of the models, the estimated parameters, the residuals and the weights (only for robust modelling).
+
+In this case, both the outputs of `modelTurnover()` with `returnModel = TRUE` or with `returnModel = FALSE` will work.
+
+#### R<sup>2</sup> error
+
+```{r, eval = TRUE, include = FALSE, warning = FALSE}
+modelList <- modelTurnover(x = wormsPE, 
+                           assayName = 'fraction',
+                           formula = 'fraction ~ 1 - exp(-k*t)',
+                           start = list(k = 0.02),
+                           mode = 'protein', 
+                           robust = TRUE,
+                           returnModel = FALSE)
+
+```
+
+```{r}
+
+plotDistribution(x = wormsPE, 
+                 modelList = modelList,
+                 value = 'error',
+                 plotType = 'density',
+                 return = 'plot')
+
+```
+
+#### Turnover rate
+
+```{r}
+
+plotDistribution(x = wormsPE, 
+                 modelList = modelList,
+                 value = 'parameter',
+                 plotType = 'density',
+                 return = 'plot')
+
+```
+
+#### Residuals
+
+```{r}
+
+plotDistribution(x = wormsPE, 
+                 modelList = modelList,
+                 value = 'residuals',
+                 plotType = 'density',
+                 return = 'plot')
+
+```
+
+#### Weights
+
+```{r}
+
+plotDistribution(x = wormsPE, 
+                 modelList = modelList,
+                 value = 'weights',
+                 plotType = 'density',
+                 return = 'plot')
+
+```
 
 ## Comparing models
 
