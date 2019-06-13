@@ -32,7 +32,7 @@ setMethod('plotIndividualModel',
                  "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 
   ## models related to that feature
-  miniList <- lapply(modelList, "[[", num)
+  miniList <- lapply(modelList[['models']], "[[", num)
 
   ## extract the metaoptions from the attributes of the list
   time <- attributes(modelList)[['time']]
@@ -111,7 +111,7 @@ setMethod('plotIndividualModel',
                  "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 
   ## models related to that feature
-  miniList <- lapply(modelList, "[[", num)
+  miniList <- lapply(modelList[['models']], "[[", num)
 
   ## extract the metaoptions from the attributes of the list
   time <- attributes(modelList)[['time']]
