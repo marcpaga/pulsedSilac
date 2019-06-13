@@ -61,11 +61,11 @@ test_that("modelturnover proteinExperiment works", {
                                     returnModel = TRUE))
 
   expect_is(ml, 'list')
-  expect_equal(length(ml), 2)
-  expect_equal(length(ml[[1]]), nrow(testPE))
-  expect_equal(length(ml[[2]]), nrow(testPE))
-  expect_is(ml[[1]][[2]], 'nls')
-  expect_equal(names(attributes(ml)), c('loopCols', 'time', 'cond', 'assayName', 'mode'))
+  expect_equal(length(ml), 7)
+  expect_equal(length(ml[['models']][[1]]), nrow(testPE))
+  expect_equal(length(ml[['models']][[2]]), nrow(testPE))
+  expect_is(ml[['models']][[1]][[2]], 'nls')
+  expect_equal(names(attributes(ml)), c('names', 'loopCols', 'time', 'cond', 'assayName', 'mode'))
 
   expect_silent(ml <- modelTurnover(x = testPE,
                                     assayName = 'fraction',
@@ -76,11 +76,11 @@ test_that("modelturnover proteinExperiment works", {
                                     returnModel = TRUE))
 
   expect_is(ml, 'list')
-  expect_equal(length(ml), 2)
-  expect_equal(length(ml[[1]]), nrow(testPE))
-  expect_equal(length(ml[[2]]), nrow(testPE))
-  expect_is(ml[[1]][[2]], 'nls')
-  expect_equal(names(attributes(ml)), c('loopCols', 'time', 'cond', 'assayName', 'mode'))
+  expect_equal(length(ml), 8)
+  expect_equal(length(ml[['models']][[1]]), nrow(testPE))
+  expect_equal(length(ml[['models']][[2]]), nrow(testPE))
+  expect_is(ml[['models']][[1]][[2]], 'nls')
+  expect_equal(names(attributes(ml)), c('names', 'loopCols', 'time', 'cond', 'assayName', 'mode'))
 })
 
 
@@ -150,11 +150,11 @@ test_that("modelturnover peptideExperiment works", {
                                     mode = 'peptide'))
 
   expect_is(ml, 'list')
-  expect_equal(length(ml), 2)
-  expect_equal(length(ml[[1]]), nrow(testPE))
-  expect_equal(length(ml[[2]]), nrow(testPE))
-  expect_is(ml[[1]][[6]], 'nls')
-  expect_equal(names(attributes(ml)), c('loopCols', 'time', 'cond', 'assayName', 'mode'))
+  expect_equal(length(ml), 7)
+  expect_equal(length(ml[['models']][[1]]), nrow(testPE))
+  expect_equal(length(ml[['models']][[2]]), nrow(testPE))
+  expect_is(ml[['models']][[1]][[6]], 'nls')
+  expect_equal(names(attributes(ml)), c('names','loopCols', 'time', 'cond', 'assayName', 'mode'))
 
   expect_warning(ml <- modelTurnover(x = testPE,
                                     assayName = 'fraction',
@@ -166,11 +166,11 @@ test_that("modelturnover peptideExperiment works", {
                                     mode = 'peptide'))
 
   expect_is(ml, 'list')
-  expect_equal(length(ml), 2)
-  expect_equal(length(ml[[1]]), nrow(testPE))
-  expect_equal(length(ml[[2]]), nrow(testPE))
-  expect_is(ml[[1]][[6]], 'nls')
-  expect_equal(names(attributes(ml)), c('loopCols', 'time', 'cond', 'assayName', 'mode'))
+  expect_equal(length(ml), 8)
+  expect_equal(length(ml[['models']][[1]]), nrow(testPE))
+  expect_equal(length(ml[['models']][[2]]), nrow(testPE))
+  expect_is(ml[['models']][[1]][[6]], 'nls')
+  expect_equal(names(attributes(ml)), c('names','loopCols', 'time', 'cond', 'assayName', 'mode'))
 
 
 
@@ -241,11 +241,11 @@ test_that("modelturnover peptideExperiment works", {
                                      mode = 'grouped'))
 
   expect_is(ml, 'list')
-  expect_equal(length(ml), 2)
-  expect_equal(length(ml[[1]]), 10)
-  expect_equal(length(ml[[2]]), 10)
-  expect_is(ml[[1]][[6]], 'nls')
-  expect_equal(names(attributes(ml)), c('loopCols', 'time', 'cond', 'prot', 'assayName', 'mode'))
+  expect_equal(length(ml), 7)
+  expect_equal(length(ml[['models']][[1]]), 10)
+  expect_equal(length(ml[['models']][[2]]), 10)
+  expect_is(ml[['models']][[1]][[2]], 'nls')
+  expect_equal(names(attributes(ml)), c('names','loopCols', 'time', 'cond', 'prot', 'assayName', 'mode'))
 
 
   expect_warning(ml <- modelTurnover(x = testPE,
@@ -258,11 +258,11 @@ test_that("modelturnover peptideExperiment works", {
                                      mode = 'grouped'))
 
   expect_is(ml, 'list')
-  expect_equal(length(ml), 2)
-  expect_equal(length(ml[[1]]), 10)
-  expect_equal(length(ml[[2]]), 10)
-  expect_is(ml[[1]][[6]], 'nls')
-  expect_equal(names(attributes(ml)), c('loopCols', 'time', 'cond', 'prot', 'assayName', 'mode'))
+  expect_equal(length(ml), 8)
+  expect_equal(length(ml[['models']][[1]]), 10)
+  expect_equal(length(ml[['models']][[2]]), 10)
+  expect_is(ml[['models']][[1]][[2]], 'nls')
+  expect_equal(names(attributes(ml)), c('names', 'loopCols', 'time', 'cond', 'prot', 'assayName', 'mode'))
 
 
 })
