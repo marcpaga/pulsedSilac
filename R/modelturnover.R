@@ -24,7 +24,7 @@ setGeneric('modelTurnover', function(x, ...) {
 #' @param verbose \code{logical} indicating if a progress bar should be
 #' printed.
 #' @param returnModel \code{logical} indicating if the model objects should
-#' be the output of the function.
+#' be returned also in the output.
 #' @param conditionCol \code{character} indicating which column of colData(x)
 #' describes the conditions.
 #' @param timeCol \code{character} indicating which column of colData(x)
@@ -113,43 +113,41 @@ setMethod('modelTurnover',
   ## else then we need lists and matrices
   if (returnModel) {
     modelList <- list()
-  } else {
+  }
 
-    residual_matrix <- matrix(data = NA, nrow = nrow(x), ncol = ncol(x))
-    stderror_matrix <- matrix(data = NA,
-                              nrow = nrow(x),
-                              ncol = length(loopCols))
-    ## there will be a value per condition and parameter, therefore they
-    ## are multiplicative
-    param_values <- list()
-    param_stderror <- list()
-    param_tval <- list()
-    param_pval <- list()
-    for (i in seq_len(length(start))) {
-      param_values[[i]] <- matrix(data = NA,
+  residual_matrix <- matrix(data = NA, nrow = nrow(x), ncol = ncol(x))
+  stderror_matrix <- matrix(data = NA,
+                            nrow = nrow(x),
+                            ncol = length(loopCols))
+  ## there will be a value per condition and parameter, therefore they
+  ## are multiplicative
+  param_values <- list()
+  param_stderror <- list()
+  param_tval <- list()
+  param_pval <- list()
+  for (i in seq_len(length(start))) {
+    param_values[[i]] <- matrix(data = NA,
+                                nrow = nrow(x),
+                                ncol = length(loopCols))
+    param_stderror[[i]] <- matrix(data = NA,
                                   nrow = nrow(x),
                                   ncol = length(loopCols))
-      param_stderror[[i]] <- matrix(data = NA,
-                                    nrow = nrow(x),
-                                    ncol = length(loopCols))
-      param_tval[[i]] <- matrix(data = NA,
-                                nrow = nrow(x),
-                                ncol = length(loopCols))
-      param_pval[[i]] <- matrix(data = NA,
-                                nrow = nrow(x),
-                                ncol = length(loopCols))
-    }
-    names(param_values) <- names(start)
-    names(param_stderror) <- names(start)
-    names(param_tval) <- names(start)
-    names(param_pval) <- names(start)
+    param_tval[[i]] <- matrix(data = NA,
+                              nrow = nrow(x),
+                              ncol = length(loopCols))
+    param_pval[[i]] <- matrix(data = NA,
+                              nrow = nrow(x),
+                              ncol = length(loopCols))
+  }
+  names(param_values) <- names(start)
+  names(param_stderror) <- names(start)
+  names(param_tval) <- names(start)
+  names(param_pval) <- names(start)
 
 
-    ## weights are only with robust modelling
-    if (robust) {
-      weight_matrix <- matrix(data = NA, nrow = nrow(x), ncol = ncol(x))
-    }
-
+  ## weights are only with robust modelling
+  if (robust) {
+    weight_matrix <- matrix(data = NA, nrow = nrow(x), ncol = ncol(x))
   }
 
 
@@ -192,29 +190,27 @@ setMethod('modelTurnover',
         if (is.null(modeldata)) {
           modelList[[i]][[j]] <- NA
         } else {
-          modelList[[i]][[j]] <- modeldata
+          modelList[[i]][[j]] <- modeldata[['model']]
         }
 
-      } else {
+      }
 
-        if (is.null(modeldata)) {
-          next
-        }
+      if (is.null(modeldata)) {
+        next
+      }
 
-        residual_matrix[j, loopCols[[i]]] <- modeldata[['residuals']]
-        stderror_matrix[j, i] <- modeldata[['stderror']]
+      residual_matrix[j, loopCols[[i]]] <- modeldata[['residuals']]
+      stderror_matrix[j, i] <- modeldata[['stderror']]
 
-        for (param in seq_len(length(start))) {
-          param_values[[param]][j, i] <- modeldata[['params.vals']][param]
-          param_tval[[param]][j, i] <- modeldata[['params.tval']][param]
-          param_pval[[param]][j, i] <- modeldata[['params.pval']][param]
-          param_stderror[[param]][j, i] <- modeldata[['params.stderror']][param]
-        }
+      for (param in seq_len(length(start))) {
+        param_values[[param]][j, i] <- modeldata[['params.vals']][param]
+        param_tval[[param]][j, i] <- modeldata[['params.tval']][param]
+        param_pval[[param]][j, i] <- modeldata[['params.pval']][param]
+        param_stderror[[param]][j, i] <- modeldata[['params.stderror']][param]
+      }
 
-        if (robust) {
-          weight_matrix[j, loopCols[[i]]] <- modeldata[['weights']]
-        }
-
+      if (robust) {
+        weight_matrix[j, loopCols[[i]]] <- modeldata[['weights']]
       }
 
     } ## end of row loop
@@ -223,14 +219,6 @@ setMethod('modelTurnover',
     ## rest in a matrix
   } ## end of loopCols loop
 
-  if (returnModel) {
-    attributes(modelList)[['loopCols']] <- loopCols
-    attributes(modelList)[['time']] <- timeAttr
-    attributes(modelList)[['cond']] <- condAttr
-    attributes(modelList)[['assayName']] <- assayName
-    attributes(modelList)[['mode']] <- mode
-    return(modelList)
-  }
 
   outList <- list(residuals = residual_matrix,
                   stderror = stderror_matrix,
@@ -243,12 +231,15 @@ setMethod('modelTurnover',
     outList[['weights']] <- weight_matrix
   }
 
+  if (returnModel) {
+    outList[['models']] <- modelList
+  }
+
   attributes(outList)[['loopCols']] <- loopCols
   attributes(outList)[['time']] <- timeAttr
   attributes(outList)[['cond']] <- condAttr
   attributes(outList)[['assayName']] <- assayName
   attributes(outList)[['mode']] <- mode
-
 
   return(outList)
 })
@@ -352,44 +343,42 @@ setMethod('modelTurnover',
   ## else then we need lists and matrices
   if (returnModel) {
     modelList <- list()
-  } else {
+  }
 
-    residual_matrix <- matrix(data = NA,
-                              nrow = nrow(x),
-                              ncol = ncol(x))
-    stderror_matrix <- matrix(data = NA,
-                              nrow = length(proteinIds),
-                              ncol = length(loopCols))
-    ## there will be a value per condition and parameter, therefore they
-    ## are multiplicative
-    param_values <- list()
-    param_stderror <- list()
-    param_tval <- list()
-    param_pval <- list()
-    for (i in seq_len(length(start))) {
-      param_values[[i]] <- matrix(data = NA,
+  residual_matrix <- matrix(data = NA,
+                            nrow = nrow(x),
+                            ncol = ncol(x))
+  stderror_matrix <- matrix(data = NA,
+                            nrow = length(proteinIds),
+                            ncol = length(loopCols))
+  ## there will be a value per condition and parameter, therefore they
+  ## are multiplicative
+  param_values <- list()
+  param_stderror <- list()
+  param_tval <- list()
+  param_pval <- list()
+  for (i in seq_len(length(start))) {
+    param_values[[i]] <- matrix(data = NA,
+                                nrow = length(proteinIds),
+                                ncol = length(loopCols))
+    param_stderror[[i]] <- matrix(data = NA,
                                   nrow = length(proteinIds),
                                   ncol = length(loopCols))
-      param_stderror[[i]] <- matrix(data = NA,
-                                    nrow = length(proteinIds),
-                                    ncol = length(loopCols))
-      param_tval[[i]] <- matrix(data = NA,
-                                nrow = length(proteinIds),
-                                ncol = length(loopCols))
-      param_pval[[i]] <- matrix(data = NA,
-                                nrow = length(proteinIds),
-                                ncol = length(loopCols))
-    }
-    names(param_values) <- names(start)
-    names(param_stderror) <- names(start)
-    names(param_tval) <- names(start)
-    names(param_pval) <- names(start)
+    param_tval[[i]] <- matrix(data = NA,
+                              nrow = length(proteinIds),
+                              ncol = length(loopCols))
+    param_pval[[i]] <- matrix(data = NA,
+                              nrow = length(proteinIds),
+                              ncol = length(loopCols))
+  }
+  names(param_values) <- names(start)
+  names(param_stderror) <- names(start)
+  names(param_tval) <- names(start)
+  names(param_pval) <- names(start)
 
-    ## weights are only with robust modelling
-    if (robust) {
-      weight_matrix <- matrix(data = NA, nrow = nrow(x), ncol = ncol(x))
-    }
-
+  ## weights are only with robust modelling
+  if (robust) {
+    weight_matrix <- matrix(data = NA, nrow = nrow(x), ncol = ncol(x))
   }
 
 
@@ -436,36 +425,34 @@ setMethod('modelTurnover',
         if (is.null(modeldata)) {
           modelList[[i]][[j]] <- NA
         } else {
-          modelList[[i]][[j]] <- modeldata
+          modelList[[i]][[j]] <- modeldata[['model']]
         }
 
-      } else {
+      }
 
-        if (is.null(modeldata)) {
-          next
-        }
+      if (is.null(modeldata)) {
+        next
+      }
 
-        res <- matrix(modeldata[['residuals']],
+      res <- matrix(modeldata[['residuals']],
+                    ncol = length(loopCols[[i]]),
+                    nrow = nrow(fracs))
+
+      residual_matrix[which(rowData(x)[,proteinCol] == id), loopCols[[i]]] <- res
+      stderror_matrix[j, i] <- modeldata[['stderror']]
+
+      for (param in seq_len(length(start))) {
+        param_values[[param]][j, i] <- modeldata[['params.vals']][param]
+        param_tval[[param]][j, i] <- modeldata[['params.tval']][param]
+        param_pval[[param]][j, i] <- modeldata[['params.pval']][param]
+        param_stderror[[param]][j, i] <- modeldata[['params.stderror']][param]
+      }
+
+      if (robust) {
+        wei <- matrix(modeldata[['weights']],
                       ncol = length(loopCols[[i]]),
                       nrow = nrow(fracs))
-
-        residual_matrix[which(rowData(x)[,proteinCol] == id), loopCols[[i]]] <- res
-        stderror_matrix[j, i] <- modeldata[['stderror']]
-
-        for (param in seq_len(length(start))) {
-          param_values[[param]][j, i] <- modeldata[['params.vals']][param]
-          param_tval[[param]][j, i] <- modeldata[['params.tval']][param]
-          param_pval[[param]][j, i] <- modeldata[['params.pval']][param]
-          param_stderror[[param]][j, i] <- modeldata[['params.stderror']][param]
-        }
-
-        if (robust) {
-          wei <- matrix(modeldata[['weights']],
-                        ncol = length(loopCols[[i]]),
-                        nrow = nrow(fracs))
-          weight_matrix[which(rowData(x)[, proteinCol] == id), loopCols[[i]]] <- wei
-        }
-
+        weight_matrix[which(rowData(x)[, proteinCol] == id), loopCols[[i]]] <- wei
       }
 
     } ## end of row loop
@@ -474,15 +461,6 @@ setMethod('modelTurnover',
     ## rest in a matrix
   } ## end of loopCols loop
 
-  if (returnModel) {
-    attributes(modelList)[['loopCols']] <- loopCols
-    attributes(modelList)[['time']] <- timeAttr
-    attributes(modelList)[['cond']] <- condAttr
-    attributes(modelList)[['prot']] <- protAttr
-    attributes(modelList)[['assayName']] <- assayName
-    attributes(modelList)[['mode']] <- mode
-    return(modelList)
-  }
 
   outList <- list(residuals = residual_matrix,
                   stderror = stderror_matrix,
@@ -493,6 +471,10 @@ setMethod('modelTurnover',
 
   if (robust) {
     outList[['weights']] <- weight_matrix
+  }
+
+  if (returnModel) {
+    outList[['models']] <- modelList
   }
 
   attributes(outList)[['loopCols']] <- loopCols
@@ -515,7 +497,7 @@ setMethod('modelTurnover',
                    formula = 'fraction ~ 1-exp(-k*t)',
                    start = list(k = 0.02),
                    robust = FALSE,
-                   mode = c('protein','grouped', 'peptide'),
+                   mode = c('protein', 'grouped', 'peptide'),
                    verbose = FALSE,
                    returnModel = FALSE,
                    conditionCol,
@@ -525,7 +507,7 @@ setMethod('modelTurnover',
                    ...){
 
   if (!mode %in% c('protein', 'grouped', 'peptide')) {
-    stop('Mode must be either "protein" ,"grouped" or "peptide".')
+    stop('Mode must be either "protein", "grouped" or "peptide".')
   }
 
   if (mode == 'protein') {
@@ -601,9 +583,6 @@ setMethod('modelTurnover',
     if (is(model, 'try-error')) {
       return(NULL)
     }
-    if (returnModel) {
-      return(model)
-    }
 
     residuals2 <- summary(model)[[2]]
     stderror <- summary(model)[[3]]
@@ -632,6 +611,10 @@ setMethod('modelTurnover',
                     params.tval = params.tval,
                     params.pval = params.pval)
 
+    if (returnModel) {
+      outList[['model']] <- model
+    }
+
     return(outList)
 
   } else {
@@ -643,9 +626,6 @@ setMethod('modelTurnover',
       return(NULL)
     }
 
-    if (returnModel) {
-      return(model)
-    }
 
     residuals2 <- summary(model)[[2]]
     stderror <- summary(model)[[3]]
@@ -668,6 +648,9 @@ setMethod('modelTurnover',
                     params.tval = params.tval,
                     params.pval = params.pval)
 
+    if (returnModel) {
+      outList[['model']] <- model
+    }
     return(outList)
   }
 }
