@@ -519,7 +519,7 @@ wormsPE <- calculateIsotopeFraction(wormsPE,
 
 To estimate protein turnover rate the `modelTurnover()` function can be used. Parameter fitting is done using the `nls` function, or the `nlrob` function from `robustbase` for robust modelling. The `formula`, `start` and `...` arguments are passed into these functions. By default an exponential decay model is used, but it has been shown that some proteins do not follow such model @McShane2016.
 
-```{r}
+```{r, warning = FALSE}
 
 modelList <- modelTurnover(x = wormsPE, 
                            assayName = 'fraction',
@@ -547,13 +547,15 @@ There are more options to tune `modelTurnover()`, such as: `robust`, to use robu
 
 ## Plots
 
-The output of `modelTurnover()` with `returnModel = TRUE` can be used as input in the following functions to plot either individual protein/peptides models or the overall experiment distributions.
+The output of `modelTurnover()` with `returnModel = TRUE` can be used as input in the following functions to plot either individual protein/peptides models or the overall experiment distributions. 
+
+All the following function return objects of class `ggplot`, therefore their theme, scale, labels, etc. can be customized after the function call. Furthermore, if the argument `return` is set to `data.frame`, the `data.frame` used in the plot function will be returned instead.
 
 ### Individual models
 
 To plot individual models the `plotIndividualModel()` method can be used. As input it requires the object that was used in the `modelTurnover()` call, it cam be a `ProteinExperiment`, `PeptideExperiment` or a `ProteomicsExperiment` object; it also requires the output from the `modelTurnover()` call and a number indicating which model should be plotted.
 
-```{r}
+```{r, warning = FALSE}
 
 modelList <- modelTurnover(x = wormsPE, 
                            assayName = 'fraction',
@@ -570,7 +572,7 @@ plotIndividualModel(x = wormsPE,
 
 The plot shows the actual values as dots and the fitted model as a curve. If the models are based on grouped peptide data then the values of each peptide are plotted as dots. Here is an example.
 
-```{r}
+```{r, warning = FALSE}
 
 ## to indicate which column of rowDataPept indicates the assigned protein
 metaoptions(wormsPE)[['proteinCol']] <- 'Protein.group.IDs'
@@ -596,6 +598,7 @@ In this case, both the outputs of `modelTurnover()` with `returnModel = TRUE` or
 
 #### R<sup>2</sup> error
 
+
 ```{r, eval = TRUE, include = FALSE, warning = FALSE}
 modelList <- modelTurnover(x = wormsPE, 
                            assayName = 'fraction',
@@ -607,7 +610,9 @@ modelList <- modelTurnover(x = wormsPE,
 
 ```
 
-```{r}
+This plot shows the distribution of the error of all the models for each condition.
+
+```{r, warning = FALSE}
 
 plotDistribution(x = wormsPE, 
                  modelList = modelList,
@@ -619,7 +624,9 @@ plotDistribution(x = wormsPE,
 
 #### Turnover rate
 
-```{r}
+This plot shows the distribution of the values for every fitted parameter. In this case there is only one: 'k', the turnover rate.
+
+```{r, warning = FALSE}
 
 plotDistribution(x = wormsPE, 
                  modelList = modelList,
@@ -631,7 +638,9 @@ plotDistribution(x = wormsPE,
 
 #### Residuals
 
-```{r}
+This plot shows the distribution of residuals at each timepoint for each condition.
+
+```{r, warning = FALSE}
 
 plotDistribution(x = wormsPE, 
                  modelList = modelList,
@@ -643,7 +652,9 @@ plotDistribution(x = wormsPE,
 
 #### Weights
 
-```{r}
+This plot shows the distribution of weights at each timepoint for each condition. This is only available if robust modelling is used.
+
+```{r, warning = FALSE}
 
 plotDistribution(x = wormsPE, 
                  modelList = modelList,
