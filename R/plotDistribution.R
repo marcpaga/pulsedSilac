@@ -23,7 +23,7 @@ setGeneric('plotDistribution', function(x, ...){
 #' @return A scatter plot with a fitted line or a \code{data.frame}.
 #' @export
 #' @import ggplot2
-#' @import ggridges
+#' @importFrom ggridges geom_density_ridges
 setMethod('plotDistribution',
           'ProteinExperiment',
           function(x,
@@ -32,12 +32,9 @@ setMethod('plotDistribution',
                    plotType = 'density',
                    return = 'plot') {
 
-  ## if the list contains the models itself then we have to extract the data
-  ## and reproduce the output that the returnModel = FALSE would be
-  if (is.null(names(modelList))) {
-    modelList <- parseModelsMetrics(modelList)
-  }
-
+  ## cb palette
+  cbPalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73",
+                 "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 
   ## to plot the different parameters
   if (value == 'parameter') {
@@ -70,7 +67,8 @@ setMethod('plotDistribution',
       p <- ggplot(data = plotDf) +
         geom_density_ridges(aes(x = value, y = condition, fill = condition)) +
         theme_classic() +
-        facet_wrap(~param)
+        facet_wrap(~param) +
+        scale_fill_manual(values = cbPalette)
 
     }
 
@@ -79,7 +77,8 @@ setMethod('plotDistribution',
       p <- ggplot(data = plotDf) +
         geom_boxplot(aes(x = condition, y = value, fill = condition)) +
         theme_classic()+
-        facet_wrap(~param)
+        facet_wrap(~param) +
+        scale_fill_manual(values = cbPalette)
 
     }
 
@@ -103,7 +102,8 @@ setMethod('plotDistribution',
 
       p <- ggplot(data = plotDf) +
         geom_density_ridges(aes(x = value, y = condition, fill = condition)) +
-        theme_classic()
+        theme_classic() +
+        scale_fill_manual(values = cbPalette)
 
     }
 
@@ -111,7 +111,8 @@ setMethod('plotDistribution',
 
       p <- ggplot(data = plotDf) +
         geom_boxplot(aes(x = condition, y = value, fill = condition)) +
-        theme_classic()
+        theme_classic() +
+        scale_fill_manual(values = cbPalette)
 
     }
 
@@ -157,7 +158,8 @@ setMethod('plotDistribution',
                                 y = time,
                                 fill = condition)) +
         theme_classic() +
-        facet_wrap(~condition)
+        facet_wrap(~condition) +
+        scale_fill_manual(values = cbPalette)
 
     }
 
@@ -167,8 +169,9 @@ setMethod('plotDistribution',
         geom_boxplot(aes(x = time,
                          y = value,
                          fill = condition)) +
-        theme_classic()+
-        facet_wrap(~condition)
+        theme_classic() +
+        facet_wrap(~condition) +
+        scale_fill_manual(values = cbPalette)
 
     }
 
@@ -227,3 +230,5 @@ setMethod('plotDistribution',
   }
 
 })
+
+
