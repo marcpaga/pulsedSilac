@@ -19,10 +19,7 @@ Suggests:
     testthat,
     knitr,
     rmarkdown,
-    UpSetR,
-    gridExtra,
-    ggplot2,
-    ggridges
+    gridExtra
 Imports: 
     robustbase,
     methods,
