@@ -103,6 +103,10 @@ plotDistribution <- function(modelList,
       return(plotDf)
     }
 
+    if (sum(plotDf$value == Inf, na.rm = TRUE) > 0) {
+      plotDf$value[plotDf$value == Inf] <- NA
+    }
+
     if (plotType == 'density') {
 
       p <- ggplot(data = plotDf) +
