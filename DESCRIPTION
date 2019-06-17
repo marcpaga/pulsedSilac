@@ -33,6 +33,7 @@ Imports:
     ggridges,
     stats,
     utils,
-    UpSetR
+    UpSetR,
+    cowplot
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr

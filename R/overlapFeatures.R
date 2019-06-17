@@ -8,17 +8,22 @@ setGeneric('overlapFeatures', function(x, ...){
 #' @description How many proteins/peptides are detected in each sample. Anything
 #' else than NA is considered detected.
 #'
-#' @param x
-#' @param assayName
-#' @param maxMissing
-#' @param conditionCol
-#' @param replicateTimeCol
-#' @param returnList
+#' @param x A \code{ProteinExperiment}, \code{PeptideExperiment} or a
+#' \code{ProteomicsExperiment} object.
+#' @param assayName Name of the assay to use in the plot.
+#' @param maxMissing A \code{numerical} indicating how many timepoints can a
+#' protein/peptide miss.
+#' @param conditionCol A \code{character}, which indicates the column name
+#' in colData(x) that defines the different experiment conditions.
+#' @param replicateTimeCol A \code{character}, which indicates the column name
+#' in colData(x) that defines the different time replicates.
+#' @param returnList A \code{logical} indicating if the \code{list}
+#' used for the plot should be returned instead.
 #' @param ... Further arguments passed to \code{upset()}.
 #' @return A barplot or a \code{data.frame}.
 #' @export
-#' @importFrom UpSetR fromList
-#' @importFrom UpSetR upset
+#' @importFrom UpSetR fromList upset
+#' @importFrom cowplot plot_grid
 setMethod('overlapFeatures',
           'ProteinExperiment',
           function(x,

@@ -38,6 +38,7 @@ setGeneric('modelTurnover', function(x, ...) {
 #' model objects.
 #' @importFrom robustbase nlrob
 #' @importFrom R.utils insert
+#' @importFrom utils setTxtProgressBar txtProgressBar
 #' @importFrom stats nls as.formula
 #' @import methods
 #' @export
