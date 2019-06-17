@@ -26,7 +26,7 @@
 calculateAIC <- function(modelList,
                          smallSampleSize = TRUE) {
 
-  if (!is.list(x)) {
+  if (!is.list(modelList)) {
     stop('"x" must be a list')
   }
 
