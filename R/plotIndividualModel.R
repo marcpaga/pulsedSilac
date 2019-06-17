@@ -29,7 +29,7 @@ setMethod('plotIndividualModel',
                    returnDataFrame = FALSE) {
 
   ## cb palette
-  cbPalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73",
+  cbPalette <- c("#E69F00", "#56B4E9", "#009E73",
                  "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 
   ## models related to that feature
@@ -108,7 +108,7 @@ setMethod('plotIndividualModel',
                    returnDataFrame = FALSE) {
 
   ## cb palette
-  cbPalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73",
+  cbPalette <- c("#E69F00", "#56B4E9", "#009E73",
                  "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 
   ## models related to that feature
