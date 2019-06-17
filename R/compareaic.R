@@ -36,6 +36,9 @@ compareAIC <- function(...) {
     outputList[[i]] <- probs
   }
 
+  attrList <- attributes(inputLists[[1]])
+  attrList <- attrList[-which(names(attrList) == 'names')]
+  attributes(outputList) <- attrList
   return(outputList)
 }
 
