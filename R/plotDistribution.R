@@ -1,39 +1,31 @@
-#' @export
-setGeneric('plotDistribution', function(x, ...){
-  standardGeneric('plotDistribution')
-})
-
-
 #' @title Distribution of modelling output
 #'
 #' @description Plot the distribution of the different model parameters and
 #' metrics for each condition.
 #'
-#' @param x A \code{ProteinExperiment}, \code{PeptideExperiment} or
-#' \code{ProteomicsExperiment} object.
 #' @param modelList A list containing all the model objects, this should be the
 #' output of \code{\link{modelTurnover}} with returnModel as TRUE.
 #' @param value A \code{character} indicating which metric to plot: 'parameter',
-#' 'error', 'residuals' or 'weights'. (default = 'parameter')
+#' 'error', 'residuals', 'weights', 'aicvalue' or 'aicprobabilities'.
+#' (default = 'parameter')
 #' @param plotType A \code{character} indicating which geometry to plot:
 #' 'boxplot' or 'density'. (default = 'density')
 #' @param returnDataFrame A \code{logical} indicating if the \code{data.frame}
 #' used for the plot should be returned instead.
 #'
-#' @return A scatter plot with a fitted line or a \code{data.frame}.
+#' @return A \code{ggplot} density or boxplot object, or the \code{data.frame}
+#' used to make the plot.
+#'
 #' @export
 #' @import ggplot2
 #' @importFrom ggridges geom_density_ridges
-setMethod('plotDistribution',
-          'ProteinExperiment',
-          function(x,
-                   modelList,
-                   value = 'parameter',
-                   plotType = 'density',
-                   returnDataFrame = FALSE) {
+plotDistribution <- function(modelList,
+                             value = 'parameter',
+                             plotType = 'density',
+                             returnDataFrame = FALSE) {
 
   ## cb palette
-  cbPalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73",
+  cbPalette <- c("#E69F00", "#56B4E9", "#009E73",
                  "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 
   ## to plot the different parameters
@@ -90,13 +82,22 @@ setMethod('plotDistribution',
   }
 
   ## to plot model errors
-  if (value == 'error') {
+  if (value %in% c('error', 'aicvalue')) {
 
-    cond_vec <- rep(unique(attributes(modelList)[['cond']]),
-                    each = nrow(modelList[['stderror']]))
-    plotDf <- data.frame(value = as.vector(modelList[['stderror']]),
-                         condition = cond_vec)
-    plotDf$condition <- as.factor(plotDf$condition)
+    if (value == 'error') {
+      cond_vec <- rep(unique(attributes(modelList)[['cond']]),
+                      each = nrow(modelList[['stderror']]))
+      plotDf <- data.frame(value = as.vector(modelList[['stderror']]),
+                           condition = cond_vec)
+      plotDf$condition <- as.factor(plotDf$condition)
+    } else if (value == 'aicvalue') {
+      cond_vec <- rep(unique(attributes(modelList)[['cond']]),
+                      each = nrow(modelList[['AIC']]))
+      plotDf <- data.frame(value = as.vector(modelList[['AIC']]),
+                           condition = cond_vec)
+      plotDf$condition <- as.factor(plotDf$condition)
+    }
+
 
     if (returnDataFrame) {
       return(plotDf)
@@ -184,51 +185,62 @@ setMethod('plotDistribution',
     }
   }
 
-  p
 
-})
+  if (value == 'aicprobabilities') {
 
-#' @export
-setMethod('plotDistribution',
-          'PeptideExperiment',
-          function(x,
-                   modelList,
-                   value = 'parameter',
-                   plotType = 'density',
-                   returnDataFrame = FALSE) {
+    n_models <- ncol(modelList[[1]])
+    loopCols <- attributes(modelList)[['loopCols']]
 
-  callNextMethod()
+    model_names <- paste0('model', seq_len(n_models))
 
-})
+    for (i in seq_len(length(loopCols))) {
+      if (i == 1) {
+        dfList <- list()
+      }
 
+      aic_matrix <- modelList[[i]]
+      plotDf <- data.frame(value = as.vector(aic_matrix),
+                           model = rep(model_names, each = nrow(aic_matrix)))
+      plotDf$condition <- unique(attributes(modelList)[['cond']])[i]
 
-#' @export
-setMethod('plotDistribution',
-          'ProteomicsExperiment',
-          function(x,
-                   modelList,
-                   value = 'parameter',
-                   plotType = 'density',
-                   returnDataFrame = FALSE) {
+      dfList[[i]] <- plotDf
 
-  if (attributes(modelList)[['mode']] == 'protein') {
+    }
 
-    plotDistribution(x = x@ProteinExperiment,
-                     modelList = modelList,
-                     value = value,
-                     plotType = plotType,
-                     returnDataFrame = returnDataFrame)
+    plotDf <- do.call('rbind', dfList)
+    plotDf$model <- as.factor(plotDf$model)
+    plotDf$condition <- as.factor(plotDf$condition)
 
-  } else {
+    if (returnDataFrame) {
+      return(plotDf)
+    }
 
-    plotDistribution(x = x@PeptideExperiment,
-                     modelList = modelList,
-                     value = value,
-                     plotType = plotType,
-                     returnDataFrame = returnDataFrame)
+    if (plotType == 'density') {
 
+      p <- ggplot(data = plotDf) +
+        geom_density_ridges(aes_string(x = 'value',
+                                       y = 'model',
+                                       fill = 'condition')) +
+        theme_classic() +
+        facet_wrap(~condition) +
+        scale_fill_manual(values = cbPalette)
+
+    }
+
+    if (plotType == 'boxplot') {
+
+      p <- ggplot(data = plotDf) +
+        geom_boxplot(aes_string(x = 'time',
+                                y = 'model',
+                                fill = 'condition')) +
+        theme_classic() +
+        facet_wrap(~condition) +
+        scale_fill_manual(values = cbPalette)
+
+    }
   }
 
-})
+  p
 
+}
 
