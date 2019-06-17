@@ -543,13 +543,13 @@ The output of `modelTurnover()` is a list with the main model metrics:
 
 It is not rare that a model fails to converge, failed models have `NA` as their output metrics. 
 
-There are more options to tune `modelTurnover()`, such as: `robust`, to use robust modelling; `returnModel`, which will return the actual model objects instead of the metrics; `verbose`, to output a progress bar. For more information please refer to the manual.
+There are more options to tune `modelTurnover()`, such as: `robust`, to use robust modelling; `returnModel`, which will return the actual model objects besides the metrics; `verbose`, to output a progress bar. For more information please refer to the manual.
 
 ## Plots
 
 The output of `modelTurnover()` with `returnModel = TRUE` can be used as input in the following functions to plot either individual protein/peptides models or the overall experiment distributions. 
 
-All the following function return objects of class `ggplot`, therefore their theme, scale, labels, etc. can be customized after the function call. Furthermore, if the argument `return` is set to `data.frame`, the `data.frame` used in the plot function will be returned instead.
+All the following function return objects of class `ggplot`, therefore their theme, scale, labels, etc. can be customized further customized. Moreover, if the argument `returnDataFrame` is set to `TRUE`, the `data.frame` used in the plot function will be returned instead.
 
 ### Individual models
 
@@ -604,9 +604,9 @@ modelList <- modelTurnover(x = wormsPE,
                            assayName = 'fraction',
                            formula = 'fraction ~ 1 - exp(-k*t)',
                            start = list(k = 0.02),
-                           mode = 'peptide', 
-                           robust = FALSE,
-                           returnModel = FALSE)
+                           mode = 'protein', 
+                           robust = TRUE,
+                           returnModel = TRUE)
 
 ```
 
@@ -663,6 +663,38 @@ plotDistribution(x = wormsPE,
 ## Comparing models
 
 It might be that some proteins follow a specific turnover model, while other follow a different one. In that case, one can run `modelTurnover()` for each different model and then compare the models for each protein. One metric often used to compare models is the Akaike Information Criteria (AIC). It can be calculated using the `calculateAIC()` function. Afterwards the probability of each model relative to the rest can be calculated with the `compareAIC()` function.
+
+### Calculating the AIC
+
+To calculate the AIC the output from `modelTurnover()` can be used. The formula used to calculate it is the following:
+
+$$AIC = 2k - 2ln(logLik)$$
+
+There is also a formula that applies a small sample size correction:
+
+$$AICc = AIC + \frac{2k(k + 1)}{n - k - 1}$$
+
+
+```{r}
+
+modelList <- calculateAIC(modelList, smallSampleSize = TRUE)
+
+```
+
+The output will be the same given list plus an additional matrix with the AIC values for each model and condition.
+
+```{r}
+names(modelList)
+
+```
+
+### Relative model probabilities
+
+After the AICs have been calculated, the probability of a model relative to the others can be calculated. This is done using the `compareAIC()` function. This probability can be calculated using the following formula:
+
+$$\prod AIC_{i} = \frac{exp(\frac{AIC_{min}-AIC_{i}}{2})}{\sum_{j}exp(\frac{AIC_{min}-AIC_{j}}{2})} $$
+
+
 
 
 # Cell growth estimation
