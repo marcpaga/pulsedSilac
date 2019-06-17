@@ -604,8 +604,8 @@ modelList <- modelTurnover(x = wormsPE,
                            assayName = 'fraction',
                            formula = 'fraction ~ 1 - exp(-k*t)',
                            start = list(k = 0.02),
-                           mode = 'protein', 
-                           robust = TRUE,
+                           mode = 'peptide', 
+                           robust = FALSE,
                            returnModel = FALSE)
 
 ```
@@ -617,8 +617,7 @@ This plot shows the distribution of the error of all the models for each conditi
 plotDistribution(x = wormsPE, 
                  modelList = modelList,
                  value = 'error',
-                 plotType = 'density',
-                 return = 'plot')
+                 plotType = 'density')
 
 ```
 
@@ -631,8 +630,7 @@ This plot shows the distribution of the values for every fitted parameter. In th
 plotDistribution(x = wormsPE, 
                  modelList = modelList,
                  value = 'parameter',
-                 plotType = 'density',
-                 return = 'plot')
+                 plotType = 'density')
 
 ```
 
@@ -645,8 +643,7 @@ This plot shows the distribution of residuals at each timepoint for each conditi
 plotDistribution(x = wormsPE, 
                  modelList = modelList,
                  value = 'residuals',
-                 plotType = 'density',
-                 return = 'plot')
+                 plotType = 'density')
 
 ```
 
@@ -659,8 +656,7 @@ This plot shows the distribution of weights at each timepoint for each condition
 plotDistribution(x = wormsPE, 
                  modelList = modelList,
                  value = 'weights',
-                 plotType = 'density',
-                 return = 'plot')
+                 plotType = 'density')
 
 ```
 
