@@ -17,6 +17,14 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
 ---
 
+# TODO
+
+- Optimize modelTurnover code
+- Plot assays
+- Compare plots
+- Add rownames and colnames support
+- Add support for one condition 
+
 # Introduction
 
 SILAC (Stable Isotope Label by Amino acids in Cell culture) is a method to differentially compare protein expression between samples. To measure protein turnover, the SILAC technique is applied over time by changing the medium and harvesting the cells at different time points. Each sample is then be analyzed by mass spectrometry. The isotope ratio at each time point can then be used to calculate the turnover rate of each measured protein. This package contains a set of functions to analyze pulsed SILAC quantitative data.
@@ -514,6 +522,28 @@ wormsPE <- calculateIsotopeFraction(wormsPE,
 
 ```
 
+# Plotting assays
+
+Before estimating protein turnover it might be wise to visualize the data that is going to be used. For that purpose there are two functions `plotAssay()` and `compareAssay()`. The first one will plot the distributions of the data for selected assay for each timepoint and condition. The latter will plot each protein/peptide value of a condition against the other for each timepoint.
+
+## `plotAssay()`
+
+```{r, warning = FALSE}
+
+plotAssay(wormsPE, assayName = 'fraction')
+
+```
+
+From this plot it can already be seen that the OW450 line has a much faster heavy label incorporation that the OW40 line. Moreover, it looks like the 13h timepoint has a technical deviation.
+
+## `compareAssay()`
+
+```{r}
+
+
+
+```
+
 
 # Model protein turnover
 
@@ -599,7 +629,7 @@ In this case, both the outputs of `modelTurnover()` with `returnModel = TRUE` or
 #### R<sup>2</sup> error
 
 
-```{r, eval = TRUE, include = FALSE, warning = FALSE}
+```{r, eval = TRUE, include = TRUE, warning = FALSE}
 modelList <- modelTurnover(x = wormsPE, 
                            assayName = 'fraction',
                            formula = 'fraction ~ 1 - exp(-k*t)',
@@ -612,7 +642,7 @@ modelList <- modelTurnover(x = wormsPE,
 
 This plot shows the distribution of the error of all the models for each condition.
 
-```{r, warning = FALSE}
+```{r, warning = FALSE, message = FALSE}
 
 plotDistribution(modelList = modelList,
                  value = 'error',
@@ -624,7 +654,7 @@ plotDistribution(modelList = modelList,
 
 This plot shows the distribution of the values for every fitted parameter. In this case there is only one: 'k', the turnover rate.
 
-```{r, warning = FALSE}
+```{r, warning = FALSE, message = FALSE}
 
 plotDistribution(modelList = modelList,
                  value = 'parameter',
@@ -636,7 +666,7 @@ plotDistribution(modelList = modelList,
 
 This plot shows the distribution of residuals at each timepoint for each condition.
 
-```{r, warning = FALSE}
+```{r, warning = FALSE, message = FALSE}
 
 plotDistribution(modelList = modelList,
                  value = 'residuals',
@@ -648,7 +678,7 @@ plotDistribution(modelList = modelList,
 
 This plot shows the distribution of weights at each timepoint for each condition. This is only available if robust modelling is used.
 
-```{r, warning = FALSE}
+```{r, warning = FALSE, message = FALSE}
 
 plotDistribution(modelList = modelList,
                  value = 'weights',
@@ -672,7 +702,7 @@ $$AICc = AIC + \frac{2k(k + 1)}{n - k - 1}$$
 
 Where *k* is the number of parameters and *n* is the number of observations.
 
-```{r, warning = FALSE}
+```{r, warning = FALSE, message = FALSE}
 
 modelList <- calculateAIC(modelList, smallSampleSize = TRUE)
 
@@ -685,7 +715,7 @@ names(modelList)
 
 ```
 
-```{r}
+```{r, warning = FALSE, message = FALSE}
 
 plotDistribution(modelList, value = 'aicvalue')
 
@@ -699,7 +729,7 @@ $$\prod AIC_{i} = \frac{exp(\frac{AIC_{min}-AIC_{i}}{2})}{\sum_{j}exp(\frac{AIC_
 
 The `compareAIC` function uses as input an indefinite number of modelLists that have been processed through the `calculateAIC` function, and it returns a list of matrices with the relative probability of each model (columns) for each protein/peptide (rows).
 
-```{r, warning = FALSE, include=FALSE}
+```{r, warning = FALSE, include=TRUE}
 modelList1 <- modelTurnover(x = wormsPE, 
                             assayName = 'fraction',
                             formula = 'fraction ~ 1 - exp(-k*t)',
@@ -721,7 +751,7 @@ modelList2 <- calculateAIC(modelList2, smallSampleSize = TRUE)
 
 Here is an small example in which two different models have been applied.
 
-```{r}
+```{r, warning = FALSE, message = FALSE}
 
 modelProbabilities <- compareAIC(modelList1, modelList2)
 
@@ -733,16 +763,29 @@ The plot shows that model1 is the preferred model of the two in both conditions.
 
 # Cell growth estimation
 
-During most pulsed-SILAC experiment cells will keep dividing. This means that protein synthesis will be greater than protein degradation. When comparing conditions in which cells divide at similar rates this effect might not be a problem. But if cell growth is different between conditions then steady-state protein turnover will be ofuscated by the difference in protein synthesis due to cell growth.
+During most pulsed-SILAC experiment cells will keep dividing. This means that protein synthesis will be greater than protein degradation. When comparing conditions in which cells divide at similar rates this effect can be neglected. But if cell growth is different between conditions then steady-state protein turnover will be ofuscated by the difference in protein synthesis due to cell growth.
 
-This issue can be corrected by using a turnover model which takes cell growth into consideration. For example in exponential degradation (where t<sub>cc</sub> is the cell division average time):
+This issue can be corrected by using a turnover model which takes cell growth into consideration. For example, by adding the cell growth rate into the model (where t<sub>cc</sub> is the cell division average time):
 
 $$f(H) = 1 - e^{-(k + \frac{log 2}{t_{cc}})t}$$
 
 If this information is not available, the `estimateCellGrowth()` function can be used. This function will fit an exponential degradation model based on the `n` most stable proteins (proteins which are measured in all time points and have the slowest new isotope incorporation). 
 
 
-For the current dataset, cell division was not an issue since adult worms do no longer divide. To illustrate the effects of cell growth we will use data of mouse embryonic fibroblasts (MEFs) cultured in two medium conditions: with and without serum. MEFs that are cultured with serum will grow at a "normal" rate while MEFs cultured without serum will grow at a neglegible rate. This can be seen in the heavy fraction over time plot.
+For the current dataset, cell division was not an issue since adult worms do no longer divide. To illustrate the effects of cell growth we will use data of mouse embryonic fibroblasts (MEFs) cultured in two medium conditions: with and without serum. MEFs that are cultured with serum will grow at a "normal" rate while MEFs cultured without serum will grow very slowly.
+
+```{r}
+
+
+
+```
+
+
+```{r}
+
+
+
+```
 
 
 # Isotope recycling estimation
