@@ -3,15 +3,27 @@ setGeneric('plotAssay', function(x, ...){
   standardGeneric('plotAssay')
 })
 
-#' @title
+#' @title Distribution of assay data per condition and timepoint.
 #'
-#' @description
+#' @description Plot the distribution of the data stored in
 #'
-#' @param x
-#' @param assayName
-#' @param conditionCol
-#' @param timeCol
-#' @param replicateTimeCol
+#' @param x A \code{ProteinExperiment}, \code{PeptideExperiment} or a
+#' \code{ProteomicsExperiment} object.
+#' @param assayName Name of the assay to use in the plot.
+#' @param plotType  A \code{character} indicating which geometry to plot:
+#' 'boxplot' or 'density'. (default = 'density')
+#' @param returnDataFrame A \code{logical} indicating if the \code{data.frame}
+#' used for the plot should be returned instead.
+#' @param mode A \code{character} indicating which level of data to use,
+#' either "protein" or "peptide". Only relevant for ProteomicsExperiment
+#' inputs.
+#' @param conditionCol A \code{character}, which indicates the column name
+#' in colData(x) that defines the different experiment conditions.
+#' @param timeCol A \code{character}, which indicates the column name
+#' in colData(x) that defines the different timepoints.
+#' @param replicateTimeCol A \code{character}, which indicates the column name
+#' in colData(x) that defines the different time replicates.
+#'
 #'
 #' @importFrom ggridges geom_density_ridges
 #' @import ggplot2
@@ -121,7 +133,8 @@ setMethod('plotAssay', 'ProteinExperiment',
                                      fill = 'condition')) +
       scale_fill_manual(values = cbPalette) +
       facet_wrap(~condition) +
-      labs(x = assayName)
+      labs(x = assayName) +
+      theme_classic()
 
   } else if (plotType == 'boxplot') {
 
@@ -130,10 +143,59 @@ setMethod('plotAssay', 'ProteinExperiment',
                               y = 'value',
                               fill = 'condition')) +
       scale_fill_manual(values = cbPalette) +
-      labs(y = assayName)
+      labs(y = assayName) +
+      theme_classic()
 
   }
 
   p
+
+})
+
+#' @export
+setMethod('plotAssay', 'PeptideExperiment',
+          function(x,
+                   assayName,
+                   plotType = 'boxplot',
+                   returnDataFrame = FALSE,
+                   conditionCol,
+                   timeCol,
+                   replicateTimeCol) {
+
+  callNextMethod()
+
+})
+
+#' @export
+setMethod('plotAssay', 'ProteomicsExperiment',
+          function(x,
+                   assayName,
+                   mode = 'protein',
+                   plotType = 'boxplot',
+                   returnDataFrame = FALSE,
+                   conditionCol,
+                   timeCol,
+                   replicateTimeCol) {
+
+  if (mode == 'protein') {
+
+    plotAssay(x = x@ProteinExperiment,
+              assayName = assayName,
+              plotType = plotType,
+              returnDataFrame = returnDataFrame,
+              conditionCol = conditionCol,
+              timeCol = timeCol,
+              replicateTimeCol = replicateTimeCol)
+
+  } else if (mode == 'peptide') {
+
+    plotAssay(x = x@PeptideExperiment,
+              assayName = assayName,
+              plotType = plotType,
+              returnDataFrame = returnDataFrame,
+              conditionCol = conditionCol,
+              timeCol = timeCol,
+              replicateTimeCol = replicateTimeCol)
+  }
 
 })
