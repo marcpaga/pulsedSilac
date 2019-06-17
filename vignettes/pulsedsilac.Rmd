@@ -614,8 +614,7 @@ This plot shows the distribution of the error of all the models for each conditi
 
 ```{r, warning = FALSE}
 
-plotDistribution(x = wormsPE, 
-                 modelList = modelList,
+plotDistribution(modelList = modelList,
                  value = 'error',
                  plotType = 'density')
 
@@ -627,8 +626,7 @@ This plot shows the distribution of the values for every fitted parameter. In th
 
 ```{r, warning = FALSE}
 
-plotDistribution(x = wormsPE, 
-                 modelList = modelList,
+plotDistribution(modelList = modelList,
                  value = 'parameter',
                  plotType = 'density')
 
@@ -640,8 +638,7 @@ This plot shows the distribution of residuals at each timepoint for each conditi
 
 ```{r, warning = FALSE}
 
-plotDistribution(x = wormsPE, 
-                 modelList = modelList,
+plotDistribution(modelList = modelList,
                  value = 'residuals',
                  plotType = 'density')
 
@@ -653,8 +650,7 @@ This plot shows the distribution of weights at each timepoint for each condition
 
 ```{r, warning = FALSE}
 
-plotDistribution(x = wormsPE, 
-                 modelList = modelList,
+plotDistribution(modelList = modelList,
                  value = 'weights',
                  plotType = 'density')
 
@@ -674,8 +670,9 @@ There is also a formula that applies a small sample size correction:
 
 $$AICc = AIC + \frac{2k(k + 1)}{n - k - 1}$$
 
+Where *k* is the number of parameters and *n* is the number of observations.
 
-```{r}
+```{r, warning = FALSE}
 
 modelList <- calculateAIC(modelList, smallSampleSize = TRUE)
 
@@ -688,14 +685,51 @@ names(modelList)
 
 ```
 
+```{r}
+
+plotDistribution(modelList, value = 'aicvalue')
+
+```
+
 ### Relative model probabilities
 
-After the AICs have been calculated, the probability of a model relative to the others can be calculated. This is done using the `compareAIC()` function. This probability can be calculated using the following formula:
+After the AICs have been calculated, the probability of a model relative to the others can be calculated. This is done using the `compareAIC` function. This probability can be calculated using the following formula:
 
 $$\prod AIC_{i} = \frac{exp(\frac{AIC_{min}-AIC_{i}}{2})}{\sum_{j}exp(\frac{AIC_{min}-AIC_{j}}{2})} $$
 
+The `compareAIC` function uses as input an indefinite number of modelLists that have been processed through the `calculateAIC` function, and it returns a list of matrices with the relative probability of each model (columns) for each protein/peptide (rows).
 
+```{r, warning = FALSE, include=FALSE}
+modelList1 <- modelTurnover(x = wormsPE, 
+                            assayName = 'fraction',
+                            formula = 'fraction ~ 1 - exp(-k*t)',
+                            start = list(k = 0.02),
+                            mode = 'protein', 
+                            robust = FALSE,
+                            returnModel = TRUE)
+modelList1 <- calculateAIC(modelList1, smallSampleSize = TRUE)
 
+modelList2 <- modelTurnover(x = wormsPE, 
+                            assayName = 'fraction',
+                            formula = 'fraction ~ 1 - exp(-k*t) + b',
+                            start = list(k = 0.02, b = 0),
+                            mode = 'protein', 
+                            robust = FALSE,
+                            returnModel = TRUE)
+modelList2 <- calculateAIC(modelList2, smallSampleSize = TRUE)
+```
+
+Here is an small example in which two different models have been applied.
+
+```{r}
+
+modelProbabilities <- compareAIC(modelList1, modelList2)
+
+plotDistribution(modelList = modelProbabilities, value = 'aicprobabilities', returnDataFrame = F)
+
+```
+
+The plot shows that model1 is the preferred model of the two in both conditions.
 
 # Cell growth estimation
 
