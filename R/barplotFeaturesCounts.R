@@ -9,8 +9,13 @@ setGeneric('barplotFeaturesCounts', function(x, ...){
 #' @description How many proteins/peptides are detected in each sample. Anything
 #' else than NA is considered detected.
 #'
-#' @param x A \code{ProteinExperiment}, \code{PeptideExperiment} or a 
+#' @param x A \code{ProteinExperiment}, \code{PeptideExperiment} or a
 #' \code{ProteomicsExperiment} object.
+#' @param assayName Name of the assay to use in the plot.
+#' @param returnDataFrame A \code{logical} indicating if the \code{data.frame}
+#' used for the plot should be returned instead.
+#' @param conditionCol A \code{character}, which indicates the column name
+#' in colData(x) that defines the different experiment conditions.
 #' @return A barplot or a \code{data.frame}.
 #' @export
 #' @import ggplot2
@@ -18,7 +23,7 @@ setMethod('barplotFeaturesCounts',
           'ProteinExperiment',
           function(x,
                    assayName,
-                   return = 'plot',
+                   returnDataFrame = FALSE,
                    conditionCol) {
 
   if (!assayName %in% names(assays(x))) {
@@ -58,16 +63,17 @@ setMethod('barplotFeaturesCounts',
     }
   )
 
+  plotDf$rownames <- factor(rownames(plotDf), levels = rownames(plotDf))
   ## early return without plot
-  if (return == 'data.frame') {
+  if (returnDataFrame) {
     return(plotDf)
   }
 
   ## plot with fill depending if we have the conditionCol column
   if (all(is.na(plotDf$conditionCol))) {
     ggplot(data = plotDf,
-           aes(x = factor(rownames(plotDf), levels = rownames(plotDf)),
-               y = counts)) +
+           aes_string(x = 'rownames',
+                      y = 'counts')) +
       geom_bar(stat = 'identity') +
       xlab('Sample') +
       ylab('Counts') +
@@ -79,8 +85,8 @@ setMethod('barplotFeaturesCounts',
     oldname <- colnames(plotDf)[colnames(plotDf) == colname]
 
     ggplot(data = plotDf,
-           aes(x = factor(rownames(plotDf), levels = rownames(plotDf)),
-               y = counts, fill = conditionCol)) +
+           aes_string(x = 'rownames',
+                      y = 'counts', fill = 'conditionCol')) +
       geom_bar(stat = 'identity') +
       xlab('Sample') +
       ylab('Counts') +
@@ -105,7 +111,7 @@ setMethod('barplotFeaturesCounts',
           'PeptideExperiment',
           function(x,
                    assayName,
-                   return = 'plot',
+                   returnDataFrame = FALSE,
                    conditionCol) {
 
   callNextMethod()
@@ -117,17 +123,17 @@ setMethod('barplotFeaturesCounts',
           'ProteomicsExperiment',
           function(x,
                    assayName,
-                   return = 'plot',
+                   returnDataFrame = FALSE,
                    conditionCol) {
 
   protPart <- barplotFeaturesCounts(x = x@ProteinExperiment,
                                     assayName = assayName,
-                                    return = 'data.frame',
+                                    return = TRUE,
                                     conditionCol = conditionCol)
 
   peptPart <- barplotFeaturesCounts(x = x@PeptideExperiment,
                                     assayName = assayName,
-                                    return = 'data.frame',
+                                    return = TRUE,
                                     conditionCol = conditionCol)
 
   ## join the data.frames
@@ -142,7 +148,7 @@ setMethod('barplotFeaturesCounts',
   oldname <- colnames(colData(x))[which(colnames(plotDf) == 'conditionCol')]
 
   ## early return with no plot
-  if (return == 'data.frame') {
+  if (returnDataFrame) {
     return(plotDf)
   }
 
@@ -152,8 +158,8 @@ setMethod('barplotFeaturesCounts',
 
   if (all(is.na(plotDf$conditionCol))) {
     ggplot(data = plotDf,
-           aes(x = sample,
-               y = counts)) +
+           aes_string(x = 'sample',
+                      y = 'counts')) +
       geom_bar(stat = 'identity') +
       xlab('Sample') +
       ylab('Counts') +
@@ -162,8 +168,8 @@ setMethod('barplotFeaturesCounts',
       facet_wrap(~mode, scales = 'free')
   } else {
     ggplot(data = plotDf,
-           aes(x = sample,
-               y = counts, fill = conditionCol)) +
+           aes_string(x = 'sample',
+                      y = 'counts', fill = 'conditionCol')) +
       geom_bar(stat = 'identity') +
       xlab('Sample') +
       ylab('Counts') +

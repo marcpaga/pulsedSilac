@@ -9,6 +9,16 @@ setGeneric('barplotTimeCoverage', function(x, ...){
 #' @description How many proteins/peptides are detected in each sample. Anything
 #' else than NA is considered detected.
 #'
+#' @param x A \code{ProteinExperiment}, \code{PeptideExperiment} or a
+#' \code{ProteomicsExperiment} object.
+#' @param assayName Name of the assay to use in the plot.
+#' @param returnDataFrame A \code{logical} indicating if the \code{data.frame}
+#' used for the plot should be returned instead.
+#' @param conditionCol A \code{character}, which indicates the column name
+#' in colData(x) that defines the different experiment conditions.
+#' @param replicateTimeCol A \code{character}, which indicates the column name
+#' in colData(x) that defines the different time replicates.
+#'
 #' @return A barplot or a \code{data.frame}.
 #' @export
 #' @import ggplot2
@@ -16,7 +26,7 @@ setMethod('barplotTimeCoverage',
           'ProteinExperiment',
           function(x,
                    assayName,
-                   return = 'plot',
+                   returnDataFrame = FALSE,
                    conditionCol,
                    replicateTimeCol) {
 
@@ -95,7 +105,7 @@ setMethod('barplotTimeCoverage',
 
 
   ## early return without plot
-  if (return == 'data.frame') {
+  if (returnDataFrame) {
     return(plotDf)
   }
 
@@ -107,8 +117,8 @@ setMethod('barplotTimeCoverage',
   ## plot with fill depending if we have the conditionCol column
   if (all(is.na(plotDf$group))) {
     ggplot(data = plotDf,
-           aes(x = counts,
-               y = Freq)) +
+           aes_string(x = 'counts',
+                      y = 'Freq')) +
       geom_bar(stat = 'identity') +
       xlab('Timepoints') +
       ylab('Counts') +
@@ -120,8 +130,8 @@ setMethod('barplotTimeCoverage',
     oldname <- colnames(plotDf)[colnames(plotDf) == colname]
 
     ggplot(data = plotDf,
-           aes(x = counts,
-               y = Freq, fill = group)) +
+           aes_string(x = 'counts',
+                     y = 'Freq', fill = 'group')) +
       geom_bar(stat = 'identity', position = position_dodge()) +
       xlab('Timepoints') +
       ylab('Counts') +
@@ -132,21 +142,12 @@ setMethod('barplotTimeCoverage',
 
 })
 
-
-
-#' @title Number of detected features per sample
-#'
-#' @description How many proteins/peptides are detected in each sample. Anything
-#' else than NA is considered detected.
-#'
-#' @return A barplot or a \code{data.frame}.
 #' @export
-#' @import ggplot2
 setMethod('barplotTimeCoverage',
           'PeptideExperiment',
           function(x,
                    assayName,
-                   return = 'plot',
+                   returnDataFrame = FALSE,
                    conditionCol,
                    replicateTimeCol) {
 
@@ -160,21 +161,21 @@ setMethod('barplotTimeCoverage',
           'ProteomicsExperiment',
           function(x,
                    assayName,
-                   return = 'plot',
+                   returnDataFrame = FALSE,
                    conditionCol,
                    replicateTimeCol) {
 
   protPart <- barplotTimeCoverage(x = x@ProteinExperiment,
-                                    assayName = assayName,
-                                    return = 'data.frame',
-                                    conditionCol = conditionCol,
-                                    replicateTimeCol = replicateTimeCol)
+                                  assayName = assayName,
+                                  returnDataFrame = TRUE,
+                                  conditionCol = conditionCol,
+                                  replicateTimeCol = replicateTimeCol)
 
   peptPart <- barplotTimeCoverage(x = x@PeptideExperiment,
-                                    assayName = assayName,
-                                    return = 'data.frame',
-                                    conditionCol = conditionCol,
-                                    replicateTimeCol = replicateTimeCol)
+                                  assayName = assayName,
+                                  returnDataFrame = TRUE,
+                                  conditionCol = conditionCol,
+                                  replicateTimeCol = replicateTimeCol)
 
 
   ## join the data.frames
@@ -188,7 +189,7 @@ setMethod('barplotTimeCoverage',
                           levels = sort(unique(as.numeric(as.character(plotDf$counts)))))
 
   ## early return with no plot
-  if (return == 'data.frame') {
+  if (returnDataFrame) {
     return(plotDf)
   }
 
@@ -198,8 +199,8 @@ setMethod('barplotTimeCoverage',
 
   if (all(is.na(plotDf$group))) {
     ggplot(data = plotDf,
-           aes(x = counts,
-               y = Freq)) +
+           aes_string(x = 'counts',
+                      y = 'Freq')) +
       geom_bar(stat = 'identity') +
       xlab('Timepoints') +
       ylab('Counts') +
@@ -208,8 +209,8 @@ setMethod('barplotTimeCoverage',
       facet_wrap(~mode, scales = 'free')
   } else {
     ggplot(data = plotDf,
-           aes(x = counts,
-               y = Freq, fill = group)) +
+           aes_string(x = 'counts',
+                      y = 'Freq', fill = 'group')) +
       geom_bar(stat = 'identity', position = position_dodge()) +
       xlab('Timepoints') +
       ylab('Counts') +

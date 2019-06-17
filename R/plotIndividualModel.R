@@ -12,20 +12,21 @@ setGeneric('plotIndividualModel', function(x, ...){
 #' @param x A \code{ProteinExperiment}, \code{PeptideExperiment} or
 #' \code{ProteomicsExperiment} object.
 #' @param modelList A list containing all the model objects, this should be the
-#' output of \link{\code{modelTurnover}} with returnModel as TRUE.
+#' output of \code{\link{modelTurnover}} with returnModel as TRUE.
 #' @param num The feature number to be plotted.
-#' @param return A \code{character} indicating whether to return a plot ('plot')
-#' or a \code{data.frame} ('data.frame'); (default = 'plot').
+#' @param returnDataFrame A \code{logical} indicating if the \code{data.frame}
+#' used for the plot should be returned instead.
 #'
 #' @return A scatter plot with a fitted line or a \code{data.frame}.
 #' @export
 #' @import ggplot2
+#' @importFrom stats predict
 setMethod('plotIndividualModel',
           'ProteinExperiment',
           function(x,
                    modelList,
                    num,
-                   return = 'plot') {
+                   returnDataFrame = FALSE) {
 
   ## cb palette
   cbPalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73",
@@ -79,19 +80,19 @@ setMethod('plotIndividualModel',
   }
 
   ## if the data frames are wanted then they are returned in a list
-  if (return == 'data.frame') {
+  if (returnDataFrame) {
     return(list(original_data = origPlotDf, fitted_data = fittedPlotDf))
   }
 
   ## the plot itself
   ggplot() +
-    geom_line(data = fittedPlotDf, aes(x = time,
-                                       y = fittedval,
-                                       group = condition,
-                                       color = condition)) +
-    geom_point(data = origPlotDf, aes(x = time,
-                                      y = originalval,
-                                      color = condition)) +
+    geom_line(data = fittedPlotDf, aes_string(x = 'time',
+                                              y = 'fittedval',
+                                              group = 'condition',
+                                              color = 'condition')) +
+    geom_point(data = origPlotDf, aes_string(x = 'time',
+                                             y = 'originalval',
+                                             color = 'condition')) +
     scale_color_manual(values = cbPalette) +
     theme_classic() +
     ylab(label = attributes(modelList)[['assayName']])
@@ -104,7 +105,7 @@ setMethod('plotIndividualModel',
           function(x,
                    modelList,
                    num,
-                   return = 'plot') {
+                   returnDataFrame = FALSE) {
 
   ## cb palette
   cbPalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73",
@@ -172,19 +173,19 @@ setMethod('plotIndividualModel',
   }
 
   ## if the data frames are wanted then they are returned in a list
-  if (return == 'data.frame') {
+  if (returnDataFrame) {
     return(list(original_data = origPlotDf, fitted_data = fittedPlotDf))
   }
 
   ## the plot itself
   ggplot() +
-    geom_line(data = fittedPlotDf, aes(x = time,
-                                       y = fittedval,
-                                       group = condition,
-                                       color = condition)) +
-    geom_point(data = origPlotDf, aes(x = time,
-                                      y = originalval,
-                                      color = condition)) +
+    geom_line(data = fittedPlotDf, aes_string(x = 'time',
+                                              y = 'fittedval',
+                                              group = 'condition',
+                                              color = 'condition')) +
+    geom_point(data = origPlotDf, aes_string(x = 'time',
+                                             y = 'originalval',
+                                             color = 'condition')) +
     scale_color_manual(values = cbPalette) +
     theme_classic() +
     ylab(label = attributes(modelList)[['assayName']])
@@ -198,28 +199,28 @@ setMethod('plotIndividualModel',
           function(x,
                    modelList,
                    num,
-                   return = 'plot') {
+                   returnDataFrame = FALSE) {
 
   if (attributes(modelList)[['mode']] == 'protein') {
 
     plotIndividualModel(x = x@ProteinExperiment,
                         modelList = modelList,
                         num = num,
-                        return = return)
+                        returnDataFrame = returnDataFrame)
 
   } else if (attributes(modelList)[['mode']] == 'peptide') {
 
     plotIndividualModel(x = x@PeptideExperiment,
                         modelList = modelList,
                         num = num,
-                        return = return)
+                        returnDataFrame = returnDataFrame)
 
   } else if (attributes(modelList)[['mode']] == 'grouped') {
 
     plotIndividualModel(x = x@PeptideExperiment,
                         modelList = modelList,
                         num = num,
-                        return = return)
+                        returnDataFrame = returnDataFrame)
 
   }
 

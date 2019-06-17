@@ -12,13 +12,13 @@ setGeneric('plotDistribution', function(x, ...){
 #' @param x A \code{ProteinExperiment}, \code{PeptideExperiment} or
 #' \code{ProteomicsExperiment} object.
 #' @param modelList A list containing all the model objects, this should be the
-#' output of \link{\code{modelTurnover}} with returnModel as TRUE.
+#' output of \code{\link{modelTurnover}} with returnModel as TRUE.
 #' @param value A \code{character} indicating which metric to plot: 'parameter',
 #' 'error', 'residuals' or 'weights'. (default = 'parameter')
 #' @param plotType A \code{character} indicating which geometry to plot:
 #' 'boxplot' or 'density'. (default = 'density')
-#' @param return A \code{character} indicating what to return a 'plot'
-#' or 'data.frame'. (default = 'plot')
+#' @param returnDataFrame A \code{logical} indicating if the \code{data.frame}
+#' used for the plot should be returned instead.
 #'
 #' @return A scatter plot with a fitted line or a \code{data.frame}.
 #' @export
@@ -30,7 +30,7 @@ setMethod('plotDistribution',
                    modelList,
                    value = 'parameter',
                    plotType = 'density',
-                   return = 'plot') {
+                   returnDataFrame = FALSE) {
 
   ## cb palette
   cbPalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73",
@@ -58,14 +58,16 @@ setMethod('plotDistribution',
     plotDf$condition <- as.factor(plotDf$condition)
     plotDf$param <- as.factor(plotDf$param)
 
-    if (return == 'data.frame') {
+    if (returnDataFrame) {
       return(plotDf)
     }
 
     if (plotType == 'density') {
 
       p <- ggplot(data = plotDf) +
-        geom_density_ridges(aes(x = value, y = condition, fill = condition)) +
+        geom_density_ridges(aes_string(x = 'value',
+                                       y = 'condition',
+                                       fill = 'condition')) +
         theme_classic() +
         facet_wrap(~param) +
         scale_fill_manual(values = cbPalette)
@@ -75,7 +77,9 @@ setMethod('plotDistribution',
     if (plotType == 'boxplot') {
 
       p <- ggplot(data = plotDf) +
-        geom_boxplot(aes(x = condition, y = value, fill = condition)) +
+        geom_boxplot(aes_string(x = 'condition',
+                                y = 'value',
+                                fill = 'condition')) +
         theme_classic()+
         facet_wrap(~param) +
         scale_fill_manual(values = cbPalette)
@@ -94,14 +98,16 @@ setMethod('plotDistribution',
                          condition = cond_vec)
     plotDf$condition <- as.factor(plotDf$condition)
 
-    if (return == 'data.frame') {
+    if (returnDataFrame) {
       return(plotDf)
     }
 
     if (plotType == 'density') {
 
       p <- ggplot(data = plotDf) +
-        geom_density_ridges(aes(x = value, y = condition, fill = condition)) +
+        geom_density_ridges(aes_string(x = 'value',
+                                       y = 'condition',
+                                       fill = 'condition')) +
         theme_classic() +
         scale_fill_manual(values = cbPalette)
 
@@ -110,7 +116,9 @@ setMethod('plotDistribution',
     if (plotType == 'boxplot') {
 
       p <- ggplot(data = plotDf) +
-        geom_boxplot(aes(x = condition, y = value, fill = condition)) +
+        geom_boxplot(aes_string(x = 'condition',
+                                y = 'value',
+                                fill = 'condition')) +
         theme_classic() +
         scale_fill_manual(values = cbPalette)
 
@@ -147,16 +155,16 @@ setMethod('plotDistribution',
     plotDf$time <- as.factor(plotDf$time)
     plotDf$condition <- as.factor(plotDf$condition)
 
-    if (return == 'data.frame') {
+    if (returnDataFrame) {
       return(plotDf)
     }
 
     if (plotType == 'density') {
 
       p <- ggplot(data = plotDf) +
-        geom_density_ridges(aes(x = value,
-                                y = time,
-                                fill = condition)) +
+        geom_density_ridges(aes_string(x = 'value',
+                                       y = 'time',
+                                       fill = 'condition')) +
         theme_classic() +
         facet_wrap(~condition) +
         scale_fill_manual(values = cbPalette)
@@ -166,15 +174,14 @@ setMethod('plotDistribution',
     if (plotType == 'boxplot') {
 
       p <- ggplot(data = plotDf) +
-        geom_boxplot(aes(x = time,
-                         y = value,
-                         fill = condition)) +
+        geom_boxplot(aes_string(x = 'time',
+                                y = 'value',
+                                fill = 'condition')) +
         theme_classic() +
         facet_wrap(~condition) +
         scale_fill_manual(values = cbPalette)
 
     }
-
   }
 
   p
@@ -188,8 +195,9 @@ setMethod('plotDistribution',
                    modelList,
                    value = 'parameter',
                    plotType = 'density',
-                   return = 'plot') {
+                   returnDataFrame = FALSE) {
 
+  callNextMethod()
 
 })
 
@@ -201,7 +209,7 @@ setMethod('plotDistribution',
                    modelList,
                    value = 'parameter',
                    plotType = 'density',
-                   return = 'plot') {
+                   returnDataFrame = FALSE) {
 
   if (attributes(modelList)[['mode']] == 'protein') {
 
@@ -209,23 +217,15 @@ setMethod('plotDistribution',
                      modelList = modelList,
                      value = value,
                      plotType = plotType,
-                     return = return)
+                     returnDataFrame = returnDataFrame)
 
-  } else if (attributes(modelList)[['mode']] == 'peptide') {
-
-    plotDistribution(x = x@PeptideExperiment,
-                     modelList = modelList,
-                     value = value,
-                     plotType = plotType,
-                     return = return)
-
-  } else if (attributes(modelList)[['mode']] == 'grouped') {
+  } else {
 
     plotDistribution(x = x@PeptideExperiment,
                      modelList = modelList,
                      value = value,
                      plotType = plotType,
-                     return = return)
+                     returnDataFrame = returnDataFrame)
 
   }
 
