@@ -538,11 +538,27 @@ From this plot it can already be seen that the OW450 line has a much faster heav
 
 ## `compareAssay()`
 
+For `compareAssay()` it is necessary to separate the object into the two conditions that should be compared. The grey dash line indicates the identity line.
+
 ```{r}
 
-
+compareAssay(x = wormsPE@ProteinExperiment[,1:7], 
+             y = wormsPE@ProteinExperiment[, 8:14], 
+             assayName = 'ratio')
 
 ```
+
+This plot shows that the OW450 has a faster incorporation of heavy label than the OW40 line.
+
+```{r}
+
+compareAssay(x = wormsPE@ProteinExperiment[,1:7], 
+             y = wormsPE@ProteinExperiment[, 8:14], 
+             assayName = 'int_total')
+
+```
+
+This plot shows that both the OW450 and OW40 have similar total protein expression over time.
 
 
 # Model protein turnover
