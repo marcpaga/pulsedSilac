@@ -753,7 +753,8 @@ modelList1 <- modelTurnover(x = wormsPE,
                             mode = 'protein', 
                             robust = FALSE,
                             returnModel = TRUE)
-modelList1 <- calculateAIC(modelList1, smallSampleSize = TRUE)
+modelList1 <- calculateAIC(modelList = modelList1, 
+                           smallSampleSize = TRUE)
 
 modelList2 <- modelTurnover(x = wormsPE, 
                             assayName = 'fraction',
@@ -762,7 +763,9 @@ modelList2 <- modelTurnover(x = wormsPE,
                             mode = 'protein', 
                             robust = FALSE,
                             returnModel = TRUE)
-modelList2 <- calculateAIC(modelList2, smallSampleSize = TRUE)
+
+modelList2 <- calculateAIC(modelList = modelList2, 
+                           smallSampleSize = TRUE)
 ```
 
 Here is an small example in which two different models have been applied.
@@ -771,11 +774,13 @@ Here is an small example in which two different models have been applied.
 
 modelProbabilities <- compareAIC(modelList1, modelList2)
 
-plotDistribution(modelList = modelProbabilities, value = 'aicprobabilities', returnDataFrame = F)
+plotDistribution(modelList = modelProbabilities, 
+                 value = 'aicprobabilities', 
+                 returnDataFrame = FALSE)
 
 ```
 
-The plot shows that model1 is the preferred model of the two in both conditions.
+The plot shows that model1 is the preferred model of the two in both conditions for most proteins, but there are some that have a better model with the `b` parameter.
 
 # Cell growth estimation
 
@@ -785,23 +790,31 @@ This issue can be corrected by using a turnover model which takes cell growth in
 
 $$f(H) = 1 - e^{-(k + \frac{log 2}{t_{cc}})t}$$
 
-If this information is not available, the `estimateCellGrowth()` function can be used. This function will fit an exponential degradation model based on the `n` most stable proteins (proteins which are measured in all time points and have the slowest new isotope incorporation). 
+If this information is not available, the `estimateCellGrowth()` function can be used. This function will fit an exponential degradation model based on the `n` most stable proteins (proteins which are measured in all time points and have the slowest new isotope incorporation). The rationale behind this approach is that the most stable proteins are very slowly degraded (for example structural proteins), but new proteins need to be synthesized for the daughter cells. Therefore, these proteins can be used to infer cell growth.
 
+## Example data
 
-For the current dataset, cell division was not an issue since adult worms do no longer divide. To illustrate the effects of cell growth we will use data of mouse embryonic fibroblasts (MEFs) cultured in two medium conditions: with and without serum. MEFs that are cultured with serum will grow at a "normal" rate while MEFs cultured without serum will grow very slowly.
-
-```{r}
-
-
-
-```
-
+For the current dataset, cell division was not an issue since adult worms do no longer divide. To illustrate the effects of cell growth we will use data of mouse embryonic fibroblasts (MEFs) cultured in two medium conditions: with and without serum. MEFs that are cultured with serum will grow at a "normal" rate while MEFs cultured without serum will grow at a significant slower rate.
 
 ```{r}
 
-
+mefPE
 
 ```
+
+## Most stable proteins
+
+```{r}
+
+stablePE <- mostStable(mefPE, assayName = 'fraction', n = 50)
+
+```
+
+## Estimating cell growth
+
+
+## Comparing turnover rates
+
 
 
 # Isotope recycling estimation
