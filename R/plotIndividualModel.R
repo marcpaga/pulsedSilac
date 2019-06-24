@@ -94,8 +94,8 @@ setMethod('plotIndividualModel',
                                              y = 'originalval',
                                              color = 'condition')) +
     scale_color_manual(values = cbPalette) +
-    theme_classic() +
-    ylab(label = attributes(modelList)[['assayName']])
+    ylab(label = attributes(modelList)[['assayName']]) +
+    theme_bw()
 
 })
 
@@ -187,8 +187,8 @@ setMethod('plotIndividualModel',
                                              y = 'originalval',
                                              color = 'condition')) +
     scale_color_manual(values = cbPalette) +
-    theme_classic() +
-    ylab(label = attributes(modelList)[['assayName']])
+    ylab(label = attributes(modelList)[['assayName']]) +
+    theme_bw()
 
 })
 

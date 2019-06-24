@@ -134,7 +134,7 @@ setMethod('plotAssay', 'ProteinExperiment',
       scale_fill_manual(values = cbPalette) +
       facet_wrap(~condition) +
       labs(x = assayName) +
-      theme_classic()
+      theme_bw()
 
   } else if (plotType == 'boxplot') {
 
@@ -144,7 +144,7 @@ setMethod('plotAssay', 'ProteinExperiment',
                               fill = 'condition')) +
       scale_fill_manual(values = cbPalette) +
       labs(y = assayName) +
-      theme_classic()
+      theme_bw()
 
   }
 

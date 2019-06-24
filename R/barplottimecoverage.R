@@ -123,7 +123,8 @@ setMethod('barplotTimeCoverage',
       xlab('Timepoints') +
       ylab('Counts') +
       theme(panel.border = element_rect(fill = NA)) +
-      scale_fill_manual(values = cbPalette)
+      scale_fill_manual(values = cbPalette) +
+      theme_bw()
   } else {
 
     colname <- giveMetaoption(x, 'conditionCol')
@@ -137,7 +138,8 @@ setMethod('barplotTimeCoverage',
       ylab('Counts') +
       theme(panel.border = element_rect(fill = NA)) +
       scale_fill_manual(values = cbPalette) +
-      labs(fill = oldname)
+      labs(fill = oldname) +
+      theme_bw()
   }
 
 })
@@ -206,7 +208,8 @@ setMethod('barplotTimeCoverage',
       ylab('Counts') +
       theme(panel.border = element_rect(fill = NA)) +
       scale_fill_manual(values = cbPalette) +
-      facet_wrap(~mode, scales = 'free')
+      facet_wrap(~mode, scales = 'free') +
+      theme_bw()
   } else {
     ggplot(data = plotDf,
            aes_string(x = 'counts',
@@ -216,7 +219,8 @@ setMethod('barplotTimeCoverage',
       ylab('Counts') +
       theme(panel.border = element_rect(fill = NA)) +
       scale_fill_manual(values = cbPalette) +
-      facet_wrap(~mode, scales = 'free')
+      facet_wrap(~mode, scales = 'free') +
+      theme_bw()
   }
 
 

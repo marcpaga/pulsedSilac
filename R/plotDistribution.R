@@ -60,9 +60,9 @@ plotDistribution <- function(modelList,
         geom_density_ridges(aes_string(x = 'value',
                                        y = 'condition',
                                        fill = 'condition')) +
-        theme_classic() +
         facet_wrap(~param) +
-        scale_fill_manual(values = cbPalette)
+        scale_fill_manual(values = cbPalette) +
+        theme_bw()
 
     }
 
@@ -72,9 +72,9 @@ plotDistribution <- function(modelList,
         geom_boxplot(aes_string(x = 'condition',
                                 y = 'value',
                                 fill = 'condition')) +
-        theme_classic()+
         facet_wrap(~param) +
-        scale_fill_manual(values = cbPalette)
+        scale_fill_manual(values = cbPalette) +
+        theme_bw()
 
     }
 
@@ -113,8 +113,8 @@ plotDistribution <- function(modelList,
         geom_density_ridges(aes_string(x = 'value',
                                        y = 'condition',
                                        fill = 'condition')) +
-        theme_classic() +
-        scale_fill_manual(values = cbPalette)
+        scale_fill_manual(values = cbPalette) +
+        theme_bw()
 
     }
 
@@ -124,8 +124,8 @@ plotDistribution <- function(modelList,
         geom_boxplot(aes_string(x = 'condition',
                                 y = 'value',
                                 fill = 'condition')) +
-        theme_classic() +
-        scale_fill_manual(values = cbPalette)
+        scale_fill_manual(values = cbPalette) +
+        theme_bw()
 
     }
 
@@ -225,9 +225,9 @@ plotDistribution <- function(modelList,
         geom_density_ridges(aes_string(x = 'value',
                                        y = 'model',
                                        fill = 'condition')) +
-        theme_classic() +
         facet_wrap(~condition) +
-        scale_fill_manual(values = cbPalette)
+        scale_fill_manual(values = cbPalette) +
+        theme_bw()
 
     }
 
@@ -237,9 +237,9 @@ plotDistribution <- function(modelList,
         geom_boxplot(aes_string(x = 'time',
                                 y = 'model',
                                 fill = 'condition')) +
-        theme_classic() +
         facet_wrap(~condition) +
-        scale_fill_manual(values = cbPalette)
+        scale_fill_manual(values = cbPalette) +
+        theme_bw()
 
     }
   }

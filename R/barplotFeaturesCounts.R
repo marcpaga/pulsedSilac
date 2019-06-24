@@ -78,7 +78,8 @@ setMethod('barplotFeaturesCounts',
       xlab('Sample') +
       ylab('Counts') +
       theme(panel.border = element_rect(fill = NA)) +
-      scale_fill_manual(values = cbPalette)
+      scale_fill_manual(values = cbPalette) +
+      theme_bw()
   } else {
 
     colname <- giveMetaoption(x, 'conditionCol')
@@ -92,7 +93,8 @@ setMethod('barplotFeaturesCounts',
       ylab('Counts') +
       theme(panel.border = element_rect(fill = NA)) +
       scale_fill_manual(values = cbPalette)+
-      labs(fill = oldname)
+      labs(fill = oldname) +
+      theme_bw()
   }
 
 })
@@ -165,7 +167,8 @@ setMethod('barplotFeaturesCounts',
       ylab('Counts') +
       theme(panel.border = element_rect(fill = NA)) +
       scale_fill_manual(values = cbPalette) +
-      facet_wrap(~mode, scales = 'free')
+      facet_wrap(~mode, scales = 'free') +
+      theme_bw()
   } else {
     ggplot(data = plotDf,
            aes_string(x = 'sample',
@@ -176,7 +179,8 @@ setMethod('barplotFeaturesCounts',
       theme(panel.border = element_rect(fill = NA)) +
       scale_fill_manual(values = cbPalette) +
       labs(fill = oldname) +
-      facet_wrap(~mode, scales = 'free')
+      facet_wrap(~mode, scales = 'free') +
+      theme_bw()
   }
 
 
