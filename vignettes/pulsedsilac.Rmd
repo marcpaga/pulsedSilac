@@ -796,26 +796,121 @@ If this information is not available, the `estimateCellGrowth()` function can be
 
 For the current dataset, cell division was not an issue since adult worms do no longer divide. To illustrate the effects of cell growth we will use data of mouse embryonic fibroblasts (MEFs) cultured in two medium conditions: with and without serum. MEFs that are cultured with serum will grow at a "normal" rate while MEFs cultured without serum will grow at a significant slower rate.
 
-```{r}
+```{r, warning = FALSE}
 
 mefPE
 
 ```
 
+This can be appreciated if the heavy label fraction is plotted over time for the two conditions.
+
+```{r, warning = FALSE}
+
+plotAssay(mefPE, assayName = 'fraction')
+
+```
+
 ## Most stable proteins
 
-```{r}
+To extract the most stable proteins the `mostStable()` function can be used. This function will rank the incorporation on new label accross time and conditions, and then select the top `n` proteins/peptides. 
+
+```{r, warning = FALSE}
 
 stablePE <- mostStable(mefPE, assayName = 'fraction', n = 50)
 
+stablePE
 ```
 
 ## Estimating cell growth
 
+The stable protein set can then be used to estimate the growth rate, for that the `modelTurnover` function can be used again since it follows the same principles. In the following example, the same exponential degradation model is used, but instead of the turnover rate the doubling time parameter is used.
+
+```{r, warning = FALSE}
+
+stableModels  <- modelTurnover(x = stablePE, 
+                               assayName = 'fraction',
+                               formula = 'fraction ~ 1 - exp(-(log(2)/tc)*t)',
+                               start = list(tc = 20),
+                               mode = 'protein', 
+                               robust = FALSE,
+                               returnModel = FALSE)
+
+plotDistribution(stableModels, value = 'parameter', plotType = 'boxplot')
+
+```
+
+Because there are 50 models, one for each protein, the doubling time needs to be summarized. This can be done by taking the mean for example.
+
+```{r, warning = FALSE}
+
+apply(stableModels$param_values$tc, 2, mean)
+
+```
+
+It can be seen that there is a notable difference between the doubling times between the two conditions. 
 
 ## Comparing turnover rates
 
+Next the turnover rates can be calculated using the doubling time correction model. Because condition has a different "model", these need to be run separately.
 
+```{r, warning = FALSE}
+
+modelsNoSerum <- modelTurnover(x = mefPE[,1:5], 
+                               assayName = 'fraction',
+                               formula = 'fraction ~ 1 - exp(-(0.0074 + k)*t)',
+                               start = list(k = 0.02),
+                               mode = 'protein', 
+                               robust = FALSE,
+                               returnModel = FALSE)
+
+modelsSerum <- modelTurnover(x = mefPE[,6:10], 
+                             assayName = 'fraction',
+                             formula = 'fraction ~ 1 - exp(-(0.0276 + k)*t)',
+                             start = list(k = 0.02),
+                             mode = 'protein', 
+                             robust = FALSE,
+                             returnModel = FALSE)
+
+modelsMef <- mergeModelsLists(modelsNoSerum, modelsSerum)
+
+```
+
+To compare to the models without correction the turnover is modelled without the doubling time correction.
+
+```{r, warning = FALSE}
+
+
+modelsNoCorrect <- modelTurnover(x = mefPE, 
+                               assayName = 'fraction',
+                               formula = 'fraction ~ 1 - exp(-(k)*t)',
+                               start = list(k = 0.02),
+                               mode = 'protein', 
+                               robust = FALSE,
+                               returnModel = FALSE)
+
+```
+
+Finally the distributions of the turnover rates can be plotted for each case.
+
+With doubling time correction:
+
+```{r, warning = FALSE}
+
+plotDistribution(modelList = modelsMef,
+                 value = 'parameter',
+                 plotType = 'density')
+
+```
+
+Without doubling time  correction:
+
+```{r, warning = FALSE}
+
+plotDistribution(modelList = modelsNoCorrect,
+                 value = 'parameter',
+                 plotType = 'density')
+
+```
 
 # Isotope recycling estimation
 
