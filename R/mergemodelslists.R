@@ -71,9 +71,15 @@ mergeModelsLists <- function(...) {
     if (is.matrix(outList[[n]])) {
       outList[[n]] <- do.call('cbind', lapply(inputList, '[[', n))
 
+    ## returnModel is TRUE
+    } else if (n == 'models') {
+
+      outList[[n]] <- lapply(inputList,
+                             FUN = function(x) unlist(x[[n]],
+                                                      recursive = FALSE))
+
     ## otherwise it is a paramater list and it has to be done per paramater
     } else {
-
       for (param in names(outList[[n]])) {
         m <- do.call('cbind', lapply(inputList, function(x) x[[n]][[param]]))
         outList[[n]][[param]] <- m
