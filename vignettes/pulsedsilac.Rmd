@@ -20,7 +20,6 @@ vignette: >
 # TODO
 
 - Optimize modelTurnover code
-- Plot assays
 - Compare plots
 - Add rownames and colnames support
 - Add support for one condition 
@@ -72,7 +71,6 @@ protExp <- ProteinExperiment(assays = assays_protein,
                              colData = colData, 
                              conditionCol = 'condition', 
                              timeCol = 'time')
-
 protExp
 ```
 
@@ -96,7 +94,6 @@ peptExp <- PeptideExperiment(assays = assays_peptide,
                              colData = colData, 
                              conditionCol = 'condition', 
                              timeCol = 'time')
-
 peptExp
 ```
 
@@ -105,37 +102,29 @@ peptExp
 The accessor functions are exactly the same as in a `SummarizedExperiment` object, these are mainly: `rowData()`, `colData()`, `assays()` and `metadata()`. To access the `metaoptions` slot the `metaoptions()` function can be used.
 
 ```{r}
-
 ## assays
 assays(protExp)
 assays(peptExp)
-
 ```
 
 ```{r}
-
 ## rowData
 rowData(protExp)
 rowData(peptExp)
-
 ```
 
 ```{r}
-
 ## colData
 colData(protExp)
 colData(peptExp)
-
 ```
 
 ```{r}
-
 ## metaoptions
 metaoptions(protExp)
 
 metaoptions(peptExp)[['proteinCol']] <- 'prot_id'
 metaoptions(peptExp)
-
 ```
 
 ### Subsetting and aggregation
@@ -143,7 +132,6 @@ metaoptions(peptExp)
 Similarly to the accessor function, most of the `SummarizedExperiment` operations, such as subsetting and aggregating, can be applied to the two classes. For subsetting these are mainly: `[`, `subset()`, `$`; and for aggregation these are mainly: `cbind`, `rbind` and `merge`. For a more detailed explanation please refer to the package manual. 
 
 ```{r}
-
 ## subsetting by rows and columns
 protExp[1, 1:2]
 peptExp[1, 1:2]
@@ -155,11 +143,9 @@ subset(peptExp, pept_id %in% c('a', 'b'))
 ## quick acces to colData
 protExp$sample
 peptExp$condition
-
 ```
 
 ```{r}
-
 ## combining by columns
 cbind(protExp[, 1], protExp[, 2:3])
 
@@ -168,7 +154,6 @@ rbind(peptExp[1:3, ], peptExp[4:5, ])
 
 ## combine rows and columns
 merge(peptExp[1:3, 1], peptExp[3:5, 2:3])
-
 ```
 
 
@@ -181,31 +166,25 @@ The `ProteomicsExperiment` object contains both a `ProteinExperiment` and a `Pep
 To construct a `ProteomicsExperiment` we need at least a `ProteinExperiment` object and a `PeptideExperiment` object.
 
 ```{r}
-
 ProteomicsExp <- ProteomicsExperiment(ProteinExperiment = protExp, 
                                       PeptideExperiment = peptExp)
-
 ProteomicsExp
-
 ```
 
 In this case, the levels are only aligned by columns. There is no information on which are the relationships between proteins and peptides. This information can be added in the `linkerDf` slot. Which contains a `data.frame` that indicates the relationships between the two levels features. One can be easily constructed with the `buildLinkerDf()` function.
 
 ```{r}
-
 ## list with the relationships
 protein_to_peptide <- list(A = c('a', 'b'), B = c('c'), C = c('d', 'e'))
-
+## function to build the data.frame
 linkerDf <- buildLinkerDf(protIDs = LETTERS[1:3], 
                           pepIDs  = letters[1:5], 
                           protToPep = protein_to_peptide)
-
 linkerDf
 
 ProteomicsExp <- ProteomicsExperiment(ProteinExperiment = protExp, 
                                       PeptideExperiment = peptExp, 
                                       linkerDf = linkerDf)
-
 ```
 
 ### Accessor functions
@@ -213,71 +192,55 @@ ProteomicsExp <- ProteomicsExperiment(ProteinExperiment = protExp,
 If the slot is general to the `ProteomicsExperiment` object then the same functions as in a `SummarizedExperiment` can be used.
 
 ```{r}
-
 ## colData
 colData(ProteomicsExp)
-
 ```
 
 
 ```{r}
-
 ## linkerDf
 linkerDf(ProteomicsExp)
-
 ```
 
 ```{r}
-
 ## metadata
 metadata(ProteomicsExp)
-
 ```
 
 
 ```{r}
-
 ## metaoptions
 metaoptions(ProteomicsExp)
-
 ```
 
 But for protein/peptide shared slots names, like `assays` and `rowData`, there are two options to access them. Using the `SummarizedExperiment` generic will return a named list with the two elements.
 
 ```{r}
-
 ## assays
 assays(ProteomicsExp)
-
 ```
 
 ```{r}
-
 ## rowData
 rowData(ProteomicsExp)
-
 ```
 
 To access specifically a slot of protein or peptide level one can use the same functions and just add `Prot` or `Pept` as suffixes.
 
 ```{r}
-
 ## assays of protein level
 assaysProt(ProteomicsExp)
 
 ## assays of peptide level
 assaysPept(ProteomicsExp)
-
 ```
 
 ```{r}
-
 ## rowData of protein level
 rowDataProt(ProteomicsExp)
 
 ## rowData of peptide level
 rowDataPept(ProteomicsExp)
-
 ```
 
 ### Subsetting and aggregation
@@ -294,7 +257,6 @@ Here are some examples of using the `[` in different situations.
 Subset at protein level without affecting the peptide level.
 
 ```{r}
-
 ## indicate which rowDat columns have unique ids for proteins and peptides
 metaoptions(ProteomicsExp)[['idColProt']] <- 'prot_id'
 metaoptions(ProteomicsExp)[['idColPept']] <- 'pept_id'
@@ -304,7 +266,6 @@ metaoptions(ProteomicsExp)[['subsetMode']] <- 'protein'
 metaoptions(ProteomicsExp)[['linkedSubset']] <- FALSE
 
 ProteomicsExp[1:2,]
-
 ```
 
 It can be seen that the protein level has two proteins while the peptide level kept all five peptides.
@@ -316,7 +277,6 @@ Subset at protein level and extending the subset to the peptide level.
 metaoptions(ProteomicsExp)[['linkedSubset']] <- TRUE
 
 ProteomicsExp[1:2,]
-
 ```
 
 In this case the protein level has two proteins and the peptide level has also been subset to the three peptides that are assigned to the two proteins in the `linkerDf`. 
@@ -329,7 +289,6 @@ metaoptions(ProteomicsExp)[['subsetMode']] <- 'peptide'
 metaoptions(ProteomicsExp)[['linkedSubset']] <- TRUE
 
 ProteomicsExp[1:2,]
-
 ```
 In this case, the first two peptides are selected, these belong to the first protein which is also selected.
 
@@ -337,43 +296,32 @@ Other subset operations can be done using `subsetProt()` and `subsetPep()`, whic
 
 
 ```{r}
-
 ## without linked Subset
 metaoptions(ProteomicsExp)[['linkedSubset']] <- FALSE
 subsetProt(ProteomicsExp, prot_id == 'B')
-
 ```
 
 ```{r}
-
 ## with linked Subset
 metaoptions(ProteomicsExp)[['linkedSubset']] <- TRUE
 subsetProt(ProteomicsExp, prot_id == 'B')
-
 ```
 
 Finally for aggregating `cbind`, `rbind` and `merge` can be used.
 
 ```{r}
-
 ## cbind
 cbind(ProteomicsExp[,1], ProteomicsExp[,2])
-
 ```
 
 ```{r}
-
 ## rbind
 rbind(ProteomicsExp[1:2,], ProteomicsExp[3,])
-
-
 ```
 
 ```{r}
-
 ## merge
 merge(ProteomicsExp[1:3,1], ProteomicsExp[3:4, 2:3])
-
 ```
 
 
@@ -403,9 +351,7 @@ These can be extended by the user to accomodate other experiment design and data
 To demonstrate the use of the package functions a reduced version of the pulsed-SILAC dataset from @Visscher2016 has been built into a `ProteomicsExperiment` object. It is stored in an object named `wormsPE`. This object has been constructed from the output files from MaxQuant 'proteinGroups.txt' and 'peptides.txt'.
 
 ```{r}
-
 wormsPE
-
 ```
 
 The dataset contains only the first 250 proteins and their corresponding peptides. It has already been filtered for possible contaminants and low quality proteins. It has 4 assays with the total intensity, light isotope and heavy isotope intensities and heavy/light isotope ratio. In the experiment there are 2 cell lines: OW40, which express $\alpha$-synuclein-YFP (model for Parkinson's Disease) and OW450, which express YFP only. Worms were harvested after 4h, 6h, 8h, 13h, 24h, 28h and 32h of light to heavy isotope medium transition.
@@ -418,17 +364,13 @@ The dataset contains only the first 250 proteins and their corresponding peptide
 To model a protein's turnover several timepoints are required. Ideally a protein would be measured in all the timepoints of the experiment, but this is rarely the case. To count how many proteins/peptides have been measured in each sample the `barplotFeaturesCounts()` can be used.
 
 ```{r}
-
 barplotFeaturesCounts(wormsPE, assayName = 'ratio')
-
 ```
 
 There is some variability between samples, but more importantly is knowing if the a protein has been measured across different timepoints. The function `barplotTimeCoverage()` can be used to visualize in how many timepoints each protein has been measured per condition.
 
 ```{r}
-
 barplotTimeCoverage(wormsPE, assayName = 'ratio')
-
 ```
 
 As it can be seen, most of the proteins are not measured at all timepoints. In this case there is a majority for proteins that have not been measured in any timepoint, this is because the dataset has been truncated for only the OW40 and OW450 lines. The original search was one with additional worm lines and these missing proteins are probably detected in the excluded lines.
@@ -855,21 +797,21 @@ Next the turnover rates can be calculated using the doubling time correction mod
 
 ```{r, warning = FALSE}
 
-modelsNoSerum <- modelTurnover(x = mefPE[,1:5], 
+modelsNoSerum <- modelTurnover(x = mefPE[, 1:5], 
                                assayName = 'fraction',
                                formula = 'fraction ~ 1 - exp(-(0.0074 + k)*t)',
                                start = list(k = 0.02),
                                mode = 'protein', 
                                robust = FALSE,
-                               returnModel = FALSE)
+                               returnModel = TRUE)
 
-modelsSerum <- modelTurnover(x = mefPE[,6:10], 
+modelsSerum <- modelTurnover(x = mefPE[, 6:10], 
                              assayName = 'fraction',
                              formula = 'fraction ~ 1 - exp(-(0.0276 + k)*t)',
                              start = list(k = 0.02),
                              mode = 'protein', 
                              robust = FALSE,
-                             returnModel = FALSE)
+                             returnModel = TRUE)
 
 modelsMef <- mergeModelsLists(modelsNoSerum, modelsSerum)
 
@@ -881,12 +823,12 @@ To compare to the models without correction the turnover is modelled without the
 
 
 modelsNoCorrect <- modelTurnover(x = mefPE, 
-                               assayName = 'fraction',
-                               formula = 'fraction ~ 1 - exp(-(k)*t)',
-                               start = list(k = 0.02),
-                               mode = 'protein', 
-                               robust = FALSE,
-                               returnModel = FALSE)
+                                 assayName = 'fraction',
+                                 formula = 'fraction ~ 1 - exp(-(k)*t)',
+                                 start = list(k = 0.02),
+                                 mode = 'protein', 
+                                 robust = FALSE,
+                                 returnModel = TRUE)
 
 ```
 
@@ -898,7 +840,8 @@ With doubling time correction:
 
 plotDistribution(modelList = modelsMef,
                  value = 'parameter',
-                 plotType = 'density')
+                 plotType = 'density') + 
+  coord_cartesian(xlim = c(-0.02, 0.2))
 
 ```
 
@@ -908,11 +851,57 @@ Without doubling time  correction:
 
 plotDistribution(modelList = modelsNoCorrect,
                  value = 'parameter',
-                 plotType = 'density')
+                 plotType = 'density')  + 
+  coord_cartesian(xlim = c(-0.02, 0.2))
 
 ```
 
 # Isotope recycling estimation
+
+Once a protein is degraded, its amino acids can be recycled to synthesize new proteins. This process will have an effect on protein turnover measurements. For example, light label amino acids will be used to synthesize new proteins, but will be interpreted as being old proteins. This results in an overall understimation of protein turnover.
+
+To estimate how much "old" label is being used in new proteins misscleaved peptides can be used. If a misscleaved peptide contains both light and heavy label, it means that light lysine was used for a new protein. Using the following formula the light label recycling can be estimated.
+
+$$ \frac{1}{2\frac{Intensity_{lys8lys8}}{Intensity_{lys8lys0}} + 1} = lys_0 (Fraction)$$
+
+Where Intensity<sub>lys8lys8</sub> is the intensity of misscleaved peptides containing two heavy isotope lysines and Intensity<sub>lys8lys0</sub> is the intensity of misscleaved peptides containing one heavy isotope lysine and one light isotope lysine.
+
+Unfortunately, by default MaxQuant does not search for mixed isotope peptides, therefore a second search has to be done if one wants to obtain this information. But this could be different for other platforms. 
+
+## Adding the information
+
+To add this information the `addMiscleavedPeptides()` function can be used. This function adds the data from the second search into a `PeptideExperiment` or a `ProteomicsExperiment`. If the analysis has been done using protein data, then a `PeptideExperiment` object with this information is created. In this example the ProteinExperiment object will be used because the peptide data in `wormsPE` is not complete and would lead to distorted results.
+
+```{r}
+missPE <- addMisscleavedPeptides(x = wormsPE@ProteinExperiment, 
+                                 newdata = recycleLightLysine, 
+                                 idColPept = 'Sequence', 
+                                 modCol = 'Modifications', 
+                                 dataCols = c(18:31))
+
+assays(missPE)
+```
+
+There are two assays in the `missPE` object. These contain the intensities for peptides that contain two heavy isotope lysines (2 Copy of Lys8) and intensities for peptides that contain one heavy and one light isotope lysines (Copy of Lys 8). 
+
+## Calculating light label recycling
+
+To calculate the amount of light label used in protein synthesis the `calculateOldIsotopePool()` function can be used. This function applies the formula mentioned above. This function adds a new assay with the name of `oldIsotopePool`.
+
+```{r}
+
+names(assays(missPE))[1:2] <- c('int_lys8lys8', 'int_lys8lys0')
+missPE <- calculateOldIsotopePool(x = missPE, 'int_lys8lys8', 'int_lys8lys0')
+
+```
+
+Finally the distributions of these pools can be shown in a boxplot.
+
+```{r}
+plotAssay(missPE, assayName = 'oldIsotopePool')
+```
+
+With this, the supplemental figure 6B of @Visscher can be reproduced.
 
 # Further analysis
 
