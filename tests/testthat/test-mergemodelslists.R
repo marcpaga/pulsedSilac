@@ -153,13 +153,13 @@ test_that("mergemodelslists works grouped", {
   ml3 <- mergeModelsLists(ml1, ml2)
   expect_identical(ml0, ml3)
 
-  ml0 <- modelTurnover(x = testPE,
+  expect_warning(ml0 <- modelTurnover(x = testPE,
                        assayName = 'fraction',
                        formula = 'fraction ~ 1-exp(-k*t)',
                        mode = 'grouped',
                        start = list(k = 0.02),
                        robust = TRUE,
-                       returnModel = FALSE)
+                       returnModel = FALSE))
 
   ml1 <- modelTurnover(x = testPE[,1:7],
                        assayName = 'fraction',
@@ -169,24 +169,24 @@ test_that("mergemodelslists works grouped", {
                        robust = TRUE,
                        returnModel = FALSE)
 
-  ml2 <- modelTurnover(x = testPE[,8:14],
+  expect_warning(ml2 <- modelTurnover(x = testPE[,8:14],
                        assayName = 'fraction',
                        formula = 'fraction ~ 1-exp(-k*t)',
                        mode = 'grouped',
                        start = list(k = 0.02),
                        robust = TRUE,
-                       returnModel = FALSE)
+                       returnModel = FALSE))
 
   ml3 <- mergeModelsLists(ml1, ml2)
   expect_identical(ml0, ml3)
 
-  ml0 <- modelTurnover(x = testPE,
+  expect_warning(ml0 <- modelTurnover(x = testPE,
                        assayName = 'fraction',
                        formula = 'fraction ~ 1-exp(-k*t)',
                        mode = 'grouped',
                        start = list(k = 0.02),
                        robust = TRUE,
-                       returnModel = TRUE)
+                       returnModel = TRUE))
 
   ml1 <- modelTurnover(x = testPE[,1:7],
                        assayName = 'fraction',
@@ -196,13 +196,13 @@ test_that("mergemodelslists works grouped", {
                        robust = TRUE,
                        returnModel = TRUE)
 
-  ml2 <- modelTurnover(x = testPE[,8:14],
+  expect_warning(ml2 <- modelTurnover(x = testPE[,8:14],
                        assayName = 'fraction',
                        formula = 'fraction ~ 1-exp(-k*t)',
                        mode = 'grouped',
                        start = list(k = 0.02),
                        robust = TRUE,
-                       returnModel = TRUE)
+                       returnModel = TRUE))
 
   ml3 <- mergeModelsLists(ml1, ml2)
   ## cannot use identical here because the model objects have some differences
@@ -274,56 +274,56 @@ test_that("mergemodelslists works peptide", {
   ml3 <- mergeModelsLists(ml1, ml2)
   expect_identical(ml0, ml3)
 
-  ml0 <- modelTurnover(x = testPE,
+  expect_warning(ml0 <- modelTurnover(x = testPE,
                        assayName = 'fraction',
                        formula = 'fraction ~ 1-exp(-k*t)',
                        mode = 'peptide',
                        start = list(k = 0.02),
                        robust = TRUE,
-                       returnModel = FALSE)
+                       returnModel = FALSE))
 
-  ml1 <- modelTurnover(x = testPE[,1:7],
+  expect_warning(ml1 <- modelTurnover(x = testPE[,1:7],
                        assayName = 'fraction',
                        formula = 'fraction ~ 1-exp(-k*t)',
                        mode = 'peptide',
                        start = list(k = 0.02),
                        robust = TRUE,
-                       returnModel = FALSE)
+                       returnModel = FALSE))
 
-  ml2 <- modelTurnover(x = testPE[,8:14],
+  expect_warning(ml2 <- modelTurnover(x = testPE[,8:14],
                        assayName = 'fraction',
                        formula = 'fraction ~ 1-exp(-k*t)',
                        mode = 'peptide',
                        start = list(k = 0.02),
                        robust = TRUE,
-                       returnModel = FALSE)
+                       returnModel = FALSE))
 
   ml3 <- mergeModelsLists(ml1, ml2)
   expect_identical(ml0, ml3)
 
-  ml0 <- modelTurnover(x = testPE,
+  expect_warning(ml0 <- modelTurnover(x = testPE,
                        assayName = 'fraction',
                        formula = 'fraction ~ 1-exp(-k*t)',
                        mode = 'peptide',
                        start = list(k = 0.02),
                        robust = TRUE,
-                       returnModel = TRUE)
+                       returnModel = TRUE))
 
-  ml1 <- modelTurnover(x = testPE[,1:7],
+  expect_warning(ml1 <- modelTurnover(x = testPE[,1:7],
                        assayName = 'fraction',
                        formula = 'fraction ~ 1-exp(-k*t)',
                        mode = 'peptide',
                        start = list(k = 0.02),
                        robust = TRUE,
-                       returnModel = TRUE)
+                       returnModel = TRUE))
 
-  ml2 <- modelTurnover(x = testPE[,8:14],
+  expect_warning( ml2 <- modelTurnover(x = testPE[,8:14],
                        assayName = 'fraction',
                        formula = 'fraction ~ 1-exp(-k*t)',
                        mode = 'peptide',
                        start = list(k = 0.02),
                        robust = TRUE,
-                       returnModel = TRUE)
+                       returnModel = TRUE))
 
   ml3 <- mergeModelsLists(ml1, ml2)
   ## cannot use identical here because the model objects have some differences
