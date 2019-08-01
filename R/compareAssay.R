@@ -1,11 +1,9 @@
-#' @export
-setGeneric('compareAssay', function(x, ...){
-  standardGeneric('compareAssay')
-})
-
-#' @title Distribution of assay data per condition and timepoint.
+#' @rdname compareAssay
+#' @name compareAssay
+#' @title Scatter plot of two conditions for each timepoint of an assay.
 #'
-#' @description Plot the distribution of the data stored in
+#' @description Scatter plot of two conditions/replicates for a selected assay.
+#' Timepoints are separated using \code{facet_wrap}.
 #'
 #' @param x A \code{ProteinExperiment}, \code{PeptideExperiment} or a
 #' \code{ProteomicsExperiment} object.
@@ -21,11 +19,24 @@ setGeneric('compareAssay', function(x, ...){
 #' in colData(x) that defines the different experiment conditions.
 #' @param timeCol A \code{character}, which indicates the column name
 #' in colData(x) that defines the different timepoints.
-#' @param replicateTimeCol A \code{character}, which indicates the column name
-#' in colData(x) that defines the different time replicates.
+#' @param ... Unused.
 #'
+#' @return A \code{ggplot} object or the \code{data.frame} that would be used
+#' instead in the plot.
+#'
+#' @examples
+#' compareAssay(x = wormsPE[, 1:7],
+#'              y = wormsPE[, 8:14],
+#'              assayName = 'ratio',
+#'              mode = 'protein')
 #'
 #' @import ggplot2
+#' @export
+setGeneric('compareAssay', function(x, ...){
+  standardGeneric('compareAssay')
+})
+
+#' @rdname compareAssay
 #' @export
 setMethod('compareAssay', 'ProteinExperiment',
           function(x,
@@ -107,8 +118,8 @@ setMethod('compareAssay', 'ProteinExperiment',
   plotDf <- do.call('rbind', tempList)
 
   ## remove NAs
-  plotDf <- subset(plotDf, !is.na(Cond1))
-  plotDf <- subset(plotDf, !is.na(Cond2))
+  plotDf <- subset(plotDf, !is.na(plotDf$Cond1))
+  plotDf <- subset(plotDf, !is.na(plotDf$Cond2))
 
   ## if possible change the column names to the conditions
   if (!is.na(metaoptions(x)[['conditionCol']])) {
@@ -142,6 +153,7 @@ setMethod('compareAssay', 'ProteinExperiment',
 
 })
 
+#' @rdname compareAssay
 #' @export
 setMethod('compareAssay', 'PeptideExperiment',
           function(x,
@@ -155,6 +167,7 @@ setMethod('compareAssay', 'PeptideExperiment',
 
 })
 
+#' @rdname compareAssay
 #' @export
 setMethod('compareAssay', 'ProteomicsExperiment',
           function(x,

@@ -1,5 +1,69 @@
 ###### PROTEIN EXPERIMENT ======================================================
 
+#' @rdname ProteinExperiment-class
+#' @title  ProteinExperiment class
+#'
+#' @description S4 class that extends the \code{SummarizedExperiment} class.
+#' This class is designed for proteomics data, more especifically protein level
+#' data.
+#'
+#' @slot assays Contains a \code{list} of matrices (assays) with protein level
+#' data.
+#' @slot elementMetadata Contains a \code{data.frame} with protein feature data
+#' like protein names, molecular weight, etc.
+#' @slot colData Contains a \code{data.frame} with sample information like
+#' conditions, replicates, etc.
+#' @slot metadata Contains a \code{list} to store any kind of experiment-wide
+#' data.
+#' @slot metaoptions Contains a \code{list} to store configuration variables for
+#' data processing, analysis and plotting purposes.
+#' @slot NAMES Unused. Inherited from the SummarizedExperiment class.
+
+#' @details The \code{ProteinExperiment} class is extremely similar to the
+#' \code{SummarizedExperiment} class. The only addition is the metaoptions slot.
+#' This class has been designed for use in this package and also in combination
+#' with the other two classes from the package: the
+#' \code{\link{PeptideExperiment}} and \code{\link{ProteomicsExperiment}}
+#' classes.
+#'
+#' The rows of the \code{ProteinExperiment} object represent proteins. These
+#' can be accessed with the \code{\link{rowData}} function.
+#'
+#' The columns of the \code{ProteinExperiment} object represent samples.
+#' Informationabout the samples is stored in a \code{\link{DataFrame}} that
+#' can be accessed with the \code{colData} function.
+#'
+#' Quantification data is stored in the \code{assays} slot, which us accessed
+#' with the \code{assays} function. It contains a \code{list} of matrices that
+#' must have the same number of columns and rows as the \code{ProteinExperiment}
+#' object.
+#'
+#' Experiment-wide information can be stored in the \code{metadata} slot, which
+#' is accessed with the \code{metadata} function. This contains a \code{list}
+#' object in which each item is left to the discretion of the user. Some
+#' possible examples could be: data of the experiment, author, machine used,
+#' etc.
+#'
+#' ProteinExperiment options are stored in the \code{metaoptions} slot, which
+#' is accessed through the \code{metatopions} function. This contains a
+#' \code{list} with some parameters that are automatically initialized by the
+#' constructor. Some parameters are mandatory for certain functions or
+#' operations. The user can add or remove items at their discretion. These
+#' parameters are meant to help automate certain pipeline or data analysis
+#' steps. These metaoptions are:
+#' \describe{
+#'   \item{conditionCol}{\code{character} indicating the column name of
+#'   \code{colData(x)} that defines the different experiment conditions.}
+#'   \item{timeCol}{\code{character} indicating the column name of
+#'   \code{colData(x)} that defines the different timepoints of the experiment.}
+#'   \item{replicateIntCol}{\code{character} indicating the column name of
+#'   \code{colData(x)} that defines which samples of a condition can be
+#'   considered expression replicates.}
+#'   \item{replicateTimeCol}{\code{character} indicating the column name of
+#'   \code{colData(x)} that defines which samples of a condition can be
+#'   considered time replicates.}
+#'}
+#'
 #' @importClassesFrom SummarizedExperiment SummarizedExperiment
 #' @export
 .ProteinExperiment <- setClass(Class = 'ProteinExperiment',
@@ -104,6 +168,72 @@ setValidity2('ProteinExperiment', .valid.ProteinExperiment)
 
 ###### PEPTIDE EXPERIMENT ======================================================
 
+#' @rdname PeptideExperiment-class
+#' @title  PeptideExperiment class
+#'
+#' @description S4 class that extends the \code{SummarizedExperiment} class.
+#' This class is designed for proteomics data, more especifically peptide level
+#' data.
+#'
+#' @slot assays Contains a \code{list} of matrices (assays) with peptide level
+#' data.
+#' @slot elementMetadata Contains a \code{data.frame} with peptide feature data
+#' like protein names, molecular weight, etc.
+#' @slot colData Contains a \code{data.frame} with sample information like
+#' conditions, replicates, etc.
+#' @slot metadata Contains a \code{list} to store any kind of experiment-wide
+#' data.
+#' @slot metaoptions Contains a \code{list} to store configuration variables for
+#' data processing, analysis and plotting purposes.
+#' @slot NAMES Unused. Inherited from the SummarizedExperiment class.
+
+#' @details The \code{PeptideExperiment} class is extremely similar to the
+#' \code{SummarizedExperiment} class. The only addition is the metaoptions slot.
+#' This class has been designed for use in this package and also in combination
+#' with the other two classes from the package: the
+#' \code{\link{ProteinExperiment}} and \code{\link{ProteomicsExperiment}}
+#' classes.
+#'
+#' The rows of the \code{PeptideExperiment} object represent peptides. These
+#' can be accessed with the \code{\link{rowData}} function.
+#'
+#' The columns of the \code{PeptideExperiment} object represent samples.
+#' Informationabout the samples is stored in a \code{\link{DataFrame}} that
+#' can be accessed with the \code{colData} function.
+#'
+#' Quantification data is stored in the \code{assays} slot, which us accessed
+#' with the \code{assays} function. It contains a \code{list} of matrices that
+#' must have the same number of columns and rows as the \code{PeptideExperiment}
+#' object.
+#'
+#' Experiment-wide information can be stored in the \code{metadata} slot, which
+#' is accessed with the \code{metadata} function. This contains a \code{list}
+#' object in which each item is left to the discretion of the user. Some
+#' possible examples could be: data of the experiment, author, machine used,
+#' etc.
+#'
+#' PeptideExperiment options are stored in the \code{metaoptions} slot, which
+#' is accessed through the \code{metatopions} function. This contains a
+#' \code{list} with some parameters that are automatically initialized by the
+#' constructor. Some parameters are mandatory for certain functions or
+#' operations. The user can add or remove items at their discretion. These
+#' parameters are meant to help automate certain pipeline or data analysis
+#' steps. These metaoptions are:
+#' \describe{
+#'   \item{conditionCol}{\code{character} indicating the column name of
+#'   \code{colData(x)} that defines the different experiment conditions.}
+#'   \item{timeCol}{\code{character} indicating the column name of
+#'   \code{colData(x)} that defines the different timepoints of the experiment.}
+#'   \item{replicateIntCol}{\code{character} indicating the column name of
+#'   \code{colData(x)} that defines which samples of a condition can be
+#'   considered expression replicates.}
+#'   \item{replicateTimeCol}{\code{character} indicating the column name of
+#'   \code{colData(x)} that defines which samples of a condition can be
+#'   considered time replicates.}
+#'   \item{proteinCol}{\code{character} indicating the column name of
+#'   \code{rowData} that defines to which protein a peptide is assigned.}
+#'}
+#'
 #' @importClassesFrom SummarizedExperiment SummarizedExperiment
 #' @import SummarizedExperiment
 #' @export
@@ -209,11 +339,73 @@ setValidity2('PeptideExperiment', .valid.PeptideExperiment)
 
 ###### PROTEOMICS EXPERIMENT ===================================================
 
+#' @rdname ProteomicsExperiment-class
 #' @title  ProteomicsExperiment class
 #'
+#' @description S4 class that contains a ProteinExperiment object and
+#' a PeptideExperiment object. The two objects are linked by a
+#' \code{data.frame} (linkerDf). This class can be used to manage both protein
+#' and peptide data at the same time.
+#'
+#' @slot ProteinExperiment Contains \code{ProteinExperiment} object.
+#' @slot PeptideExperiment Contains \code{PeptideExperiment} object.
+#' @slot colData Contains a \code{data.frame} with sample information like
+#' conditions, replicates, etc.
+#' @slot linkerDf Contains a \code{data.frame} that has been created with
+#' \code{\link{buildLinkerDf}}. It contains the relationships between proteins
+#' and peptides.
+#' @slot metadata Contains a \code{list} to store any kind of experiment-wide
+#' data.
+#' @slot metaoptions Contains a \code{list} to store configuration variables for
+#' data processing, analysis and plotting purposes.
+
+#' @details The \code{ProteomicsExperiment} class is just a ProteinExperiment
+#' object and a PeptideExperiment object together.
+#'
+#' The rows of the \code{ProteinExperiment} object represents proteins. The rows
+#' of the \code{PeptideExperiment} object represents peptides.
+#'
+#' The columns of the \code{ProteomicsExperiment} object represent samples.
+#' Samples are shared at both protein and peptide levels.
+#'
+#'
+#' Experiment-wide information can be stored in the \code{metadata} slot, which
+#' is accessed with the \code{metadata} function. This contains a \code{list}
+#' object in which each item is left to the discretion of the user. Some
+#' possible examples could be: data of the experiment, author, machine used,
+#' etc.
+#'
+#' ProteomicsExperiment options are stored in the \code{metaoptions} slot, which
+#' is accessed through the \code{metatopions} function. This contains a
+#' \code{list} with some parameters that are automatically initialized by the
+#' constructor. Some parameters are mandatory for certain functions or
+#' operations. The user can add or remove items at their discretion. These
+#' parameters are meant to help automate certain pipeline or data analysis
+#' steps. Here there are the  same metaoptions as in \code{ProteinExperiment}
+#' and \code{PeptideExperiment} objects plus some extras.
+#' These metaoptions are:
+#' \describe{
+#'   \item{conditionCol}{\code{character} indicating the column name of
+#'   \code{colData(x)} that defines the different experiment conditions.}
+#'   \item{timeCol}{\code{character} indicating the column name of
+#'   \code{colData(x)} that defines the different timepoints of the experiment.}
+#'   \item{replicateIntCol}{\code{character} indicating the column name of
+#'   \code{colData(x)} that defines which samples of a condition can be
+#'   considered expression replicates.}
+#'   \item{replicateTimeCol}{\code{character} indicating the column name of
+#'   \code{colData(x)} that defines which samples of a condition can be
+#'   considered time replicates.}
+#'   \item{idColProt}{A \code{character} indicating which column from the
+#'   rowData (protein) should be used as ids.}
+#'   \item{idColPept}{A \code{character} indicating which column from the
+#'   rowData (peptides) should be used as ids.}
+#'   \item{linkedSubset}{A \code{logical} if subsetting should be linked between
+#'   proteins and peptide.}
+#'   \item{subsetMode}{A \code{character}, either 'protein' or 'peptide'
+#'   indicating which level should be used first when subsetting.}
+#'}
+#'
 #' @export
-#' @importClassesFrom SummarizedExperiment SummarizedExperiment
-#' @import methods
 .ProteomicsExperiment <- setClass('ProteomicsExperiment',
 
   slots = representation(ProteinExperiment = 'ProteinExperiment',

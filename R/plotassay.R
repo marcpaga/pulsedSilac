@@ -1,11 +1,9 @@
-#' @export
-setGeneric('plotAssay', function(x, ...){
-  standardGeneric('plotAssay')
-})
-
+#' @rdname plotAssay
+#' @name plotAssay
 #' @title Distribution of assay data per condition and timepoint.
 #'
-#' @description Plot the distribution of the data stored in
+#' @description Plot the distribution of the data stored in an assay using
+#' boxplots or density distributions.
 #'
 #' @param x A \code{ProteinExperiment}, \code{PeptideExperiment} or a
 #' \code{ProteomicsExperiment} object.
@@ -23,10 +21,22 @@ setGeneric('plotAssay', function(x, ...){
 #' in colData(x) that defines the different timepoints.
 #' @param replicateTimeCol A \code{character}, which indicates the column name
 #' in colData(x) that defines the different time replicates.
+#' @param ... Unused.
 #'
+#' @return A ggplot2 object or a \code{data.frame} with the data that would be
+#' plotted.
+#'
+#' @examples
+#' plotAssay(wormsPE, assayName = 'ratio')
 #'
 #' @importFrom ggridges geom_density_ridges
 #' @import ggplot2
+#' @export
+setGeneric('plotAssay', function(x, ...){
+  standardGeneric('plotAssay')
+})
+
+#' @rdname plotAssay
 #' @export
 setMethod('plotAssay', 'ProteinExperiment',
           function(x,
@@ -152,6 +162,7 @@ setMethod('plotAssay', 'ProteinExperiment',
 
 })
 
+#' @rdname plotAssay
 #' @export
 setMethod('plotAssay', 'PeptideExperiment',
           function(x,
@@ -166,6 +177,7 @@ setMethod('plotAssay', 'PeptideExperiment',
 
 })
 
+#' @rdname plotAssay
 #' @export
 setMethod('plotAssay', 'ProteomicsExperiment',
           function(x,

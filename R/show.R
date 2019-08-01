@@ -8,8 +8,6 @@ setMethod('show', 'PeptideExperiment', function(object){
   callNextMethod()
 })
 
-#' Show method for ProteomicsExperiment
-#'
 #' @importMethodsFrom SummarizedExperiment show
 #' @keywords internal
 setMethod('show',

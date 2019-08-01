@@ -1,3 +1,6 @@
+#' @rdname classAccessors
+#' @aliases colData<-
+#' @usage NULL
 #' @export
 #' @importFrom S4Vectors DataFrame
 setMethod('colData<-', 'ProteinExperiment', function(x, ..., value) {
@@ -11,6 +14,9 @@ setMethod('colData<-', 'ProteinExperiment', function(x, ..., value) {
 
 })
 
+#' @rdname classAccessors
+#' @aliases colData<-
+#' @usage NULL
 #' @export
 setMethod('colData<-', 'PeptideExperiment', function(x, ..., value) {
 
@@ -23,6 +29,9 @@ setMethod('colData<-', 'PeptideExperiment', function(x, ..., value) {
 
 })
 
+#' @rdname classAccessors
+#' @aliases colData
+#' @usage NULL
 #' @export
 setMethod('colData', 'ProteomicsExperiment', function(x, ...) {
 
@@ -30,6 +39,9 @@ setMethod('colData', 'ProteomicsExperiment', function(x, ...) {
 
 })
 
+#' @rdname classAccessors
+#' @aliases colData<-
+#' @usage NULL
 #' @export
 setMethod('colData<-', 'ProteomicsExperiment', function(x, ..., value) {
 

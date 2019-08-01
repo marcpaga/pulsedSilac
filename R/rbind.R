@@ -1,3 +1,6 @@
+#' @rdname classAccessors
+#' @aliases rbind
+#' @usage NULL
 #' @export
 setMethod('rbind', 'ProteinExperiment', function(..., deparse.level = 1) {
 
@@ -10,6 +13,9 @@ setMethod('rbind', 'ProteinExperiment', function(..., deparse.level = 1) {
 
 })
 
+#' @rdname classAccessors
+#' @aliases rbind
+#' @usage NULL
 #' @export
 setMethod('rbind', 'PeptideExperiment', function(..., deparse.level = 1) {
 
@@ -22,6 +28,9 @@ setMethod('rbind', 'PeptideExperiment', function(..., deparse.level = 1) {
 
 })
 
+#' @rdname classAccessors
+#' @aliases rbind
+#' @usage NULL
 #' @export
 setMethod('rbind', 'ProteomicsExperiment', function(..., deparse.level = 1) {
 

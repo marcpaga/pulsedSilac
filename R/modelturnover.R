@@ -1,9 +1,5 @@
-#' @export
-setGeneric('modelTurnover', function(x, ...) {
-  standardGeneric('modelTurnover')
-})
-
 #' @rdname modelTurnover
+#' @name modelTurnover
 #' @title Estimate protein/peptide turnover
 #'
 #' @description Method to apply turnover models on protein/peptide data
@@ -41,6 +37,12 @@ setGeneric('modelTurnover', function(x, ...) {
 #' @importFrom utils setTxtProgressBar txtProgressBar
 #' @importFrom stats nls as.formula
 #' @import methods
+#' @export
+setGeneric('modelTurnover', function(x, ...) {
+  standardGeneric('modelTurnover')
+})
+
+#' @rdname modelTurnover
 #' @export
 setMethod('modelTurnover',
           'ProteinExperiment',

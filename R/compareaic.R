@@ -11,8 +11,8 @@
 #' contains the probabilities of each model (columns) for each protein/peptide
 #' (rows).
 #'
-#' @seealso \code{\link{calculateAIC},
-#'                \link{modelTurnover}}
+#' @seealso \code{\link{calculateAIC}},
+#'          \code{\link{modelTurnover}}.
 #' @export
 compareAIC <- function(...) {
 

@@ -43,18 +43,18 @@ calculateAIC <- function(modelList,
     ## choose function depending on the sampleSize
     if (smallSampleSize) {
       aic <- lapply(inputList, function(x) {
-        if (is.na(x)) {
-          NA
-        } else {
+        if (is(x, 'nls')) {
           AICc(x)
+        } else {
+          NA
         }
       })
     } else {
       aic <- lapply(inputList, function(x) {
-        if (is.na(x)) {
-          NA
-        } else {
+        if (is(x, 'nls')) {
           AIC(x)
+        } else {
+          NA
         }
       })
     }

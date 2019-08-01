@@ -17,7 +17,7 @@
 #'   samples in the \code{ProteinExperiment}, \code{PeptideExperiment} or
 #'   \code{ProteomicsExperiment}.
 #' }
-#' Non-detected measuremens should be \code{NA}.
+#' Non-detected measurements should be \code{NA}.
 #'
 #' @param x A \code{ProteinExperiment}, \code{PeptideExperiment} or
 #' \code{ProteomicsExperiment}.
@@ -32,12 +32,23 @@
 #' @param idColPept \code{character} indicating which column contains the ids
 #' that will be used in the merge with rowDataPept(x). The column in newdata
 #' should have the same name as in rowDataPept(x).
+#' @param ... Unused.
 #'
 #' @return A \code{PeptideExperiment} or \code{ProteomicsExperiment} with new
 #' assay entries. If x is a \code{ProteinExperiment} then a
 #' \code{PeptideExperiment} is returned.
 #'
 #' @examples
+#' missPE <- addMisscleavedPeptides(x = wormsPE@ProteinExperiment,
+#'                                  newdata = recycleLightLysine,
+#'                                  idColPept = 'Sequence',
+#'                                  modCol = 'Modifications',
+#'                                  dataCols = c(18:31))
+#'
+#' names(assays(missPE))[1:2] <- c('int_lys8lys8', 'int_lys8lys0')
+#' missPE <- calculateOldIsotopePool(x = missPE, 'int_lys8lys8', 'int_lys8lys0')
+#'
+#' plotAssay(missPE, assayName = 'oldIsotopePool')
 #'
 #' @export
 setGeneric('addMisscleavedPeptides', function(x, ...){
@@ -45,6 +56,7 @@ setGeneric('addMisscleavedPeptides', function(x, ...){
 })
 
 
+#' @rdname addMisscleavedPeptides
 #' @export
 setMethod('addMisscleavedPeptides',
           'ProteinExperiment',
@@ -130,6 +142,7 @@ setMethod('addMisscleavedPeptides',
   return(pe)
 })
 
+#' @rdname addMisscleavedPeptides
 #' @export
 setMethod('addMisscleavedPeptides',
           'PeptideExperiment',
@@ -213,6 +226,7 @@ setMethod('addMisscleavedPeptides',
 
 })
 
+#' @rdname addMisscleavedPeptides
 #' @export
 setMethod('addMisscleavedPeptides',
           'ProteomicsExperiment',

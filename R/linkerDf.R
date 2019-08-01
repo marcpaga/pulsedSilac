@@ -1,3 +1,5 @@
+#' @rdname classAccessors
+#' @usage NULL
 #' @export
 setMethod('linkerDf', 'ProteomicsExperiment', function(x){
 
@@ -5,7 +7,8 @@ setMethod('linkerDf', 'ProteomicsExperiment', function(x){
 
 })
 
-
+#' @rdname classAccessors
+#' @usage NULL
 #' @export
 setMethod('linkerDf<-', 'ProteomicsExperiment', function(x, value){
 

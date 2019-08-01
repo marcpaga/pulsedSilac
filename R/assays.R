@@ -1,3 +1,6 @@
+#' @rdname classAccessors
+#' @aliases assays
+#' @usage NULL
 #' @export
 #' @importFrom SummarizedExperiment assays
 setMethod('assays', 'ProteinExperiment', function(x, ..., withDimnames){
@@ -6,6 +9,9 @@ setMethod('assays', 'ProteinExperiment', function(x, ..., withDimnames){
 
 })
 
+#' @rdname classAccessors
+#' @aliases assays<-
+#' @usage NULL
 #' @export
 #' @importFrom SummarizedExperiment assays<-
 setMethod('assays<-',
@@ -15,6 +21,9 @@ setMethod('assays<-',
 
 })
 
+#' @rdname classAccessors
+#' @aliases assays
+#' @usage NULL
 #' @export
 #' @importFrom SummarizedExperiment assays
 setMethod('assays', 'PeptideExperiment', function(x, ..., withDimnames){
@@ -23,6 +32,9 @@ setMethod('assays', 'PeptideExperiment', function(x, ..., withDimnames){
 
 })
 
+#' @rdname classAccessors
+#' @aliases assays<-
+#' @usage NULL
 #' @export
 #' @importFrom SummarizedExperiment assays<-
 setMethod('assays<-',
@@ -32,6 +44,9 @@ setMethod('assays<-',
 
 })
 
+#' @rdname classAccessors
+#' @aliases assays
+#' @usage NULL
 #' @export
 setMethod('assays', 'ProteomicsExperiment', function(x, ..., withDimnames){
 
@@ -41,6 +56,10 @@ setMethod('assays', 'ProteomicsExperiment', function(x, ..., withDimnames){
 })
 
 
+
+#' @rdname classAccessors
+#' @aliases assaysProt
+#' @usage NULL
 #' @export
 setMethod('assaysProt', 'ProteinExperiment', function(x) {
 
@@ -48,14 +67,21 @@ setMethod('assaysProt', 'ProteinExperiment', function(x) {
 
 })
 
+#' @rdname classAccessors
+#' @aliases assaysProt<-
+#' @usage NULL
 #' @export
 setMethod('assaysProt<-', 'ProteinExperiment', function(x, value) {
 
   assays(x) <- value
+  validObject(x)
   return(x)
 
 })
 
+#' @rdname classAccessors
+#' @aliases assaysProt
+#' @usage NULL
 #' @export
 setMethod('assaysProt', 'ProteomicsExperiment', function(x) {
 
@@ -63,6 +89,9 @@ setMethod('assaysProt', 'ProteomicsExperiment', function(x) {
 
 })
 
+#' @rdname classAccessors
+#' @aliases assaysProt<-
+#' @usage NULL
 #' @export
 setMethod('assaysProt<-', 'ProteomicsExperiment', function(x, value) {
 
@@ -73,6 +102,9 @@ setMethod('assaysProt<-', 'ProteomicsExperiment', function(x, value) {
 })
 
 
+#' @rdname classAccessors
+#' @aliases assaysPept
+#' @usage NULL
 #' @export
 setMethod('assaysPept', 'PeptideExperiment', function(x) {
 
@@ -80,14 +112,21 @@ setMethod('assaysPept', 'PeptideExperiment', function(x) {
 
 })
 
+#' @rdname classAccessors
+#' @aliases assaysPept<-
+#' @usage NULL
 #' @export
 setMethod('assaysPept<-', 'PeptideExperiment', function(x, value) {
 
   assays(x) <- value
+  validObject(x)
   return(x)
 
 })
 
+#' @rdname classAccessors
+#' @aliases assaysPept
+#' @usage NULL
 #' @export
 setMethod('assaysPept', 'ProteomicsExperiment', function(x) {
 
@@ -95,6 +134,9 @@ setMethod('assaysPept', 'ProteomicsExperiment', function(x) {
 
 })
 
+#' @rdname classAccessors
+#' @aliases assaysPept<-
+#' @usage NULL
 #' @export
 setMethod('assaysPept<-', 'ProteomicsExperiment', function(x, value) {
 

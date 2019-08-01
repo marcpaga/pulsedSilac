@@ -1,9 +1,5 @@
-#' @export
-setGeneric('barplotTimeCoverage', function(x, ...){
-  standardGeneric('barplotTimeCoverage')
-})
-
-
+#' @rdname barplotTimeCoverage
+#' @name barplotTimeCoverage
 #' @title Number of detected features per sample
 #'
 #' @description How many proteins/peptides are detected in each sample. Anything
@@ -18,10 +14,18 @@ setGeneric('barplotTimeCoverage', function(x, ...){
 #' in colData(x) that defines the different experiment conditions.
 #' @param replicateTimeCol A \code{character}, which indicates the column name
 #' in colData(x) that defines the different time replicates.
+#' @param ... Unused.
 #'
 #' @return A barplot or a \code{data.frame}.
 #' @export
 #' @import ggplot2
+#' @export
+setGeneric('barplotTimeCoverage', function(x, ...){
+  standardGeneric('barplotTimeCoverage')
+})
+
+#' @rdname barplotTimeCoverage
+#' @export
 setMethod('barplotTimeCoverage',
           'ProteinExperiment',
           function(x,
@@ -144,6 +148,7 @@ setMethod('barplotTimeCoverage',
 
 })
 
+#' @rdname barplotTimeCoverage
 #' @export
 setMethod('barplotTimeCoverage',
           'PeptideExperiment',
@@ -158,6 +163,7 @@ setMethod('barplotTimeCoverage',
 
 })
 
+#' @rdname barplotTimeCoverage
 #' @export
 setMethod('barplotTimeCoverage',
           'ProteomicsExperiment',

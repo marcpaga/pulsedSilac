@@ -23,6 +23,11 @@ vignette: >
 - Compare plots
 - Add rownames and colnames support
 - Add support for one condition 
+- Add Protein and PeptideExperiment accessors
+- Improve documentation on base generics
+- Improve repetitive code
+- Add more comments
+
 
 # Introduction
 
@@ -53,6 +58,7 @@ Here is an example of constructing a `ProteinExperiment`:
 ```{r}
 
 require(pulsedSilac)
+require(ggplot2)
 ## construct very small toy experiments
 
 ## assays
@@ -430,8 +436,8 @@ To model protein turnover the isotope fractions at each timepoint are used. The 
 
 ## calculate the ratio of new istope over old isotope
 wormsPE <- calculateIsotopeRatio(x = wormsPE, 
-                                 assayNameA = 'int_heavy', 
-                                 assayNameB = 'int_light')
+                                 newIsotopeAssay = 'int_heavy', 
+                                 oldIsotopeAssay = 'int_light')
 
 ```
 
@@ -840,8 +846,7 @@ With doubling time correction:
 
 plotDistribution(modelList = modelsMef,
                  value = 'parameter',
-                 plotType = 'density') + 
-  coord_cartesian(xlim = c(-0.02, 0.2))
+                 plotType = 'density') 
 
 ```
 
@@ -851,8 +856,7 @@ Without doubling time  correction:
 
 plotDistribution(modelList = modelsNoCorrect,
                  value = 'parameter',
-                 plotType = 'density')  + 
-  coord_cartesian(xlim = c(-0.02, 0.2))
+                 plotType = 'density') 
 
 ```
 
@@ -903,14 +907,10 @@ plotAssay(missPE, assayName = 'oldIsotopePool')
 
 With this, the supplemental figure 6B of @Visscher can be reproduced.
 
-# Further analysis
-
-## Gene set/pathway enrichment analysis
-
-## Differential expression analysis
-
 # Session info
 
 ```{r}
 sessionInfo()
 ```
+
+# References

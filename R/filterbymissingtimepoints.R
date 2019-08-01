@@ -1,11 +1,11 @@
-
-#' @export
-setGeneric('filterByMissingTimepoints', function(x, ...){
-  standardGeneric('filterByMissingTimepoints')
-})
-
+#' @rdname filterByMissingTimepoints
+#' @name filterByMissingTimepoints
 #' @title Filter proteins/peptides by the amount of measurements overtime
-#' @description TODO
+#'
+#' @description Searches for proteins/peptides that are not found in all
+#' timepoints. This can be done for each condition independently
+#' (strict = FALSE) or shared across conditions (strict = TRUE).
+#'
 #' @param x A \code{ProteinExperiment}, \code{PeptideExperiment} or a
 #' \code{ProteomicsExperiment} object.
 #' @param assayName A character indicating which assay will be used to count
@@ -16,10 +16,29 @@ setGeneric('filterByMissingTimepoints', function(x, ...){
 #' criteria in all conditions and time replicates to pass; if FALSE then
 #' proteins only have to meet the maxMissing criteria in one condition or time
 #' replicate to pass.
-#' @param conditionCol
-#' @param replicateTimeCol
+#' @param conditionCol A \code{character}, which indicates the column name
+#' in colData(x) that defines the different experiment conditions.
+#' @param replicateTimeCol A \code{character}, which indicates the column name
+#' in colData(x) that defines the different time replicates.
 #' @param returnVector Logical: if TRUE then a vector with the positions to be
 #' subset is returned.
+#' @param ... Unused.
+#'
+#' @return A \code{ProteinExperiment}, \code{PeptideExperiment} or a
+#' \code{ProteomicsExperiment} object or a logical vector with the rows that
+#' pass the minimum number of desired timepoints.
+#'
+#' @examples
+#' filterByMissingTimepoints(wormsPE,
+#'                           assayName = 'ratio',
+#'                           maxMissing = 2,
+#'                           strict = FALSE)
+#' @export
+setGeneric('filterByMissingTimepoints', function(x, ...){
+  standardGeneric('filterByMissingTimepoints')
+})
+
+#' @rdname filterByMissingTimepoints
 #' @export
 setMethod('filterByMissingTimepoints',
           'ProteinExperiment',
@@ -99,6 +118,7 @@ setMethod('filterByMissingTimepoints',
 })
 
 
+#' @rdname filterByMissingTimepoints
 #' @export
 setMethod('filterByMissingTimepoints',
           'PeptideExperiment',
@@ -176,7 +196,7 @@ setMethod('filterByMissingTimepoints',
 
 })
 
-
+#' @rdname filterByMissingTimepoints
 #' @export
 setMethod('filterByMissingTimepoints',
           'ProteomicsExperiment',

@@ -1,3 +1,6 @@
+#' @rdname classAccessors
+#' @aliases nrow
+#' @usage NULL
 #' @export
 setMethod('nrow', 'ProteinExperiment', function(x){
 
@@ -5,6 +8,9 @@ setMethod('nrow', 'ProteinExperiment', function(x){
 
 })
 
+#' @rdname classAccessors
+#' @aliases nrow
+#' @usage NULL
 #' @export
 setMethod('nrow', 'PeptideExperiment', function(x){
 
@@ -12,10 +18,13 @@ setMethod('nrow', 'PeptideExperiment', function(x){
 
 })
 
+#' @rdname classAccessors
+#' @aliases nrow
+#' @usage NULL
 #' @export
 setMethod('nrow', 'ProteomicsExperiment', function(x){
 
   return(c(protein = nrow(x@ProteinExperiment),
-    peptide = nrow(x@PeptideExperiment)))
+           peptide = nrow(x@PeptideExperiment)))
 
 })

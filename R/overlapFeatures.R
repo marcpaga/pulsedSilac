@@ -1,8 +1,5 @@
-#' @export
-setGeneric('overlapFeatures', function(x, ...){
-  standardGeneric('overlapFeatures')
-})
-
+#' @rdname overlapFeatures
+#' @name overlapFeatures
 #' @title Number of detected features per sample
 #'
 #' @description How many proteins/peptides are detected in each sample. Anything
@@ -24,6 +21,13 @@ setGeneric('overlapFeatures', function(x, ...){
 #' @export
 #' @importFrom UpSetR fromList upset
 #' @importFrom cowplot plot_grid
+#' @export
+setGeneric('overlapFeatures', function(x, ...){
+  standardGeneric('overlapFeatures')
+})
+
+#' @rdname overlapFeatures
+#' @export
 setMethod('overlapFeatures',
           'ProteinExperiment',
           function(x,
@@ -115,6 +119,7 @@ setMethod('overlapFeatures',
 
 })
 
+#' @rdname overlapFeatures
 #' @export
 setMethod('overlapFeatures',
           'PeptideExperiment',
@@ -130,6 +135,7 @@ setMethod('overlapFeatures',
 
 })
 
+#' @rdname overlapFeatures
 #' @importFrom grid grid.edit
 #' @importFrom grid grid.grab
 #' @export

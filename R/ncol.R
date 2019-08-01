@@ -1,3 +1,6 @@
+#' @rdname classAccessors
+#' @aliases ncol
+#' @usage NULL
 #' @export
 setMethod('ncol', 'ProteinExperiment', function(x){
 
@@ -5,6 +8,9 @@ setMethod('ncol', 'ProteinExperiment', function(x){
 
 })
 
+#' @rdname classAccessors
+#' @aliases ncol
+#' @usage NULL
 #' @export
 setMethod('ncol', 'PeptideExperiment', function(x){
 
@@ -12,6 +18,9 @@ setMethod('ncol', 'PeptideExperiment', function(x){
 
 })
 
+#' @rdname classAccessors
+#' @aliases ncol
+#' @usage NULL
 #' @export
 #' @importFrom SummarizedExperiment colData
 setMethod('ncol', 'ProteomicsExperiment', function(x){

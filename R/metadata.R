@@ -1,5 +1,6 @@
-#' @title Metadata getter
-#' @rdname metadata
+#' @rdname classAccessors
+#' @aliases metadata
+#' @usage NULL
 #' @importMethodsFrom S4Vectors metadata
 #' @export
 setMethod('metadata', 'ProteomicsExperiment', function(x, ...){
@@ -8,8 +9,9 @@ setMethod('metadata', 'ProteomicsExperiment', function(x, ...){
 
 })
 
-#' @title Metadata setter
-#' @rdname metadata
+#' @rdname classAccessors
+#' @aliases metadata<-
+#' @usage NULL
 #' @importMethodsFrom S4Vectors metadata
 #' @export
 setMethod('metadata<-', 'ProteomicsExperiment', function(x, ..., value){

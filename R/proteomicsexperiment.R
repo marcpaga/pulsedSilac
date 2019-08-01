@@ -1,8 +1,90 @@
 #' @title ProteomicsExperiment constructor
 #'
-#' @export
+#' @description Constructor function for the ProteomicsExperiment class object.
+#' For more information about the class check
+#' \link{ProteomicsExperiment-class}.
+#'
+#' @param ProteinExperiment A \code{ProteinExperiment} object.
+#' @param PeptideExperiment A \code{PeptideExperiment} object.
+#' @param colData A \code{data.frame} with sample information like
+#' conditions, replicates, etc.
+#' @param linkerDf A \code{data.frame} output from \code{\link{buildLinkerDf}}.
+#' @param idColProt A \code{character} indicating which column from the
+#' rowData (protein) should be used as ids. Should be the same used in
+#' \code{\link{buildLinkerDf}}.
+#' @param idColPept A \code{character} indicating which column from the
+#' rowData (peptide) should be used as ids. Should be the same used in
+#' \code{\link{buildLinkerDf}}.
+#' @param linkedSubset A \code{logical} if subsetting should be linked between
+#' proteins and peptide.
+#' @param subsetMode A \code{character}, either 'protein' or 'peptide'
+#' indicating which level should be used first when subsetting.
+#' @param conditionCol A \code{character}, which indicates the column name
+#' in colData(x) that defines the different experiment conditions.
+#' @param timeCol A \code{character}, which indicates the column name
+#' in colData(x) that defines the different experiment timepoints.
+#' @param replicateIntCol A \code{character}, which indicates the column name
+#' in colData(x) that defines the different expression replicates.
+#' @param replicateTimeCol A \code{character}, which indicates the column name
+#' in colData(x) that defines the different tiempoint replicates.
+#' @param proteinCol A \code{character}, which indicates the column name
+#' in rowData(x) that defines to which protein a peptide is assigned.
+#' @param metadata A \code{list} to store any kind of experiment-wide
+#' data; like authors, dates, machines used...
+#'
+#' @return An object of class ProteomicsExperiment
+#'
+#' @examples
+#'
+#' ## assays
+#' assays_protein <- list(expression = matrix(1:9, ncol = 3))
+#'
+#' ## colData
+#' colData <- data.frame(sample = c('A1', 'A2', 'A3'),
+#'                       condition = c('A', 'A', 'A'),
+#'                     time = c(1, 2, 3))
+#' ## rowData
+#' rowData_protein <- data.frame(prot_id = LETTERS[1:3])
+#'
+#' ## construct the ProteinExperiment
+#' protExp <- ProteinExperiment(assays = assays_protein,
+#'                              rowData = rowData_protein,
+#'                              colData = colData,
+#'                              conditionCol = 'condition',
+#'                              timeCol = 'time')
+#'
+#' ## assays
+#' assays_peptide <- list(expression = matrix(1:15, ncol = 3))
+#'
+#' ## colData
+#' colData <- data.frame(sample = c('A1', 'A2', 'A3'),
+#'                       condition = c('A', 'A', 'A'),
+#'                       time = c(1, 2, 3))
+#' ## rowData
+#' rowData_peptide <- data.frame(pept_id = letters[1:5],
+#'                               prot_id = c('A', 'A', 'B', 'C', 'C'))
+#' ## construct the ProteinExperiment
+#' peptExp <- PeptideExperiment(assays = assays_peptide,
+#'                              rowData = rowData_peptide,
+#'                              colData = colData,
+#'                              conditionCol = 'condition',
+#'                              timeCol = 'time')
+#'
+#' ## list with the relationships
+#' protein_to_peptide <- list(A = c('a', 'b'), B = c('c'), C = c('d', 'e'))
+#' ## function to build the data.frame
+#' linkerDf <- buildLinkerDf(protIDs = LETTERS[1:3],
+#'                           pepIDs  = letters[1:5],
+#'                           protToPep = protein_to_peptide)
+#'
+#' ProteomicsExp <- ProteomicsExperiment(ProteinExperiment = protExp,
+#'                                       PeptideExperiment = peptExp,
+#'                                       linkerDf = linkerDf)
+#'
+#' @importFrom SummarizedExperiment SummarizedExperiment
 #' @importFrom taRifx merge.list
 #' @import methods S4Vectors
+#' @export
 ProteomicsExperiment <- function(ProteinExperiment,
                                  PeptideExperiment,
                                  colData,

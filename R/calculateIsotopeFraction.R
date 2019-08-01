@@ -1,4 +1,6 @@
-#' Calculates the incorporated isotope fraction
+#' @rdname calculateIsotopeFraction
+#' @name calculateIsotopeFraction
+#' @title Calculates the incorporated isotope fraction
 #'
 #' Calculates the fraction of an isotope ratio using the followin formula:
 #'
@@ -7,10 +9,31 @@
 #' The ratio should be calculated as:
 #' \deqn{ratio = isotope_{A}/isotope_{B}}
 #'
-#' @param x a \code{ProteinExperiment}, \code{PeptideExperiment} or
+#' @param x A \code{ProteinExperiment}, \code{PeptideExperiment} or
 #' \code{ProteomicsExperiment} object.
-#' @param assayName a \code{character} with the name of the assay that contains
-#' isotope ratios.
+#' @param ratioAssay A \code{character} with the assay name that has the ratio
+#' data.
+#' @param oldIsoAssay A \code{character} with the assay name that has the new
+#' isotope intensity data.
+#' @param newIsoAssay A \code{character} with the assay name that has the old
+#' isotope intensity data.
+#' @param earlyTimepoints A \code{numeric} indicating which timepoints should
+#' be considered early.
+#' @param lateTimepoints A \code{numeric} indicating which timepoints should
+#' be considered late.
+#' @param conditionCol A \code{character} indicating which column of the colData
+#' data.frame indicates the different conditions.
+#' @param replicateTimeCol A \code{character} indicating which column of the
+#' colData data.frame indicates the different timepoint replicates.
+#' @param ... Unused.
+#'
+#' @details If oldIsoAssay and newIsoAssay arguments are given, then the
+#' earlyTimepoints and lateTiempoints arguments can be used. These can be used
+#' for example if certain proteins do not have any new isotope intensity during
+#' the early timepoint. Because of that, no ratio can be calculated and could
+#' lead to additional missing values. If old isotope intensity is detected, then
+#' a fraction of 0 for new isotope is given. Same principle applies for the
+#' late timepoint but with the isotopes in reverse.
 #'
 #' @return a \code{ProteinExperiment}, \code{PeptideExperiment} or
 #' \code{ProteomicsExperiment} object with additional assays named "fraction".
@@ -23,14 +46,7 @@ setGeneric('calculateIsotopeFraction', function(x, ...){
   standardGeneric('calculateIsotopeFraction')
 })
 
-#' @param x
-#' @param ratioAssay
-#' @param oldIsoAssay
-#' @param newIsoAssay
-#' @param earlyTimepoints
-#' @param lateTimepoints
-#' @param conditionCol
-#' @param replicateTimeCol
+#' @rdname calculateIsotopeFraction
 #' @export
 setMethod('calculateIsotopeFraction', 'ProteinExperiment',
           function(x,
@@ -138,6 +154,7 @@ setMethod('calculateIsotopeFraction', 'ProteinExperiment',
 
 })
 
+#' @rdname calculateIsotopeFraction
 #' @export
 setMethod('calculateIsotopeFraction', 'PeptideExperiment',
           function(x,
@@ -153,6 +170,7 @@ setMethod('calculateIsotopeFraction', 'PeptideExperiment',
 
 })
 
+#' @rdname calculateIsotopeFraction
 #' @export
 setMethod('calculateIsotopeFraction', 'ProteomicsExperiment',
           function(x,

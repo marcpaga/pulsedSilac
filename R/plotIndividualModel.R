@@ -1,9 +1,5 @@
-#' @export
-setGeneric('plotIndividualModel', function(x, ...){
-  standardGeneric('plotIndividualModel')
-})
-
-
+#' @rdname plotIndividualModel
+#' @name plotIndividualModel
 #' @title Fitted model(s) for a feature
 #'
 #' @description Plot the model fit for a specific protein/peptide in different
@@ -16,11 +12,19 @@ setGeneric('plotIndividualModel', function(x, ...){
 #' @param num The feature number to be plotted.
 #' @param returnDataFrame A \code{logical} indicating if the \code{data.frame}
 #' used for the plot should be returned instead.
+#' @param ... Unused.
 #'
 #' @return A scatter plot with a fitted line or a \code{data.frame}.
 #' @export
 #' @import ggplot2
 #' @importFrom stats predict
+#' @export
+setGeneric('plotIndividualModel', function(x, ...){
+  standardGeneric('plotIndividualModel')
+})
+
+#' @rdname plotIndividualModel
+#' @export
 setMethod('plotIndividualModel',
           'ProteinExperiment',
           function(x,
@@ -99,7 +103,8 @@ setMethod('plotIndividualModel',
 
 })
 
-
+#' @rdname plotIndividualModel
+#' @export
 setMethod('plotIndividualModel',
           'PeptideExperiment',
           function(x,
@@ -193,7 +198,8 @@ setMethod('plotIndividualModel',
 })
 
 
-
+#' @rdname plotIndividualModel
+#' @export
 setMethod('plotIndividualModel',
           'ProteomicsExperiment',
           function(x,

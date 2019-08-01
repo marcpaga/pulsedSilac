@@ -1,11 +1,8 @@
-#' @export
-setGeneric('mostStable', function(x, ...){
-  standardGeneric('mostStable')
-})
-
+#' @rdname mostStable
+#' @name mostStable
 #' @title Most stable proteins/peptides
 #'
-#' @description Returns which are the most stable proteins/peptides across
+#' @description Finds which are the most stable proteins/peptides across
 #' the entire experiment. These proteins/peptides can be used to estimate
 #' the cell growth of each condition.
 #'
@@ -25,10 +22,20 @@ setGeneric('mostStable', function(x, ...){
 #' in colData(x) that defines the different experiment conditions.
 #' @param replicateTimeCol A \code{character}, which indicates the column name
 #' in colData(x) that defines the different time replicates.
+#' @param ... Unused.
 #'
 #' @return A \code{ProteinExperiment}, \code{PeptideExperiment} or a
 #' \code{ProteomicsExperiment} object with the n most stable proteins/peptides.
 #'
+#' @examples
+#' mostStable(mefPE, assayName = 'fraction', n = 50)
+#' @export
+setGeneric('mostStable', function(x, ...){
+  standardGeneric('mostStable')
+})
+
+
+#' @rdname mostStable
 #' @export
 setMethod('mostStable',
           'ProteinExperiment',
@@ -92,6 +99,7 @@ setMethod('mostStable',
 
 })
 
+#' @rdname mostStable
 #' @export
 setMethod('mostStable',
           'PeptideExperiment',
@@ -105,6 +113,7 @@ setMethod('mostStable',
 
 })
 
+#' @rdname mostStable
 #' @export
 setMethod('mostStable',
           'ProteomicsExperiment',

@@ -35,6 +35,7 @@ Imports:
     utils,
     UpSetR,
     cowplot,
+    grid,
     sme
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr

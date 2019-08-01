@@ -1,3 +1,47 @@
+#' @rdname merge
+#' @name merge
+#'
+#' @title Merge
+#'
+#' @description Merges two objects of the same class: \code{ProteinExperiment},
+#' \code{PeptideExperiment} or \code{ProteomicsExperiment}.
+#'
+#' @details This function is designed to be able to merge different samples
+#' from different experiments since it is probable that not the exact same
+#' proteins are found in both experiments and therefore \code{cbind} cannot be
+#' used. It uses the merge base function to merge the rowData data frames and
+#' merges the assays based on such merge. The colData \code{data.frame} are
+#' joined.
+#'
+#' For a \code{ProteomicsExperiment} object it gets a bit more complicated since
+#' it is possible that some peptides that were assigned to one protein in
+#' one experiment are assigned to another one in another experiment. Therefore
+#' the linkerDf \code{data.frame} is recalculated.
+#'
+#' @param x A \code{ProteinExperiment}, \code{PeptideExperiment} or a
+#' \code{ProteomicsExperiment} object.
+#' @param y A \code{ProteinExperiment}, \code{PeptideExperiment} or a
+#' \code{ProteomicsExperiment} object.
+#' @param by,by.x,by.y A \code{character} indicating the columns used for the
+#' merging.
+#' @param by.prot,by.prot.x,by.prot.y For \code{ProteomicsExperiment} objects
+#' a \code{character} indicating the columns used for the merging of the
+#' protein level.
+#' @param by.pept,by.pept.x,by.pept.y For \code{ProteomicsExperiment} objects
+#' a \code{character} indicating the columns used for the merging of the
+#' protein level.
+#' @param all A \code{logical} indicating if all proteins/peptides should
+#' be returned or only the intersect.
+#' @param ... Further parameters passed into \code{base::merge}.
+#'
+#' @return A \code{ProteinExperiment}, \code{PeptideExperiment} or a
+#' \code{ProteomicsExperiment} object.
+#'
+#' @examples
+#' merge(wormsPE[1:10, 1:3], wormsPE[3:10, 4:5])
+NULL
+
+#' @rdname merge
 #' @export
 setMethod('merge', 'ProteinExperiment', function(x, y,
                                                  by, by.x = by, by.y = by,
@@ -125,6 +169,7 @@ setMethod('merge', 'ProteinExperiment', function(x, y,
 })
 
 
+#' @rdname merge
 #' @export
 setMethod('merge', 'PeptideExperiment', function(x, y,
                                                  by, by.x = by, by.y = by,
@@ -254,6 +299,7 @@ setMethod('merge', 'PeptideExperiment', function(x, y,
 
 })
 
+#' @rdname merge
 #' @export
 setMethod('merge', 'ProteomicsExperiment', function(x, y,
                                                     by.prot,

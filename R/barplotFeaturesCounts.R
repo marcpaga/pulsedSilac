@@ -1,9 +1,5 @@
-#' @export
-setGeneric('barplotFeaturesCounts', function(x, ...){
-  standardGeneric('barplotFeaturesCounts')
-})
-
-
+#' @rdname barplotFeaturesCounts
+#' @name barplotFeaturesCounts
 #' @title Number of detected features per sample
 #'
 #' @description How many proteins/peptides are detected in each sample. Anything
@@ -16,9 +12,19 @@ setGeneric('barplotFeaturesCounts', function(x, ...){
 #' used for the plot should be returned instead.
 #' @param conditionCol A \code{character}, which indicates the column name
 #' in colData(x) that defines the different experiment conditions.
-#' @return A barplot or a \code{data.frame}.
-#' @export
+#' @param ... Unused.
+#' @return A ggplot2 barplot object or a \code{data.frame}.
 #' @import ggplot2
+#' @export
+#' @examples
+#' barplotFeaturesCounts(wormsPE, assayName = 'ratio')
+setGeneric('barplotFeaturesCounts', function(x, ...){
+  standardGeneric('barplotFeaturesCounts')
+})
+
+
+#' @rdname barplotFeaturesCounts
+#' @export
 setMethod('barplotFeaturesCounts',
           'ProteinExperiment',
           function(x,
@@ -101,14 +107,8 @@ setMethod('barplotFeaturesCounts',
 
 
 
-#' @title Number of detected features per sample
-#'
-#' @description How many proteins/peptides are detected in each sample. Anything
-#' else than NA is considered detected.
-#'
-#' @return A barplot or a \code{data.frame}.
+#' @rdname barplotFeaturesCounts
 #' @export
-#' @import ggplot2
 setMethod('barplotFeaturesCounts',
           'PeptideExperiment',
           function(x,
@@ -120,6 +120,7 @@ setMethod('barplotFeaturesCounts',
 
 })
 
+#' @rdname barplotFeaturesCounts
 #' @export
 setMethod('barplotFeaturesCounts',
           'ProteomicsExperiment',

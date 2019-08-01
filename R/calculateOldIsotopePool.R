@@ -1,4 +1,6 @@
-#' Estimates the fraction of old isotope for each time point
+#' @rdname calculateOldIsotopePool
+#' @name calculateOldIsotopePool
+#' @title Estimates the fraction of old isotope for each time point
 #'
 #' To estimate how much of the "old" isotope is being used in "new" proteins we
 #' can use the expression level of miss-cleaved peptides that contain a mix of
@@ -18,17 +20,29 @@
 #' @param mixIsotopeAssayName \code{character} indicating the assay that
 #' contains quantification data for miss-cleaved peptides with one old isotope
 #' and one new isotope incorporated.
+#' @param ... Unused.
 #'
 #' @return A \code{PeptideExperiment} or \code{ProteomicsExperiment} with a
 #' peptide assay entry named "oldIsotopePool".
 #'
 #' @examples
+#' missPE <- addMisscleavedPeptides(x = wormsPE@ProteinExperiment,
+#'                                  newdata = recycleLightLysine,
+#'                                  idColPept = 'Sequence',
+#'                                  modCol = 'Modifications',
+#'                                  dataCols = c(18:31))
+#'
+#' names(assays(missPE))[1:2] <- c('int_lys8lys8', 'int_lys8lys0')
+#' missPE <- calculateOldIsotopePool(x = missPE, 'int_lys8lys8', 'int_lys8lys0')
+#'
+#' plotAssay(missPE, assayName = 'oldIsotopePool')
 #'
 #' @export
 setGeneric('calculateOldIsotopePool', function(x, ...){
   standardGeneric('calculateOldIsotopePool')
 })
 
+#' @rdname calculateOldIsotopePool
 #' @export
 setMethod('calculateOldIsotopePool',
           'PeptideExperiment',
@@ -52,6 +66,7 @@ setMethod('calculateOldIsotopePool',
 
 })
 
+#' @rdname calculateOldIsotopePool
 #' @export
 setMethod('calculateOldIsotopePool',
           'ProteomicsExperiment',
