@@ -76,6 +76,9 @@
 #' linkerDf(x)
 #' linkerDf(x) <- value
 #'
+#' ProtExp(x)
+#' PeptExp(x)
+#'
 #' ## Dimensions
 #'
 #' dim(x)
@@ -122,6 +125,8 @@
 #'   \item{\code{linkerDf}:}{Access the linker \code{data.frame} of the object
 #'   (only ProteomicsExperiment). Value should be a \code{data.frame} output
 #'   from \code{\link{buildLinkerDf}}.}
+#'   \item(\code{ProteinExperiment} and \code{PeptideExperiment}:){Access the
+#'   experiment level data in a \code{ProteomicsExperiment}.}
 #' }
 #'
 #' @section Dimensions:

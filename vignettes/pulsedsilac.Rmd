@@ -23,11 +23,12 @@ vignette: >
 - Compare plots
 - Add rownames and colnames support
 - Add support for one condition 
-- Add Protein and PeptideExperiment accessors
 - Improve documentation on base generics
 - Improve repetitive code
 - Add more comments
-
+- Add coercers
+- Improve getMetaoptions system
+- Add more tests
 
 # Introduction
 
@@ -55,7 +56,7 @@ Constructing a `ProteinExperiment` or a `PeptideExperiment` is extremely similar
 
 Here is an example of constructing a `ProteinExperiment`:
 
-```{r}
+```{r, message = FALSE}
 
 require(pulsedSilac)
 require(ggplot2)
@@ -135,7 +136,7 @@ metaoptions(peptExp)
 
 ### Subsetting and aggregation
 
-Similarly to the accessor function, most of the `SummarizedExperiment` operations, such as subsetting and aggregating, can be applied to the two classes. For subsetting these are mainly: `[`, `subset()`, `$`; and for aggregation these are mainly: `cbind`, `rbind` and `merge`. For a more detailed explanation please refer to the package manual. 
+Similarly to the accessor function, most of the `SummarizedExperiment` operations, such as subsetting and aggregating, can be applied to the two classes. For subsetting these are mainly: `[`, `subset`, `$`; and for aggregation these are mainly: `cbind`, `rbind` and `merge`. For a more detailed explanation please refer to the manual. 
 
 ```{r}
 ## subsetting by rows and columns
@@ -398,7 +399,7 @@ Because `strict` is set to `FALSE`, there are still some proteins that have been
 
 ```{r}
 
-overlapFeatures(wormsPE2@ProteinExperiment, 
+overlapFeatures(ProtExp(wormsPE2), 
                 assayName = 'ratio', 
                 maxMissing = 2)
 
@@ -486,12 +487,14 @@ From this plot it can already be seen that the OW450 line has a much faster heav
 
 ## `compareAssay()`
 
-For `compareAssay()` it is necessary to separate the object into the two conditions that should be compared. The grey dash line indicates the identity line.
+For `compareAssay()` it is necessary to separate the object into the two conditions that should be compared. The grey dash line indicates the identity line. To make it simpler the only the protein data will be used.
 
 ```{r}
 
-compareAssay(x = wormsPE@ProteinExperiment[,1:7], 
-             y = wormsPE@ProteinExperiment[, 8:14], 
+protPE <- ProtExp(wormsPE)
+
+compareAssay(x = protPE[,1:7], 
+             y = protPE[, 8:14], 
              assayName = 'ratio')
 
 ```
@@ -500,8 +503,8 @@ This plot shows that the OW450 has a faster incorporation of heavy label than th
 
 ```{r}
 
-compareAssay(x = wormsPE@ProteinExperiment[,1:7], 
-             y = wormsPE@ProteinExperiment[, 8:14], 
+compareAssay(x = protPE[,1:7], 
+             y = protPE[, 8:14], 
              assayName = 'int_total')
 
 ```
@@ -877,7 +880,10 @@ Unfortunately, by default MaxQuant does not search for mixed isotope peptides, t
 To add this information the `addMiscleavedPeptides()` function can be used. This function adds the data from the second search into a `PeptideExperiment` or a `ProteomicsExperiment`. If the analysis has been done using protein data, then a `PeptideExperiment` object with this information is created. In this example the ProteinExperiment object will be used because the peptide data in `wormsPE` is not complete and would lead to distorted results.
 
 ```{r}
-missPE <- addMisscleavedPeptides(x = wormsPE@ProteinExperiment, 
+
+protPE <- ProtExp(wormsPE)
+
+missPE <- addMisscleavedPeptides(x = protPE, 
                                  newdata = recycleLightLysine, 
                                  idColPept = 'Sequence', 
                                  modCol = 'Modifications', 

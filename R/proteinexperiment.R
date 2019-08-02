@@ -68,3 +68,16 @@ ProteinExperiment <- function(assays,
   return(.ProteinExperiment(se, metaoptions = metaoptions))
 
 }
+
+# ProteinExperiment accessor for a ProteomicsExperiment object
+
+#' @rdname classAccessors
+#' @aliases ProtExp
+#'
+#' @usage NULL
+#' @export
+ProtExp <- function(x) {
+
+  return(x@ProteinExperiment)
+
+}

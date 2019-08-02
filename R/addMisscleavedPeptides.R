@@ -39,7 +39,9 @@
 #' \code{PeptideExperiment} is returned.
 #'
 #' @examples
-#' missPE <- addMisscleavedPeptides(x = wormsPE@ProteinExperiment,
+#'
+#' protPE <- ProtExp(wormsPE)
+#' missPE <- addMisscleavedPeptides(x = protPE,
 #'                                  newdata = recycleLightLysine,
 #'                                  idColPept = 'Sequence',
 #'                                  modCol = 'Modifications',

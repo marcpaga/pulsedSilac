@@ -26,7 +26,8 @@
 #' peptide assay entry named "oldIsotopePool".
 #'
 #' @examples
-#' missPE <- addMisscleavedPeptides(x = wormsPE@ProteinExperiment,
+#' protPE <- ProtExp(wormsPE)
+#' missPE <- addMisscleavedPeptides(x = protPE,
 #'                                  newdata = recycleLightLysine,
 #'                                  idColPept = 'Sequence',
 #'                                  modCol = 'Modifications',

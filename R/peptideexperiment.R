@@ -77,3 +77,16 @@ PeptideExperiment <- function(assays,
   pe <- .PeptideExperiment(pe)
 
 }
+
+# PeptideExperiment accessor for a ProteomicsExperiment object
+
+#' @rdname classAccessors
+#' @aliases PeptExp
+#'
+#' @usage NULL
+#' @export
+PeptExp <- function(x) {
+
+  return(x@PeptideExperiment)
+
+}
