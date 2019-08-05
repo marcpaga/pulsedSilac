@@ -22,7 +22,7 @@
 #'
 #' @examples
 #'
-#' overlapFeatures(x = ProtExp(wormsPE2),
+#' overlapFeatures(x = ProtExp(wormsPE),
 #'                 assayName = 'ratio',
 #'                 maxMissing = 2)
 #'
