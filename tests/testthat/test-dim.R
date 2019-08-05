@@ -10,7 +10,7 @@ test_that("dim works", {
 
   expect_equal(dim(testPeptExp), c(5,4))
 
-  expect_equivalent(dim(testPE), matrix(c(3, 4, 5, 4), ncol = 2, byrow = T))
+  expect_equivalent(dim(testPE), matrix(c(3, 4, 5, 4), ncol = 2, byrow = TRUE))
 
 
 })

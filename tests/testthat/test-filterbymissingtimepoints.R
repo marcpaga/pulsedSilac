@@ -14,27 +14,27 @@ test_that("filterByMissingTimepoints works", {
 
   expect_equal(length(v), nrow(PE))
   expect_is(v, 'logical')
-  expect_equal(v, c(T, F, F))
+  expect_equal(v, c(TRUE, FALSE, FALSE))
 
   expect_silent(v <- filterByMissingTimepoints(PE,
                                                assayName = 'int',
                                                maxMissing = 0,
                                                returnVector = TRUE))
-  expect_equal(v, c(T, T, T))
+  expect_equal(v, c(TRUE, TRUE, TRUE))
 
   assays(PE)[[2]][2, 2] <- 1
   expect_silent(v <- filterByMissingTimepoints(PE,
                                                assayName = 'ratio',
                                                maxMissing = 1,
                                                returnVector = TRUE))
-  expect_equal(v, c(T, T, F))
+  expect_equal(v, c(TRUE, TRUE, FALSE))
 
   expect_silent(v <- filterByMissingTimepoints(PE,
                                                assayName = 'ratio',
                                                maxMissing = 0,
                                                returnVector = TRUE,
                                                strict = TRUE))
-  expect_equal(v, c(T, F, F))
+  expect_equal(v, c(TRUE, FALSE, FALSE))
 
 })
 
