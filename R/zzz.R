@@ -96,6 +96,9 @@
 #'   object of class \code{data.frame}.}
 #' }
 #'
+#' @return Elements from \code{ProteinExperiment} or \code{PeptideExperiment}
+#' objects.
+#'
 #' @examples
 #'
 #' protPE <- ProtExp(wormsPE)
@@ -262,6 +265,8 @@ NULL
 #' }
 #'
 #' Merge methods are explained in detail in \link{merge}.
+#'
+#' @return Elements from a \code{ProteomicsExperiment} object.
 #'
 #' @examples
 #' # Accessors
