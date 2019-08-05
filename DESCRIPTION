@@ -13,10 +13,10 @@ Description: This package provides with several tools for pulsed-SILAC data
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Depends: R (>= 3.5.0)
+Depends: R (>= 3.6.0)
 biocViews: Proteomics
 Suggests: 
-    testthat,
+    testthat (>= 2.1.0),
     knitr,
     rmarkdown,
     gridExtra
@@ -25,9 +25,7 @@ Imports:
     methods,
     R.utils,
     taRifx,
-    BiocGenerics,
     S4Vectors,
-    limma,
     SummarizedExperiment,
     ggplot2,
     ggridges,
