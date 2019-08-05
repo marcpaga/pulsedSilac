@@ -1,5 +1,6 @@
-#' @rdname classAccessors
-#' @usage NULL
+#' @rdname ProteomicsExperiment-accessors
+#' @name linkerDf
+#' @aliases linkerDf,ProteomicsExperiment-method
 #' @export
 setMethod('linkerDf', 'ProteomicsExperiment', function(x){
 
@@ -7,8 +8,9 @@ setMethod('linkerDf', 'ProteomicsExperiment', function(x){
 
 })
 
-#' @rdname classAccessors
-#' @usage NULL
+#' @rdname ProteomicsExperiment-accessors
+#' @name linkerDf<-
+#' @aliases linkerDf<-,ProteomicsExperiment-method
 #' @export
 setMethod('linkerDf<-', 'ProteomicsExperiment', function(x, value){
 

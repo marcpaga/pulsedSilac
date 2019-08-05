@@ -1,16 +1,5 @@
-#' @rdname classAccessors
-#' @aliases rowData
-#' @usage NULL
-#' @export
-setMethod('rowData', 'ProteinExperiment', function(x, use.names, ...){
-
-  return(callNextMethod())
-
-})
-
-#' @rdname classAccessors
-#' @aliases rowData<-
-#' @usage NULL
+#' @rdname ProteinPeptideExperiment-accessors
+#' @aliases rowData<-,ProteinExperiment-method
 #' @importFrom S4Vectors DataFrame
 #' @export
 setMethod('rowData<-', 'ProteinExperiment', function(x, ..., value){
@@ -28,19 +17,8 @@ setMethod('rowData<-', 'ProteinExperiment', function(x, ..., value){
 
 })
 
-#' @rdname classAccessors
-#' @aliases rowData
-#' @usage NULL
-#' @export
-setMethod('rowData', 'PeptideExperiment', function(x, use.names, ...){
-
-  return(callNextMethod())
-
-})
-
-#' @rdname classAccessors
-#' @aliases rowData<-
-#' @usage NULL
+#' @rdname ProteinPeptideExperiment-accessors
+#' @aliases rowData<-,PeptideExperiment-method
 #' @importFrom S4Vectors DataFrame
 #' @export
 setMethod('rowData<-', 'PeptideExperiment', function(x, ..., value){
@@ -58,9 +36,8 @@ setMethod('rowData<-', 'PeptideExperiment', function(x, ..., value){
 
 })
 
-#' @rdname classAccessors
-#' @aliases rowData
-#' @usage NULL
+#' @rdname ProteomicsExperiment-accessors
+#' @aliases rowData,ProteomicsExperiment-method
 #' @export
 setMethod('rowData', 'ProteomicsExperiment', function(x, use.names, ...){
 
@@ -69,9 +46,8 @@ setMethod('rowData', 'ProteomicsExperiment', function(x, use.names, ...){
 
 })
 
-#' @rdname classAccessors
-#' @aliases rowData<-
-#' @usage NULL
+#' @rdname ProteomicsExperiment-accessors
+#' @aliases rowData<-,ProteomicsExperiment-method
 #' @export
 setMethod('rowData<-', 'ProteomicsExperiment', function(x, ..., value){
 
@@ -86,9 +62,9 @@ setMethod('rowData<-', 'ProteomicsExperiment', function(x, ..., value){
 })
 
 
-#' @rdname classAccessors
-#' @aliases rowDataProt
-#' @usage NULL
+#' @rdname ProteomicsExperiment-accessors
+#' @name rowDataProt
+#' @aliases rowDataProt,ProteinExperiment-method
 #' @export
 setMethod('rowDataProt', 'ProteinExperiment', function(x) {
 
@@ -96,9 +72,9 @@ setMethod('rowDataProt', 'ProteinExperiment', function(x) {
 
 })
 
-#' @rdname classAccessors
-#' @aliases rowDataProt<-
-#' @usage NULL
+#' @rdname ProteomicsExperiment-accessors
+#' @name rowDataProt<-
+#' @aliases rowDataProt<-,ProteinExperiment-method
 #' @export
 setMethod('rowDataProt<-', 'ProteinExperiment', function(x, value) {
 
@@ -107,9 +83,9 @@ setMethod('rowDataProt<-', 'ProteinExperiment', function(x, value) {
 
 })
 
-#' @rdname classAccessors
-#' @aliases rowDataProt
-#' @usage NULL
+#' @rdname ProteomicsExperiment-accessors
+#' @name rowDataProt
+#' @aliases rowDataProt,ProteomicsExperiment-method
 #' @export
 setMethod('rowDataProt', 'ProteomicsExperiment', function(x) {
 
@@ -117,9 +93,9 @@ setMethod('rowDataProt', 'ProteomicsExperiment', function(x) {
 
 })
 
-#' @rdname classAccessors
-#' @aliases rowDataProt<-
-#' @usage NULL
+#' @rdname ProteomicsExperiment-accessors
+#' @name rowDataProt<-
+#' @aliases rowDataProt<-,ProteomicsExperiment-method
 #' @export
 setMethod('rowDataProt<-', 'ProteomicsExperiment', function(x, value) {
 
@@ -130,9 +106,9 @@ setMethod('rowDataProt<-', 'ProteomicsExperiment', function(x, value) {
 })
 
 
-#' @rdname classAccessors
-#' @aliases rowDataPept
-#' @usage NULL
+#' @rdname ProteomicsExperiment-accessors
+#' @name rowDataPept
+#' @aliases rowDataPept,PeptideExperiment-method
 #' @export
 setMethod('rowDataPept', 'PeptideExperiment', function(x) {
 
@@ -140,9 +116,9 @@ setMethod('rowDataPept', 'PeptideExperiment', function(x) {
 
 })
 
-#' @rdname classAccessors
-#' @aliases rowDataPept<-
-#' @usage NULL
+#' @rdname ProteomicsExperiment-accessors
+#' @name rowDataPept<-
+#' @aliases rowDataPept<-,PeptideExperiment-method
 #' @export
 setMethod('rowDataPept<-', 'PeptideExperiment', function(x, value) {
 
@@ -151,9 +127,9 @@ setMethod('rowDataPept<-', 'PeptideExperiment', function(x, value) {
 
 })
 
-#' @rdname classAccessors
-#' @aliases rowDataPept
-#' @usage NULL
+#' @rdname ProteomicsExperiment-accessors
+#' @name rowDataPept
+#' @aliases rowDataPept,ProteomicsExperiment-method
 #' @export
 setMethod('rowDataPept', 'ProteomicsExperiment', function(x) {
 
@@ -161,8 +137,9 @@ setMethod('rowDataPept', 'ProteomicsExperiment', function(x) {
 
 })
 
-#' @rdname classAccessors
-#' @aliases rowDataPept<-
+#' @rdname ProteomicsExperiment-accessors
+#' @name rowDataPept<-
+#' @aliases rowDataPept<-,ProteomicsExperiment-method
 #' @usage NULL
 #' @export
 setMethod('rowDataPept<-', 'ProteomicsExperiment', function(x, value) {

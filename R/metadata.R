@@ -1,6 +1,5 @@
-#' @rdname classAccessors
-#' @aliases metadata
-#' @usage NULL
+#' @rdname ProteomicsExperiment-accessors
+#' @aliases metadata,ProteomicsExperiment-method
 #' @importMethodsFrom S4Vectors metadata
 #' @export
 setMethod('metadata', 'ProteomicsExperiment', function(x, ...){
@@ -9,9 +8,8 @@ setMethod('metadata', 'ProteomicsExperiment', function(x, ...){
 
 })
 
-#' @rdname classAccessors
-#' @aliases metadata<-
-#' @usage NULL
+#' @rdname ProteomicsExperiment-accessors
+#' @aliases metadata<-,ProteomicsExperiment-method
 #' @importMethodsFrom S4Vectors metadata
 #' @export
 setMethod('metadata<-', 'ProteomicsExperiment', function(x, ..., value){

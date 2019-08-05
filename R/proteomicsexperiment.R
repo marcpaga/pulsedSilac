@@ -1,13 +1,16 @@
 #' @title ProteomicsExperiment constructor
+#' @name ProteomicsExperiment-constructor
 #'
 #' @description Constructor function for the ProteomicsExperiment class object.
-#' For more information about the class check
-#' \link{ProteomicsExperiment-class}.
+#' It requires at minimum a \code{ProteinExperiment} and a
+#' \code{PeptideExperiment}. If the colData, metadata and metaoptions have been
+#' already defined in those it is not necessary to give them again.
 #'
 #' @param ProteinExperiment A \code{ProteinExperiment} object.
 #' @param PeptideExperiment A \code{PeptideExperiment} object.
 #' @param colData A \code{data.frame} with sample information like
-#' conditions, replicates, etc.
+#' conditions, replicates, etc. If not provided uses the colData slot from
+#' the \code{ProteinExperiment} and \code{PeptideExperiment}.
 #' @param linkerDf A \code{data.frame} output from \code{\link{buildLinkerDf}}.
 #' @param idColProt A \code{character} indicating which column from the
 #' rowData (protein) should be used as ids. Should be the same used in
@@ -30,9 +33,16 @@
 #' @param proteinCol A \code{character}, which indicates the column name
 #' in rowData(x) that defines to which protein a peptide is assigned.
 #' @param metadata A \code{list} to store any kind of experiment-wide
-#' data; like authors, dates, machines used...
+#' data; like authors, dates, machines used... If not provided uses the metadata
+#' from the \code{ProteinExperiment} and \code{PeptideExperiment}.
 #'
-#' @return An object of class ProteomicsExperiment
+#' @return An object of class \code{ProteomicsExperiment}.
+#'
+#' @section Class description:
+#' See \link{ProteomicsExperiment-class} for details.
+#'
+#' @section Accessors:
+#' See \link{ProteomicsExperiment-accessors} for details.
 #'
 #' @examples
 #'
@@ -81,7 +91,6 @@
 #'                                       PeptideExperiment = peptExp,
 #'                                       linkerDf = linkerDf)
 #'
-#' @importFrom SummarizedExperiment SummarizedExperiment
 #' @importFrom taRifx merge.list
 #' @import methods S4Vectors
 #' @export

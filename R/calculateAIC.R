@@ -18,6 +18,19 @@
 #' @return a \code{list} with the model metrics (the given input) plus a matrix
 #' named "AIC" with the AIC for each value
 #'
+#' @examples
+#' wormsPE <- calculateIsotopeFraction(wormsPE, ratioAssay = 'ratio')
+#'
+#' modelList <- modelTurnover(x = wormsPE[1:10],
+#'                            assayName = 'fraction',
+#'                            formula = 'fraction ~ 1 - exp(-k*t)',
+#'                            start = list(k = 0.02),
+#'                            mode = 'protein',
+#'                            robust = FALSE,
+#'                            returnModel = TRUE)
+#'
+#' modelList <- calculateAIC(modelList, smallSampleSize = TRUE)
+#'
 #' @seealso \code{\link{compareAIC}},
 #'          \code{\link{modelTurnover}}
 #' @importFrom stats AIC

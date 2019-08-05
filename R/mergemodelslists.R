@@ -17,9 +17,33 @@
 #' conditions and no skipped samples. If that is the case, build an
 #' intermediari object that contains only the samples to be used (see examples).
 #'
-#'
 #' @param ... Lists with model data, output from \code{\link{modelTurnover}}.
 #'
+#' @return A list of models.
+#'
+#' @examples
+#'
+#' wormsPE <- calculateIsotopeFraction(wormsPE, ratioAssay = 'ratio')
+#'
+#' modelList1 <- modelTurnover(x = wormsPE[1:10, 1:7],
+#'                            assayName = 'fraction',
+#'                            formula = 'fraction ~ 1 - exp(-k*t)',
+#'                            start = list(k = 0.02),
+#'                            mode = 'protein',
+#'                            robust = FALSE,
+#'                            returnModel = TRUE)
+#'
+#' modelList2 <- modelTurnover(x = wormsPE[1:10, 8:14],
+#'                            assayName = 'fraction',
+#'                            formula = 'fraction ~ 1 - exp(-k*t) + b',
+#'                            start = list(k = 0.02, b = 0),
+#'                            mode = 'protein',
+#'                            robust = FALSE,
+#'                            returnModel = TRUE)
+#'
+#' mergedModelList <- mergeModelsLists(modelList1, modelList2)
+#'
+#' @seealso \code{\link{modelTurnover}}
 #' @export
 mergeModelsLists <- function(...) {
 

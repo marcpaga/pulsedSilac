@@ -1,8 +1,7 @@
 #' @title ProteinExperiment constructor
+#' @name ProteinExperiment-constructor
 #'
 #' @description Constructor function for the ProteinExperiment class object.
-#' For more information about the class check
-#' \link{ProteinExperiment-class}.
 #'
 #' @param assays A named \code{list} of matrices (assays) with protein level
 #' data.
@@ -21,7 +20,13 @@
 #' @param metadata A \code{list} to store any kind of experiment-wide
 #' data; like authors, dates, machines used...
 #'
-#' @return An object of class ProteinExperiment.
+#' @return An object of class \code{ProteinExperiment}.
+#'
+#' @section Class description:
+#' See \link{ProteinExperiment-class} for details.
+#'
+#' @section Accessors:
+#' See \link{ProteinPeptideExperiment-accessors} for details.
 #'
 #' @examples
 #'
@@ -71,10 +76,8 @@ ProteinExperiment <- function(assays,
 
 # ProteinExperiment accessor for a ProteomicsExperiment object
 
-#' @rdname classAccessors
-#' @aliases ProtExp
+#' @rdname ProteomicsExperiment-accessors
 #'
-#' @usage NULL
 #' @export
 ProtExp <- function(x) {
 

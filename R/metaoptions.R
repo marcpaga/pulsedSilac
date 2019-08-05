@@ -1,5 +1,5 @@
-#' @rdname classAccessors
-#' @usage NULLs
+#' @rdname ProteinPeptideExperiment-accessors
+#' @aliases metaoptions,ProteinExperiment-method
 #' @export
 setMethod('metaoptions', 'ProteinExperiment', function(x){
 
@@ -7,8 +7,8 @@ setMethod('metaoptions', 'ProteinExperiment', function(x){
 
 })
 
-#' @rdname classAccessors
-#' @usage NULLs
+#' @rdname ProteinPeptideExperiment-accessors
+#' @aliases metaoptions<-,ProteinExperiment-method
 #' @export
 setMethod('metaoptions<-', 'ProteinExperiment', function(x, value){
 
@@ -18,8 +18,8 @@ setMethod('metaoptions<-', 'ProteinExperiment', function(x, value){
 
 })
 
-#' @rdname classAccessors
-#' @usage NULLs
+#' @rdname ProteinPeptideExperiment-accessors
+#' @aliases metaoptions,PeptideExperiment-method
 #' @export
 setMethod('metaoptions', 'PeptideExperiment', function(x){
 
@@ -27,9 +27,9 @@ setMethod('metaoptions', 'PeptideExperiment', function(x){
 
 })
 
+#' @rdname ProteinPeptideExperiment-accessors
+#' @aliases metaoptions<-,PeptideExperiment-method
 #' @export
-#' @rdname classAccessors
-#' @usage NULL
 setMethod('metaoptions<-', 'PeptideExperiment', function(x, value){
 
   x@metaoptions <- value
@@ -38,8 +38,9 @@ setMethod('metaoptions<-', 'PeptideExperiment', function(x, value){
 
 })
 
-#' @rdname classAccessors
-#' @usage NULL
+#' @rdname ProteomicsExperiment-accessors
+#' @name metaoptions
+#' @aliases metaoptions,ProteomicsExperiment-method
 #' @export
 setMethod('metaoptions', 'ProteomicsExperiment', function(x){
 
@@ -47,8 +48,10 @@ setMethod('metaoptions', 'ProteomicsExperiment', function(x){
 
 })
 
-#' @rdname classAccessors
-#' @usage NULL
+#' @rdname ProteomicsExperiment-accessors
+#' @name metaoptions<-
+#' @aliases metaoptions<-,ProteomicsExperiment-method
+#' @export
 setMethod('metaoptions<-', 'ProteomicsExperiment', function(x, value){
 
   x@metaoptions <- value

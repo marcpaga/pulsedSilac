@@ -9,7 +9,7 @@ nocite: '@*'
 abstract: "This document will contain a tutorial on how to perform basic pulsed SILAC data analysis using the pulsedSilac package."
 output:
   BiocStyle::html_document:
-    toc_float: true
+    toc_float: false
   pdf_document: default
 vignette: >
   %\VignetteIndexEntry{Pulsed-SILAC data analysis}
@@ -32,11 +32,11 @@ vignette: >
 
 # Introduction
 
-SILAC (Stable Isotope Label by Amino acids in Cell culture) is a method to differentially compare protein expression between samples. To measure protein turnover, the SILAC technique is applied over time by changing the medium and harvesting the cells at different time points. Each sample is then be analyzed by mass spectrometry. The isotope ratio at each time point can then be used to calculate the turnover rate of each measured protein. This package contains a set of functions to analyze pulsed SILAC quantitative data.
+SILAC (Stable Isotope Label by Amino acids in Cell culture) is a method to differentially compare protein expression between samples. To measure protein turnover, the SILAC technique is applied over time by changing the medium and harvesting the cells at different time points. Each sample is then be analyzed by mass spectrometry. The isotope ratio at each time point can then be used to calculate the turnover rate of each measured protein. 
 
 ADD IMAGE
 
-Functions are provided to organize the data, calculate isotope ratios/fractions, estimate cell growth, model protein turnover, compare turnover models and estimate isotope recycling. Several visualization tools are also included to explore the results: isotope incorporation, overall proteome turnover, individual protein/peptide models, comparison of turnover and expression.
+This package contains a set of functions to analyze pulsed SILAC quantitative data. Functions are provided to organize the data , calculate isotope ratios and fractions, model protein turnover, compare turnover models, estimate cell growth and estimate isotope recycling. Several visualization tools are also included to explore the data for QC and filtering; and the results to compare conditions, replicates and models.
 
 # Data organization
 

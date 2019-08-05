@@ -17,7 +17,10 @@
 #' @param ... Unused.
 #'
 #' @return A barplot or a \code{data.frame}.
-#' @export
+#' @examples
+#'
+#' barplotTimeCoverage(wormsPE, assayName = 'ratio')
+#'
 #' @import ggplot2
 #' @export
 setGeneric('barplotTimeCoverage', function(x, ...){

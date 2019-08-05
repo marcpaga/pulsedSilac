@@ -1,25 +1,5 @@
-#' @rdname classAccessors
-#' @aliases nrow
-#' @usage NULL
-#' @export
-setMethod('nrow', 'ProteinExperiment', function(x){
-
-  return(callNextMethod())
-
-})
-
-#' @rdname classAccessors
-#' @aliases nrow
-#' @usage NULL
-#' @export
-setMethod('nrow', 'PeptideExperiment', function(x){
-
-  return(callNextMethod())
-
-})
-
-#' @rdname classAccessors
-#' @aliases nrow
+#' @rdname ProteomicsExperiment-accessors
+#' @aliases nrow,ProteomicsExperiment-method
 #' @usage NULL
 #' @export
 setMethod('nrow', 'ProteomicsExperiment', function(x){

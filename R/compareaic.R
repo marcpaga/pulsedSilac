@@ -11,6 +11,32 @@
 #' contains the probabilities of each model (columns) for each protein/peptide
 #' (rows).
 #'
+#' @examples
+#'
+#' wormsPE <- calculateIsotopeFraction(wormsPE, ratioAssay = 'ratio')
+#'
+#' modelList1 <- modelTurnover(x = wormsPE[1:10],
+#'                            assayName = 'fraction',
+#'                            formula = 'fraction ~ 1 - exp(-k*t)',
+#'                            start = list(k = 0.02),
+#'                            mode = 'protein',
+#'                            robust = FALSE,
+#'                            returnModel = TRUE)
+#'
+#' modelList1 <- calculateAIC(modelList1, smallSampleSize = TRUE)
+#'
+#' modelList2 <- modelTurnover(x = wormsPE[1:10],
+#'                            assayName = 'fraction',
+#'                            formula = 'fraction ~ 1 - exp(-k*t) + b',
+#'                            start = list(k = 0.02, b = 0),
+#'                            mode = 'protein',
+#'                            robust = FALSE,
+#'                            returnModel = TRUE)
+#'
+#' modelList2 <- calculateAIC(modelList2, smallSampleSize = TRUE)
+#'
+#' modelProbabilities <- compareAIC(modelList1, modelList2)
+#'
 #' @seealso \code{\link{calculateAIC}},
 #'          \code{\link{modelTurnover}}.
 #' @export

@@ -16,6 +16,22 @@
 #' @return A \code{ggplot} density or boxplot object, or the \code{data.frame}
 #' used to make the plot.
 #'
+#' @examples
+#'
+#' wormsPE <- calculateIsotopeFraction(wormsPE, ratioAssay = 'ratio')
+#'
+#' modelList <- modelTurnover(x = wormsPE[1:10],
+#'                            assayName = 'fraction',
+#'                            formula = 'fraction ~ 1 - exp(-k*t)',
+#'                            start = list(k = 0.02),
+#'                            mode = 'protein',
+#'                            robust = FALSE,
+#'                            returnModel = TRUE)
+#'
+#' plotDistribution(modelList = modelList,
+#'                  value = 'error',
+#'                  plotType = 'density')
+#'
 #' @export
 #' @import ggplot2
 #' @importFrom ggridges geom_density_ridges

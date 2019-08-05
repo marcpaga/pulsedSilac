@@ -30,8 +30,22 @@
 #' @param proteinCol \code{character} indicating which column of rowData(x)
 #' describes the assigned protein to a peptide. (Only for peptide data)
 #' @param ... further parameters passed into \code{nls} or \code{nlrob}.
+#'
 #' @return A named \code{list} with either model metrics in matrices or the
 #' model objects.
+#'
+#' @examples
+#'
+#' wormsPE <- calculateIsotopeFraction(wormsPE, ratioAssay = 'ratio')
+#'
+#' modelList <- modelTurnover(x = wormsPE[1:10],
+#'                            assayName = 'fraction',
+#'                            formula = 'fraction ~ 1 - exp(-k*t)',
+#'                            start = list(k = 0.02),
+#'                            mode = 'protein',
+#'                            robust = FALSE,
+#'                            returnModel = TRUE)
+#'
 #' @importFrom robustbase nlrob
 #' @importFrom R.utils insert
 #' @importFrom utils setTxtProgressBar txtProgressBar

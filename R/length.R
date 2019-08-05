@@ -1,26 +1,5 @@
-#' @rdname classAccessors
-#' @aliases length
-#' @usage NULL
-#' @export
-setMethod('length', 'ProteinExperiment', function(x){
-
-  return(callNextMethod())
-
-})
-
-#' @rdname classAccessors
-#' @aliases length
-#' @usage NULL
-#' @export
-setMethod('length', 'PeptideExperiment', function(x){
-
-  return(callNextMethod())
-
-})
-
-#' @rdname classAccessors
-#' @aliases length
-#' @usage NULL
+#' @rdname ProteomicsExperiment-accessors
+#' @aliases length,ProteomicsExperiment-method
 #' @export
 setMethod('length', 'ProteomicsExperiment', function(x){
 

@@ -1,8 +1,7 @@
 #' @title PeptideExperiment constructor
+#' @name PeptideExperiment-constructor
 #'
 #' @description Constructor function for the PeptideExperiment class object.
-#' For more information about the class check
-#' \link{PeptideExperiment-class}.
 #'
 #' @param assays A named \code{list} of matrices (assays) with peptide level
 #' data.
@@ -23,7 +22,13 @@
 #' @param metadata A \code{list} to store any kind of experiment-wide
 #' data; like authors, dates, machines used...
 #'
-#' @return An object of class PeptideExperiment
+#' @return An object of class \code{PeptideExperiment}.
+#'
+#' @section Class description:
+#' See \link{PeptideExperiment-class} for details.
+#'
+#' @section Accessors:
+#' See \link{ProteinPeptideExperiment-accessors} for details.
 #'
 #' @examples
 #'
@@ -79,11 +84,12 @@ PeptideExperiment <- function(assays,
 }
 
 # PeptideExperiment accessor for a ProteomicsExperiment object
+# the @name ProteomicsExperiment-accessors is a bit hacky, but otherwise
+# the doc of ProteomicsExperiment-accessors gets PeptExp as name...
 
-#' @rdname classAccessors
+#' @rdname ProteomicsExperiment-accessors
+#' @name ProteomicsExperiment-accessors
 #' @aliases PeptExp
-#'
-#' @usage NULL
 #' @export
 PeptExp <- function(x) {
 

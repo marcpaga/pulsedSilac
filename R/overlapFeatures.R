@@ -17,8 +17,15 @@
 #' @param returnList A \code{logical} indicating if the \code{list}
 #' used for the plot should be returned instead.
 #' @param ... Further arguments passed to \code{upset()}.
+#'
 #' @return A barplot or a \code{data.frame}.
-#' @export
+#'
+#' @examples
+#'
+#' overlapFeatures(x = ProtExp(wormsPE2),
+#'                 assayName = 'ratio',
+#'                 maxMissing = 2)
+#'
 #' @importFrom UpSetR fromList upset
 #' @importFrom cowplot plot_grid
 #' @export

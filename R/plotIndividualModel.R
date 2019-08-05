@@ -15,7 +15,23 @@
 #' @param ... Unused.
 #'
 #' @return A scatter plot with a fitted line or a \code{data.frame}.
-#' @export
+#'
+#' @examples
+#'
+#' wormsPE <- calculateIsotopeFraction(wormsPE, ratioAssay = 'ratio')
+#'
+#' modelList <- modelTurnover(x = wormsPE[1:10],
+#'                            assayName = 'fraction',
+#'                            formula = 'fraction ~ 1 - exp(-k*t)',
+#'                            start = list(k = 0.02),
+#'                            mode = 'protein',
+#'                            robust = FALSE,
+#'                            returnModel = TRUE)
+#'
+#' plotIndividualModel(x = wormsPE,
+#'                     modelList = modelList,
+#'                     num = 2)
+#'
 #' @import ggplot2
 #' @importFrom stats predict
 #' @export

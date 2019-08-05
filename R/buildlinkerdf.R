@@ -30,6 +30,17 @@
 #'   \item{protRow}{Column with row numbers of protein IDs.}
 #'   \item{protID}{Column with the row numbers of peptide IDs.}
 #' }
+#'
+#' @examples
+#'
+#' ## list with the relationships
+#' protein_to_peptide <- list(A = c('a', 'b'), B = c('c'), C = c('d', 'e'))
+#' ## function to build the data.frame
+#' linkerDf <- buildLinkerDf(protIDs = LETTERS[1:3],
+#'                          pepIDs  = letters[1:5],
+#'                          protToPep = protein_to_peptide)
+#' linkerDf
+#'
 #' @export
 buildLinkerDf <- function(protIDs,
                           pepIDs,

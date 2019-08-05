@@ -1,26 +1,5 @@
-#' @rdname classAccessors
-#' @aliases dim-ProteinExperiment
-#' @usage NULL
-#' @export
-setMethod('dim', 'ProteinExperiment', function(x){
-
-  return(callNextMethod())
-
-})
-
-#' @rdname classAccessors
-#' @aliases dim-PeptideExperiment
-#' @usage NULL
-#' @export
-setMethod('dim', 'PeptideExperiment', function(x){
-
-  return(callNextMethod())
-
-})
-
-#' @rdname classAccessors
-#' @aliases dim-ProteomicsExperiment
-#' @usage NULL
+#' @rdname ProteomicsExperiment-accessors
+#' @aliases dim,ProteomicsExperiment-method
 #' @export
 setMethod('dim', 'ProteomicsExperiment', function(x){
 
