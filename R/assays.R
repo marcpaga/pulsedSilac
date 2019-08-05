@@ -1,5 +1,6 @@
 #' @rdname ProteinPeptideExperiment-accessors
-#' @aliases assays<-,ProteinExperiment-method
+#' @name ProteinPeptideExperiment-accessors
+#' @aliases assays<-,ProteinExperiment,ANY-method
 #' @export
 setMethod('assays<-', 'ProteinExperiment', function(x, value) {
 
@@ -10,7 +11,8 @@ setMethod('assays<-', 'ProteinExperiment', function(x, value) {
 })
 
 #' @rdname ProteinPeptideExperiment-accessors
-#' @aliases assays<-,PeptideExperiment-method
+#' @name ProteinPeptideExperiment-accessors
+#' @aliases assays<-,PeptideExperiment,ANY-method
 #' @export
 setMethod('assays<-', 'PeptideExperiment', function(x, value) {
 
