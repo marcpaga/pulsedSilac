@@ -1,10 +1,12 @@
-#' This function subsets a linkerDf while preserving the correct links
-#'
-#' @param x linkerDf
-#' @param protRows vector indicating which protein rows to be subsetted
-#' @param protIDs vector indicating which protein IDs to be subsetted
-#' @param pepRows vector indicating which peptide rows to be subsetted
-#' @param pepIDs vector indicating which peptide IDs to be subsetted
+# This function subsets a linkerDf while preserving the correct links
+#
+# Params:
+# x  = linkerDf
+# protRows = vector indicating which protein rows to be subsetted
+# protIDs = vector indicating which protein IDs to be subsetted
+# pepRows = vector indicating which peptide rows to be subsetted
+# pepIDs = vector indicating which peptide IDs to be subsetted
+
 #' @keywords internal
 subsetLinkerDf <- function(x, protRows, protIDs, pepRows, pepIDs) {
 
