@@ -35,7 +35,7 @@
 #'
 #' modelList2 <- modelTurnover(x = wormsPE[1:10, 8:14],
 #'                            assayName = 'fraction',
-#'                            formula = 'fraction ~ 1 - exp(-k*t) + b',
+#'                            formula = 'fraction ~ 1 - exp(-k*t)',
 #'                            start = list(k = 0.02, b = 0),
 #'                            mode = 'protein',
 #'                            robust = FALSE,
@@ -59,28 +59,32 @@ mergeModelsLists <- function(...) {
 
   ## check that all the lists have the same names
   namesList <- lapply(inputList, names)
-  if (!all(sapply(namesList, FUN = identical, namesList[[1]]))) {
+  if (!all(vapply(namesList, FUN.VALUE = logical(1),
+                  FUN = identical, namesList[[1]]))) {
     txt <- sprintf('Not all the lists have the same names')
     stop(txt)
   }
 
   ## check that all the lists have the same matrix nrow
   nrowList <- lapply(inputList, function(x) nrow(x[['residuals']]))
-  if (!all(sapply(nrowList, FUN = identical, nrowList[[1]]))) {
+  if (!all(vapply(nrowList, FUN.VALUE = logical(1),
+                  FUN = identical, nrowList[[1]]))) {
     txt <- sprintf('Not all the lists have the number of models')
     stop(txt)
   }
 
   ## check that all the lists have the same parameters
   paramaterList <- lapply(inputList, function(x) names(x[['param_values']]))
-  if (!all(sapply(paramaterList, FUN = identical, paramaterList[[1]]))) {
-    txt <- sprintf('Not all the lists have the number of models')
+  if (!all(vapply(paramaterList, FUN.VALUE = logical(1),
+                  FUN = identical, paramaterList[[1]]))) {
+    txt <- sprintf('Not all the lists have the same parameters')
     stop(txt)
   }
 
   ## check that all the lists the same mode
   modeList <- lapply(inputList, function(x) attributes(x)[['mode']])
-  if (!all(sapply(modeList, FUN = identical, modeList[[1]]))) {
+  if (!all(vapply(modeList, FUN.VALUE = logical(1),
+                  FUN = identical, modeList[[1]]))) {
     txt <- sprintf(paste0('Not all the lists have the same mode ("protein", ',
                           '"peptide", or "grouped")'))
     stop(txt)
