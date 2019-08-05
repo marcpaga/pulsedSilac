@@ -51,7 +51,7 @@ setMethod('show',
 
   ## rowDataProt
   dimnames <- rownames(rowDataProt(object))
-  dlen <- sapply(dimnames, length)
+  dlen <- vapply(dimnames, FUN.VALUE = 1, FUN = length)
   if (length(dlen) > 0) {
     scat("|-- rownames(%d): %s\n", dimnames, startSpace = TRUE)
   } else {
@@ -74,7 +74,7 @@ setMethod('show',
 
   ## rowDataPept
   dimnames <- rownames(rowDataPept(object))
-  dlen <- sapply(dimnames, length)
+  dlen <- vapply(dimnames, FUN.VALUE = 1, FUN = length)
   if (length(dlen) > 0) {
     scat("|-- rownames(%d): %s\n", dimnames, startSpace = TRUE)
   } else {
