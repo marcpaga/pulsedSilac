@@ -68,11 +68,12 @@ compareAIC <- function(...) {
   return(outputList)
 }
 
-#' Calculates the probability of a set of AIC values
-#'
-#' @param aics Numeric vector containing the AIC values
-#' @return A numeric vector of the same length as the input with the probability
-#' of each model relative to each other.
+## Calculates the probability of a set of AIC values
+
+## aics = Numeric vector containing the AIC values
+## Returns a numeric vector of the same length as the input with the probability
+## of each model relative to each other
+
 #' @keywords internal
 .compareAIC <- function(aics) {
 
