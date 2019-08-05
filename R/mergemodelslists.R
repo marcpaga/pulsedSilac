@@ -36,7 +36,7 @@
 #' modelList2 <- modelTurnover(x = wormsPE[1:10, 8:14],
 #'                            assayName = 'fraction',
 #'                            formula = 'fraction ~ 1 - exp(-k*t)',
-#'                            start = list(k = 0.02, b = 0),
+#'                            start = list(k = 0.02),
 #'                            mode = 'protein',
 #'                            robust = FALSE,
 #'                            returnModel = TRUE)
