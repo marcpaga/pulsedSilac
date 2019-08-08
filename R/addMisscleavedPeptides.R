@@ -137,9 +137,7 @@ setMethod('addMisscleavedPeptides',
                     rowData = rowData,
                     colData = colData(x),
                     conditionCol = metaoptions(x)[['conditionCol']],
-                    timeCol = metaoptions(x)[['timeCol']],
-                    replicateIntCol = metaoptions(x)[['replicateIntCol']],
-                    replicateTimeCol = metaoptions(x)[['replicateTimeCol']])
+                    timeCol = metaoptions(x)[['timeCol']])
 
   return(pe)
 })

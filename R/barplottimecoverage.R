@@ -12,8 +12,6 @@
 #' used for the plot should be returned instead.
 #' @param conditionCol A \code{character}, which indicates the column name
 #' in colData(x) that defines the different experiment conditions.
-#' @param replicateTimeCol A \code{character}, which indicates the column name
-#' in colData(x) that defines the different time replicates.
 #' @param ... Unused.
 #'
 #' @return A barplot or a \code{data.frame}.
@@ -34,8 +32,7 @@ setMethod('barplotTimeCoverage',
           function(x,
                    assayName,
                    returnDataFrame = FALSE,
-                   conditionCol,
-                   replicateTimeCol) {
+                   conditionCol) {
 
   if (!assayName %in% names(assays(x))) {
     txt <- sprintf('%s not found in assay names', assayName)
@@ -51,9 +48,7 @@ setMethod('barplotTimeCoverage',
   if (!missing(conditionCol)) {
     metaoptions(x)[['conditionCol']] <- conditionCol
   }
-  if (!missing(replicateTimeCol)) {
-    metaoptions(x)[['replicateTimeCol']] <- replicateTimeCol
-  }
+
 
   ## use trycatch since giveMetaoption raises and error if it does not find it,
   ## but for plotting metaoptions are not strictly necessary
@@ -158,8 +153,7 @@ setMethod('barplotTimeCoverage',
           function(x,
                    assayName,
                    returnDataFrame = FALSE,
-                   conditionCol,
-                   replicateTimeCol) {
+                   conditionCol) {
 
 
   callNextMethod()
@@ -173,20 +167,17 @@ setMethod('barplotTimeCoverage',
           function(x,
                    assayName,
                    returnDataFrame = FALSE,
-                   conditionCol,
-                   replicateTimeCol) {
+                   conditionCol) {
 
   protPart <- barplotTimeCoverage(x = x@ProteinExperiment,
                                   assayName = assayName,
                                   returnDataFrame = TRUE,
-                                  conditionCol = conditionCol,
-                                  replicateTimeCol = replicateTimeCol)
+                                  conditionCol = conditionCol)
 
   peptPart <- barplotTimeCoverage(x = x@PeptideExperiment,
                                   assayName = assayName,
                                   returnDataFrame = TRUE,
-                                  conditionCol = conditionCol,
-                                  replicateTimeCol = replicateTimeCol)
+                                  conditionCol = conditionCol)
 
 
   ## join the data.frames

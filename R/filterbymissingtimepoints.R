@@ -18,8 +18,6 @@
 #' replicate to pass.
 #' @param conditionCol A \code{character}, which indicates the column name
 #' in colData(x) that defines the different experiment conditions.
-#' @param replicateTimeCol A \code{character}, which indicates the column name
-#' in colData(x) that defines the different time replicates.
 #' @param returnVector Logical: if TRUE then a vector with the positions to be
 #' subset is returned.
 #' @param ... Unused.
@@ -47,7 +45,6 @@ setMethod('filterByMissingTimepoints',
                    maxMissing = 0,
                    strict = TRUE,
                    conditionCol,
-                   replicateTimeCol,
                    returnVector = FALSE) {
 
   if (!assayName %in% names(assays(x))) {
@@ -63,9 +60,6 @@ setMethod('filterByMissingTimepoints',
   ## conditions.
   if (!missing(conditionCol)) {
     metaoptions(x)[['conditionCol']] <- conditionCol
-  }
-  if (!missing(replicateTimeCol)) {
-    metaoptions(x)[['replicateTimeCol']] <- replicateTimeCol
   }
 
   ## use trycatch since giveMetaoption raises and error if it does not find it,
@@ -127,7 +121,6 @@ setMethod('filterByMissingTimepoints',
                    maxMissing = 0,
                    strict = TRUE,
                    conditionCol,
-                   replicateTimeCol,
                    returnVector = FALSE) {
 
   if (!assayName %in% names(assays(x))) {
@@ -143,9 +136,6 @@ setMethod('filterByMissingTimepoints',
   ## conditions.
   if (!missing(conditionCol)) {
     metaoptions(x)[['conditionCol']] <- conditionCol
-  }
-  if (!missing(replicateTimeCol)) {
-    metaoptions(x)[['replicateTimeCol']] <- replicateTimeCol
   }
 
   ## use trycatch since giveMetaoption raises and error if it does not find it,
@@ -205,7 +195,6 @@ setMethod('filterByMissingTimepoints',
                    maxMissing = 0,
                    strict = TRUE,
                    conditionCol,
-                   replicateTimeCol,
                    returnVector = FALSE) {
 
   if (giveMetaoption(x, 'subsetMode') == 'peptide') {
@@ -215,7 +204,6 @@ setMethod('filterByMissingTimepoints',
                                            maxMissing = maxMissing,
                                            strict = strict,
                                            conditionCol,
-                                           replicateTimeCol,
                                            returnVector = TRUE)
 
   } else {
@@ -225,7 +213,6 @@ setMethod('filterByMissingTimepoints',
                                            maxMissing = maxMissing,
                                            strict = strict,
                                            conditionCol,
-                                           replicateTimeCol,
                                            returnVector = TRUE)
   }
 

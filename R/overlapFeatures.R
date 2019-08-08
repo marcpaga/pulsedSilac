@@ -12,8 +12,6 @@
 #' protein/peptide miss.
 #' @param conditionCol A \code{character}, which indicates the column name
 #' in colData(x) that defines the different experiment conditions.
-#' @param replicateTimeCol A \code{character}, which indicates the column name
-#' in colData(x) that defines the different time replicates.
 #' @param returnList A \code{logical} indicating if the \code{list}
 #' used for the plot should be returned instead.
 #' @param ... Further arguments passed to \code{upset()}.
@@ -40,7 +38,6 @@ setMethod('upsetTimeCoverage',
           function(x,
                    assayName,
                    conditionCol,
-                   replicateTimeCol,
                    maxMissing = 0,
                    returnList = FALSE,
                    ...) {
@@ -57,9 +54,7 @@ setMethod('upsetTimeCoverage',
   if (!missing(conditionCol)) {
     metaoptions(x)[['conditionCol']] <- conditionCol
   }
-  if (!missing(replicateTimeCol)) {
-    metaoptions(x)[['replicateTimeCol']] <- replicateTimeCol
-  }
+
 
   ## use trycatch since giveMetaoption raises and error if it does not find it,
   ## but for plotting metaoptions are not strictly necessary
@@ -134,7 +129,6 @@ setMethod('upsetTimeCoverage',
                    assayName,
                    maxMissing = 0,
                    conditionCol,
-                   replicateTimeCol,
                    returnList = FALSE,
                    ...) {
 
@@ -161,7 +155,6 @@ setMethod('upsetTimeCoverage',
                                  assayName = assayName,
                                  maxMissing = maxMissing,
                                  conditionCol = conditionCol,
-                                 replicateTimeCol = replicateTimeCol,
                                  returnList = returnList,
                                  ... = ...)
 
@@ -169,7 +162,6 @@ setMethod('upsetTimeCoverage',
                                  assayName = assayName,
                                  maxMissing = maxMissing,
                                  conditionCol = conditionCol,
-                                 replicateTimeCol = replicateTimeCol,
                                  returnList = returnList,
                                  ... = ...)
 
@@ -185,7 +177,6 @@ setMethod('upsetTimeCoverage',
                   assayName = assayName,
                   maxMissing = maxMissing,
                   conditionCol = conditionCol,
-                  replicateTimeCol = replicateTimeCol,
                   returnList = returnList,
                   ... = ...)
   grid.edit('arrange', name='arrange2', redraw = FALSE)
@@ -195,7 +186,6 @@ setMethod('upsetTimeCoverage',
                   assayName = assayName,
                   maxMissing = maxMissing,
                   conditionCol = conditionCol,
-                  replicateTimeCol = replicateTimeCol,
                   returnList = returnList,
                   ... = ...)
 

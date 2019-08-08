@@ -30,12 +30,6 @@
 #'   \code{colData(x)} that defines the different experiment conditions.}
 #'   \item{timeCol}{\code{character} indicating the column name of
 #'   \code{colData(x)} that defines the different timepoints of the experiment.}
-#'   \item{replicateIntCol}{\code{character} indicating the column name of
-#'   \code{colData(x)} that defines which samples of a condition can be
-#'   considered expression replicates.}
-#'   \item{replicateTimeCol}{\code{character} indicating the column name of
-#'   \code{colData(x)} that defines which samples of a condition can be
-#'   considered time replicates.}
 #'}
 #'
 #' @section Constructor:
@@ -58,9 +52,7 @@
 .valid.ProteinExperiment.metaoptions <- function(x) {
 
   metaoptions_names <- c('conditionCol',
-                         'timeCol',
-                         'replicateIntCol',
-                         'replicateTimeCol')
+                         'timeCol')
 
   ## missing one or more of the metaoptions
   if (!all(metaoptions_names %in% names(metaoptions(x)))) {
@@ -75,7 +67,7 @@
   }
 
   ## duplicated metaoptions entries
-  if (sum(names(metaoptions(x)) %in% metaoptions_names) > 4) {
+  if (sum(names(metaoptions(x)) %in% metaoptions_names) > 2) {
 
     names_pos <- which(names(metaoptions(x)) %in% metaoptions_names)
     names_met <- names(metaoptions(x))[names_pos]
@@ -88,20 +80,6 @@
     return(txt)
   }
 
-  ## metaoptions have to be NA, numeric or character
-  ## checking if the column is at the colData/rowData is done on function call
-  ## not on validity because it could cause problems when changing those
-  ## DataFrames
-
-  for (mopt in metaoptions_names) {
-    val <- metaoptions(x)[[mopt]]
-    if (any(is.na(val), is.character(val), is.numeric(val))) {
-      next
-    } else {
-      txt <- sprintf('%s must be character, numeric or NA', mopt)
-      return(txt)
-    }
-  }
 
   ## all validity is passed
   return(NULL)
@@ -182,12 +160,6 @@ setValidity2('ProteinExperiment', .valid.ProteinExperiment)
 #'   \code{colData(x)} that defines the different experiment conditions.}
 #'   \item{timeCol}{\code{character} indicating the column name of
 #'   \code{colData(x)} that defines the different timepoints of the experiment.}
-#'   \item{replicateIntCol}{\code{character} indicating the column name of
-#'   \code{colData(x)} that defines which samples of a condition can be
-#'   considered expression replicates.}
-#'   \item{replicateTimeCol}{\code{character} indicating the column name of
-#'   \code{colData(x)} that defines which samples of a condition can be
-#'   considered time replicates.}
 #'   \item{proteinCol}{\code{character} indicating the column name of
 #'   \code{rowData(x)} that defines to which protein a peptide is assigned.}
 #'}
@@ -212,8 +184,6 @@ setValidity2('ProteinExperiment', .valid.ProteinExperiment)
 
   metaoptions_names <- c('conditionCol',
                          'timeCol',
-                         'replicateIntCol',
-                         'replicateTimeCol',
                          'proteinCol')
 
   ## missing one or more of the metaoptions
@@ -229,7 +199,7 @@ setValidity2('ProteinExperiment', .valid.ProteinExperiment)
   }
 
   ## duplicated metaoptions entries
-  if (sum(names(metaoptions(x)) %in% metaoptions_names) > 5) {
+  if (sum(names(metaoptions(x)) %in% metaoptions_names) > 3) {
 
     names_pos <- which(names(metaoptions(x)) %in% metaoptions_names)
     names_met <- names(metaoptions(x))[names_pos]
@@ -240,21 +210,6 @@ setValidity2('ProteinExperiment', .valid.ProteinExperiment)
       paste(dup, collapse = ' ')
     )
     return(txt)
-  }
-
-  ## metaoptions have to be NA, numeric or character
-  ## checking if the column is at the colData/rowData is done on function call
-  ## not on validity because it could cause problems when changing those
-  ## DataFrames
-
-  for (mopt in metaoptions_names) {
-    val <- metaoptions(x)[[mopt]]
-    if (any(is.na(val), is.character(val), is.numeric(val))) {
-      next
-    } else {
-      txt <- sprintf('%s must be character, numeric or NA', mopt)
-      return(txt)
-    }
   }
 
   ## all validity is passed
@@ -355,12 +310,6 @@ setValidity2('PeptideExperiment', .valid.PeptideExperiment)
 #'   \code{colData(x)} that defines the different experiment conditions.}
 #'   \item{timeCol}{\code{character} indicating the column name of
 #'   \code{colData(x)} that defines the different timepoints of the experiment.}
-#'   \item{replicateIntCol}{\code{character} indicating the column name of
-#'   \code{colData(x)} that defines which samples of a condition can be
-#'   considered expression replicates.}
-#'   \item{replicateTimeCol}{\code{character} indicating the column name of
-#'   \code{colData(x)} that defines which samples of a condition can be
-#'   considered time replicates.}
 #'   \item{idColProt}{A \code{character} indicating which column from the
 #'   rowData (protein) should be used as ids.}
 #'   \item{idColPept}{A \code{character} indicating which column from the
@@ -416,8 +365,6 @@ setValidity2('PeptideExperiment', .valid.PeptideExperiment)
 
   metaoptions_names <- c('conditionCol',
                          'timeCol',
-                         'replicateIntCol',
-                         'replicateTimeCol',
                          'idColProt',
                          'idColPept',
                          'linkedSubset',
@@ -437,7 +384,7 @@ setValidity2('PeptideExperiment', .valid.PeptideExperiment)
   }
 
   ## duplicated metaoptions entries
-  if (sum(names(metaoptions(x)) %in% metaoptions_names) > 9) {
+  if (sum(names(metaoptions(x)) %in% metaoptions_names) > 7) {
 
     names_pos <- which(names(metaoptions(x)) %in% metaoptions_names)
     names_met <- names(metaoptions(x))[names_pos]
@@ -475,14 +422,6 @@ setValidity2('PeptideExperiment', .valid.PeptideExperiment)
         txt <- 'linkedSubset must be a logical: TRUE or FALSE'
         return(txt)
       }
-    }
-
-    ## the rest is all either numeric, character or NA
-    if (any(is.na(val), is.character(val), is.numeric(val))) {
-      next
-    } else {
-      txt <- sprintf('%s must be character, numeric or NA', mopt)
-      return(txt)
     }
   }
 

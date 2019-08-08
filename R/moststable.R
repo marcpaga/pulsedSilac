@@ -20,8 +20,6 @@
 #' inputs.
 #' @param conditionCol A \code{character}, which indicates the column name
 #' in colData(x) that defines the different experiment conditions.
-#' @param replicateTimeCol A \code{character}, which indicates the column name
-#' in colData(x) that defines the different time replicates.
 #' @param ... Unused.
 #'
 #' @return A \code{ProteinExperiment}, \code{PeptideExperiment} or a
@@ -42,8 +40,7 @@ setMethod('mostStable',
           function(x,
                    assayName,
                    n,
-                   conditionCol,
-                   replicateTimeCol) {
+                   conditionCol) {
 
 
   ## argument check
@@ -56,9 +53,6 @@ setMethod('mostStable',
 
   if (!missing(conditionCol)) {
     metaoptions(x)[['conditionCol']] <- conditionCol
-  }
-  if (!missing(replicateTimeCol)) {
-    metaoptions(x)[['replicateTimeCol']] <- replicateTimeCol
   }
 
   ## which columns belong to which experiment
@@ -106,8 +100,7 @@ setMethod('mostStable',
           function(x,
                    assayName,
                    n,
-                   conditionCol,
-                   replicateTimeCol) {
+                   conditionCol) {
 
   callNextMethod()
 
@@ -121,21 +114,18 @@ setMethod('mostStable',
                    assayName,
                    n,
                    mode,
-                   conditionCol,
-                   replicateTimeCol) {
+                   conditionCol) {
 
   if (mode == 'protein') {
     mostStable(x = x@ProteinExperiment,
                assayName = assayName,
                n = n,
-               conditionCol = conditionCol,
-               replicateTimeCol = replicateTimeCol)
+               conditionCol = conditionCol)
   } else if (mode == 'peptide') {
     mostStable(x = x@PeptideExperiment,
                assayName = assayName,
                n = n,
-               conditionCol = conditionCol,
-               replicateTimeCol = replicateTimeCol)
+               conditionCol = conditionCol)
   }
 
 })

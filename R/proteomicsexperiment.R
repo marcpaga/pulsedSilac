@@ -26,10 +26,6 @@
 #' in colData(x) that defines the different experiment conditions.
 #' @param timeCol A \code{character}, which indicates the column name
 #' in colData(x) that defines the different experiment timepoints.
-#' @param replicateIntCol A \code{character}, which indicates the column name
-#' in colData(x) that defines the different expression replicates.
-#' @param replicateTimeCol A \code{character}, which indicates the column name
-#' in colData(x) that defines the different tiempoint replicates.
 #' @param proteinCol A \code{character}, which indicates the column name
 #' in rowData(x) that defines to which protein a peptide is assigned.
 #' @param metadata A \code{list} to store any kind of experiment-wide
@@ -105,8 +101,6 @@ ProteomicsExperiment <- function(ProteinExperiment,
                                  subsetMode = 'protein',
                                  conditionCol = NA,
                                  timeCol = NA,
-                                 replicateIntCol = NA,
-                                 replicateTimeCol = NA,
                                  proteinCol = NA) {
 
   ## initialize metaoptions list
@@ -116,8 +110,6 @@ ProteomicsExperiment <- function(ProteinExperiment,
                         subsetMode = subsetMode,
                         conditionCol = conditionCol,
                         timeCol = timeCol,
-                        replicateIntCol = replicateIntCol,
-                        replicateTimeCol = replicateTimeCol,
                         proteinCol = proteinCol)
 
   ## linkedSubset only relevant if linkerDf is there

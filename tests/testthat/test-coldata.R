@@ -9,17 +9,17 @@ test_that("colData getter works", {
   expect_silent(cd <- colData(testProtExp))
   expect_is(cd, 'DataFrame')
   expect_equal(nrow(cd), 4)
-  expect_equal(ncol(cd), 5)
+  expect_equal(ncol(cd), 3)
 
   expect_silent(cd <- colData(testPeptExp))
   expect_is(cd, 'DataFrame')
   expect_equal(nrow(cd), 4)
-  expect_equal(ncol(cd), 5)
+  expect_equal(ncol(cd), 3)
 
   expect_silent(cd <- colData(testPE))
   expect_is(cd, 'DataFrame')
   expect_equal(nrow(cd), 4)
-  expect_equal(ncol(cd), 5)
+  expect_equal(ncol(cd), 3)
 
 })
 

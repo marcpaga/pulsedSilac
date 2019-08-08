@@ -19,7 +19,7 @@ test_that("constructor works", {
   expect_equal(nrow(colData(proExp)), 3)
   expect_equal(ncol(colData(proExp)), 1)
   expect_equal(length(metadata(proExp)), 0)
-  expect_equal(length(metaoptions(proExp)), 4)
+  expect_equal(length(metaoptions(proExp)), 2)
 
   ## without assays
   expect_error(proExp <- ProteinExperiment(rowData = rowData,
@@ -45,7 +45,7 @@ test_that("constructor works", {
                                             metadata = list(author = 'me'),
                                             conditionCol = 'sample'))
   expect_equal(length(metadata(proExp)), 1)
-  expect_equal(length(metaoptions(proExp)), 4)
+  expect_equal(length(metaoptions(proExp)), 2)
 
   colData <- data.frame(sample = LETTERS[1:3],
                         time = c(1:3),
@@ -58,9 +58,7 @@ test_that("constructor works", {
                                             colData = colData,
                                             metadata = list(author = 'me'),
                                             conditionCol = 'sample',
-                                            timeCol = 'time',
-                                            replicateIntCol = 'repInt',
-                                            replicateTimeCol = 'repTime'))
+                                            timeCol = 'time'))
 
   ## mixed character and numeric metadata
   expect_silent(proExp <- ProteinExperiment(assays = assays_list,
@@ -68,9 +66,7 @@ test_that("constructor works", {
                                             colData = colData,
                                             metadata = list(author = 'me'),
                                             conditionCol = 'sample',
-                                            timeCol = 2,
-                                            replicateIntCol = 'repInt',
-                                            replicateTimeCol = 4))
+                                            timeCol = 2))
 
   ## metaoptions target the same colData columns
   expect_silent(proExp <- ProteinExperiment(assays = assays_list,
@@ -78,13 +74,10 @@ test_that("constructor works", {
                                            colData = colData,
                                            metadata = list(author = 'me'),
                                            conditionCol = 2,
-                                           timeCol = 2,
-                                           replicateIntCol = 'repInt',
-                                           replicateTimeCol = 4))
+                                           timeCol = 2))
 
 
   ## metaoptions in both direct argument and metadata argument
-
   expect_silent(proExp <- ProteinExperiment(assays = assays_list,
                                            rowData = rowData,
                                            colData = colData,

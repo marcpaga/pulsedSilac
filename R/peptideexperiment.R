@@ -13,10 +13,6 @@
 #' in colData(x) that defines the different experiment conditions.
 #' @param timeCol A \code{character}, which indicates the column name
 #' in colData(x) that defines the different experiment timepoints.
-#' @param replicateIntCol A \code{character}, which indicates the column name
-#' in colData(x) that defines the different expression replicates.
-#' @param replicateTimeCol A \code{character}, which indicates the column name
-#' in colData(x) that defines the different tiempoint replicates.
 #' @param proteinCol A \code{character}, which indicates the column name
 #' in rowData(x) that defines to which protein a peptide is assigned.
 #' @param metadata A \code{list} to store any kind of experiment-wide
@@ -56,16 +52,12 @@ PeptideExperiment <- function(assays,
                               colData = NULL,
                               conditionCol = NA,
                               timeCol = NA,
-                              replicateIntCol = NA,
-                              replicateTimeCol = NA,
                               proteinCol = NA,
                               metadata = NULL) {
 
   ## initialize the metadata
   metaoptions <- list(conditionCol = conditionCol,
                       timeCol = timeCol,
-                      replicateIntCol = replicateIntCol,
-                      replicateTimeCol = replicateTimeCol,
                       proteinCol = proteinCol)
 
 
@@ -74,9 +66,7 @@ PeptideExperiment <- function(assays,
                           rowData = rowData,
                           metadata = metadata,
                           conditionCol = conditionCol,
-                          timeCol = timeCol,
-                          replicateIntCol = replicateIntCol,
-                          replicateTimeCol = replicateTimeCol)
+                          timeCol = timeCol)
 
   metaoptions(pe)[['proteinCol']] <- proteinCol
   pe <- .PeptideExperiment(pe)

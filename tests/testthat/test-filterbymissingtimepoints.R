@@ -38,14 +38,14 @@ test_that("filterByMissingTimepoints works", {
 
 })
 
-test_that("overlapFeatures works", {
+test_that("upsetTimeCoverage works", {
 
   PE <- testList[[1]]
   metaoptions(PE)[['conditionCol']] <- 'condition'
   assays(PE)[[2]][2, 1:2] <- NA
   assays(PE)[[2]][3, 3:4] <- NA
 
-  expect_silent(v <- overlapFeatures(PE,
+  expect_silent(v <- upsetTimeCoverage(PE,
                                      assayName = 'ratio',
                                      maxMissing = 0,
                                      returnList = TRUE))
@@ -55,7 +55,7 @@ test_that("overlapFeatures works", {
   expect_equal(v, list(c(1, 3),
                        c(1, 2)))
 
-  expect_silent(v <- overlapFeatures(PE,
+  expect_silent(v <- upsetTimeCoverage(PE,
                                      assayName = 'ratio',
                                      maxMissing = 2,
                                      returnList = TRUE))
@@ -64,7 +64,7 @@ test_that("overlapFeatures works", {
                        c(1, 2, 3)))
 
   assays(PE)[[2]][2, 2] <- 1
-  expect_silent(v <- overlapFeatures(PE,
+  expect_silent(v <- upsetTimeCoverage(PE,
                                      assayName = 'ratio',
                                      maxMissing = 1,
                                      returnList = TRUE))

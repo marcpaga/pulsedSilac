@@ -161,8 +161,6 @@ setMethod('merge', 'ProteinExperiment', function(x, y,
                           colData = new.colData,
                           conditionCol = metaopts[['conditionCol']],
                           timeCol = metaopts[['timeCol']],
-                          replicateIntCol = metaopts[['replicateIntCol']],
-                          replicateTimeCol = metaopts[['replicateTimeCol']],
                           metadata = x@metadata)
 
   return(PE)
@@ -289,8 +287,6 @@ setMethod('merge', 'PeptideExperiment', function(x, y,
                           colData = new.colData,
                           conditionCol = metaopts[['conditionCol']],
                           timeCol = metaopts[['timeCol']],
-                          replicateIntCol = metaopts[['replicateIntCol']],
-                          replicateTimeCol = metaopts[['replicateTimeCol']],
                           proteinCol = metaopts[['proteinCol']],
                           metadata = x@metadata)
 

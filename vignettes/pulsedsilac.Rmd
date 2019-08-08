@@ -344,8 +344,6 @@ The following are related to data analysis:
 
 - `conditionCol`: which column in `colData` indicates the different experiment conditions.
 - `timeCol`: which column in `colData` indicates the different timepoints of the experiment.
-- `replicateIntCol`: which column in `colData` indicates expression/intensity replicates.
-- `replicateTimeCol`: which column in `colData` indicates timepoint replicates.
 - `proteinCol`:  which column in `rowData` indicates the assigned protein to a peptide. (unique to `PeptideExperiment`)
 
 The following are related to `ProteomicsExperiment` subsetting operations:

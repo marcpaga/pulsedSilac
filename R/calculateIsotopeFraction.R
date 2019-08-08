@@ -2,10 +2,9 @@
 #' @name calculateIsotopeFraction
 #' @title Calculates the incorporated isotope fraction
 #'
-#' Calculates the fraction of an isotope ratio using the followin formula:
-#'
+#' @description Calculates the fraction of an isotope ratio using the following
+#' formula:
 #' \deqn{Isotope fraction_{A} = \frac{ratio}{ratio + 1}}
-#'
 #' The ratio should be calculated as:
 #' \deqn{ratio = isotope_{A}/isotope_{B}}
 #'
@@ -23,8 +22,6 @@
 #' be considered late.
 #' @param conditionCol A \code{character} indicating which column of the colData
 #' data.frame indicates the different conditions.
-#' @param replicateTimeCol A \code{character} indicating which column of the
-#' colData data.frame indicates the different timepoint replicates.
 #' @param ... Unused.
 #'
 #' @details If oldIsoAssay and newIsoAssay arguments are given, then the
@@ -55,8 +52,7 @@ setMethod('calculateIsotopeFraction', 'ProteinExperiment',
                    newIsoAssay,
                    earlyTimepoints,
                    lateTimepoints,
-                   conditionCol,
-                   replicateTimeCol) {
+                   conditionCol) {
 
   if (any(missing(oldIsoAssay), missing(newIsoAssay))) {
 
@@ -163,8 +159,7 @@ setMethod('calculateIsotopeFraction', 'PeptideExperiment',
                    newIsoAssay,
                    earlyTimepoints,
                    lateTimepoints,
-                   conditionCol,
-                   replicateTimeCol) {
+                   conditionCol) {
 
   callNextMethod()
 
@@ -179,8 +174,7 @@ setMethod('calculateIsotopeFraction', 'ProteomicsExperiment',
                    newIsoAssay,
                    earlyTimepoints,
                    lateTimepoints,
-                   conditionCol,
-                   replicateTimeCol) {
+                   conditionCol) {
 
 
   if (any(missing(oldIsoAssay), missing(newIsoAssay))) {
@@ -198,16 +192,14 @@ setMethod('calculateIsotopeFraction', 'ProteomicsExperiment',
                                           newIsoAssay = newIsoAssay,
                                           earlyTimepoints = earlyTimepoints,
                                           lateTimepoints = lateTimepoints,
-                                          conditionCol = conditionCol,
-                                          replicateTimeCol = replicateTimeCol)
+                                          conditionCol = conditionCol)
 
   x@PeptideExperiment <- calculateIsotopeFraction(x@PeptideExperiment,
                                           oldIsoAssay = oldIsoAssay,
                                           newIsoAssay = newIsoAssay,
                                           earlyTimepoints = earlyTimepoints,
                                           lateTimepoints = lateTimepoints,
-                                          conditionCol = conditionCol,
-                                          replicateTimeCol = replicateTimeCol)
+                                          conditionCol = conditionCol)
   return(x)
 
 })

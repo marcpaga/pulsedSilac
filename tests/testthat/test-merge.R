@@ -9,9 +9,7 @@ test_that("merge ProteinExperiment", {
                                  name = c('P2', 'P3', 'P4'))
   colData(testPE2) <- data.frame(sample = 1:4,
                                  condition = c(1, 1, 2, 2),
-                                 time = c(1, 2, 1, 2),
-                                 timereplicate = c(2, 2, 2, 2),
-                                 intreplicate = c(3, 4, 3, 4))
+                                 time = c(3, 4, 3, 4))
 
   testPE3 <- merge(testPE, testPE2)
   expect_equal(ncol(testPE3), ncol(testPE) + ncol(testPE2))
@@ -28,9 +26,7 @@ test_that("merge ProteinExperiment", {
                                  name = c('P2', 'P3', 'P4'))
   colData(testPE2) <- data.frame(sample = 1:4,
                                  condition = c(1, 1, 2, 2),
-                                 time = c(1, 2, 1, 2),
-                                 timereplicate = c(2, 2, 2, 2),
-                                 intreplicate = c(3, 4, 3, 4))
+                                 time = c(3, 4, 3, 4))
 
   names(assays(testPE)) <- NULL
   names(assays(testPE2)) <- NULL
@@ -56,9 +52,7 @@ test_that("merge PeptideExperiment", {
                                  name = c('p2', 'p3', 'p4', 'p5', 'p6'))
   colData(testPE2) <- data.frame(sample = 1:4,
                                  condition = c(1, 1, 2, 2),
-                                 time = c(1, 2, 1, 2),
-                                 timereplicate = c(2, 2, 2, 2),
-                                 intreplicate = c(3, 4, 3, 4))
+                                 time = c(3, 4, 3, 4))
 
   testPE3 <- merge(testPE, testPE2)
   expect_equal(ncol(testPE3), ncol(testPE) + ncol(testPE2))
@@ -75,9 +69,7 @@ test_that("merge PeptideExperiment", {
                                  name = c('p2', 'p3', 'p4', 'p5', 'p6'))
   colData(testPE2) <- data.frame(sample = 1:4,
                                  condition = c(1, 1, 2, 2),
-                                 time = c(1, 2, 1, 2),
-                                 timereplicate = c(2, 2, 2, 2),
-                                 intreplicate = c(3, 4, 3, 4))
+                                 time = c(3, 4, 3, 4))
 
   names(assays(testPE)) <- NULL
   names(assays(testPE2)) <- NULL
@@ -113,9 +105,7 @@ test_that("merge ProteomicsExperiment", {
 
   colData(testPE2) <- data.frame(sample = 1:4,
                                  condition = c(1, 1, 2, 2),
-                                 time = c(1, 2, 1, 2),
-                                 timereplicate = c(2, 2, 2, 2),
-                                 intreplicate = c(3, 4, 3, 4))
+                                 time = c(3, 4, 3, 4))
 
   testPE3 <- merge(testPE, testPE2)
   expect_equal(ncol(testPE3), ncol(testPE) + ncol(testPE2))
@@ -137,9 +127,7 @@ test_that("merge ProteomicsExperiment", {
                                      name = c('p2', 'p3', 'p4', 'p5', 'p6'))
   colData(testPE2) <- data.frame(sample = 1:4,
                                  condition = c(1, 1, 2, 2),
-                                 time = c(1, 2, 1, 2),
-                                 timereplicate = c(2, 2, 2, 2),
-                                 intreplicate = c(3, 4, 3, 4))
+                                 time = c(3, 4, 3, 4))
 
   linkerDf <- buildLinkerDf(protIDs = LETTERS[2:4],
                             pepIDs = letters[2:6],

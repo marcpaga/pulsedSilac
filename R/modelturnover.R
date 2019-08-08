@@ -25,8 +25,6 @@
 #' describes the conditions.
 #' @param timeCol \code{character} indicating which column of colData(x)
 #' describes time.
-#' @param replicateTimeCol \code{character} indicating which column of
-#' colData(x) describes the samples time replicates.
 #' @param proteinCol \code{character} indicating which column of rowData(x)
 #' describes the assigned protein to a peptide. (Only for peptide data)
 #' @param ... further parameters passed into \code{nls} or \code{nlrob}.
@@ -70,7 +68,6 @@ setMethod('modelTurnover',
                    returnModel = FALSE,
                    conditionCol,
                    timeCol,
-                   replicateTimeCol,
                    ...){
 
   ## argument check
@@ -86,9 +83,6 @@ setMethod('modelTurnover',
   }
   if (!missing(timeCol)) {
     metaoptions(x)[['timeCol']] <- timeCol
-  }
-  if (!missing(replicateTimeCol)) {
-    metaoptions(x)[['replicateTimeCol']] <- replicateTimeCol
   }
 
   ## which columns belong to which experiment
@@ -276,7 +270,6 @@ setMethod('modelTurnover',
                    returnModel = FALSE,
                    conditionCol,
                    timeCol,
-                   replicateTimeCol,
                    proteinCol,
                    ...){
 
@@ -308,9 +301,6 @@ setMethod('modelTurnover',
   }
   if (!missing(timeCol)) {
     metaoptions(x)[['timeCol']] <- timeCol
-  }
-  if (!missing(replicateTimeCol)) {
-    metaoptions(x)[['replicateTimeCol']] <- replicateTimeCol
   }
   if (!missing(proteinCol)) {
     metaoptions(x)[['proteinCol']] <- proteinCol
@@ -519,7 +509,6 @@ setMethod('modelTurnover',
                    returnModel = FALSE,
                    conditionCol,
                    timeCol,
-                   replicateTimeCol,
                    proteinCol,
                    ...){
 
@@ -538,7 +527,6 @@ setMethod('modelTurnover',
                              returnModel = returnModel,
                              conditionCol = conditionCol,
                              timeCol = timeCol,
-                             replicateTimeCol = replicateTimeCol,
                              ...)
 
   } else if (mode == 'peptide') {
@@ -553,7 +541,6 @@ setMethod('modelTurnover',
                              returnModel = returnModel,
                              conditionCol = conditionCol,
                              timeCol = timeCol,
-                             replicateTimeCol = replicateTimeCol,
                              proteinCol = proteinCol,
                              ...)
 
@@ -569,7 +556,6 @@ setMethod('modelTurnover',
                              returnModel = returnModel,
                              conditionCol = conditionCol,
                              timeCol = timeCol,
-                             replicateTimeCol = replicateTimeCol,
                              proteinCol = proteinCol,
                              ...)
 

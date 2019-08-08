@@ -13,10 +13,6 @@
 #' in colData(x) that defines the different experiment conditions.
 #' @param timeCol A \code{character}, which indicates the column name
 #' in colData(x) that defines the different experiment timepoints.
-#' @param replicateIntCol A \code{character}, which indicates the column name
-#' in colData(x) that defines the different expression replicates.
-#' @param replicateTimeCol A \code{character}, which indicates the column name
-#' in colData(x) that defines the different tiempoint replicates.
 #' @param metadata A \code{list} to store any kind of experiment-wide
 #' data; like authors, dates, machines used...
 #'
@@ -54,15 +50,11 @@ ProteinExperiment <- function(assays,
                               colData = NULL,
                               conditionCol = NA,
                               timeCol = NA,
-                              replicateIntCol = NA,
-                              replicateTimeCol = NA,
                               metadata = NULL) {
 
   ## initialize the metadata
   metaoptions <- list(conditionCol = conditionCol,
-                      timeCol = timeCol,
-                      replicateIntCol = replicateIntCol,
-                      replicateTimeCol = replicateTimeCol)
+                      timeCol = timeCol)
 
 
   se <- SummarizedExperiment(assays = assays,

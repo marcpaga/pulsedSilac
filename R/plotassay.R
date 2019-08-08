@@ -19,8 +19,6 @@
 #' in colData(x) that defines the different experiment conditions.
 #' @param timeCol A \code{character}, which indicates the column name
 #' in colData(x) that defines the different timepoints.
-#' @param replicateTimeCol A \code{character}, which indicates the column name
-#' in colData(x) that defines the different time replicates.
 #' @param ... Unused.
 #'
 #' @return A ggplot2 object or a \code{data.frame} with the data that would be
@@ -44,8 +42,7 @@ setMethod('boxplotAssay', 'ProteinExperiment',
                    plotType = 'boxplot',
                    returnDataFrame = FALSE,
                    conditionCol,
-                   timeCol,
-                   replicateTimeCol) {
+                   timeCol) {
 
   if (!assayName %in% names(assays(x))) {
     txt <- sprintf('%s not found in assay names', assayName)
@@ -68,9 +65,6 @@ setMethod('boxplotAssay', 'ProteinExperiment',
   ## but for plotting metaoptions are not strictly necessary
   if (!missing(conditionCol)) {
     metaoptions(x)[['conditionCol']] <- conditionCol
-  }
-  if (!missing(replicateTimeCol)) {
-    metaoptions(x)[['replicateTimeCol']] <- replicateTimeCol
   }
   if (!missing(timeCol)) {
     metaoptions(x)[['timeCol']] <- timeCol
@@ -170,8 +164,7 @@ setMethod('boxplotAssay', 'PeptideExperiment',
                    plotType = 'boxplot',
                    returnDataFrame = FALSE,
                    conditionCol,
-                   timeCol,
-                   replicateTimeCol) {
+                   timeCol) {
 
   callNextMethod()
 
@@ -186,8 +179,7 @@ setMethod('boxplotAssay', 'ProteomicsExperiment',
                    plotType = 'boxplot',
                    returnDataFrame = FALSE,
                    conditionCol,
-                   timeCol,
-                   replicateTimeCol) {
+                   timeCol) {
 
   if (mode == 'protein') {
 
@@ -196,8 +188,7 @@ setMethod('boxplotAssay', 'ProteomicsExperiment',
               plotType = plotType,
               returnDataFrame = returnDataFrame,
               conditionCol = conditionCol,
-              timeCol = timeCol,
-              replicateTimeCol = replicateTimeCol)
+              timeCol = timeCol)
 
   } else if (mode == 'peptide') {
 
@@ -206,8 +197,7 @@ setMethod('boxplotAssay', 'ProteomicsExperiment',
               plotType = plotType,
               returnDataFrame = returnDataFrame,
               conditionCol = conditionCol,
-              timeCol = timeCol,
-              replicateTimeCol = replicateTimeCol)
+              timeCol = timeCol)
   }
 
 })
