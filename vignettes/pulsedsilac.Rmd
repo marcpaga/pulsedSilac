@@ -488,14 +488,14 @@ From this plot it can already be seen that the OW450 line has a much faster heav
 
 ## `scatterCompareAssays()`
 
-For `scatterCompareAssays()` it is necessary to separate the object into the two conditions that should be compared. The grey dash line indicates the identity line. To make it simpler, only the protein data will be used.
+For `scatterCompareAssays()` it is necessary to indicate which conditions should be compared. To make it simpler, only the protein data will be used.
 
 ```{r}
 
 protPE <- ProtExp(wormsPE)
 
-scatterCompareAssays(x = protPE[,1:7], 
-                     y = protPE[,8:14], 
+scatterCompareAssays(x = protPE, 
+                     conditions = c('OW40', 'OW450'), 
                      assayName = 'ratio')
 
 ```
@@ -504,8 +504,8 @@ This plot shows that the OW450 has a faster incorporation of heavy label than th
 
 ```{r}
 
-scatterCompareAssays(x = protPE[,1:7], 
-                     y = protPE[,8:14], 
+scatterCompareAssays(x = protPE, 
+                     conditions = c('OW40', 'OW450'),
                      assayName = 'int_total')
 
 ```

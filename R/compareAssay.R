@@ -7,8 +7,8 @@
 #'
 #' @param x A \code{ProteinExperiment}, \code{PeptideExperiment} or a
 #' \code{ProteomicsExperiment} object.
-#' @param y A \code{ProteinExperiment}, \code{PeptideExperiment} or a
-#' \code{ProteomicsExperiment} object.
+#' @param conditions A \code{character} of length 2 indicating which 2
+#' conditions should be compared.
 #' @param assayName Name of the assay to use in the plot.
 #' @param returnDataFrame A \code{logical} indicating if the \code{data.frame}
 #' used for the plot should be returned instead.
@@ -40,47 +40,58 @@ setGeneric('scatterCompareAssays', function(x, ...){
 #' @export
 setMethod('scatterCompareAssays', 'ProteinExperiment',
           function(x,
-                   y,
+                   conditions,
                    assayName,
                    returnDataFrame = FALSE,
                    conditionCol,
                    timeCol) {
 
+
+  ## argument checker ----------------------------------------------------------
   if (!assayName %in% names(assays(x))) {
     txt <- sprintf('%s not found in assay names', assayName)
     stop(txt)
   }
-
-  if (!assayName %in% names(assays(y))) {
-    txt <- sprintf('%s not found in assay names', assayName)
-    stop(txt)
-  }
-
-  ## count how many proteins per sample
-  mat.x <- assays(x)[[assayName]]
-  mat.y <- assays(y)[[assayName]]
-
   if (!missing(conditionCol)) {
     metaoptions(x)[['conditionCol']] <- conditionCol
-    metaoptions(y)[['conditionCol']] <- conditionCol
   }
   if (!missing(timeCol)) {
     metaoptions(x)[['timeCol']] <- timeCol
-    metaoptions(y)[['timeCol']] <- timeCol
+  }
+  if (length(conditions) != 2) {
+    stop('conditions must be a character vector of lenght 2')
   }
 
-  ## define the timepoints
-  if (!is.na(metaoptions(x)[['timeCol']])) {
-    timepoints.x <- colData(x)[, metaoptions(x)[['timeCol']]]
-  } else {
-    timepoints.x <- seq_len(nrow(colData(x)))
-  }
-  if (!is.na(metaoptions(y)[['timeCol']])) {
-    timepoints.y <- colData(y)[, metaoptions(y)[['timeCol']]]
-  } else {
-    timepoints.y <- seq_len(nrow(colData(y)))
+  ## data processing -----------------------------------------------------------
+  ## extract the matrix
+  mat <- assays(x)[[assayName]]
+
+  loopCols <- .loopWrapper(x, 'conditionCol')
+  if (length(loopCols) < 2) {
+    stop('There is only one condition, comparisons cannot be made')
   }
 
+  ## reduce loopCols to the two conditions
+  availableConditions <- names(loopCols)
+  if (!all(conditions %in% availableConditions)) {
+    txt <- c('The given conditions cannot be found, these are the',
+             'defined conditions: %s')
+    txt <- sprintf(paste(txt, collapse = ' '),
+                   paste(availableConditions, collapse = ', '))
+    stop(txt)
+  } else {
+    loopCols <- loopCols[match(names(loopCols), conditions)]
+  }
+
+  ## get the timepoints for each condition if possible
+  timeCol <- .giveMetaoption(x, 'timeCol')
+  if (is.null(timeCol)) {
+    timepoints.x <- seq_along(loopCols[[1]])
+    timepoints.y <- seq_along(loopCols[[2]])
+  } else {
+    timepoints.x <- colData(x)[loopCols[[1]], timeCol]
+    timepoints.y <- colData(x)[loopCols[[2]], timeCol]
+  }
 
   ## if timepoints do not match try to match them
   if (!all(timepoints.x == timepoints.y)) {
@@ -96,8 +107,8 @@ setMethod('scatterCompareAssays', 'ProteinExperiment',
   ## there are no matching timepoints error
   if (length(timepoints.x) == 0 | length(timepoints.y) == 0) {
 
-    timepoints.x <- colData(x)[,metaoptions(x)[['timeCol']]]
-    timepoints.y <- colData(y)[,metaoptions(y)[['timeCol']]]
+    timepoints.x <- colData(x)[, metaoptions(x)[['timeCol']]]
+    timepoints.y <- colData(y)[, metaoptions(y)[['timeCol']]]
 
     txt <- sprintf('The timepoints do not coincide: %s; %s.',
                    paste(timepoints.x, collapse = ', '),
@@ -106,44 +117,26 @@ setMethod('scatterCompareAssays', 'ProteinExperiment',
   }
 
   ## make a long format data.frame for plotting
-  for (t in seq_along(timepoints.x)) {
-    if (t == 1) {
-      tempList <- list()
-    }
-    tempDf <- data.frame(Cond1 = as.vector(mat.x[,t]),
-                         Cond2 = as.vector(mat.y[,t]),
-                         Time = timepoints.x[t])
-    tempList[[t]] <- tempDf
-  }
-  plotDf <- do.call('rbind', tempList)
+  plotDf <- data.frame(Cond1 = as.vector(mat[, loopCols[[1]]]),
+                       Cond2 = as.vector(mat[, loopCols[[2]]]),
+                       Time = rep(c(timepoints.x, timepoints.y),
+                                  each = nrow(mat)))
 
   ## remove NAs
   plotDf <- subset(plotDf, !is.na(plotDf$Cond1))
   plotDf <- subset(plotDf, !is.na(plotDf$Cond2))
 
-  ## if possible change the column names to the conditions
-  if (!is.na(metaoptions(x)[['conditionCol']])) {
-    conditionName1 <- unique(colData(x)[,metaoptions(x)[['conditionCol']]])
-    conditionName1 <- as.character(conditionName1)
-    colnames(plotDf)[1] <- conditionName1
-  } else {
-    conditionName1 <- 'Cond1'
-  }
-
-  if (!is.na(metaoptions(y)[['conditionCol']])) {
-    conditionName2 <- unique(colData(y)[,metaoptions(y)[['conditionCol']]])
-    conditionName2 <- as.character(conditionName2)
-    colnames(plotDf)[2] <- conditionName2
-  } else {
-    conditionName2 <- 'Cond2'
-  }
+  ## change column names to conditions
+  colnames(plotDf)[1:2] <- conditions
 
   if (returnDataFrame) {
     return(plotDf)
   }
 
+  ## plotting ------------------------------------------------------------------
+
   p <- ggplot(data = plotDf,
-              aes_string(x = conditionName1, y = conditionName2)) +
+              aes_string(x = conditions[1], y = conditions[2])) +
     geom_point() +
     geom_abline(slope = 1, intercept = 0, color = 'grey70', linetype = 2) +
     facet_wrap(~Time, nrow = 1)  +
@@ -157,7 +150,7 @@ setMethod('scatterCompareAssays', 'ProteinExperiment',
 #' @export
 setMethod('scatterCompareAssays', 'PeptideExperiment',
           function(x,
-                   y,
+                   conditions,
                    assayName,
                    returnDataFrame = FALSE,
                    conditionCol,
@@ -171,7 +164,7 @@ setMethod('scatterCompareAssays', 'PeptideExperiment',
 #' @export
 setMethod('scatterCompareAssays', 'ProteomicsExperiment',
           function(x,
-                   y,
+                   conditions,
                    assayName,
                    mode = 'protein',
                    returnDataFrame = FALSE,
@@ -181,20 +174,20 @@ setMethod('scatterCompareAssays', 'ProteomicsExperiment',
   if (mode == 'protein') {
 
     scatterCompareAssays(x = x@ProteinExperiment,
-                 y = y@ProteinExperiment,
-                 assayName = assayName,
-                 returnDataFrame = returnDataFrame,
-                 conditionCol = conditionCol,
-                 timeCol = timeCol)
+                         conditions = conditions,
+                         assayName = assayName,
+                         returnDataFrame = returnDataFrame,
+                         conditionCol = conditionCol,
+                         timeCol = timeCol)
 
   } else if (mode == 'peptide') {
 
     scatterCompareAssays(x = x@PeptideExperiment,
-                 y = y@PeptideExperiment,
-                 assayName = assayName,
-                 returnDataFrame = returnDataFrame,
-                 conditionCol = conditionCol,
-                 timeCol = timeCol)
+                         y = conditions,
+                         assayName = assayName,
+                         returnDataFrame = returnDataFrame,
+                         conditionCol = conditionCol,
+                         timeCol = timeCol)
   }
 
 })
