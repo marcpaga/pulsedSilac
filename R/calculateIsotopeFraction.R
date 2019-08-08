@@ -54,6 +54,8 @@ setMethod('calculateIsotopeFraction', 'ProteinExperiment',
                    lateTimepoints,
                    conditionCol) {
 
+  ## simple fraction calculation -----------------------------------------------
+  ## ratio/(ratio + 1)
   if (any(missing(oldIsoAssay), missing(newIsoAssay))) {
 
     ## argument check
@@ -67,7 +69,9 @@ setMethod('calculateIsotopeFraction', 'ProteinExperiment',
     return(x)
   }
 
-  ## argument check
+  ## advanced fraction calculation with intensity assays -----------------------
+
+  ## argument check ------------------------------------------------------------
   if (!oldIsoAssay %in% names(assays(x))) {
     txt <- sprintf('%s not found in assay names', oldIsoAssay)
     stop(txt)
@@ -76,32 +80,19 @@ setMethod('calculateIsotopeFraction', 'ProteinExperiment',
     txt <- sprintf('%s not found in assay names', newIsoAssay)
     stop(txt)
   }
-
-  old_int <- assays(x)[[oldIsoAssay]]
-  new_int <- assays(x)[[newIsoAssay]]
-  total_int <- old_int + new_int
-
   if (!missing(conditionCol)) {
     metaoptions(x)[['conditionCol']] <- conditionCol
   }
 
-  ## which columns belong to which experiment
-  loopCols <- tryCatch(
-    {
-      experimentLoopWrapper(x, 'cond.timerep')
+  ## data processing -----------------------------------------------------------
+  old_int <- assays(x)[[oldIsoAssay]]
+  new_int <- assays(x)[[newIsoAssay]]
+  total_int <- old_int + new_int
 
-    },
-    error = function(c){
-      tryCatch(
-        {
-          experimentLoopWrapper(x, 'cond')
-        },
-        error = function(c){
-          list(seq_len(ncol(x)))
-        }
-      )
-    }
-  )
+
+  ## loop for each condition since the early and late timepoints are relative
+  ## to them
+  loopCols <- .loopWrapper(x, 'conditionCol')
 
   for (i in seq_along(loopCols)) {
 
