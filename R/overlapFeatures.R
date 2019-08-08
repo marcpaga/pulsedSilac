@@ -146,7 +146,6 @@ setMethod('upsetTimeCoverage',
                    assayName,
                    maxMissing = 0,
                    conditionCol,
-                   replicateTimeCol,
                    returnList = FALSE,
                    ...) {
 
@@ -179,7 +178,7 @@ setMethod('upsetTimeCoverage',
                   conditionCol = conditionCol,
                   returnList = returnList,
                   ... = ...)
-  grid.edit('arrange', name='arrange2', redraw = FALSE)
+  grid.edit('arrange', name = 'arrange2', redraw = FALSE)
   vp1 <- grid.grab()
 
   upsetTimeCoverage(x@PeptideExperiment,
@@ -189,7 +188,7 @@ setMethod('upsetTimeCoverage',
                   returnList = returnList,
                   ... = ...)
 
-  grid.edit('arrange', name='arrange2', redraw = FALSE)
+  grid.edit('arrange', name = 'arrange2', redraw = FALSE)
   vp2 <- grid.grab()
 
 

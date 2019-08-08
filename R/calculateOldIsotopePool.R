@@ -36,7 +36,7 @@
 #' names(assays(missPE))[1:2] <- c('int_lys8lys8', 'int_lys8lys0')
 #' missPE <- calculateOldIsotopePool(x = missPE, 'int_lys8lys8', 'int_lys8lys0')
 #'
-#' plotAssay(missPE, assayName = 'oldIsotopePool')
+#' boxplotAssay(missPE, assayName = 'oldIsotopePool')
 #'
 #' @export
 setGeneric('calculateOldIsotopePool', function(x, ...){

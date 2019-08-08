@@ -84,9 +84,6 @@ setMethod('calculateIsotopeFraction', 'ProteinExperiment',
   if (!missing(conditionCol)) {
     metaoptions(x)[['conditionCol']] <- conditionCol
   }
-  if (!missing(replicateTimeCol)) {
-    metaoptions(x)[['replicateTimeCol']] <- replicateTimeCol
-  }
 
   ## which columns belong to which experiment
   loopCols <- tryCatch(
