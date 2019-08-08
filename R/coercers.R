@@ -63,17 +63,3 @@ setAs('ProteinExperiment', 'data.frame',
       }
 )
 
-#' @rdname ProteinPeptideExperiment-accessors
-#' @name coerce
-#' @aliases coerce,SummarizedExperiment,ProteinExperiment-method
-#' @exportMethod coerce
-setAs('ProteinExperiment', 'SummarizedExperiment',
-      function(from){
-
-        ProteinExperiment(assays = assays(from),
-                          rowData = rowData(from),
-                          colData = colData(from),
-                          metadata = metadata(from))
-
-      }
-)
