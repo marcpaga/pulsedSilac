@@ -31,6 +31,7 @@
 #' @param metadata A \code{list} to store any kind of experiment-wide
 #' data; like authors, dates, machines used... If not provided uses the metadata
 #' from the \code{ProteinExperiment} and \code{PeptideExperiment}.
+#' @param metaoptions A \code{list} to store user defined metaoptions.
 #'
 #' @return An object of class \code{ProteomicsExperiment}.
 #'
@@ -95,6 +96,7 @@ ProteomicsExperiment <- function(ProteinExperiment,
                                  colData,
                                  linkerDf,
                                  metadata,
+                                 metaoptions = NULL,
                                  idColProt = NA,
                                  idColPept = NA,
                                  linkedSubset = TRUE,
@@ -154,8 +156,14 @@ ProteomicsExperiment <- function(ProteinExperiment,
     colData <- DataFrame(colData)
   }
 
-  metaoptions <- mergeMetaoptions(PEmetaoptions, ProteinExperiment@metaoptions)
-  metaoptions <- mergeMetaoptions(metaoptions, PeptideExperiment@metaoptions)
+  metaoptions_input <- mergeMetaoptions(PEmetaoptions,
+                                        ProteinExperiment@metaoptions)
+  metaoptions_input <- mergeMetaoptions(metaoptions_input,
+                                        PeptideExperiment@metaoptions)
+
+  if (!is.null(metaoptions) & is.list(metaoptions)) {
+    metaoptions_input <- c(metaoptions_input, metaoptions)
+  }
 
   PE <- new(Class = 'ProteomicsExperiment',
             ProteinExperiment = ProteinExperiment,
@@ -163,7 +171,7 @@ ProteomicsExperiment <- function(ProteinExperiment,
             colData = colData,
             linkerDf = linkerDf,
             metadata = metadata,
-            metaoptions = metaoptions)
+            metaoptions = metaoptions_input)
 
   PE <- synchronizeMetaoptions(PE)
 

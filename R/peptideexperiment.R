@@ -17,6 +17,7 @@
 #' in rowData(x) that defines to which protein a peptide is assigned.
 #' @param metadata A \code{list} to store any kind of experiment-wide
 #' data; like authors, dates, machines used...
+#' @param metaoptions A \code{list} to store user defined metaoptions.
 #'
 #' @return An object of class \code{PeptideExperiment}.
 #'
@@ -53,20 +54,22 @@ PeptideExperiment <- function(assays,
                               conditionCol = NA,
                               timeCol = NA,
                               proteinCol = NA,
-                              metadata = NULL) {
+                              metadata = NULL,
+                              metaoptions = NULL) {
 
-  ## initialize the metadata
-  metaoptions <- list(conditionCol = conditionCol,
-                      timeCol = timeCol,
-                      proteinCol = proteinCol)
-
+  if (!is.null(metaoptions) & is.list(metaoptions)) {
+    metaoptions_init <-  metaoptions
+  } else {
+    metaoptions_init <- list()
+  }
 
   pe <- ProteinExperiment(assays = assays,
                           colData = colData,
                           rowData = rowData,
                           metadata = metadata,
                           conditionCol = conditionCol,
-                          timeCol = timeCol)
+                          timeCol = timeCol,
+                          metaoptions = metaoptions_init)
 
   metaoptions(pe)[['proteinCol']] <- proteinCol
   pe <- .PeptideExperiment(pe)

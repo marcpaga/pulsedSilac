@@ -83,5 +83,23 @@ test_that("constructor works", {
                                            colData = colData,
                                            metadata = list(author = 'me', timeCol = 2),
                                            conditionCol = 1))
+
+  ## user metaoptions
+  expect_silent(proExp <- ProteinExperiment(assays = assays_list,
+                                            rowData = rowData,
+                                            colData = colData,
+                                            metadata = list(author = 'me', timeCol = 2),
+                                            conditionCol = 1,
+                                            metaoptions = list(a = 1)))
+  expect_length(metaoptions(proExp), 3)
+  expect_named(metaoptions(proExp), c('conditionCol', 'timeCol', 'a'), ignore.order = TRUE)
+
+  expect_error(proExp <- ProteinExperiment(assays = assays_list,
+                                           rowData = rowData,
+                                           colData = colData,
+                                           metadata = list(author = 'me', timeCol = 2),
+                                           conditionCol = 1,
+                                           metaoptions = list(timeCol = 1)))
+
 })
 
