@@ -64,6 +64,7 @@ setMethod('barplotCounts',
   ## process if there are multiple conditions and rename columns for plotting
   mOptColName <- .giveMetaoption(x, 'conditionCol')
   plotDf <- .processColDataPlot(plotDf, mOptColName, 'condition')
+  plotDf$condition <- as.factor(plotDf$condition)
 
   plotDf$rownames <- factor(rownames(plotDf), levels = rownames(plotDf))
   ## early return without plot
