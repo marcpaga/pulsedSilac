@@ -1,5 +1,5 @@
-#' @rdname overlapFeatures
-#' @name overlapFeatures
+#' @rdname upsetTimeCoverage
+#' @name upsetTimeCoverage
 #' @title Number of detected features per sample
 #'
 #' @description How many proteins/peptides are detected in each sample. Anything
@@ -22,20 +22,20 @@
 #'
 #' @examples
 #'
-#' overlapFeatures(x = ProtExp(wormsPE),
+#' upsetTimeCoverage(x = ProtExp(wormsPE),
 #'                 assayName = 'ratio',
 #'                 maxMissing = 2)
 #'
 #' @importFrom UpSetR fromList upset
 #' @importFrom cowplot plot_grid
 #' @export
-setGeneric('overlapFeatures', function(x, ...){
-  standardGeneric('overlapFeatures')
+setGeneric('upsetTimeCoverage', function(x, ...){
+  standardGeneric('upsetTimeCoverage')
 })
 
-#' @rdname overlapFeatures
+#' @rdname upsetTimeCoverage
 #' @export
-setMethod('overlapFeatures',
+setMethod('upsetTimeCoverage',
           'ProteinExperiment',
           function(x,
                    assayName,
@@ -126,9 +126,9 @@ setMethod('overlapFeatures',
 
 })
 
-#' @rdname overlapFeatures
+#' @rdname upsetTimeCoverage
 #' @export
-setMethod('overlapFeatures',
+setMethod('upsetTimeCoverage',
           'PeptideExperiment',
           function(x,
                    assayName,
@@ -142,11 +142,11 @@ setMethod('overlapFeatures',
 
 })
 
-#' @rdname overlapFeatures
+#' @rdname upsetTimeCoverage
 #' @importFrom grid grid.edit
 #' @importFrom grid grid.grab
 #' @export
-setMethod('overlapFeatures',
+setMethod('upsetTimeCoverage',
           'ProteomicsExperiment',
           function(x,
                    assayName,
@@ -157,7 +157,7 @@ setMethod('overlapFeatures',
                    ...) {
 
   if (returnList) {
-    prot_plot <- overlapFeatures(x@ProteinExperiment,
+    prot_plot <- upsetTimeCoverage(x@ProteinExperiment,
                                  assayName = assayName,
                                  maxMissing = maxMissing,
                                  conditionCol = conditionCol,
@@ -165,7 +165,7 @@ setMethod('overlapFeatures',
                                  returnList = returnList,
                                  ... = ...)
 
-    pept_plot <- overlapFeatures(x@PeptideExperiment,
+    pept_plot <- upsetTimeCoverage(x@PeptideExperiment,
                                  assayName = assayName,
                                  maxMissing = maxMissing,
                                  conditionCol = conditionCol,
@@ -181,7 +181,7 @@ setMethod('overlapFeatures',
   ## upsetPlots cannot be saved into a variable, therefore this grid trick
   ## has to be used for side by side plotting
 
-  overlapFeatures(x@ProteinExperiment,
+  upsetTimeCoverage(x@ProteinExperiment,
                   assayName = assayName,
                   maxMissing = maxMissing,
                   conditionCol = conditionCol,
@@ -191,7 +191,7 @@ setMethod('overlapFeatures',
   grid.edit('arrange', name='arrange2', redraw = FALSE)
   vp1 <- grid.grab()
 
-  overlapFeatures(x@PeptideExperiment,
+  upsetTimeCoverage(x@PeptideExperiment,
                   assayName = assayName,
                   maxMissing = maxMissing,
                   conditionCol = conditionCol,

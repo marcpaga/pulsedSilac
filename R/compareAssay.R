@@ -1,5 +1,5 @@
-#' @rdname compareAssay
-#' @name compareAssay
+#' @rdname scatterCompareAssays
+#' @name scatterCompareAssays
 #' @title Scatter plot of two conditions for each timepoint of an assay.
 #'
 #' @description Scatter plot of two conditions/replicates for a selected assay.
@@ -25,20 +25,20 @@
 #' instead in the plot.
 #'
 #' @examples
-#' compareAssay(x = wormsPE[, 1:7],
+#' scatterCompareAssays(x = wormsPE[, 1:7],
 #'              y = wormsPE[, 8:14],
 #'              assayName = 'ratio',
 #'              mode = 'protein')
 #'
 #' @import ggplot2
 #' @export
-setGeneric('compareAssay', function(x, ...){
-  standardGeneric('compareAssay')
+setGeneric('scatterCompareAssays', function(x, ...){
+  standardGeneric('scatterCompareAssays')
 })
 
-#' @rdname compareAssay
+#' @rdname scatterCompareAssays
 #' @export
-setMethod('compareAssay', 'ProteinExperiment',
+setMethod('scatterCompareAssays', 'ProteinExperiment',
           function(x,
                    y,
                    assayName,
@@ -153,9 +153,9 @@ setMethod('compareAssay', 'ProteinExperiment',
 
 })
 
-#' @rdname compareAssay
+#' @rdname scatterCompareAssays
 #' @export
-setMethod('compareAssay', 'PeptideExperiment',
+setMethod('scatterCompareAssays', 'PeptideExperiment',
           function(x,
                    y,
                    assayName,
@@ -167,9 +167,9 @@ setMethod('compareAssay', 'PeptideExperiment',
 
 })
 
-#' @rdname compareAssay
+#' @rdname scatterCompareAssays
 #' @export
-setMethod('compareAssay', 'ProteomicsExperiment',
+setMethod('scatterCompareAssays', 'ProteomicsExperiment',
           function(x,
                    y,
                    assayName,
@@ -180,7 +180,7 @@ setMethod('compareAssay', 'ProteomicsExperiment',
 
   if (mode == 'protein') {
 
-    compareAssay(x = x@ProteinExperiment,
+    scatterCompareAssays(x = x@ProteinExperiment,
                  y = y@ProteinExperiment,
                  assayName = assayName,
                  returnDataFrame = returnDataFrame,
@@ -189,7 +189,7 @@ setMethod('compareAssay', 'ProteomicsExperiment',
 
   } else if (mode == 'peptide') {
 
-    compareAssay(x = x@PeptideExperiment,
+    scatterCompareAssays(x = x@PeptideExperiment,
                  y = y@PeptideExperiment,
                  assayName = assayName,
                  returnDataFrame = returnDataFrame,

@@ -1,5 +1,5 @@
-#' @rdname plotAssay
-#' @name plotAssay
+#' @rdname boxplotAssay
+#' @name boxplotAssay
 #' @title Distribution of assay data per condition and timepoint.
 #'
 #' @description Plot the distribution of the data stored in an assay using
@@ -27,18 +27,18 @@
 #' plotted.
 #'
 #' @examples
-#' plotAssay(wormsPE, assayName = 'ratio')
+#' boxplotAssay(wormsPE, assayName = 'ratio')
 #'
 #' @importFrom ggridges geom_density_ridges
 #' @import ggplot2
 #' @export
-setGeneric('plotAssay', function(x, ...){
-  standardGeneric('plotAssay')
+setGeneric('boxplotAssay', function(x, ...){
+  standardGeneric('boxplotAssay')
 })
 
-#' @rdname plotAssay
+#' @rdname boxplotAssay
 #' @export
-setMethod('plotAssay', 'ProteinExperiment',
+setMethod('boxplotAssay', 'ProteinExperiment',
           function(x,
                    assayName,
                    plotType = 'boxplot',
@@ -162,9 +162,9 @@ setMethod('plotAssay', 'ProteinExperiment',
 
 })
 
-#' @rdname plotAssay
+#' @rdname boxplotAssay
 #' @export
-setMethod('plotAssay', 'PeptideExperiment',
+setMethod('boxplotAssay', 'PeptideExperiment',
           function(x,
                    assayName,
                    plotType = 'boxplot',
@@ -177,9 +177,9 @@ setMethod('plotAssay', 'PeptideExperiment',
 
 })
 
-#' @rdname plotAssay
+#' @rdname boxplotAssay
 #' @export
-setMethod('plotAssay', 'ProteomicsExperiment',
+setMethod('boxplotAssay', 'ProteomicsExperiment',
           function(x,
                    assayName,
                    mode = 'protein',
@@ -191,7 +191,7 @@ setMethod('plotAssay', 'ProteomicsExperiment',
 
   if (mode == 'protein') {
 
-    plotAssay(x = x@ProteinExperiment,
+    boxplotAssay(x = x@ProteinExperiment,
               assayName = assayName,
               plotType = plotType,
               returnDataFrame = returnDataFrame,
@@ -201,7 +201,7 @@ setMethod('plotAssay', 'ProteomicsExperiment',
 
   } else if (mode == 'peptide') {
 
-    plotAssay(x = x@PeptideExperiment,
+    boxplotAssay(x = x@PeptideExperiment,
               assayName = assayName,
               plotType = plotType,
               returnDataFrame = returnDataFrame,

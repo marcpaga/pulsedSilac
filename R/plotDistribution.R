@@ -1,13 +1,14 @@
+#' @name plotDistributionModel
 #' @title Distribution of modelling output
 #'
 #' @description Plot the distribution of the different model parameters and
 #' metrics for each condition.
 #'
 #' @param modelList A list containing all the model objects, this should be the
-#' output of \code{\link{modelTurnover}} with returnModel as TRUE.
+#' output of \code{\link{modelTurnover}}.
 #' @param value A \code{character} indicating which metric to plot: 'parameter',
-#' 'error', 'residuals', 'weights', 'aicvalue' or 'aicprobabilities'.
-#' (default = 'parameter')
+#' 'error', 'residuals', 'weights', 'aicvalue' or 'aicprobabilities'. Check
+#' \code{names(modelList)} for available options. (Default = 'paramater')
 #' @param plotType A \code{character} indicating which geometry to plot:
 #' 'boxplot' or 'density'. (default = 'density')
 #' @param returnDataFrame A \code{logical} indicating if the \code{data.frame}
@@ -28,14 +29,14 @@
 #'                            robust = FALSE,
 #'                            returnModel = TRUE)
 #'
-#' plotDistribution(modelList = modelList,
-#'                  value = 'error',
-#'                  plotType = 'density')
+#' plotDistributionModel(modelList = modelList,
+#'                       value = 'error',
+#'                       plotType = 'density')
 #'
 #' @export
 #' @import ggplot2
 #' @importFrom ggridges geom_density_ridges
-plotDistribution <- function(modelList,
+plotDistributionModel <- function(modelList,
                              value = 'parameter',
                              plotType = 'density',
                              returnDataFrame = FALSE) {

@@ -17,19 +17,6 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
 ---
 
-# TODO
-
-- Optimize modelTurnover code
-- Compare plots
-- Add rownames and colnames support
-- Add support for one condition 
-- Improve repetitive code
-- Add more comments
-- Improve getMetaoptions system
-- Add more tests
-- Add SummarizedExperiment to our experiments coercer
-- Add function to calculate half life (rootSolve)
-
 # Introduction
 
 SILAC (Stable Isotope Label by Amino acids in Cell culture) is a method to differentially compare protein expression between samples. To measure protein turnover, the SILAC technique is applied over time by changing the medium and harvesting the cells at different time points. Each sample is then analyzed by mass spectrometry. The isotope ratio at each time point can then be used to calculate the turnover rate of each measured protein. 
@@ -384,10 +371,10 @@ The dataset contains only the first 250 proteins and their corresponding peptide
 
 ## Measurements across time
 
-To model a protein's turnover several timepoints are required. Ideally a protein would be measured in all the timepoints of the experiment, but this is rarely the case. To count how many proteins/peptides have been measured in each sample the `barplotFeaturesCounts()` can be used.
+To model a protein's turnover several timepoints are required. Ideally a protein would be measured in all the timepoints of the experiment, but this is rarely the case. To count how many proteins/peptides have been measured in each sample the `barplotCounts()` can be used.
 
 ```{r}
-barplotFeaturesCounts(wormsPE, assayName = 'ratio')
+barplotCounts(wormsPE, assayName = 'ratio')
 ```
 
 There is some variability between samples but nothing too extreme. More importantly is knowing if a protein has been measured across different timepoints. The function `barplotTimeCoverage()` can be used to visualize in how many timepoints each protein has been measured per condition.
@@ -411,13 +398,13 @@ barplotTimeCoverage(wormsPE2, assayName = 'ratio')
 
 ```
 
-Because `strict` is set to `FALSE`, there are still some proteins that have been detected in less than 5 timepoints in one of the conditions. To visualize the overlap between conditions, the `overlapFeatures()` function can be used. This can be specially useful when more the experiment contains more than two conditions. Here the overlap of proteins is shown.
+Because `strict` is set to `FALSE`, there are still some proteins that have been detected in less than 5 timepoints in one of the conditions. To visualize the overlap between conditions, the `upsetTimeCoverage()` function can be used. This can be specially useful when more the experiment contains more than two conditions. Here the overlap of proteins is shown.
 
 ```{r}
 
-overlapFeatures(ProtExp(wormsPE2), 
-                assayName = 'ratio', 
-                maxMissing = 2)
+upsetTimeCoverage(ProtExp(wormsPE2), 
+                  assayName = 'ratio', 
+                  maxMissing = 2)
 
 ```
 
@@ -489,29 +476,29 @@ wormsPE <- calculateIsotopeFraction(wormsPE,
 
 # Plotting assays
 
-To visualize data stored in the `assays` slot there are two functions `plotAssay()` and `compareAssay()`. The first one will plot the distributions of the data for a selected assay for each timepoint and condition. The latter will plot each protein/peptide value of a condition against the other for each timepoint.
+To visualize data stored in the `assays` slot there are two functions `boxplotAssay()` and `scatterCompareAssays()`. The first one will plot the distributions of the data for a selected assay for each timepoint and condition. The latter will plot each protein/peptide value of a condition against the other for each timepoint.
 
-## `plotAssay()`
+## `boxplotAssay()`
 
 ```{r, warning = FALSE}
 
-plotAssay(wormsPE, assayName = 'fraction')
+boxplotAssay(wormsPE, assayName = 'fraction')
 
 ```
 
 From this plot it can already be seen that the OW450 line has a much faster heavy label incorporation that the OW40 line.
 
-## `compareAssay()`
+## `scatterCompareAssays()`
 
-For `compareAssay()` it is necessary to separate the object into the two conditions that should be compared. The grey dash line indicates the identity line. To make it simpler, only the protein data will be used.
+For `scatterCompareAssays()` it is necessary to separate the object into the two conditions that should be compared. The grey dash line indicates the identity line. To make it simpler, only the protein data will be used.
 
 ```{r}
 
 protPE <- ProtExp(wormsPE)
 
-compareAssay(x = protPE[,1:7], 
-             y = protPE[,8:14], 
-             assayName = 'ratio')
+scatterCompareAssays(x = protPE[,1:7], 
+                     y = protPE[,8:14], 
+                     assayName = 'ratio')
 
 ```
 
@@ -519,9 +506,9 @@ This plot shows that the OW450 has a faster incorporation of heavy label than th
 
 ```{r}
 
-compareAssay(x = protPE[,1:7], 
-             y = protPE[,8:14], 
-             assayName = 'int_total')
+scatterCompareAssays(x = protPE[,1:7], 
+                     y = protPE[,8:14], 
+                     assayName = 'int_total')
 
 ```
 
@@ -604,7 +591,7 @@ plotIndividualModel(x = wormsPE,
 
 ### Distributions
 
-To plot the overall distributions of the model metrics per condition the `plotDistribution` function can be used. This can show global changes between conditions and/or can be used for quality control. Some metrics that might be interesting to check are the R<sup>2</sup> error of the models, the estimated parameters, the residuals and the weights (only for robust modelling).
+To plot the overall distributions of the model metrics per condition the `plotDistributionModel` function can be used. This can show global changes between conditions and/or can be used for quality control. Some metrics that might be interesting to check are the R<sup>2</sup> error of the models, the estimated parameters, the residuals and the weights (only for robust modelling).
 
 In this case, both the outputs of `modelTurnover()` with `returnModel = TRUE` or with `returnModel = FALSE` will work.
 
@@ -626,7 +613,7 @@ This plot shows the distribution of the error of all the models for each conditi
 
 ```{r, warning = FALSE, message = FALSE}
 
-plotDistribution(modelList = modelList,
+plotDistributionModel(modelList = modelList,
                  value = 'error',
                  plotType = 'density')
 
@@ -638,7 +625,7 @@ This plot shows the distribution of the values for every fitted parameter. In th
 
 ```{r, warning = FALSE, message = FALSE}
 
-plotDistribution(modelList = modelList,
+plotDistributionModel(modelList = modelList,
                  value = 'parameter',
                  plotType = 'density')
 
@@ -650,9 +637,9 @@ This plot shows the distribution of residuals at each timepoint for each conditi
 
 ```{r, warning = FALSE, message = FALSE}
 
-plotDistribution(modelList = modelList,
-                 value = 'residuals',
-                 plotType = 'density')
+plotDistributionModel(modelList = modelList,
+                      value = 'residuals',
+                      plotType = 'density')
 
 ```
 
@@ -662,11 +649,15 @@ This plot shows the distribution of weights at each timepoint for each condition
 
 ```{r, warning = FALSE, message = FALSE}
 
-plotDistribution(modelList = modelList,
-                 value = 'weights',
-                 plotType = 'density')
+plotDistributionModel(modelList = modelList,
+                      value = 'weights',
+                      plotType = 'density')
 
 ```
+
+### Comparing conditions
+
+To plot protein/peptide values 
 
 ## Comparing models
 
@@ -700,7 +691,7 @@ names(modelList)
 
 ```{r, warning = FALSE, message = FALSE}
 
-plotDistribution(modelList, value = 'aicvalue')
+plotDistributionModel(modelList, value = 'aicvalue')
 
 ```
 
@@ -741,9 +732,9 @@ Here is an small example in which two different models have been applied.
 
 modelProbabilities <- compareAIC(modelList1, modelList2)
 
-plotDistribution(modelList = modelProbabilities, 
-                 value = 'aicprobabilities', 
-                 returnDataFrame = FALSE)
+plotDistributionModel(modelList = modelProbabilities, 
+                      value = 'aicprobabilities', 
+                      returnDataFrame = FALSE)
 
 ```
 
@@ -773,7 +764,7 @@ This can be appreciated if the heavy label fraction is plotted over time for the
 
 ```{r, warning = FALSE}
 
-plotAssay(mefPE, assayName = 'fraction')
+boxplotAssay(mefPE, assayName = 'fraction')
 
 ```
 
@@ -802,7 +793,7 @@ stableModels  <- modelTurnover(x = stablePE,
                                robust = FALSE,
                                returnModel = FALSE)
 
-plotDistribution(stableModels, value = 'parameter', plotType = 'boxplot')
+plotDistributionModel(stableModels, value = 'parameter', plotType = 'boxplot')
 
 ```
 
@@ -863,9 +854,9 @@ With doubling time correction:
 
 ```{r, warning = FALSE}
 
-plotDistribution(modelList = modelsMef,
-                 value = 'parameter',
-                 plotType = 'density') 
+plotDistributionModel(modelList = modelsMef,
+                      value = 'parameter',
+                      plotType = 'density') 
 
 ```
 
@@ -873,10 +864,10 @@ Without doubling time correction:
 
 ```{r, warning = FALSE}
 
-plotDistribution(modelList = modelsNoCorrect,
-                 value = 'parameter',
-                 plotType = 'density') 
-
+plotDistributionModel(modelList = modelsNoCorrect,
+                      value = 'parameter',
+                      plotType = 'density') 
+ 
 ```
 
 # Isotope recycling estimation
@@ -922,7 +913,7 @@ missPE <- calculateOldIsotopePool(x = missPE, 'int_lys8lys8', 'int_lys8lys0')
 Finally the distributions of these pools can be shown in a boxplot.
 
 ```{r}
-plotAssay(missPE, assayName = 'oldIsotopePool')
+boxplotAssay(missPE, assayName = 'oldIsotopePool')
 ```
 
 With this, the supplemental figure 6B of @Visscher2016 can be reproduced.

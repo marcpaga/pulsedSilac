@@ -1,5 +1,5 @@
-#' @rdname barplotFeaturesCounts
-#' @name barplotFeaturesCounts
+#' @rdname barplotCounts
+#' @name barplotCounts
 #' @title Number of detected features per sample
 #'
 #' @description How many proteins/peptides are detected in each sample. Anything
@@ -17,15 +17,15 @@
 #' @import ggplot2
 #' @export
 #' @examples
-#' barplotFeaturesCounts(wormsPE, assayName = 'ratio')
-setGeneric('barplotFeaturesCounts', function(x, ...){
-  standardGeneric('barplotFeaturesCounts')
+#' barplotCounts(wormsPE, assayName = 'ratio')
+setGeneric('barplotCounts', function(x, ...){
+  standardGeneric('barplotCounts')
 })
 
 
-#' @rdname barplotFeaturesCounts
+#' @rdname barplotCounts
 #' @export
-setMethod('barplotFeaturesCounts',
+setMethod('barplotCounts',
           'ProteinExperiment',
           function(x,
                    assayName,
@@ -107,9 +107,9 @@ setMethod('barplotFeaturesCounts',
 
 
 
-#' @rdname barplotFeaturesCounts
+#' @rdname barplotCounts
 #' @export
-setMethod('barplotFeaturesCounts',
+setMethod('barplotCounts',
           'PeptideExperiment',
           function(x,
                    assayName,
@@ -120,21 +120,21 @@ setMethod('barplotFeaturesCounts',
 
 })
 
-#' @rdname barplotFeaturesCounts
+#' @rdname barplotCounts
 #' @export
-setMethod('barplotFeaturesCounts',
+setMethod('barplotCounts',
           'ProteomicsExperiment',
           function(x,
                    assayName,
                    returnDataFrame = FALSE,
                    conditionCol) {
 
-  protPart <- barplotFeaturesCounts(x = x@ProteinExperiment,
+  protPart <- barplotCounts(x = x@ProteinExperiment,
                                     assayName = assayName,
                                     return = TRUE,
                                     conditionCol = conditionCol)
 
-  peptPart <- barplotFeaturesCounts(x = x@PeptideExperiment,
+  peptPart <- barplotCounts(x = x@PeptideExperiment,
                                     assayName = assayName,
                                     return = TRUE,
                                     conditionCol = conditionCol)
