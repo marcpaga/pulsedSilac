@@ -1,5 +1,6 @@
 #' @rdname barplotCounts
 #' @name barplotCounts
+#'
 #' @title Number of detected features per sample
 #'
 #' @description How many proteins/peptides are detected in each sample.

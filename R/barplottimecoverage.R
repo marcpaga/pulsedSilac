@@ -1,5 +1,6 @@
 #' @rdname barplotTimeCoverage
 #' @name barplotTimeCoverage
+#'
 #' @title Number of detected features per sample
 #'
 #' @description How many proteins/peptides are detected in each sample. Anything
@@ -15,6 +16,7 @@
 #' @param ... Unused.
 #'
 #' @return A barplot or a \code{data.frame}.
+#'
 #' @examples
 #'
 #' barplotTimeCoverage(wormsPE, assayName = 'ratio')
@@ -34,113 +36,81 @@ setMethod('barplotTimeCoverage',
                    returnDataFrame = FALSE,
                    conditionCol) {
 
+  ## argument checking ---------------------------------------------------------
+
   if (!assayName %in% names(assays(x))) {
     txt <- sprintf('%s not found in assay names', assayName)
     stop(txt)
   }
 
-  ## assay used for the plotting
-  mat <- assays(x)[[assayName]]
-
-  ## if the metaoptions are not given, try to get them from the slot
-  ## if there are also not present, then the plot does not take into account
-  ## conditions.
+  ## if metaoption given as argument put them in the object
   if (!missing(conditionCol)) {
     metaoptions(x)[['conditionCol']] <- conditionCol
-  }
-
-
-  ## use trycatch since giveMetaoption raises and error if it does not find it,
-  ## but for plotting metaoptions are not strictly necessary
-  ## first it tries to get both condition and time replicates, if it fails then
-  ## only condition and if it fails then all the samples are grouped together
-  outList <- tryCatch(
-    {
-      loopCols <- experimentLoopWrapper(x, 'cond.timerep')
-
-      condCol <- giveMetaoption(x, 'conditionCol')
-      timeRepCol <- giveMetaoption(x, 'replicateTimeCol')
-
-      plotCol <- unique(paste(colData(x)[, condCol],
-                       colData(x)[, timeRepCol], sep = '.'))
-
-      list(loopCols = loopCols, plotCol = plotCol)
-    },
-    error = function(c){
-      tryCatch(
-        {
-          loopCols <- experimentLoopWrapper(x, 'cond')
-          condCol <- giveMetaoption(x, 'conditionCol')
-          plotCol <- unique(colData(x)[, condCol])
-
-          list(loopCols = loopCols, plotCol = plotCol)
-        },
-        error = function(c){
-          loopCols <- list(seq_len(ncol(x)))
-          plotCol <- NA
-          list(loopCols = loopCols, plotCol = plotCol)
-        }
-      )
-    }
-  )
-
-  loopCols <- outList[[1]]
-
-  for (i in seq_along(loopCols)) {
-    if (i == 1) {
-      plotDfList <- list()
-    }
-
-    plotDf <- data.frame()
-
-    counts <- apply(mat[, loopCols[[i]]], 1, function(x) sum(!is.na(x)))
-    plotDf <- data.frame(table(counts))
-    plotDf$group <- rep(outList[[2]][i], nrow(plotDf))
-
-    plotDfList[[i]] <- plotDf
-
-    if (i == length(loopCols)) {
-      plotDf <- do.call('rbind', plotDfList)
-    }
-
-  }
-
-
-  ## early return without plot
-  if (returnDataFrame) {
-    return(plotDf)
   }
 
   ## cb palette
   cbPalette <- c("#E69F00", "#56B4E9", "#009E73",
                  "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 
+  ## data processing -----------------------------------------------------------
 
-  ## plot with fill depending if we have the conditionCol column
-  if (all(is.na(plotDf$group))) {
+  ## assay used for the plotting
+  mat <- assays(x)[[assayName]]
+
+  ## get which columns belong to each condition
+  loopCols <- .loopWrapper(x, 'conditionCol')
+
+  ## count missing non-missing values per condition
+  for (i in seq_along(loopCols)) {
+    if (i == 1) {
+      plotDfList <- list()
+    }
+    plotDf <- data.frame()
+
+    counts <- apply(mat[, loopCols[[i]]], 1, function(x) sum(!is.na(x)))
+    plotDf <- data.frame(table(counts))
+    if (is.null(names(loopCols))) {
+      plotDf$condition <- as.factor(NA)
+    } else {
+      plotDf$condition <- as.factor(names(loopCols)[i])
+    }
+    plotDfList[[i]] <- plotDf
+
+    if (i == length(loopCols)) {
+      plotDf <- do.call('rbind', plotDfList)
+    }
+  }
+
+  ## early return without plot
+  if (returnDataFrame) {
+    return(plotDf)
+  }
+
+  ## plotting ------------------------------------------------------------------
+
+  ## there is one condition or not specified
+  if (all(is.na(plotDf$condition))) {
     ggplot(data = plotDf,
-           aes_string(x = 'counts',
-                      y = 'Freq')) +
+           mapping = aes_string(x = 'counts',
+                                y = 'Freq')) +
       geom_bar(stat = 'identity') +
       xlab('Timepoints') +
       ylab('Counts') +
       theme(panel.border = element_rect(fill = NA)) +
       scale_fill_manual(values = cbPalette) +
       theme_bw()
+
+  ## there is more than one condition
   } else {
-
-    colname <- giveMetaoption(x, 'conditionCol')
-    oldname <- colnames(plotDf)[colnames(plotDf) == colname]
-
     ggplot(data = plotDf,
-           aes_string(x = 'counts',
-                     y = 'Freq', fill = 'group')) +
+           mapping = aes_string(x = 'counts',
+                                y = 'Freq',
+                                fill = 'condition')) +
       geom_bar(stat = 'identity', position = position_dodge()) +
       xlab('Timepoints') +
       ylab('Counts') +
       theme(panel.border = element_rect(fill = NA)) +
       scale_fill_manual(values = cbPalette) +
-      labs(fill = oldname) +
       theme_bw()
   }
 
@@ -169,6 +139,10 @@ setMethod('barplotTimeCoverage',
                    returnDataFrame = FALSE,
                    conditionCol) {
 
+  ## cb palette
+  cbPalette <- c("#E69F00", "#56B4E9", "#009E73",
+                 "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+
   protPart <- barplotTimeCoverage(x = x@ProteinExperiment,
                                   assayName = assayName,
                                   returnDataFrame = TRUE,
@@ -195,14 +169,12 @@ setMethod('barplotTimeCoverage',
     return(plotDf)
   }
 
-  ## cb palette
-  cbPalette <- c("#E69F00", "#56B4E9", "#009E73",
-                 "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+  ## only one condition or not specified
+  if (all(is.na(plotDf$condition))) {
 
-  if (all(is.na(plotDf$group))) {
     ggplot(data = plotDf,
-           aes_string(x = 'counts',
-                      y = 'Freq')) +
+           mapping = aes_string(x = 'counts',
+                                y = 'Freq')) +
       geom_bar(stat = 'identity') +
       xlab('Timepoints') +
       ylab('Counts') +
@@ -210,10 +182,13 @@ setMethod('barplotTimeCoverage',
       scale_fill_manual(values = cbPalette) +
       facet_wrap(~mode, scales = 'free') +
       theme_bw()
+
+  ## more than one condition
   } else {
     ggplot(data = plotDf,
-           aes_string(x = 'counts',
-                      y = 'Freq', fill = 'group')) +
+           mapping = aes_string(x = 'counts',
+                                y = 'Freq',
+                                fill = 'condition')) +
       geom_bar(stat = 'identity', position = position_dodge()) +
       xlab('Timepoints') +
       ylab('Counts') +
