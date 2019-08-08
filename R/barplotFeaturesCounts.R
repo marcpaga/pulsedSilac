@@ -2,8 +2,8 @@
 #' @name barplotCounts
 #' @title Number of detected features per sample
 #'
-#' @description How many proteins/peptides are detected in each sample. Anything
-#' else than NA is considered detected.
+#' @description How many proteins/peptides are detected in each sample.
+#' \code{NA} are considered missing values.
 #'
 #' @param x A \code{ProteinExperiment}, \code{PeptideExperiment} or a
 #' \code{ProteomicsExperiment} object.
@@ -13,11 +13,14 @@
 #' @param conditionCol A \code{character}, which indicates the column name
 #' in colData(x) that defines the different experiment conditions.
 #' @param ... Unused.
+#'
 #' @return A ggplot2 barplot object or a \code{data.frame}.
-#' @import ggplot2
-#' @export
+#'
 #' @examples
 #' barplotCounts(wormsPE, assayName = 'ratio')
+#'
+#' @import ggplot2
+#' @export
 setGeneric('barplotCounts', function(x, ...){
   standardGeneric('barplotCounts')
 })
@@ -32,42 +35,35 @@ setMethod('barplotCounts',
                    returnDataFrame = FALSE,
                    conditionCol) {
 
+  ## argument checking ---------------------------------------------------------
+
   if (!assayName %in% names(assays(x))) {
     txt <- sprintf('%s not found in assay names', assayName)
     stop(txt)
   }
 
-  ## count how many proteins per sample
-  mat <- assays(x)[[assayName]]
-  counts <- apply(mat, 2, function(x) sum(!is.na(x)))
-
-  plotDf <- as.data.frame(colData(x))
-  plotDf$counts <- counts
-
   ## cb palette
   cbPalette <- c("#E69F00", "#56B4E9", "#009E73",
                  "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 
-  ## if the metaoptions are not given, try to get them from the slot
-  ## if there are also not present, then the plot does not take into account
-  ## conditions.
+  ## if metaoption given as argument put them in the object
   if (!missing(conditionCol)) {
     metaoptions(x)[['conditionCol']] <- conditionCol
   }
 
-  ## use trycatch since giveMetaoption raises and error if it does not find it,
-  ## but for plotting metaoptions are not strictly necessary
-  plotDf <- tryCatch(
-    {
-      colname <- giveMetaoption(x, 'conditionCol')
-      colnames(plotDf)[colnames(plotDf) == colname] <- 'conditionCol'
-      plotDf
-    },
-    error = function(cond){
-      plotDf$conditionCol <- NA
-      plotDf
-    }
-  )
+  ## data processing -----------------------------------------------------------
+
+  ## count how many proteins per sample, NAs are missing values
+  mat <- assays(x)[[assayName]]
+  counts <- apply(mat, 2, function(x) sum(!is.na(x)))
+
+  ## use colData as skeleton
+  plotDf <- as.data.frame(colData(x))
+  plotDf$counts <- counts
+
+  ## process if there are multiple conditions and rename columns for plotting
+  mOptColName <- .giveMetaoption(x, 'conditionCol')
+  plotDf <- .processColDataPlot(plotDf, mOptColName, 'condition')
 
   plotDf$rownames <- factor(rownames(plotDf), levels = rownames(plotDf))
   ## early return without plot
@@ -75,36 +71,35 @@ setMethod('barplotCounts',
     return(plotDf)
   }
 
-  ## plot with fill depending if we have the conditionCol column
-  if (all(is.na(plotDf$conditionCol))) {
-    ggplot(data = plotDf,
-           aes_string(x = 'rownames',
-                      y = 'counts')) +
-      geom_bar(stat = 'identity') +
-      xlab('Sample') +
-      ylab('Counts') +
-      theme(panel.border = element_rect(fill = NA)) +
-      scale_fill_manual(values = cbPalette) +
-      theme_bw()
-  } else {
+  ## plotting ------------------------------------------------------------------
 
-    colname <- giveMetaoption(x, 'conditionCol')
-    oldname <- colnames(plotDf)[colnames(plotDf) == colname]
-
+  ## there is only one condition or is not provided
+  if (all(is.na(plotDf[,'condition']))) {
     ggplot(data = plotDf,
-           aes_string(x = 'rownames',
-                      y = 'counts', fill = 'conditionCol')) +
+           mapping = aes_string(x = 'rownames',
+                                y = 'counts')) +
       geom_bar(stat = 'identity') +
       xlab('Sample') +
       ylab('Counts') +
       theme(panel.border = element_rect(fill = NA)) +
       scale_fill_manual(values = cbPalette)+
-      labs(fill = oldname) +
+      theme_bw()
+  ## there is more than one condition
+  } else {
+
+    ggplot(data = plotDf,
+           mapping = aes_string(x = 'rownames',
+                                y = 'counts',
+                                fill = 'condition')) +
+      geom_bar(stat = 'identity') +
+      xlab('Sample') +
+      ylab('Counts') +
+      theme(panel.border = element_rect(fill = NA)) +
+      scale_fill_manual(values = cbPalette)+
       theme_bw()
   }
 
 })
-
 
 
 #' @rdname barplotCounts
@@ -129,15 +124,20 @@ setMethod('barplotCounts',
                    returnDataFrame = FALSE,
                    conditionCol) {
 
+  ## cb palette
+  cbPalette <- c("#E69F00", "#56B4E9", "#009E73",
+                 "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+  ## argument checking is done in the Protein and Peptide experiment functions
+
   protPart <- barplotCounts(x = x@ProteinExperiment,
-                                    assayName = assayName,
-                                    return = TRUE,
-                                    conditionCol = conditionCol)
+                            assayName = assayName,
+                            return = TRUE,
+                            conditionCol = conditionCol)
 
   peptPart <- barplotCounts(x = x@PeptideExperiment,
-                                    assayName = assayName,
-                                    return = TRUE,
-                                    conditionCol = conditionCol)
+                            assayName = assayName,
+                            return = TRUE,
+                            conditionCol = conditionCol)
 
   ## join the data.frames
   protPart$mode <- 'Protein'
@@ -145,24 +145,18 @@ setMethod('barplotCounts',
   protPart$sample <- factor(rownames(protPart), levels = rownames(protPart))
   peptPart$sample <- factor(rownames(peptPart), levels = rownames(peptPart))
   plotDf <- rbind(protPart, peptPart)
+  ## to do facet wrap
   plotDf$mode <- factor(plotDf$mode, levels = c('Protein', 'Peptide'))
-
-  ## name in the legend
-  oldname <- colnames(colData(x))[which(colnames(plotDf) == 'conditionCol')]
 
   ## early return with no plot
   if (returnDataFrame) {
     return(plotDf)
   }
 
-  ## cb palette
-  cbPalette <- c("#E69F00", "#56B4E9", "#009E73",
-                 "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
-
   if (all(is.na(plotDf$conditionCol))) {
     ggplot(data = plotDf,
-           aes_string(x = 'sample',
-                      y = 'counts')) +
+           mapping = aes_string(x = 'sample',
+                                y = 'counts')) +
       geom_bar(stat = 'identity') +
       xlab('Sample') +
       ylab('Counts') +
@@ -172,14 +166,14 @@ setMethod('barplotCounts',
       theme_bw()
   } else {
     ggplot(data = plotDf,
-           aes_string(x = 'sample',
-                      y = 'counts', fill = 'conditionCol')) +
+           mapping = aes_string(x = 'sample',
+                                y = 'counts',
+                                fill = 'condition')) +
       geom_bar(stat = 'identity') +
       xlab('Sample') +
       ylab('Counts') +
       theme(panel.border = element_rect(fill = NA)) +
       scale_fill_manual(values = cbPalette) +
-      labs(fill = oldname) +
       facet_wrap(~mode, scales = 'free') +
       theme_bw()
   }
