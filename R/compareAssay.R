@@ -26,9 +26,9 @@
 #'
 #' @examples
 #' scatterCompareAssays(x = wormsPE[, 1:7],
-#'              y = wormsPE[, 8:14],
-#'              assayName = 'ratio',
-#'              mode = 'protein')
+#'                      conditions = c('OW40', 'OW450'),
+#'                      assayName = 'ratio',
+#'                      mode = 'protein')
 #'
 #' @import ggplot2
 #' @export
