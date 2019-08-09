@@ -25,7 +25,7 @@
 #' instead in the plot.
 #'
 #' @examples
-#' scatterCompareAssays(x = wormsPE[, 1:7],
+#' scatterCompareAssays(x = wormsPE,
 #'                      conditions = c('OW40', 'OW450'),
 #'                      assayName = 'ratio',
 #'                      mode = 'protein')
@@ -106,10 +106,6 @@ setMethod('scatterCompareAssays', 'ProteinExperiment',
 
   ## there are no matching timepoints error
   if (length(timepoints.x) == 0 | length(timepoints.y) == 0) {
-
-    timepoints.x <- colData(x)[, metaoptions(x)[['timeCol']]]
-    timepoints.y <- colData(y)[, metaoptions(y)[['timeCol']]]
-
     txt <- sprintf('The timepoints do not coincide: %s; %s.',
                    paste(timepoints.x, collapse = ', '),
                    paste(timepoints.y, collapse = ', '))

@@ -180,8 +180,8 @@ scatterCompareModels <- function(modelList,
 .plotCompareModel.Assay <- function(data, ml_attr, loopCols, returnDataFrame) {
 
   ## timepoints for matching
-  timepoints.x <- ml_attr$time[ml_atrr$loopCols[[1]]]
-  timepoints.y <- ml_attr$time[ml_atrr$loopCols[[2]]]
+  timepoints.x <- ml_attr$time[ml_attr$loopCols[[1]]]
+  timepoints.y <- ml_attr$time[ml_attr$loopCols[[2]]]
 
   ## if timepoints do not match try to match them
   if (!all(timepoints.x == timepoints.y)) {
@@ -196,9 +196,6 @@ scatterCompareModels <- function(modelList,
 
   ## there are no matching timepoints error
   if (length(timepoints.x) == 0 | length(timepoints.y) == 0) {
-
-    timepoints.x <- colData(x)[, metaoptions(x)[['timeCol']]]
-    timepoints.y <- colData(y)[, metaoptions(y)[['timeCol']]]
 
     txt <- sprintf('The timepoints do not coincide: %s; %s.',
                    paste(timepoints.x, collapse = ', '),
@@ -217,7 +214,7 @@ scatterCompareModels <- function(modelList,
   plotDf <- subset(plotDf, !is.na(plotDf$Cond2))
 
   ## change column names to conditions
-  colnames(plotDf)[1:2] <- conditions
+  colnames(plotDf)[1:2] <- names(loopCols_
 
   if (returnDataFrame) {
     return(plotDf)
