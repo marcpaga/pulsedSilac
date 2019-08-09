@@ -173,125 +173,19 @@ setMethod('merge', 'PeptideExperiment', function(x, y,
                                                  by, by.x = by, by.y = by,
                                                  all = TRUE, ...) {
 
-  ## argument checks -----
-  ## by.x and by.y are mandatory, if missing try to guess them from rownames
-  ## of rowData
-  if (missing(by)) {
-    by = intersect(colnames(rowData(x)), colnames(rowData(y)))
-    if (is.null(by)) {
-      stop('by undefined, which columns should be used for merging?')
-    }
-    if (missing(by.x)) {
-      by.x <- by
-    }
-    if (missing(by.y)) {
-      by.y <- by
-    }
-  }
+  ## process is the same as in ProteomicsExperiment
+  PE <- callNextMethod()
 
-
-  ### start merging ----
-
-  ## colData should have the same columns, therefore just use rbind
-  new.colData <- rbind(x@colData, y@colData)
-
-  ## use dataframe method of merge, allows for some user customization
-  rD.x <- as.data.frame(rowData(x))
-  rD.y <- as.data.frame(rowData(y))
-  new.rowData <- merge(x = rD.x, y = rD.y,
-                       by.x = by.x, by.y = by.y, all = all, ...)
-
-  ## if both experiments have names we merge them by name
-  ## else we merge them in position order
-  if (hasAssayNames(x) & hasAssayNames(y)) {
-    ## merge assays based on names
-    all_names <- unique(c(assayNames(x), assayNames(y)))
-    for (i in seq_along(all_names)) {
-
-      if (i == 1) {
-        new.assays <- list()
-        cols.x <- seq_len(ncol(x))
-        cols.y <- seq(ncol(x) + 1, ncol(x) + ncol(y), 1)
-      }
-      ## based on the rowData merge apply it to the assays
-      new.assayTemplate <- matrix(data = NA,
-                                  ncol = ncol(x) + ncol(y),
-                                  nrow = nrow(new.rowData))
-
-      ## doing it separate for each experiment in case there are unique assays
-      ## in each of them
-      if (all_names[i] %in% assayNames(x)) {
-
-        ## get the rows based on the old and new rowData
-        rows <- match(rD.x[,by.x[1]], new.rowData[,by.x[1]])
-        new.assayTemplate[rows, cols.x] <- assays(x)[[all_names[i]]]
-
-      }
-
-      if (all_names[i] %in% assayNames(y)) {
-
-        rows <- match(rD.y[,by.y[1]], new.rowData[,by.y[1]])
-        new.assayTemplate[rows, cols.y] <- assays(y)[[all_names[i]]]
-
-      }
-
-      new.assays[[i]] <- new.assayTemplate
-      if (i == length(all_names)) {
-        names(new.assays) <- all_names
-      }
-
-
-    }
-    ## merge them by order
-  } else {
-    assay_num <- max(length(assays(x)), length(assays(y)))
-    for (i in seq_len(assay_num)) {
-
-      if (i == 1) {
-        new.assays <- list()
-        cols.x <- seq_len(ncol(x))
-        cols.y <- seq(ncol(x) + 1, ncol(x) + ncol(y), 1)
-      }
-      ## based on the rowData merge apply it to the assays
-      new.assayTemplate <- matrix(data = NA,
-                                  ncol = ncol(x) + ncol(y),
-                                  nrow = nrow(new.rowData))
-
-      ## doing it separate for each experiment in case one experiment has more
-      ## assays than the other one
-      if (i <= length(assays(x))) {
-
-        ## get the rows based on the old and new rowData
-        rows <- match(rD.x[,by.x[1]], new.rowData[,by.x[1]])
-        new.assayTemplate[rows, cols.x] <- assays(x)[[i]]
-
-      }
-
-      if (i <= length(assays(y))) {
-
-        rows <- match(rD.y[,by.y[1]], new.rowData[,by.y[1]])
-        new.assayTemplate[rows, cols.y] <- assays(y)[[i]]
-
-      }
-
-      new.assays[[i]] <- new.assayTemplate
-
-    }
-  }
-
-
-  ## metaoptions and metadata is all from x
-  metaopts <- metaoptions(x)
-  PE <- PeptideExperiment(assays = new.assays,
-                          rowData = new.rowData,
-                          colData = new.colData,
-                          conditionCol = metaopts[['conditionCol']],
-                          timeCol = metaopts[['timeCol']],
-                          proteinCol = metaopts[['proteinCol']],
-                          metadata = x@metadata)
-
+  ## because the previous creates a ProteomicsExperiment need to make a
+  ## PeptideExperiment with the added metaoptions
+  PE <- PeptideExperiment(assays = assays(PE),
+                          rowData = rowData(PE),
+                          colData = colData(PE),
+                          conditionCol = metaoptions(PE)[['conditionCol']],
+                          timeCol = metaoptions(PE)[['timeCol']],
+                          proteinCol = metaoptions(x)[['proteinCol']],
+                          metadata = metadata(PE))
   return(PE)
-
 
 })
 
