@@ -36,9 +36,9 @@
 #' @import ggplot2
 #' @importFrom ggridges geom_density_ridges
 plotDistributionModel <- function(modelList,
-                             value = 'param_values',
-                             plotType = 'density',
-                             returnDataFrame = FALSE) {
+                                  value = 'param_values',
+                                  plotType = 'density',
+                                  returnDataFrame = FALSE) {
 
   ## argument checker ----------------------------------------------------------
   ## cb palette
@@ -65,33 +65,32 @@ plotDistributionModel <- function(modelList,
   ## - parameters and their derivatives (model wide * number of parameters)
   ## - residuals and weights (assay like size)
   ## - error and AIC (model wide)
-  n_samples <- unlist(attributes(x)[['loopCols']])
-  n_conditions <- length(attributes(x)[['loopCols']])
+  n_samples <- length(unlist(attributes(modelList)[['loopCols']]))
+  n_conditions <- length(attributes(modelList)[['loopCols']])
 
   dataToPlot <- modelList[[value]]
 
   ## parameter type
   if (is.list(dataToPlot)) {
-    plotDf <- .plotDistributionModel.Parameter(dataToPlot,
-                                               attributes(x),
-                                               returnDataFrame,
-                                               plotType)
-  }
-
+    plotDf <- .plotDistributionModel.Parameter(data = dataToPlot,
+                                               ml_attr = attributes(modelList),
+                                               returnDataFrame = returnDataFrame,
+                                               plotType = plotType)
   ## assay like type
-  if (is.matrix(dataToPlot) & ncol(dataToPlot) == n_samples) {
+  } else if (is.matrix(dataToPlot) & ncol(dataToPlot) == n_samples) {
+
     plotDf <- .plotDistributionModel.Assay(dataToPlot,
-                                           attributes(x),
-                                           returnDataFrame,
-                                           plotType)
-  }
+                                           ml_attr = attributes(modelList),
+                                           returnDataFrame = returnDataFrame,
+                                           plotType = plotType)
 
   ## model wide type
-  if (is.matrix(dataToPlot) & ncol(dataToPlot) == n_conditions) {
+  } else if (is.matrix(dataToPlot) & ncol(dataToPlot) == n_conditions) {
+
     plotDf <- .plotDistributionModel.Model(dataToPlot,
-                                           attributes(x),
-                                           returnDataFrame,
-                                           plotType)
+                                           ml_attr = attributes(modelList),
+                                           returnDataFrame = returnDataFrame,
+                                           plotType = plotType)
   }
 
   if (returnDataFrame) {
@@ -102,7 +101,7 @@ plotDistributionModel <- function(modelList,
 
 }
 
-
+#' @keywords internal
 .plotDistributionModel.Parameter <- function(data,
                                              ml_attr,
                                              returnDataFrame,
@@ -160,6 +159,7 @@ plotDistributionModel <- function(modelList,
 
 }
 
+#' @keywords internal
 .plotDistributionModel.Assay <- function(data,
                                          ml_attr,
                                          returnDataFrame,
@@ -214,6 +214,7 @@ plotDistributionModel <- function(modelList,
 
 }
 
+#' @keywords internal
 .plotDistributionModel.Model <- function(data,
                                          ml_attr,
                                          returnDataFrame,
