@@ -62,9 +62,33 @@ compareAIC <- function(...) {
     outputList[[i]] <- probs
   }
 
+  names(outputList) <- names(attributes(inputLists[[1]])$loopCols)
+
+  for (i in seq_len(n_models)) {
+    if (i == 1) {
+      secList <- list()
+    }
+    for (j in seq_len(n_conditions)) {
+      if (j == 1) {
+        tempList <- list()
+      }
+      tempList[[j]] <- outputList[[j]][,i]
+      if (j == n_conditions) {
+        mat <- as.data.frame(do.call('cbind', tempList))
+        colnames(mat) <- names(attributes(inputLists[[1]])$loopCols)
+        secList[[i]] <- mat
+      }
+    }
+  }
+  names(secList) <- paste('model', seq_len(n_models), sep = '.')
+
+  outputList <- list(aicprobabilities = secList)
+
   attrList <- attributes(inputLists[[1]])
   attrList <- attrList[-which(names(attrList) == 'names')]
   attributes(outputList) <- attrList
+  attributes(outputList)[['names']] <- 'aicprobabilities'
+
   return(outputList)
 }
 
