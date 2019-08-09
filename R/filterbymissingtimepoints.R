@@ -126,7 +126,7 @@ setMethod('filterByMissingTimepoints',
                    returnVector = FALSE) {
 
   ## filtering is dependent on the subsetMode
-  if (giveMetaoption(x, 'subsetMode') == 'peptide') {
+  if (.giveMetaoption(x, 'subsetMode') == 'peptide') {
 
     subsetVec <- filterByMissingTimepoints(x@PeptideExperiment,
                                            assayName = assayName,

@@ -77,7 +77,7 @@ setMethod('boxplotAssay', 'ProteinExperiment',
       dfList <- list()
     }
 
-    timeVec <- colData(x)[, giveMetaoption(x, 'timeCol')][loopCols[[i]]]
+    timeVec <- colData(x)[, .giveMetaoption(x, 'timeCol')][loopCols[[i]]]
 
     values <- as.vector(mat[, loopCols[[i]]])
     tempDf <- data.frame(value = values,

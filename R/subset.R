@@ -23,9 +23,9 @@ setMethod('subset', 'PeptideExperiment', function(x, ...) {
 #' @export
 setMethod('subset', 'ProteomicsExperiment', function(x, ...) {
 
-  if (giveMetaoption(x, 'subsetMode') == 'protein') {
+  if (.giveMetaoption(x, 'subsetMode') == 'protein') {
     return(subsetProt(x, ...))
-  } else if (giveMetaoption(x, 'subsetMode') == 'peptide') {
+  } else if (.giveMetaoption(x, 'subsetMode') == 'peptide') {
     return(subsetPept(x, ...))
   }
 
@@ -92,7 +92,7 @@ setMethod('[', c('ProteomicsExperiment', 'ANY', 'ANY'),
 
   ## check the metaoptions -----------------------------------------------------
   ## should linked subsetting be used
-  linked <- giveMetaoption(x, 'linkedSubset')
+  linked <- .giveMetaoption(x, 'linkedSubset')
 
   if (linked) {
     if (nrow(linkerDf(x)) == 0) {
@@ -102,8 +102,8 @@ setMethod('[', c('ProteomicsExperiment', 'ANY', 'ANY'),
   }
 
   if (linked) {
-    idColProt <- try(giveMetaoption(x, 'idColProt'))
-    idColPept <- try(giveMetaoption(x, 'idColPept'))
+    idColProt <- try(.giveMetaoption(x, 'idColProt'))
+    idColPept <- try(.giveMetaoption(x, 'idColPept'))
 
     if (is(idColProt, 'try-error') | is(idColProt, 'try-error')) {
       txt <- paste('idColProt and/or idColPep in metaoptions are not specified',
@@ -114,7 +114,7 @@ setMethod('[', c('ProteomicsExperiment', 'ANY', 'ANY'),
   }
 
   ## subset based on protein or peptide
-  subsetMode <- giveMetaoption(x, 'subsetMode')
+  subsetMode <- .giveMetaoption(x, 'subsetMode')
 
   ## in case of missing values
   if (missing(i)) {
