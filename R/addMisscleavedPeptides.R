@@ -50,7 +50,7 @@
 #' names(assays(missPE))[1:2] <- c('int_lys8lys8', 'int_lys8lys0')
 #' missPE <- calculateOldIsotopePool(x = missPE, 'int_lys8lys8', 'int_lys8lys0')
 #'
-#' boxplotAssay(missPE, assayName = 'oldIsotopePool')
+#' plotDistributionAssay(missPE, assayName = 'oldIsotopePool')
 #'
 #' @export
 setGeneric('addMisscleavedPeptides', function(x, ...){

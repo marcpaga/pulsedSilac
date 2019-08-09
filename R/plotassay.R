@@ -1,5 +1,5 @@
-#' @rdname boxplotAssay
-#' @name boxplotAssay
+#' @rdname plotDistributionAssay
+#' @name plotDistributionAssay
 #' @title Distribution of assay data per condition and timepoint.
 #'
 #' @description Plot the distribution of the data stored in an assay using
@@ -25,18 +25,18 @@
 #' plotted.
 #'
 #' @examples
-#' boxplotAssay(wormsPE, assayName = 'ratio')
+#' plotDistributionAssay(wormsPE, assayName = 'ratio')
 #'
 #' @importFrom ggridges geom_density_ridges
 #' @import ggplot2
 #' @export
-setGeneric('boxplotAssay', function(x, ...){
-  standardGeneric('boxplotAssay')
+setGeneric('plotDistributionAssay', function(x, ...){
+  standardGeneric('plotDistributionAssay')
 })
 
-#' @rdname boxplotAssay
+#' @rdname plotDistributionAssay
 #' @export
-setMethod('boxplotAssay', 'ProteinExperiment',
+setMethod('plotDistributionAssay', 'ProteinExperiment',
           function(x,
                    assayName,
                    plotType = 'boxplot',
@@ -125,9 +125,9 @@ setMethod('boxplotAssay', 'ProteinExperiment',
 
 })
 
-#' @rdname boxplotAssay
+#' @rdname plotDistributionAssay
 #' @export
-setMethod('boxplotAssay', 'PeptideExperiment',
+setMethod('plotDistributionAssay', 'PeptideExperiment',
           function(x,
                    assayName,
                    plotType = 'boxplot',
@@ -139,9 +139,9 @@ setMethod('boxplotAssay', 'PeptideExperiment',
 
 })
 
-#' @rdname boxplotAssay
+#' @rdname plotDistributionAssay
 #' @export
-setMethod('boxplotAssay', 'ProteomicsExperiment',
+setMethod('plotDistributionAssay', 'ProteomicsExperiment',
           function(x,
                    assayName,
                    mode = 'protein',
@@ -152,7 +152,7 @@ setMethod('boxplotAssay', 'ProteomicsExperiment',
 
   if (mode == 'protein') {
 
-    boxplotAssay(x = x@ProteinExperiment,
+    plotDistributionAssay(x = x@ProteinExperiment,
               assayName = assayName,
               plotType = plotType,
               returnDataFrame = returnDataFrame,
@@ -161,7 +161,7 @@ setMethod('boxplotAssay', 'ProteomicsExperiment',
 
   } else if (mode == 'peptide') {
 
-    boxplotAssay(x = x@PeptideExperiment,
+    plotDistributionAssay(x = x@PeptideExperiment,
               assayName = assayName,
               plotType = plotType,
               returnDataFrame = returnDataFrame,

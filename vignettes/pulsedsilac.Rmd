@@ -474,13 +474,13 @@ wormsPE <- calculateIsotopeFraction(wormsPE,
 
 # Plotting assays
 
-To visualize data stored in the `assays` slot there are two functions `boxplotAssay()` and `scatterCompareAssays()`. The first one will plot the distributions of the data for a selected assay for each timepoint and condition. The latter will plot each protein/peptide value of a condition against the other for each timepoint.
+To visualize data stored in the `assays` slot there are two functions `plotDistributionAssay()` and `scatterCompareAssays()`. The first one will plot the distributions of the data for a selected assay for each timepoint and condition. The latter will plot each protein/peptide value of a condition against the other for each timepoint.
 
-## `boxplotAssay()`
+## `plotDistributionAssay()`
 
 ```{r, warning = FALSE}
 
-boxplotAssay(wormsPE, assayName = 'fraction')
+plotDistributionAssay(wormsPE, assayName = 'fraction')
 
 ```
 
@@ -762,7 +762,7 @@ This can be appreciated if the heavy label fraction is plotted over time for the
 
 ```{r, warning = FALSE}
 
-boxplotAssay(mefPE, assayName = 'fraction')
+plotDistributionAssay(mefPE, assayName = 'fraction')
 
 ```
 
@@ -911,7 +911,7 @@ missPE <- calculateOldIsotopePool(x = missPE, 'int_lys8lys8', 'int_lys8lys0')
 Finally the distributions of these pools can be shown in a boxplot.
 
 ```{r}
-boxplotAssay(missPE, assayName = 'oldIsotopePool')
+plotDistributionAssay(missPE, assayName = 'oldIsotopePool')
 ```
 
 With this, the supplemental figure 6B of @Visscher2016 can be reproduced.
