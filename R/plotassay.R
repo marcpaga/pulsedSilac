@@ -44,6 +44,7 @@ setMethod('boxplotAssay', 'ProteinExperiment',
                    conditionCol,
                    timeCol) {
 
+  ## argument checker ----------------------------------------------------------
   if (!assayName %in% names(assays(x))) {
     txt <- sprintf('%s not found in assay names', assayName)
     stop(txt)
@@ -54,15 +55,10 @@ setMethod('boxplotAssay', 'ProteinExperiment',
     stop(txt)
   }
 
-  ## count how many proteins per sample
-  mat <- assays(x)[[assayName]]
-
   ## cb palette
   cbPalette <- c("#E69F00", "#56B4E9", "#009E73",
                  "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 
-  ## use trycatch since giveMetaoption raises and error if it does not find it,
-  ## but for plotting metaoptions are not strictly necessary
   if (!missing(conditionCol)) {
     metaoptions(x)[['conditionCol']] <- conditionCol
   }
@@ -70,56 +66,28 @@ setMethod('boxplotAssay', 'ProteinExperiment',
     metaoptions(x)[['timeCol']] <- timeCol
   }
 
-  ## use trycatch since giveMetaoption raises and error if it does not find it,
-  ## but for plotting metaoptions are not strictly necessary
-  ## first it tries to get both condition and time replicates, if it fails then
-  ## only condition and if it fails then all the samples are grouped together
-  outList <- tryCatch(
-    {
-      loopCols <- experimentLoopWrapper(x, 'cond.timerep')
+  ## Data and options processing -----------------------------------------------
+  mat <- assays(x)[[assayName]]
 
-      condCol <- giveMetaoption(x, 'conditionCol')
-      timeRepCol <- giveMetaoption(x, 'replicateTimeCol')
+  loopCols <- .loopWrapper(x, 'conditionCol')
 
-      plotCol <- unique(paste(colData(x)[, condCol],
-                              colData(x)[, timeRepCol], sep = '.'))
-
-      list(loopCols = loopCols, plotCol = plotCol)
-    },
-    error = function(c){
-      tryCatch(
-        {
-          loopCols <- experimentLoopWrapper(x, 'cond')
-          condCol <- giveMetaoption(x, 'conditionCol')
-          plotCol <- unique(colData(x)[, condCol])
-
-          list(loopCols = loopCols, plotCol = plotCol)
-        },
-        error = function(c){
-          'There is only 1 condition (?)'
-        }
-      )
-    }
-  )
-
-  loopCols <- outList[[1]]
-
-
+  ## make a data.frame for each condition
   for (i in seq_along(loopCols)) {
     if (i == 1) {
       dfList <- list()
     }
 
-    timeVec <- colData(x)[,giveMetaoption(x, 'timeCol')][loopCols[[i]]]
+    timeVec <- colData(x)[, giveMetaoption(x, 'timeCol')][loopCols[[i]]]
 
-    values <- as.vector(mat[,loopCols[[i]]])
+    values <- as.vector(mat[, loopCols[[i]]])
     tempDf <- data.frame(value = values,
                          time = rep(timeVec, each = nrow(mat)))
-    tempDf$condition <- outList$plotCol[i]
+    tempDf$condition <- names(loopCols)[i]
 
     dfList[[i]] <- tempDf
   }
 
+  ## join all the data.frames
   plotDf <- do.call('rbind', dfList)
   plotDf$time <- as.factor(plotDf$time)
   plotDf$condition <- as.factor(plotDf$condition)
@@ -129,6 +97,7 @@ setMethod('boxplotAssay', 'ProteinExperiment',
     return(plotDf)
   }
 
+  ## plotting ------------------------------------------------------------------
   if (plotType == 'density') {
 
     p <- ggplot(data = plotDf) +
