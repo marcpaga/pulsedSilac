@@ -700,7 +700,7 @@ names(modelList)
 
 ```{r, warning = FALSE, message = FALSE}
 
-plotDistributionModel(modelList, value = 'AIC')
+plotDistributionModel(modelList = modelList, value = 'AIC')
 
 ```
 
@@ -802,7 +802,7 @@ stableModels  <- modelTurnover(x = stablePE,
                                robust = FALSE,
                                returnModel = FALSE)
 
-plotDistributionModel(stableModels, value = 'parameter', plotType = 'boxplot')
+plotDistributionModel(stableModels, value = 'param_values', plotType = 'boxplot')
 
 ```
 
@@ -864,7 +864,7 @@ With doubling time correction:
 ```{r, warning = FALSE}
 
 plotDistributionModel(modelList = modelsMef,
-                      value = 'parameter',
+                      value = 'param_values',
                       plotType = 'density') 
 
 ```
@@ -874,7 +874,7 @@ Without doubling time correction:
 ```{r, warning = FALSE}
 
 plotDistributionModel(modelList = modelsNoCorrect,
-                      value = 'parameter',
+                      value = 'param_values',
                       plotType = 'density') 
  
 ```
