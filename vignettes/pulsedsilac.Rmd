@@ -612,7 +612,7 @@ This plot shows the distribution of the error of all the models for each conditi
 ```{r, warning = FALSE, message = FALSE}
 
 plotDistributionModel(modelList = modelList,
-                 value = 'error',
+                 value = 'stderror',
                  plotType = 'density')
 
 ```
@@ -624,7 +624,7 @@ This plot shows the distribution of the values for every fitted parameter. In th
 ```{r, warning = FALSE, message = FALSE}
 
 plotDistributionModel(modelList = modelList,
-                 value = 'parameter',
+                 value = 'param_values',
                  plotType = 'density')
 
 ```
@@ -655,7 +655,18 @@ plotDistributionModel(modelList = modelList,
 
 ### Comparing conditions
 
-To plot protein/peptide values 
+To plot protein/peptide values and compare between conditions the `scatterCompareModels()` function can be used. It works like the `scatterCompareAssays()` function. The two conditions to be compared must be indicated as well as the desired metric.
+
+```{r}
+
+scatterCompareModels(modelList = modelList, 
+                     conditions = c('OW40', 'OW450'), 
+                     value = 'param_values')
+
+scatterCompareModels(modelList = modelList, 
+                     conditions = c('OW40', 'OW450'), 
+                     value = 'stderror')
+```
 
 ## Comparing models
 
