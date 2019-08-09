@@ -6,9 +6,8 @@
 #'
 #' @param modelList A list containing all the model objects, this should be the
 #' output of \code{\link{modelTurnover}}.
-#' @param value A \code{character} indicating which metric to plot: 'parameter',
-#' 'error', 'residuals', 'weights', 'aicvalue' or 'aicprobabilities'. Check
-#' \code{names(modelList)} for available options. (Default = 'paramater')
+#' @param value A \code{character} indicating which metric to plot.  Check
+#' \code{names(modelList)} for available options. (Default = 'param_values')
 #' @param plotType A \code{character} indicating which geometry to plot:
 #' 'boxplot' or 'density'. (default = 'density')
 #' @param returnDataFrame A \code{logical} indicating if the \code{data.frame}
@@ -37,231 +36,229 @@
 #' @import ggplot2
 #' @importFrom ggridges geom_density_ridges
 plotDistributionModel <- function(modelList,
-                             value = 'parameter',
+                             value = 'param_values',
                              plotType = 'density',
                              returnDataFrame = FALSE) {
 
+  ## argument checker ----------------------------------------------------------
   ## cb palette
   cbPalette <- c("#E69F00", "#56B4E9", "#009E73",
                  "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 
-  ## to plot the different parameters
-  if (value == 'parameter') {
+  available_metrics <- names(modelList)
 
-    for (i in seq_len(length(modelList[['param_values']]))) {
-      if (i == 1) {
-        dfList <- list()
-      }
-      param_list <- modelList[['param_values']]
-
-      cond_vec <- rep(unique(attributes(modelList)[['cond']]),
-                      each = nrow(param_list[[i]]))
-      plotDf <- data.frame(value = as.vector(param_list[[i]]),
-                           condition = cond_vec,
-                           param = rep(names(param_list)[i],
-                                       times = nrow(param_list[[i]])))
-      dfList[[i]] <- plotDf
-
-    }
-    plotDf <- do.call('rbind', dfList)
-    plotDf$condition <- as.factor(plotDf$condition)
-    plotDf$param <- as.factor(plotDf$param)
-
-    if (returnDataFrame) {
-      return(plotDf)
-    }
-
-    if (plotType == 'density') {
-
-      p <- ggplot(data = plotDf) +
-        geom_density_ridges(aes_string(x = 'value',
-                                       y = 'condition',
-                                       fill = 'condition')) +
-        facet_wrap(~param) +
-        scale_fill_manual(values = cbPalette) +
-        theme_bw()
-
-    }
-
-    if (plotType == 'boxplot') {
-
-      p <- ggplot(data = plotDf) +
-        geom_boxplot(aes_string(x = 'condition',
-                                y = 'value',
-                                fill = 'condition')) +
-        facet_wrap(~param) +
-        scale_fill_manual(values = cbPalette) +
-        theme_bw()
-
-    }
-
-
+  if (!value %in% available_metrics) {
+    txt <- c('%s not found in names(modelList), available options are: %s')
+    txt <- sprintf(txt, value, paste(available_metrics, collapse = ', '))
+    stop(txt)
   }
 
-  ## to plot model errors
-  if (value %in% c('error', 'aicvalue')) {
-
-    if (value == 'error') {
-      cond_vec <- rep(unique(attributes(modelList)[['cond']]),
-                      each = nrow(modelList[['stderror']]))
-      plotDf <- data.frame(value = as.vector(modelList[['stderror']]),
-                           condition = cond_vec)
-      plotDf$condition <- as.factor(plotDf$condition)
-    } else if (value == 'aicvalue') {
-      cond_vec <- rep(unique(attributes(modelList)[['cond']]),
-                      each = nrow(modelList[['AIC']]))
-      plotDf <- data.frame(value = as.vector(modelList[['AIC']]),
-                           condition = cond_vec)
-      plotDf$condition <- as.factor(plotDf$condition)
-    }
-
-
-    if (returnDataFrame) {
-      return(plotDf)
-    }
-
-    if (sum(plotDf$value == Inf, na.rm = TRUE) > 0) {
-      plotDf$value[plotDf$value == Inf] <- NA
-    }
-
-    if (plotType == 'density') {
-
-      p <- ggplot(data = plotDf) +
-        geom_density_ridges(aes_string(x = 'value',
-                                       y = 'condition',
-                                       fill = 'condition')) +
-        scale_fill_manual(values = cbPalette) +
-        theme_bw()
-
-    }
-
-    if (plotType == 'boxplot') {
-
-      p <- ggplot(data = plotDf) +
-        geom_boxplot(aes_string(x = 'condition',
-                                y = 'value',
-                                fill = 'condition')) +
-        scale_fill_manual(values = cbPalette) +
-        theme_bw()
-
-    }
-
+  if (!plotType %in% c('density', 'boxplot')) {
+    txt <- c('%s plotType not valid, please use "density" or "boxplot."')
+    txt <- sprintf(txt, plotType)
+    stop(txt)
   }
 
-  ## to plot the residuals
-  if (value %in% c('residuals', 'weights')) {
+  ## decide type of plot -------------------------------------------------------
 
-    if (value == 'residuals') {
-      data_matrix <- modelList[['residuals']]
-    } else if (value == 'weights') {
-      data_matrix <- modelList[['weights']]
-    }
+  ## there are three categories of plots that can happen here
+  ## - parameters and their derivatives (model wide * number of parameters)
+  ## - residuals and weights (assay like size)
+  ## - error and AIC (model wide)
+  n_samples <- unlist(attributes(x)[['loopCols']])
+  n_conditions <- length(attributes(x)[['loopCols']])
 
-    loopCols <- attributes(modelList)$loopCols
-    for (i in seq_len(length(loopCols))) {
-      if (i == 1) {
-        dfList <- list()
-      }
+  dataToPlot <- modelList[[value]]
 
-      data_matrix_cond <- data_matrix[, loopCols[[i]]]
-      time <- attributes(modelList)[['time']][loopCols[[i]]]
-      plotDf <- data.frame(value = as.vector(data_matrix_cond),
-                           condition = unique(attributes(modelList)[['cond']])[i],
-                           time = rep(time,
-                                      each = nrow(data_matrix_cond)))
-
-      dfList[[i]] <- plotDf
-
-    }
-    plotDf <- do.call('rbind', dfList)
-    plotDf$time <- as.factor(plotDf$time)
-    plotDf$condition <- as.factor(plotDf$condition)
-
-    if (returnDataFrame) {
-      return(plotDf)
-    }
-
-    if (plotType == 'density') {
-
-      p <- ggplot(data = plotDf) +
-        geom_density_ridges(aes_string(x = 'value',
-                                       y = 'time',
-                                       fill = 'condition')) +
-        theme_classic() +
-        facet_wrap(~condition) +
-        scale_fill_manual(values = cbPalette)
-
-    }
-
-    if (plotType == 'boxplot') {
-
-      p <- ggplot(data = plotDf) +
-        geom_boxplot(aes_string(x = 'time',
-                                y = 'value',
-                                fill = 'condition')) +
-        theme_classic() +
-        facet_wrap(~condition) +
-        scale_fill_manual(values = cbPalette)
-
-    }
+  ## parameter type
+  if (is.list(dataToPlot)) {
+    plotDf <- .plotDistributionModel.Parameter(dataToPlot,
+                                               attributes(x),
+                                               returnDataFrame,
+                                               plotType)
   }
 
-
-  if (value == 'aicprobabilities') {
-
-    n_models <- ncol(modelList[[1]])
-    loopCols <- attributes(modelList)[['loopCols']]
-
-    model_names <- paste0('model', seq_len(n_models))
-
-    for (i in seq_len(length(loopCols))) {
-      if (i == 1) {
-        dfList <- list()
-      }
-
-      aic_matrix <- modelList[[i]]
-      plotDf <- data.frame(value = as.vector(aic_matrix),
-                           model = rep(model_names, each = nrow(aic_matrix)))
-      plotDf$condition <- unique(attributes(modelList)[['cond']])[i]
-
-      dfList[[i]] <- plotDf
-
-    }
-
-    plotDf <- do.call('rbind', dfList)
-    plotDf$model <- as.factor(plotDf$model)
-    plotDf$condition <- as.factor(plotDf$condition)
-
-    if (returnDataFrame) {
-      return(plotDf)
-    }
-
-    if (plotType == 'density') {
-
-      p <- ggplot(data = plotDf) +
-        geom_density_ridges(aes_string(x = 'value',
-                                       y = 'model',
-                                       fill = 'condition')) +
-        facet_wrap(~condition) +
-        scale_fill_manual(values = cbPalette) +
-        theme_bw()
-
-    }
-
-    if (plotType == 'boxplot') {
-
-      p <- ggplot(data = plotDf) +
-        geom_boxplot(aes_string(x = 'time',
-                                y = 'model',
-                                fill = 'condition')) +
-        facet_wrap(~condition) +
-        scale_fill_manual(values = cbPalette) +
-        theme_bw()
-
-    }
+  ## assay like type
+  if (is.matrix(dataToPlot) & ncol(dataToPlot) == n_samples) {
+    plotDf <- .plotDistributionModel.Assay(dataToPlot,
+                                           attributes(x),
+                                           returnDataFrame,
+                                           plotType)
   }
 
-  p
+  ## model wide type
+  if (is.matrix(dataToPlot) & ncol(dataToPlot) == n_conditions) {
+    plotDf <- .plotDistributionModel.Model(dataToPlot,
+                                           attributes(x),
+                                           returnDataFrame,
+                                           plotType)
+  }
+
+  if (returnDataFrame) {
+    return(plotDf)
+  } else {
+    plotDf
+  }
 
 }
 
+
+.plotDistributionModel.Parameter <- function(data,
+                                             ml_attr,
+                                             returnDataFrame,
+                                             plotType) {
+
+  for (i in seq_len(length(data))) {
+    if (i == 1) {
+      dfList <- list()
+    }
+
+    cond_vec <- rep(unique(ml_attr[['cond']]),
+                    each = nrow(data[[i]]))
+    plotDf <- data.frame(value = as.vector(data[[i]]),
+                         condition = cond_vec,
+                         param = rep(names(data)[i],
+                                     times = nrow(data[[i]])))
+    dfList[[i]] <- plotDf
+
+  }
+
+  plotDf <- do.call('rbind', dfList)
+  plotDf$condition <- as.factor(plotDf$condition)
+  plotDf$param <- as.factor(plotDf$param)
+
+  if (returnDataFrame) {
+    return(plotDf)
+  }
+
+  if (plotType == 'density') {
+
+    p <- ggplot(data = plotDf) +
+      geom_density_ridges(aes_string(x = 'value',
+                                     y = 'condition',
+                                     fill = 'condition')) +
+      scale_fill_manual(values = cbPalette) +
+      facet_wrap(~param, scales = 'free') +
+      theme_bw() +
+      labs(x = value)
+
+    return(p)
+
+  } else if (plotType == 'boxplot') {
+
+    p <- ggplot(data = plotDf) +
+      geom_boxplot(aes_string(x = 'condition',
+                              y = 'value',
+                              fill = 'condition')) +
+      scale_fill_manual(values = cbPalette) +
+      facet_wrap(~param, scales = 'free') +
+      theme_bw() +
+      labs(y = value)
+
+    return(p)
+  }
+
+}
+
+.plotDistributionModel.Assay <- function(data,
+                                         ml_attr,
+                                         returnDataFrame,
+                                         plotType) {
+
+  loopCols <- ml_attr$loopCols
+  for (i in seq_len(length(loopCols))) {
+    if (i == 1) {
+      dfList <- list()
+    }
+
+    data_matrix_cond <- data[, loopCols[[i]]]
+    time <- ml_attr[['time']][loopCols[[i]]]
+    plotDf <- data.frame(value = as.vector(data_matrix_cond),
+                         condition = unique(ml_attr[['cond']])[i],
+                         time = rep(time,
+                                    each = nrow(data_matrix_cond)))
+
+    dfList[[i]] <- plotDf
+
+  }
+  plotDf <- do.call('rbind', dfList)
+  plotDf$time <- as.factor(plotDf$time)
+  plotDf$condition <- as.factor(plotDf$condition)
+
+  if (plotType == 'density') {
+
+    p <- ggplot(data = plotDf) +
+      geom_density_ridges(aes_string(x = 'value',
+                                     y = 'time',
+                                     fill = 'condition')) +
+      scale_fill_manual(values = cbPalette) +
+      facet_wrap(~condition, scales = 'free') +
+      theme_bw() +
+      labs(x = value)
+
+    return(p)
+
+  } else if (plotType == 'boxplot') {
+
+    p <- ggplot(data = plotDf) +
+      geom_boxplot(aes_string(x = 'time',
+                              y = 'value',
+                              fill = 'condition')) +
+      scale_fill_manual(values = cbPalette) +
+      facet_wrap(~condition, scales = 'free') +
+      theme_bw() +
+      labs(y = value)
+
+    return(p)
+  }
+
+}
+
+.plotDistributionModel.Model <- function(data,
+                                         ml_attr,
+                                         returnDataFrame,
+                                         plotType) {
+
+  loopCols <- ml_attr$loopCols
+  for (i in seq_len(length(loopCols))) {
+    if (i == 1) {
+      dfList <- list()
+    }
+
+    data_matrix_cond <- data[, i]
+    plotDf <- data.frame(value = as.vector(data_matrix_cond),
+                         condition = unique(ml_attr[['cond']])[i])
+
+    dfList[[i]] <- plotDf
+
+  }
+  plotDf <- do.call('rbind', dfList)
+  plotDf$condition <- as.factor(plotDf$condition)
+
+  if (plotType == 'density') {
+
+    p <- ggplot(data = plotDf) +
+      geom_density_ridges(aes_string(x = 'value',
+                                     y = 'condition',
+                                     fill = 'condition')) +
+      scale_fill_manual(values = cbPalette) +
+      theme_bw() +
+      labs(x = value)
+
+    return(p)
+
+  } else if (plotType == 'boxplot') {
+
+    p <- ggplot(data = plotDf) +
+      geom_boxplot(aes_string(x = 'condition',
+                              y = 'value',
+                              fill = 'condition')) +
+      scale_fill_manual(values = cbPalette) +
+      theme_bw() +
+      labs(y = value)
+
+    return(p)
+  }
+
+
+}
