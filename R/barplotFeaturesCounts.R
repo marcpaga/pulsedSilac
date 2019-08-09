@@ -76,7 +76,7 @@ setMethod('barplotCounts',
   ## plotting ------------------------------------------------------------------
 
   ## there is only one condition or is not provided
-  if (all(is.na(plotDf[,'condition']))) {
+  if (all(is.na(plotDf[, 'condition']))) {
     ggplot(data = plotDf,
            mapping = aes_string(x = 'rownames',
                                 y = 'counts')) +
@@ -155,7 +155,7 @@ setMethod('barplotCounts',
     return(plotDf)
   }
 
-  if (all(is.na(plotDf$conditionCol))) {
+  if (all(is.na(plotDf$condition))) {
     ggplot(data = plotDf,
            mapping = aes_string(x = 'sample',
                                 y = 'counts')) +
