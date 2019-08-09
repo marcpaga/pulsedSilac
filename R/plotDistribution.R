@@ -29,7 +29,7 @@
 #'                            returnModel = TRUE)
 #'
 #' plotDistributionModel(modelList = modelList,
-#'                       value = 'error',
+#'                       value = 'param_values',
 #'                       plotType = 'density')
 #'
 #' @export
@@ -196,6 +196,10 @@ plotDistributionModel <- function(modelList,
   plotDf$time <- as.factor(plotDf$time)
   plotDf$condition <- as.factor(plotDf$condition)
 
+  if (returnDataFrame) {
+    return(plotDf)
+  }
+
   if (plotType == 'density') {
 
     p <- ggplot(data = plotDf) +
@@ -250,6 +254,12 @@ plotDistributionModel <- function(modelList,
   }
   plotDf <- do.call('rbind', dfList)
   plotDf$condition <- as.factor(plotDf$condition)
+
+  if (returnDataFrame) {
+    return(plotDf)
+  }
+
+  plotDf <- subset(plotDf, !is.infinite(value))
 
   if (plotType == 'density') {
 
