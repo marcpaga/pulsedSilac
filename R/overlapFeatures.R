@@ -42,53 +42,22 @@ setMethod('upsetTimeCoverage',
                    returnList = FALSE,
                    ...) {
 
-  ## argument handling
+  ## argument checker ----------------------------------------------------------
   if (!assayName %in% names(assays(x))) {
     txt <- sprintf('%s not found in assay names', assayName)
     stop(txt)
   }
-  mat <- assays(x)[[assayName]]
-
-  ## use trycatch since giveMetaoption raises and error if it does not find it,
-  ## but for plotting metaoptions are not strictly necessary
   if (!missing(conditionCol)) {
     metaoptions(x)[['conditionCol']] <- conditionCol
   }
 
+  ## data and options processing -----------------------------------------------
+  mat <- assays(x)[[assayName]]
 
-  ## use trycatch since giveMetaoption raises and error if it does not find it,
-  ## but for plotting metaoptions are not strictly necessary
-  ## first it tries to get both condition and time replicates, if it fails then
-  ## only condition and if it fails then all the samples are grouped together
-  outList <- tryCatch(
-    {
-      loopCols <- experimentLoopWrapper(x, 'cond.timerep')
-
-      condCol <- giveMetaoption(x, 'conditionCol')
-      timeRepCol <- giveMetaoption(x, 'replicateTimeCol')
-
-      plotCol <- unique(paste(colData(x)[, condCol],
-                              colData(x)[, timeRepCol], sep = '.'))
-
-      list(loopCols = loopCols, plotCol = plotCol)
-    },
-    error = function(c){
-      tryCatch(
-        {
-          loopCols <- experimentLoopWrapper(x, 'cond')
-          condCol <- giveMetaoption(x, 'conditionCol')
-          plotCol <- unique(colData(x)[, condCol])
-
-          list(loopCols = loopCols, plotCol = plotCol)
-        },
-        error = function(c){
-          'There is only 1 condition (?)'
-        }
-      )
-    }
-  )
-
-  loopCols <- outList[[1]]
+  loopCols <- .loopWrapper(x, 'conditionCol')
+  if (length(loopCols) < 2) {
+    stop('There is only one condition, overlaps cannot be made')
+  }
 
   ## count missing values in each of the loopable conditions
   for (i in seq_along(loopCols)) {
@@ -110,7 +79,7 @@ setMethod('upsetTimeCoverage',
     overlapList <- as.list(as.data.frame(overlapList))
   }
 
-  names(overlapList) <- outList[[2]]
+  names(overlapList) <- names(loopCols)
 
   ## no plot
   if (returnList) {

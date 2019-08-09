@@ -1,5 +1,6 @@
 #' @rdname mostStable
 #' @name mostStable
+#'
 #' @title Most stable proteins/peptides
 #'
 #' @description Finds which are the most stable proteins/peptides across
@@ -27,6 +28,7 @@
 #'
 #' @examples
 #' mostStable(mefPE, assayName = 'fraction', n = 50)
+#'
 #' @export
 setGeneric('mostStable', function(x, ...){
   standardGeneric('mostStable')
@@ -43,50 +45,36 @@ setMethod('mostStable',
                    conditionCol) {
 
 
-  ## argument check
+  ## argument checker ----------------------------------------------------------
   if (!assayName %in% names(assays(x))) {
     txt <- sprintf('%s not found in assay names', assayName)
     stop(txt)
   }
-
-  mat <- assays(x)[[assayName]]
-
   if (!missing(conditionCol)) {
     metaoptions(x)[['conditionCol']] <- conditionCol
   }
 
-  ## which columns belong to which experiment
-  loopList <- tryCatch(
-    {
-      loop <- experimentLoopWrapper(x, 'cond.timerep')
-      loop
-    },
-    error = function(c){
-      tryCatch(
-        {
-          loop <- experimentLoopWrapper(x, 'cond')
-          loop
-        },
-        error = function(c){
-          list(seq_len(ncol(x)), NA)
-        }
-      )
-    }
-  )
+  ## data processing -----------------------------------------------------------
+  mat <- assays(x)[[assayName]]
 
+  loopCols <- .loopWrapper(x, 'conditionCol')
+
+  ## initialize matrix were the stability ranks will go
   rankRes <- matrix(data = NA,
                     ncol = length(loopList),
                     nrow = nrow(x))
 
+  ## rank for each condition
   for (j in seq_along(loopList)) {
-
     tempMat <- assays(x)[[assayName]][, loopList[[j]]]
     rankMat <- apply(tempMat, 2, rank, na.last = 'keep')
     resMat <- rank(apply(rankMat, 1, sum, na.rm = FALSE), na.last = 'keep')
     rankRes[, j] <- resMat
   }
 
+  ## apply a global rank across conditions and count the n top
   cutoff <- sort(apply(rankRes, 1, mean))[n]
+  ## return the most stable ones
   stablePE <- x[which(apply(rankRes, 1, mean) <= cutoff), ]
 
   return(stablePE)
