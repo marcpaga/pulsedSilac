@@ -86,11 +86,11 @@ setMethod('subsetPept', 'ProteomicsExperiment', function(x, ...) {
 setMethod('[', c('ProteomicsExperiment', 'ANY', 'ANY'),
           function(x, i, j, ..., drop = TRUE) {
 
-
   ## slots not affected by subset
   new.metadata <- metadata(x)
   new.metaoptions <- metaoptions(x)
 
+  ## check the metaoptions -----------------------------------------------------
   ## should linked subsetting be used
   linked <- giveMetaoption(x, 'linkedSubset')
 
