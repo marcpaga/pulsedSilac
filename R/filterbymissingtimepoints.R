@@ -1,5 +1,6 @@
 #' @rdname filterByMissingTimepoints
 #' @name filterByMissingTimepoints
+#'
 #' @title Filter proteins/peptides by the amount of measurements overtime
 #'
 #' @description Searches for proteins/peptides that are not found in all
@@ -47,40 +48,22 @@ setMethod('filterByMissingTimepoints',
                    conditionCol,
                    returnVector = FALSE) {
 
+  ## argument checker ----------------------------------------------------------
   if (!assayName %in% names(assays(x))) {
     txt <- sprintf('%s not found in assay names', assayName)
     stop(txt)
   }
 
-  ## assay used for the plotting
-  mat <- assays(x)[[assayName]]
-
-  ## if the metaoptions are not given, try to get them from the slot
-  ## if there are also not present, then the plot does not take into account
-  ## conditions.
   if (!missing(conditionCol)) {
     metaoptions(x)[['conditionCol']] <- conditionCol
   }
 
-  ## use trycatch since giveMetaoption raises and error if it does not find it,
-  ## but for plotting metaoptions are not strictly necessary
-  ## first it tries to get both condition and time replicates, if it fails then
-  ## only condition and if it fails then all the samples are grouped together
-  loopCols <- tryCatch(
-    {
-      loopCols <- experimentLoopWrapper(x, 'cond.timerep')
-    },
-    error = function(c){
-      tryCatch(
-        {
-          loopCols <- experimentLoopWrapper(x, 'cond')
-        },
-        error = function(c){
-          loopCols <- list(seq_len(ncol(x)))
-        }
-      )
-    }
-  )
+  ## data processing -----------------------------------------------------------
+  ## assay used for the plotting
+  mat <- assays(x)[[assayName]]
+
+  ## condition columns
+  loopCols <- .loopWrapper(x, 'conditionCol')
 
   for (i in seq_along(loopCols)) {
     if (i == 1) {
@@ -95,16 +78,20 @@ setMethod('filterByMissingTimepoints',
 
   }
 
+  ## it needs to pass the maxmissing in all conditions (TRUE) or only one
+  ## (FALSE)
   if (strict) {
     subsetVec <- apply(logMatrix, 1, all)
   } else {
     subsetVec <- apply(logMatrix, 1, any)
   }
 
+  ## instead of returning the object it returns the vector of logicals
   if (returnVector) {
     return(subsetVec)
   }
 
+  ## apply the subset
   new.x <- x[which(subsetVec),]
   validObject(new.x)
   return(new.x)
@@ -123,66 +110,7 @@ setMethod('filterByMissingTimepoints',
                    conditionCol,
                    returnVector = FALSE) {
 
-  if (!assayName %in% names(assays(x))) {
-    txt <- sprintf('%s not found in assay names', assayName)
-    stop(txt)
-  }
-
-  ## assay used for the plotting
-  mat <- assays(x)[[assayName]]
-
-  ## if the metaoptions are not given, try to get them from the slot
-  ## if there are also not present, then the plot does not take into account
-  ## conditions.
-  if (!missing(conditionCol)) {
-    metaoptions(x)[['conditionCol']] <- conditionCol
-  }
-
-  ## use trycatch since giveMetaoption raises and error if it does not find it,
-  ## but for plotting metaoptions are not strictly necessary
-  ## first it tries to get both condition and time replicates, if it fails then
-  ## only condition and if it fails then all the samples are grouped together
-  loopCols <- tryCatch(
-    {
-      loopCols <- experimentLoopWrapper(x, 'cond.timerep')
-    },
-    error = function(c){
-      tryCatch(
-        {
-          loopCols <- experimentLoopWrapper(x, 'cond')
-        },
-        error = function(c){
-          loopCols <- list(seq_len(ncol(x)))
-        }
-      )
-    }
-  )
-
-  for (i in seq_along(loopCols)) {
-    if (i == 1) {
-      logMatrix <- matrix(data = FALSE,
-                          ncol = length(loopCols),
-                          nrow = nrow(x))
-    }
-
-    nacounts <- apply(mat[, loopCols[[i]]], 1, function(x) sum(is.na(x)))
-    logMatrix[, i] <- (nacounts <= maxMissing)
-
-  }
-
-  if (strict) {
-    subsetVec <- apply(logMatrix, 1, all)
-  } else {
-    subsetVec <- apply(logMatrix, 1, any)
-  }
-
-  if (returnVector) {
-    return(subsetVec)
-  }
-
-  new.x <- x[which(subsetVec),]
-  validObject(new.x)
-  return(new.x)
+  callNextMethod()
 
 })
 
@@ -197,6 +125,7 @@ setMethod('filterByMissingTimepoints',
                    conditionCol,
                    returnVector = FALSE) {
 
+  ## filtering is dependent on the subsetMode
   if (giveMetaoption(x, 'subsetMode') == 'peptide') {
 
     subsetVec <- filterByMissingTimepoints(x@PeptideExperiment,
