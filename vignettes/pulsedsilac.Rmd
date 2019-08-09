@@ -700,7 +700,7 @@ names(modelList)
 
 ```{r, warning = FALSE, message = FALSE}
 
-plotDistributionModel(modelList, value = 'aicvalue')
+plotDistributionModel(modelList, value = 'AIC')
 
 ```
 
