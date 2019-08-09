@@ -131,7 +131,7 @@ mergeModelsLists <- function(...) {
   attributes(outList)[['time']] <- do.call('c', timeAttr)
 
   condAttr <- lapply(inputList, function(x) attributes(x)[['cond']])
-  attributes(outList)[['cond']] <- do.call('c', condAttr)
+  attributes(outList)[['cond']] <- unlist(condAttr)
 
   ## for loop for the loopCols attribute
   for (i in seq_along(inputList)) {
@@ -141,7 +141,10 @@ mergeModelsLists <- function(...) {
       next
     }
 
-    loopCols[[i]] <- unlist(attributes(inputList[[i]])[['loopCols']]) + cols
+
+    loopCols[[i]] <- unname(unlist(attributes(inputList[[i]])[['loopCols']]))
+    loopCols[[i]] <- loopCols[[i]] + cols
+    names(loopCols)[i] <- names(attributes(inputList[[i]])[['loopCols']])
   }
   attributes(outList)[['loopCols']] <- loopCols
 

@@ -88,6 +88,10 @@ setMethod('modelTurnover',
 
   ## columns of each condition
   loopCols <- .loopWrapper(x, 'conditionCol')
+  if (any(vapply(loopCols, length, integer(1)) == 0)) {
+    loopCols <- loopCols[which(vapply(loopCols, length, integer(1)) != 0)]
+  }
+
   ## get the condition and time columns to get the vectors from colData
   conditionCol <- .giveMetaoption(x, 'conditionCol')
   timeCol <- .giveMetaoption(x, 'timeCol')
@@ -99,8 +103,6 @@ setMethod('modelTurnover',
   if (returnModel) {
     modelList <- list()
   }
-
-
   ## initialize all the output matrices ----------------------------------------
   residual_matrix <- matrix(data = NA, nrow = nrow(x), ncol = ncol(x))
   stderror_matrix <- matrix(data = NA,
@@ -289,6 +291,9 @@ setMethod('modelTurnover',
 
   ## columns of each condition
   loopCols <- .loopWrapper(x, 'conditionCol')
+  if (any(vapply(loopCols, length, integer(1)) == 0)) {
+    loopCols <- loopCols[which(vapply(loopCols, length, integer(1)) != 0)]
+  }
   ## get the condition and time columns to get the vectors from colData
   conditionCol <- .giveMetaoption(x, 'conditionCol')
   timeCol <- .giveMetaoption(x, 'timeCol')
