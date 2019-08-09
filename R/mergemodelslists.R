@@ -49,6 +49,7 @@ mergeModelsLists <- function(...) {
 
   inputList <- list(...)
 
+  ## input checker -------------------------------------------------------------
   ## need minimum two lists to merge them
   if (length(inputList) < 2) {
     txt <- sprintf(paste0('To merge models lists at least 2 lists are',
@@ -90,6 +91,7 @@ mergeModelsLists <- function(...) {
     stop(txt)
   }
 
+  ## data processing -----------------------------------------------------------
   ## the first model list will be used as template
   outList <- inputList[[1]]
 

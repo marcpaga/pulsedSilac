@@ -70,14 +70,11 @@ setMethod('modelTurnover',
                    timeCol,
                    ...){
 
-  ## argument check
+  ## argument checker ----------------------------------------------------------
   if (!assayName %in% names(assays(x))) {
     txt <- sprintf('%s not found in assay names', assayName)
     stop(txt)
   }
-
-  mat <- assays(x)[[assayName]]
-
   if (!missing(conditionCol)) {
     metaoptions(x)[['conditionCol']] <- conditionCol
   }
@@ -85,40 +82,17 @@ setMethod('modelTurnover',
     metaoptions(x)[['timeCol']] <- timeCol
   }
 
-  ## which columns belong to which experiment
-  loopList <- tryCatch(
-    {
-      loop <- experimentLoopWrapper(x, 'cond.timerep')
-      conditionCol <- giveMetaoption(x, 'conditionCol')
-      timeRepCol <- giveMetaoption(x, 'replicateTimeCol')
-      cond <- paste(as.character(colData(x)[,conditionCol]),
-                    as.character(colData(x)[,timeRepCol]), sep = '.')
-      list(loop, cond)
-    },
-    error = function(c){
-      tryCatch(
-        {
-          loop <- experimentLoopWrapper(x, 'cond')
-          conditionCol <- giveMetaoption(x, 'conditionCol')
-          cond <- as.character(colData(x)[,conditionCol])
-          list(loop, cond)
-        },
-        error = function(c){
-          list(seq_len(ncol(x)), NA)
-        }
-      )
-    }
-  )
+  ## data processing and configuration -----------------------------------------
 
-  ## where to get the timepoint data from
-  timeCol <- giveMetaoption(x, 'timeCol')
+  mat <- assays(x)[[assayName]]
 
-  ## attributes for plotting
-  loopCols <- loopList[[1]]
-  ## conditionNames
-  condAttr <- loopList[[2]]
-  ## time
+  ## columns of each condition
+  loopCols <- .loopWrapper(x, 'conditionCol')
+  ## get the condition and time columns to get the vectors from colData
+  conditionCol <- .giveMetaoption(x, 'conditionCol')
+  timeCol <- .giveMetaoption(x, 'timeCol')
   timeAttr  <- colData(x)[, timeCol]
+  condAttr <- colData(x)[, conditionCol]
 
   ## if models are returned, then we need a list of lists
   ## else then we need lists and matrices
@@ -126,6 +100,8 @@ setMethod('modelTurnover',
     modelList <- list()
   }
 
+
+  ## initialize all the output matrices ----------------------------------------
   residual_matrix <- matrix(data = NA, nrow = nrow(x), ncol = ncol(x))
   stderror_matrix <- matrix(data = NA,
                             nrow = nrow(x),
@@ -161,7 +137,7 @@ setMethod('modelTurnover',
     weight_matrix <- matrix(data = NA, nrow = nrow(x), ncol = ncol(x))
   }
 
-
+  ## protein turnover modelling ------------------------------------------------
   ## for each condition and for each protein model protein turnover
   for (i in seq_along(loopCols)) {
 
@@ -175,6 +151,7 @@ setMethod('modelTurnover',
 
     for (j in seq_len(nrow(x))) {
 
+      ## progress bar
       if (verbose) {
         if (j == 1){
           pb <- txtProgressBar(min = 1, max = nrow(x), initial = 0, style = 3)
@@ -210,6 +187,7 @@ setMethod('modelTurnover',
         next
       }
 
+      ## extract the data from the model and put it in the output matrices
       residual_matrix[j, loopCols[[i]]] <- modeldata[['residuals']]
       stderror_matrix[j, i] <- modeldata[['stderror']]
 
@@ -231,6 +209,7 @@ setMethod('modelTurnover',
   } ## end of loopCols loop
 
 
+  ## all the output matrices in a list
   outList <- list(residuals = residual_matrix,
                   stderror = stderror_matrix,
                   param_values = param_values,
@@ -246,6 +225,8 @@ setMethod('modelTurnover',
     outList[['models']] <- modelList
   }
 
+  ## add the configuration as attributes that are using in the plotting
+  ## functions
   attributes(outList)[['loopCols']] <- loopCols
   attributes(outList)[['time']] <- timeAttr
   attributes(outList)[['cond']] <- condAttr
@@ -273,10 +254,10 @@ setMethod('modelTurnover',
                    proteinCol,
                    ...){
 
+  ## argument checker ----------------------------------------------------------
   if (!mode %in% c('grouped', 'peptide')) {
     stop('Mode must be either "grouped" or "peptide".')
   }
-
   ## a model for each peptide
   if (mode == 'peptide') {
     message('Modelling each peptide individually')
@@ -287,13 +268,10 @@ setMethod('modelTurnover',
     message('Modelling peptides grouped by protein')
   }
 
-
   if (!assayName %in% names(assays(x))) {
     txt <- sprintf('%s not found in assay names', assayName)
     stop(txt)
   }
-
-  mat <- assays(x)[[assayName]]
 
   ## metaoptions part
   if (!missing(conditionCol)) {
@@ -306,45 +284,20 @@ setMethod('modelTurnover',
     metaoptions(x)[['proteinCol']] <- proteinCol
   }
 
-  ## which columns belong to which experiment
-  loopList <- tryCatch(
-    {
-      loop <- experimentLoopWrapper(x, 'cond.timerep')
-      conditionCol <- giveMetaoption(x, 'conditionCol')
-      timeRepCol <- giveMetaoption(x, 'replicateTimeCol')
-      cond <- paste(as.character(colData(x)[,conditionCol]),
-                    as.character(colData(x)[,timeRepCol]), sep = '.')
-      list(loop, cond)
-    },
-    error = function(c){
-      tryCatch(
-        {
-          loop <- experimentLoopWrapper(x, 'cond')
-          conditionCol <- giveMetaoption(x, 'conditionCol')
-          cond <- as.character(colData(x)[,conditionCol])
-          list(loop, cond)
-        },
-        error = function(c){
-          list(seq_len(ncol(x)), NA)
-        }
-      )
-    }
-  )
+  ## data processing and configuration -----------------------------------------
+  mat <- assays(x)[[assayName]]
 
-  ## where to get the timepoint data from
-  timeCol <- giveMetaoption(x, 'timeCol')
-  ## group peptides from the same protein and return a model
-  ## this requires the proteinCol metaoption
-  proteinCol <- giveMetaoption(x, 'proteinCol')
-  proteinIds <- unique(rowData(x)[, proteinCol])
-  ## attributes for plotting
-  loopCols <- loopList[[1]]
-  ## conditionNames
-  condAttr <- loopList[[2]]
-  ## time
+  ## columns of each condition
+  loopCols <- .loopWrapper(x, 'conditionCol')
+  ## get the condition and time columns to get the vectors from colData
+  conditionCol <- .giveMetaoption(x, 'conditionCol')
+  timeCol <- .giveMetaoption(x, 'timeCol')
+  proteinCol <- .giveMetaoption(x, 'proteinCol')
+
   timeAttr  <- colData(x)[, timeCol]
-  ## protein
+  condAttr <- colData(x)[, conditionCol]
   protAttr <- as.character(rowData(x)[, proteinCol])
+  proteinIds <- unique(rowData(x)[, proteinCol])
 
   ## if models are returned, then we need a list of lists
   ## else then we need lists and matrices
@@ -352,6 +305,7 @@ setMethod('modelTurnover',
     modelList <- list()
   }
 
+  ## initialize all the output matrices ----------------------------------------
   residual_matrix <- matrix(data = NA,
                             nrow = nrow(x),
                             ncol = ncol(x))
@@ -388,7 +342,7 @@ setMethod('modelTurnover',
     weight_matrix <- matrix(data = NA, nrow = nrow(x), ncol = ncol(x))
   }
 
-
+  ## protein/peptide turnover modelling ----------------------------------------
   ## for each condition and for each protein model protein turnover
   for (i in seq_along(loopCols)) {
 
@@ -402,6 +356,7 @@ setMethod('modelTurnover',
 
     for (j in seq_along(proteinIds)) {
 
+      ## progress bar
       if (verbose) {
         if (j == 1){
           pb <- txtProgressBar(min = 1, max = length(proteinIds),
@@ -415,7 +370,7 @@ setMethod('modelTurnover',
 
       id <- proteinIds[j]
       ## cant use subset because proteinCol is an object
-      fracs <- mat[which(rowData(x)[,proteinCol] == id), loopCols[[i]], drop = FALSE]
+      fracs <- mat[which(rowData(x)[, proteinCol] == id), loopCols[[i]], drop = FALSE]
 
       ## modelDf contains the data to do the model on
       modelDf <- data.frame(t = rep(colData(x)[loopCols[[i]], timeCol],
@@ -469,6 +424,7 @@ setMethod('modelTurnover',
   } ## end of loopCols loop
 
 
+  ## all the output matrices in a list
   outList <- list(residuals = residual_matrix,
                   stderror = stderror_matrix,
                   param_values = param_values,
@@ -484,6 +440,7 @@ setMethod('modelTurnover',
     outList[['models']] <- modelList
   }
 
+  ## configuration attributes for plotting functions
   attributes(outList)[['loopCols']] <- loopCols
   attributes(outList)[['time']] <- timeAttr
   attributes(outList)[['cond']] <- condAttr
@@ -568,6 +525,9 @@ setMethod('modelTurnover',
 
 #' @keywords internal
 .modelTurnover <- function(data, formula, start, robust, returnModel, ...) {
+
+  ## internal function that does the actual modelling, robust or not,
+  ## and takes care of NAs
 
   originalnrow <- nrow(data)
 
