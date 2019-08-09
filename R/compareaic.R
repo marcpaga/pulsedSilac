@@ -64,6 +64,9 @@ compareAIC <- function(...) {
 
   names(outputList) <- names(attributes(inputLists[[1]])$loopCols)
 
+
+  ## to make it compatible with plotDistributionModels we have to reverse
+  ## the structure of the lists
   for (i in seq_len(n_models)) {
     if (i == 1) {
       secList <- list()
