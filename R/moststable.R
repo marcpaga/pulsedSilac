@@ -61,12 +61,12 @@ setMethod('mostStable',
 
   ## initialize matrix were the stability ranks will go
   rankRes <- matrix(data = NA,
-                    ncol = length(loopList),
+                    ncol = length(loopCols),
                     nrow = nrow(x))
 
   ## rank for each condition
-  for (j in seq_along(loopList)) {
-    tempMat <- assays(x)[[assayName]][, loopList[[j]]]
+  for (j in seq_along(loopCols)) {
+    tempMat <- assays(x)[[assayName]][, loopCols[[j]]]
     rankMat <- apply(tempMat, 2, rank, na.last = 'keep')
     resMat <- rank(apply(rankMat, 1, sum, na.rm = FALSE), na.last = 'keep')
     rankRes[, j] <- resMat
