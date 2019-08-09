@@ -75,14 +75,16 @@ plotDistributionModel <- function(modelList,
     plotDf <- .plotDistributionModel.Parameter(data = dataToPlot,
                                                ml_attr = attributes(modelList),
                                                returnDataFrame = returnDataFrame,
-                                               plotType = plotType)
+                                               plotType = plotType,
+                                               value = value)
   ## assay like type
   } else if (is.matrix(dataToPlot) & ncol(dataToPlot) == n_samples) {
 
     plotDf <- .plotDistributionModel.Assay(dataToPlot,
                                            ml_attr = attributes(modelList),
                                            returnDataFrame = returnDataFrame,
-                                           plotType = plotType)
+                                           plotType = plotType,
+                                           value = value)
 
   ## model wide type
   } else if (is.matrix(dataToPlot) & ncol(dataToPlot) == n_conditions) {
@@ -90,7 +92,8 @@ plotDistributionModel <- function(modelList,
     plotDf <- .plotDistributionModel.Model(dataToPlot,
                                            ml_attr = attributes(modelList),
                                            returnDataFrame = returnDataFrame,
-                                           plotType = plotType)
+                                           plotType = plotType,
+                                           value = value)
   }
 
   if (returnDataFrame) {
@@ -105,8 +108,12 @@ plotDistributionModel <- function(modelList,
 .plotDistributionModel.Parameter <- function(data,
                                              ml_attr,
                                              returnDataFrame,
-                                             plotType) {
+                                             plotType,
+                                             value) {
 
+  cbPalette <- c("#E69F00", "#56B4E9", "#009E73",
+                 "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+  value_lab <- value
   for (i in seq_len(length(data))) {
     if (i == 1) {
       dfList <- list()
@@ -114,7 +121,7 @@ plotDistributionModel <- function(modelList,
 
     cond_vec <- rep(unique(ml_attr[['cond']]),
                     each = nrow(data[[i]]))
-    plotDf <- data.frame(value = as.vector(data[[i]]),
+    plotDf <- data.frame(value = as.vector(as.matrix(data[[i]])),
                          condition = cond_vec,
                          param = rep(names(data)[i],
                                      times = nrow(data[[i]])))
@@ -139,7 +146,7 @@ plotDistributionModel <- function(modelList,
       scale_fill_manual(values = cbPalette) +
       facet_wrap(~param, scales = 'free') +
       theme_bw() +
-      labs(x = value)
+      labs(x = value_lab)
 
     return(p)
 
@@ -152,7 +159,7 @@ plotDistributionModel <- function(modelList,
       scale_fill_manual(values = cbPalette) +
       facet_wrap(~param, scales = 'free') +
       theme_bw() +
-      labs(y = value)
+      labs(y = value_lab)
 
     return(p)
   }
@@ -163,8 +170,12 @@ plotDistributionModel <- function(modelList,
 .plotDistributionModel.Assay <- function(data,
                                          ml_attr,
                                          returnDataFrame,
-                                         plotType) {
+                                         plotType,
+                                         value) {
 
+  cbPalette <- c("#E69F00", "#56B4E9", "#009E73",
+                 "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+  value_lab <- value
   loopCols <- ml_attr$loopCols
   for (i in seq_len(length(loopCols))) {
     if (i == 1) {
@@ -194,7 +205,7 @@ plotDistributionModel <- function(modelList,
       scale_fill_manual(values = cbPalette) +
       facet_wrap(~condition, scales = 'free') +
       theme_bw() +
-      labs(x = value)
+      labs(x = value_lab)
 
     return(p)
 
@@ -207,7 +218,7 @@ plotDistributionModel <- function(modelList,
       scale_fill_manual(values = cbPalette) +
       facet_wrap(~condition, scales = 'free') +
       theme_bw() +
-      labs(y = value)
+      labs(y = value_lab)
 
     return(p)
   }
@@ -218,8 +229,12 @@ plotDistributionModel <- function(modelList,
 .plotDistributionModel.Model <- function(data,
                                          ml_attr,
                                          returnDataFrame,
-                                         plotType) {
+                                         plotType,
+                                         value) {
 
+  cbPalette <- c("#E69F00", "#56B4E9", "#009E73",
+                 "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+  value_lab <- value
   loopCols <- ml_attr$loopCols
   for (i in seq_len(length(loopCols))) {
     if (i == 1) {
@@ -244,7 +259,7 @@ plotDistributionModel <- function(modelList,
                                      fill = 'condition')) +
       scale_fill_manual(values = cbPalette) +
       theme_bw() +
-      labs(x = value)
+      labs(x = value_lab)
 
     return(p)
 
@@ -256,7 +271,7 @@ plotDistributionModel <- function(modelList,
                               fill = 'condition')) +
       scale_fill_manual(values = cbPalette) +
       theme_bw() +
-      labs(y = value)
+      labs(y = value_lab)
 
     return(p)
   }
