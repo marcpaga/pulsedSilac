@@ -1,9 +1,7 @@
 #' Calculates the Akaike Information Criteria (AIC)
 #'
-#' If only the ProteomicsExperiment argument is given, it will try to find all
-#' the computed models and calculate the AIC.
-#' If the length of modelName is longer than 1, then all the other paramaters
-#' are repeated until the same length of modelName is reached.
+#' Calculates the AIC for each of the computed models. Requires that
+#' \code{modelTurnover} is run with \code{reuturnModel = TRUE}.
 #'
 #' The following formulas are used to compute the AIC and AICc (small sample
 #' size correction):
@@ -41,6 +39,11 @@ calculateAIC <- function(modelList,
 
   if (!is.list(modelList)) {
     stop('"x" must be a list')
+  }
+
+  if (!'models' %in% names(modelList)) {
+    stop('There are no models in this modelList, did you run modelTurnover ',
+         'with returnModel = TRUE?')
   }
 
   loopCols <- attributes(modelList)[['loopCols']]
