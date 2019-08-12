@@ -48,10 +48,17 @@ setMethod('plotIndividualModel',
                    num,
                    returnDataFrame = FALSE) {
 
+  ## argument checker ----------------------------------------------------------
   ## cb palette
   cbPalette <- c("#E69F00", "#56B4E9", "#009E73",
                  "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 
+  if (!'models' %in% names(modelList)) {
+    stop('There are no models in this modelList, did you run modelTurnover ',
+         'with returnModel = TRUE?')
+  }
+
+  ## data processing -----------------------------------------------------------
   ## models related to that feature
   miniList <- lapply(modelList[['models']], "[[", num)
 
@@ -94,6 +101,8 @@ setMethod('plotIndividualModel',
 
   origPlotDf <- do.call('rbind', dfOriginalList)
   fittedPlotDf <- do.call('rbind', dfFittedList)
+  origPlotDf$condition <- droplevels(origPlotDf$condition)
+  fittedPlotDf$condition <- droplevels(fittedPlotDf$condition)
 
   if (is.null(origPlotDf)) {
     stop('No models found for any condition')
@@ -128,10 +137,17 @@ setMethod('plotIndividualModel',
                    num,
                    returnDataFrame = FALSE) {
 
+  ## argument checker ----------------------------------------------------------
   ## cb palette
   cbPalette <- c("#E69F00", "#56B4E9", "#009E73",
                  "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 
+  if (!'models' %in% names(modelList)) {
+    stop('There are no models in this modelList, did you run modelTurnover ',
+         'with returnModel = TRUE?')
+  }
+
+  ## data processing -----------------------------------------------------------
   ## models related to that feature
   miniList <- lapply(modelList[['models']], "[[", num)
 
@@ -188,6 +204,8 @@ setMethod('plotIndividualModel',
 
   origPlotDf <- do.call('rbind', dfOriginalList)
   fittedPlotDf <- do.call('rbind', dfFittedList)
+  origPlotDf$condition <- droplevels(origPlotDf$condition)
+  fittedPlotDf$condition <- droplevels(fittedPlotDf$condition)
 
   if (is.null(origPlotDf)) {
     stop('No models found for any condition')
