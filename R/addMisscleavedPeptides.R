@@ -115,7 +115,6 @@ setMethod('addMisscleavedPeptides',
     ## get the quantification data
     tempDf <- subset(newdata, get(modColName) == modifications[i])
 
-
     if (i == 1) {
       assaysList <- list()
       id_order <- as.vector(tempDf[, idColPept])
@@ -205,13 +204,15 @@ setMethod('addMisscleavedPeptides',
     tempMat <- matrix(NA, nrow = dimPep[1], ncol = dimPep[2])
 
     ## fill the new assay with the data using the match
-    newrows <- match(tempDf[, idColPept], rowData(x)[,idColPept])
+    newrows <- match(tempDf[, idColPept], rowData(x)[, idColPept])
     oldrows <- seq_len(nrow(dataMat))
     nomatch <- which(is.na(newrows))
 
     ## remove peptides that cant be matched
-    oldrows <- oldrows[-nomatch]
-    newrows <- newrows[-nomatch]
+    if (length(nomatch) > 0) {
+      oldrows <- oldrows[-nomatch]
+      newrows <- newrows[-nomatch]
+    }
 
     if (length(oldrows) == 0) {
       warning('None of the given ids were matched')
