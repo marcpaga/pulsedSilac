@@ -77,12 +77,22 @@ setMethod('plotDistributionAssay', 'ProteinExperiment',
       dfList <- list()
     }
 
-    timeVec <- colData(x)[, .giveMetaoption(x, 'timeCol')][loopCols[[i]]]
+    timeCol <- .giveMetaoption(x, 'timeCol')
+    if (is.na(timeCol)) {
+      timeVec <- seq_along(loopCols[[i]])
+    } else {
+      timeVec <- colData(x)[, .giveMetaoption(x, 'timeCol')][loopCols[[i]]]
+    }
 
     values <- as.vector(mat[, loopCols[[i]]])
     tempDf <- data.frame(value = values,
                          time = rep(timeVec, each = nrow(mat)))
-    tempDf$condition <- names(loopCols)[i]
+    if (!is.null(names(loopCols)[i])) {
+      tempDf$condition <- names(loopCols)[i]
+    } else {
+      tempDf$condition <- 'condition'
+    }
+
 
     dfList[[i]] <- tempDf
   }
@@ -91,6 +101,7 @@ setMethod('plotDistributionAssay', 'ProteinExperiment',
   plotDf <- do.call('rbind', dfList)
   plotDf$time <- as.factor(plotDf$time)
   plotDf$condition <- as.factor(plotDf$condition)
+
 
   if (returnDataFrame) {
     colnames(plotDf)[1] <- assayName
