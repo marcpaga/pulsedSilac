@@ -666,6 +666,23 @@ plotDistributionModel(modelList = modelList,
 
 ```
 
+#### Half-lives
+
+This plot shows the distribution of half-lives for each condition. 
+
+```{r,echo=FALSE}
+modelList[['half_life']] <- log(0.5)/(-modelList$param_values$k)
+
+```
+
+```{r, warning = FALSE, message = FALSE}
+
+plotDistributionModel(modelList = modelList,
+                      value = 'half_life',
+                      plotType = 'density')
+
+```
+
 ### Comparing conditions
 
 To plot protein/peptide values and compare between conditions the `scatterCompareModels()` function can be used. It works like the `scatterCompareAssays()` function. The two conditions to be compared must be indicated as well as the desired metric.
