@@ -53,6 +53,9 @@ setMethod('mostStable',
   if (!missing(conditionCol)) {
     metaoptions(x)[['conditionCol']] <- conditionCol
   }
+  if (missing(n)) {
+    stop('Must provide an "n" value')
+  }
 
   ## data processing -----------------------------------------------------------
   mat <- assays(x)[[assayName]]
