@@ -17,6 +17,19 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
 ---
 
+# Installation
+
+To install this package, start R (version "3.6") and enter:
+
+```{r, eval = FALSE}
+
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("pulsedSilac")
+
+```
+
 # Introduction
 
 SILAC (Stable Isotope Label by Amino acids in Cell culture) is a method to differentially compare protein expression between samples. To measure protein turnover, the SILAC technique is applied over time by changing the medium and harvesting the cells at different time points. Each sample is then analyzed by mass spectrometry. The isotope ratio at each time point can then be used to calculate the turnover rate of each measured protein. 
