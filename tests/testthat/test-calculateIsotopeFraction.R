@@ -50,8 +50,8 @@ test_that("calculateIsotopeFraction complex", {
                                                earlyTimepoints = 1,
                                                lateTimepoints))
 
-  expect_length(assays(PE), 3)
-  expect_named(assays(PE)[3], 'fraction')
+  expect_length(assays(PE), 5)
+  expect_named(assays(PE)[5], 'fraction')
 
   expect_equivalent(assays(PE)[['fraction']],
                     matrix(c(0, 0.5, 0.5, 2/3,
