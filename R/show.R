@@ -14,11 +14,41 @@ setMethod('show',
           'ProteomicsExperiment',
           function(object){
 
-  selectSome <- S4Vectors:::selectSome
+  ## this is the unexported function from the S4Vectors:::selectSome
+  selectSome <- function (obj, maxToShow = 5, ellipsis = "...",
+                          ellipsisPos = c("middle", "end", "start"),
+                          quote = FALSE) {
+    if (is.character(obj) && quote)
+      obj <- sQuote(obj)
+    ellipsisPos <- match.arg(ellipsisPos)
+    len <- length(obj)
+    if (maxToShow < 3)
+      maxToShow <- 3
+    if (len > maxToShow) {
+      maxToShow <- maxToShow - 1
+      if (ellipsisPos == "end") {
+        c(head(obj, maxToShow), ellipsis)
+      }
+      else if (ellipsisPos == "start") {
+        c(ellipsis, tail(obj, maxToShow))
+      }
+      else {
+        bot <- ceiling(maxToShow/2)
+        top <- len - (maxToShow - bot - 1)
+        nms <- obj[c(1:bot, top:len)]
+        c(as.character(nms[1:bot]), ellipsis, as.character(nms[-c(1:bot)]))
+      }
+    }
+    else {
+      obj
+    }
+  }
+
+  ## copied from the SummarizedExperiment show method
   scat <- function(fmt, vals=character(), exdent=2, startSpace = FALSE, ...)
   {
     vals <- ifelse(nzchar(vals), vals, "''")
-    lbls <- paste(S4Vectors:::selectSome(vals), collapse=" ")
+    lbls <- paste(selectSome(vals), collapse=" ")
     txt <- sprintf(fmt, length(vals), lbls)
     if (startSpace) {
       cat(paste0('  ',strwrap(txt, exdent=exdent, ...)), sep="\n")
@@ -27,6 +57,7 @@ setMethod('show',
     }
 
   }
+
 
   ## class
   cat("class:", class(object), "\n")
