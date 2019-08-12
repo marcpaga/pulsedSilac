@@ -124,16 +124,16 @@ setMethod('calculateIsotopeFraction', 'ProteinExperiment',
 
         missing <- which(!is.na(temp_new_int[, j]) & is.na(temp_old_int[, j]))
         if (length(missing) != 0) {
-          new_fraction[missing, j] <- 0
+          new_fraction[missing, j] <- 1
         }
       }
     }
     assayList[[i]] <- new_fraction
   }
 
-  new_fraction <- do.call('cbind', assayList)
+  fraction <- do.call('cbind', assayList)
 
-  assays(x)[['new_fraction']] <- new_fraction
+  assays(x)[['fraction']] <- fraction
   return(x)
 
 })
