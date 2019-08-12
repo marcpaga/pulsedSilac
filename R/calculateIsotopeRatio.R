@@ -31,8 +31,7 @@ setGeneric('calculateIsotopeRatio', function(x, newIsotopeAssay,
 #' @rdname calculateIsotopeRatio
 #' @export
 setMethod('calculateIsotopeRatio', 'ProteinExperiment',
-          function(x, newIsotopeAssay = 'heavy_intensity',
-                   oldIsotopeAssay = 'light_intensity') {
+          function(x, newIsotopeAssay, oldIsotopeAssay) {
 
   ratio_assay <- assays(x)[[newIsotopeAssay]]/assays(x)[[oldIsotopeAssay]]
   assays(x)[['ratio']] <- ratio_assay
@@ -43,8 +42,7 @@ setMethod('calculateIsotopeRatio', 'ProteinExperiment',
 #' @rdname calculateIsotopeRatio
 #' @export
 setMethod('calculateIsotopeRatio', 'PeptideExperiment',
-          function(x, newIsotopeAssay = 'heavy_intenisty',
-                   oldIsotopeAssay = 'light_intensity') {
+          function(x, newIsotopeAssay, oldIsotopeAssay) {
 
   ratio_assay <- assays(x)[[newIsotopeAssay]]/assays(x)[[oldIsotopeAssay]]
   assays(x)[['ratio']] <- ratio_assay
@@ -55,8 +53,7 @@ setMethod('calculateIsotopeRatio', 'PeptideExperiment',
 #' @rdname calculateIsotopeRatio
 #' @export
 setMethod('calculateIsotopeRatio', 'ProteomicsExperiment',
-          function(x, newIsotopeAssay = 'heavy_intenisty',
-                   oldIsotopeAssay = 'light_intensity') {
+          function(x, newIsotopeAssay, oldIsotopeAssay) {
 
   if (length(newIsotopeAssay) == 1) {
     newIsotopeAssay <- rep(newIsotopeAssay, 2)
