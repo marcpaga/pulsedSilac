@@ -155,7 +155,7 @@ scatterCompareModels <- function(modelList,
   ## join all the parameters into one data.frame
   plotDf <- do.call('rbind', dfList)
   plotDf$param <- as.factor(plotDf$param)
-  colnames(plotDf)[1:2] <- colnames(data[[1]])
+  colnames(plotDf)[seq_len(2)] <- colnames(data[[1]])
 
 
   if (returnDataFrame) {
@@ -163,7 +163,7 @@ scatterCompareModels <- function(modelList,
   }
 
   ## remove missing values because they make the coordinate limits look weird
-  plotDf <- plotDf[which(apply(plotDf[,1:2], 1,
+  plotDf <- plotDf[which(apply(plotDf[,seq_len(2)], 1,
                                function(x) sum(is.na(x))) < 1),]
 
   p <- ggplot(data = plotDf) +
@@ -214,7 +214,7 @@ scatterCompareModels <- function(modelList,
   plotDf <- subset(plotDf, !is.na(plotDf$Cond2))
 
   ## change column names to conditions
-  colnames(plotDf)[1:2] <- names(loopCols)
+  colnames(plotDf)[seq_len(2)] <- names(loopCols)
 
   if (returnDataFrame) {
     return(plotDf)
@@ -223,7 +223,8 @@ scatterCompareModels <- function(modelList,
   ## plotting ------------------------------------------------------------------
 
   p <- ggplot(data = plotDf,
-              aes_string(x = conditions[1], y = conditions[2])) +
+              aes_string(x = colnames(plotDf)[1],
+                         y = colnames(plotDf)[2])) +
     geom_point() +
     geom_abline(slope = 1, intercept = 0, color = 'grey70', linetype = 2) +
     facet_wrap(~Time, nrow = 1)  +
@@ -244,8 +245,8 @@ scatterCompareModels <- function(modelList,
   }
 
   ## remove missing values because they make the coordinate limits look weird
-  plotDf <- plotDf[which(apply(plotDf[,1:2], 1,
-                               function(x) sum(is.na(x))) < 1),]
+  plotDf <- plotDf[which(apply(plotDf[, seq_len(2)], 1,
+                               function(x) sum(is.na(x))) < 1), ]
 
   p <- ggplot(data = plotDf) +
     geom_point(aes_string(x = colnames(plotDf)[1],
