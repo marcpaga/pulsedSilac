@@ -123,7 +123,7 @@ setMethod('scatterCompareAssays', 'ProteinExperiment',
   plotDf <- subset(plotDf, !is.na(plotDf$Cond2))
 
   ## change column names to conditions
-  colnames(plotDf)[1:2] <- conditions
+  colnames(plotDf)[seq_len(2)] <- conditions
 
   if (returnDataFrame) {
     return(plotDf)

@@ -35,8 +35,8 @@ setMethod('show',
       else {
         bot <- ceiling(maxToShow/2)
         top <- len - (maxToShow - bot - 1)
-        nms <- obj[c(1:bot, top:len)]
-        c(as.character(nms[1:bot]), ellipsis, as.character(nms[-c(1:bot)]))
+        nms <- obj[c(seq_len(bot), top:len)]
+        c(as.character(nms[seq_len(bot)]), ellipsis, as.character(nms[-c(seq_len(bot))]))
       }
     }
     else {
