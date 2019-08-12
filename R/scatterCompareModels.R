@@ -214,7 +214,7 @@ scatterCompareModels <- function(modelList,
   plotDf <- subset(plotDf, !is.na(plotDf$Cond2))
 
   ## change column names to conditions
-  colnames(plotDf)[1:2] <- names(loopCols_
+  colnames(plotDf)[1:2] <- names(loopCols)
 
   if (returnDataFrame) {
     return(plotDf)
