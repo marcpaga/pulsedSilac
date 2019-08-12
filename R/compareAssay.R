@@ -179,7 +179,7 @@ setMethod('scatterCompareAssays', 'ProteomicsExperiment',
   } else if (mode == 'peptide') {
 
     scatterCompareAssays(x = x@PeptideExperiment,
-                         y = conditions,
+                         conditions = conditions,
                          assayName = assayName,
                          returnDataFrame = returnDataFrame,
                          conditionCol = conditionCol,
