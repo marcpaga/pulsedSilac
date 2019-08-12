@@ -124,6 +124,48 @@ test_that("addMiscleavedPeptides works", {
 
 test_that("calculateOldIsotopePool works", {
 
+  PE <- testList[[2]]
+  recycleDf <- data.frame(id = rep(letters[1:4], each = 2),
+                          mod = rep(c('NN', 'ON'), times = 4),
+                          int1 = c(1:8),
+                          int2 = c(1:8),
+                          int3 = c(1:8),
+                          int4 = c(1:8),
+                          oth1 = letters[16:23],
+                          oth2 = letters[18:25])
+  expect_silent(missPE <- addMisscleavedPeptides(x = PE,
+                                                 newdata = recycleDf,
+                                                 idColPept = 'id',
+                                                 modCol = 'mod',
+                                                 dataCols = 3:6))
 
+  expect_error(calculateOldIsotopePool(missPE, 'asdf', 'ON'))
+  expect_error(calculateOldIsotopePool(missPE, 'NN', 'asdf'))
+
+  expect_silent(missPE <- calculateOldIsotopePool(missPE, 'NN', 'ON'))
+  expect_length(assays(missPE), 5)
+  expect_named(assays(missPE)[5], 'oldIsotopePool')
+
+  PE <- testList[[3]]
+  recycleDf <- data.frame(id = rep(letters[1:4], each = 2),
+                          mod = rep(c('NN', 'ON'), times = 4),
+                          int1 = c(1:8),
+                          int2 = c(1:8),
+                          int3 = c(1:8),
+                          int4 = c(1:8),
+                          oth1 = letters[16:23],
+                          oth2 = letters[18:25])
+  expect_silent(missPE <- addMisscleavedPeptides(x = PE,
+                                                 newdata = recycleDf,
+                                                 idColPept = 'id',
+                                                 modCol = 'mod',
+                                                 dataCols = 3:6))
+
+  expect_error(calculateOldIsotopePool(missPE, 'asdf', 'ON'))
+  expect_error(calculateOldIsotopePool(missPE, 'NN', 'asdf'))
+
+  expect_silent(missPE <- calculateOldIsotopePool(missPE, 'NN', 'ON'))
+  expect_length(assaysPept(missPE), 5)
+  expect_named(assaysPept(missPE)[5], 'oldIsotopePool')
 
 })
