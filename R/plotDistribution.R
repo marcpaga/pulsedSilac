@@ -132,6 +132,7 @@ plotDistributionModel <- function(modelList,
   plotDf <- do.call('rbind', dfList)
   plotDf$condition <- as.factor(plotDf$condition)
   plotDf$param <- as.factor(plotDf$param)
+  plotDf$condition <- droplevels(plotDf$condition)
 
   if (returnDataFrame) {
     return(plotDf)
@@ -195,6 +196,7 @@ plotDistributionModel <- function(modelList,
   plotDf <- do.call('rbind', dfList)
   plotDf$time <- as.factor(plotDf$time)
   plotDf$condition <- as.factor(plotDf$condition)
+  plotDf$condition <- droplevels(plotDf$condition)
 
   if (returnDataFrame) {
     return(plotDf)
@@ -254,6 +256,7 @@ plotDistributionModel <- function(modelList,
   }
   plotDf <- do.call('rbind', dfList)
   plotDf$condition <- as.factor(plotDf$condition)
+  plotDf$condition <- droplevels(plotDf$condition)
 
   if (returnDataFrame) {
     return(plotDf)
