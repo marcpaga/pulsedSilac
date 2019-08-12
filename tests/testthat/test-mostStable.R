@@ -1,6 +1,7 @@
 test_that("mostStable works", {
 
   PE <- ProtExp(wormsPE)
+  PE <- calculateIsotopeFraction(PE, ratioAssay = 'ratio')
 
   expect_error(mostStable(PE, 'asdf'))
   expect_error(stablePE <- mostStable(PE, 'fraction'))
