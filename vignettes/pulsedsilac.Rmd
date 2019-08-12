@@ -543,6 +543,19 @@ Models that fail to converge have `NA` as their output metrics.
 
 There are more options to tune `modelTurnover()`, such as: `robust`, to use robust modelling; `returnModel`, which will return the actual model objects besides the metrics; `verbose`, to output a progress bar. For more information please refer to the manual.
 
+## Calculating protein half-life
+
+To calculate protein half-life one has to separate the time variable on to one side of the equation and solve it. For this particula exponential decay model that has been applied it is quite simple. The new equation would be:
+
+$$t = \frac{log(0.5)}{-k}$$
+
+With this formula the half-life of each protein can be calculated. Here it is calculated and added to the `modelList` object. In this way, the following plots can also be used on the protein half-life data.
+
+```{r}
+modelList[['half_life']] <- log(0.5)/(-modelList$param_values$k)
+
+```
+
 ## Plots
 
 The output of `modelTurnover()` with `returnModel = TRUE` can be used as input in the following functions to plot either individual protein/peptides models or the overall experiment distributions. 
