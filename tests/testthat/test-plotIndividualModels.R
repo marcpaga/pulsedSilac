@@ -22,9 +22,9 @@ modelList <- modelTurnover(x = wormsPE[1:10],
                            robust = FALSE,
                            returnModel = TRUE)
 
-expect_error(plotIndividualModel(x = wormsPE,
+expect_warning(expect_error(plotIndividualModel(x = wormsPE,
                                  modelList = modelList,
-                                 num = 1))
+                                 num = 1)))
 
 expect_silent(p <- plotIndividualModel(x = wormsPE,
                                        modelList = modelList,
@@ -110,7 +110,7 @@ modelList <- modelTurnover(x = wormsPE[1:10,],
 
 p <- plotIndividualModel(x = wormsPE,
                          modelList = modelList,
-                         num = 2,
+                         num = 6,
                          returnDataFrame = FALSE)
 expect_is(p, 'ggplot')
 expect_setequal(sapply(p$layers, function(x) class(x$geom)[1]),
