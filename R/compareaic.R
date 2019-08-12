@@ -42,9 +42,21 @@
 #' @export
 compareAIC <- function(...) {
 
+  ## argument checkers ---------------------------------------------------------
   inputLists <- list(...)
   n_models <- length(inputLists)
 
+  if (n_models < 2) {
+    stop('You need at least 2 models')
+  }
+
+  aic_n <- sum(unlist(lapply(inputLists, names)) == 'AIC')
+
+  if (aic_n != n_models) {
+    stop('Not all models have an AIC matrix')
+  }
+
+  ## data processing -----------------------------------------------------------
   aicsList <- lapply(inputLists, '[[', 'AIC')
 
   n_conditions <- length(attributes(inputLists[[1]])$loopCols)
