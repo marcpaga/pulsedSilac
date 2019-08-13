@@ -302,6 +302,8 @@ setMethod('modelTurnover',
     metaoptions(x)[['proteinCol']] <- proteinCol
   }
 
+  if (!exists('r_names_prot')) r_names_prot <- NULL
+
   ## data processing and configuration -----------------------------------------
   mat <- assays(x)[[assayName]]
 
