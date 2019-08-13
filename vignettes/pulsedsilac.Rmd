@@ -6,7 +6,7 @@ author:
 date: "`r Sys.Date()`"
 bibliography: 'bibliography.bib'
 nocite: '@*'
-abstract: "This document will contain a tutorial on how to perform basic pulsed SILAC data analysis using the pulsedSilac package."
+abstract: "This document will contain a tutorial on how to perform basic pulsed SILAC data analysis using the pulsedSilac package. This includes data organization, filtering, modelling and plotting."
 output:
   BiocStyle::html_document:
     toc_float: false
