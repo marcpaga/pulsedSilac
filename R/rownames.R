@@ -1,4 +1,5 @@
 #' @rdname ProteomicsExperiment-accessors
+#' @name rownamesProt
 #' @aliases rownamesProt,ProteomicsExperiment-method
 #' @export
 setMethod('rownamesProt', 'ProteomicsExperiment', function(x) {
@@ -8,6 +9,7 @@ setMethod('rownamesProt', 'ProteomicsExperiment', function(x) {
 })
 
 #' @rdname ProteomicsExperiment-accessors
+#' @name rownamesProt<-
 #' @aliases rownamesProt<-,ProteomicsExperiment-method
 #' @export
 setMethod('rownamesProt<-', 'ProteomicsExperiment', function(x, value) {
@@ -23,6 +25,7 @@ setMethod('rownamesProt<-', 'ProteomicsExperiment', function(x, value) {
 })
 
 #' @rdname ProteomicsExperiment-accessors
+#' @name rownamesPept
 #' @aliases rownamesPept,ProteomicsExperiment-method
 #' @export
 setMethod('rownamesPept', 'ProteomicsExperiment', function(x) {
@@ -32,6 +35,7 @@ setMethod('rownamesPept', 'ProteomicsExperiment', function(x) {
 })
 
 #' @rdname ProteomicsExperiment-accessors
+#' @name rownamesPept<-
 #' @aliases rownamesPept<-,ProteomicsExperiment-method
 #' @export
 setMethod('rownamesPept<-', 'ProteomicsExperiment', function(x, value) {
