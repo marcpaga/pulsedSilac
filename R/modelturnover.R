@@ -98,16 +98,30 @@ setMethod('modelTurnover',
   timeAttr  <- colData(x)[, timeCol]
   condAttr <- colData(x)[, conditionCol]
 
+  ## rownames, colnames and conditionnames for dimension naming of output
+  ## matrices
+  r_names <- rownames(x)
+  c_names <- colnames(x)
+  cond_names <- names(loopCols)
+
   ## if models are returned, then we need a list of lists
   ## else then we need lists and matrices
   if (returnModel) {
     modelList <- list()
   }
   ## initialize all the output matrices ----------------------------------------
-  residual_matrix <- matrix(data = NA, nrow = nrow(x), ncol = ncol(x))
+  residual_matrix <- matrix(data = NA,
+                            nrow = nrow(x),
+                            ncol = ncol(x))
+  if (!is.null(r_names)) rownames(residual_matrix) <- r_names
+  if (!is.null(c_names)) colnames(residual_matrix) <- c_names
+
   stderror_matrix <- matrix(data = NA,
                             nrow = nrow(x),
                             ncol = length(loopCols))
+
+  if (!is.null(r_names)) rownames(stderror_matrix) <- r_names
+  if (!is.null(cond_names)) colnames(stderror_matrix) <- cond_names
   ## there will be a value per condition and parameter, therefore they
   ## are multiplicative
   param_values <- list()
@@ -115,18 +129,17 @@ setMethod('modelTurnover',
   param_tval <- list()
   param_pval <- list()
   for (i in seq_len(length(start))) {
-    param_values[[i]] <- matrix(data = NA,
-                                nrow = nrow(x),
-                                ncol = length(loopCols))
-    param_stderror[[i]] <- matrix(data = NA,
-                                  nrow = nrow(x),
-                                  ncol = length(loopCols))
-    param_tval[[i]] <- matrix(data = NA,
-                              nrow = nrow(x),
-                              ncol = length(loopCols))
-    param_pval[[i]] <- matrix(data = NA,
-                              nrow = nrow(x),
-                              ncol = length(loopCols))
+    temp_mat <- matrix(data = NA,
+                       nrow = nrow(x),
+                       ncol = length(loopCols))
+
+    if (!is.null(r_names)) rownames(temp_mat) <- r_names
+    if (!is.null(cond_names)) colnames(temp_mat) <- cond_names
+
+    param_values[[i]] <- temp_mat
+    param_stderror[[i]] <- temp_mat
+    param_tval[[i]] <- temp_mat
+    param_pval[[i]] <- temp_mat
   }
   names(param_values) <- names(start)
   names(param_stderror) <- names(start)
@@ -137,6 +150,8 @@ setMethod('modelTurnover',
   ## weights are only with robust modelling
   if (robust) {
     weight_matrix <- matrix(data = NA, nrow = nrow(x), ncol = ncol(x))
+    if (!is.null(r_names)) rownames(weight_matrix) <- r_names
+    if (!is.null(c_names)) colnames(weight_matrix) <- c_names
   }
 
   ## protein turnover modelling ------------------------------------------------
@@ -227,6 +242,7 @@ setMethod('modelTurnover',
     outList[['models']] <- modelList
   }
 
+
   ## add the configuration as attributes that are using in the plotting
   ## functions
   attributes(outList)[['loopCols']] <- loopCols
@@ -304,6 +320,23 @@ setMethod('modelTurnover',
   protAttr <- as.character(rowData(x)[, proteinCol])
   proteinIds <- unique(rowData(x)[, proteinCol])
 
+  ## rownames, colnames and conditionnames for dimension naming of output
+  ## matrices
+  if (mode == 'peptide') {
+    r_names <- rownames(x)
+  } else if (mode == 'grouped') {
+    ## passed by the ProteomicsExperiment method
+    if (exists('r_names_prot')) {
+      r_names <- r_names_prot
+      r_names_pept <- rownames(x)
+    } else {
+      r_names <- proteinIds
+      r_names_pept <- rownames(x)
+    }
+  }
+  c_names <- colnames(x)
+  cond_names <- names(loopCols)
+
   ## if models are returned, then we need a list of lists
   ## else then we need lists and matrices
   if (returnModel) {
@@ -314,9 +347,15 @@ setMethod('modelTurnover',
   residual_matrix <- matrix(data = NA,
                             nrow = nrow(x),
                             ncol = ncol(x))
+  if (!is.null(r_names_pept)) rownames(residual_matrix) <- r_names_pept
+  if (!is.null(c_names)) colnames(residual_matrix) <- c_names
+
   stderror_matrix <- matrix(data = NA,
                             nrow = length(proteinIds),
                             ncol = length(loopCols))
+
+  if (!is.null(r_names)) rownames(stderror_matrix) <- r_names
+  if (!is.null(cond_names)) colnames(stderror_matrix) <- cond_names
   ## there will be a value per condition and parameter, therefore they
   ## are multiplicative
   param_values <- list()
@@ -324,18 +363,18 @@ setMethod('modelTurnover',
   param_tval <- list()
   param_pval <- list()
   for (i in seq_len(length(start))) {
-    param_values[[i]] <- matrix(data = NA,
-                                nrow = length(proteinIds),
-                                ncol = length(loopCols))
-    param_stderror[[i]] <- matrix(data = NA,
-                                  nrow = length(proteinIds),
-                                  ncol = length(loopCols))
-    param_tval[[i]] <- matrix(data = NA,
-                              nrow = length(proteinIds),
-                              ncol = length(loopCols))
-    param_pval[[i]] <- matrix(data = NA,
-                              nrow = length(proteinIds),
-                              ncol = length(loopCols))
+
+    temp_mat <- matrix(data = NA,
+                       nrow = length(proteinIds),
+                       ncol = length(loopCols))
+
+    if (!is.null(r_names)) rownames(temp_mat) <- r_names
+    if (!is.null(cond_names)) colnames(temp_mat) <- cond_names
+
+    param_values[[i]] <- temp_mat
+    param_stderror[[i]] <- temp_mat
+    param_tval[[i]] <- temp_mat
+    param_pval[[i]] <- temp_mat
   }
   names(param_values) <- names(start)
   names(param_stderror) <- names(start)
@@ -345,6 +384,8 @@ setMethod('modelTurnover',
   ## weights are only with robust modelling
   if (robust) {
     weight_matrix <- matrix(data = NA, nrow = nrow(x), ncol = ncol(x))
+    if (!is.null(r_names_pept)) rownames(weight_matrix) <- r_names_pept
+    if (!is.null(c_names)) colnames(weight_matrix) <- c_names
   }
 
   ## protein/peptide turnover modelling ----------------------------------------
@@ -519,6 +560,7 @@ setMethod('modelTurnover',
                              conditionCol = conditionCol,
                              timeCol = timeCol,
                              proteinCol = proteinCol,
+                             r_names_prot = rownames(x@ProteinExperiment),
                              ...)
 
   }

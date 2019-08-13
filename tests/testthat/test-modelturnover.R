@@ -81,6 +81,22 @@ test_that("modelturnover proteinExperiment works", {
   expect_equal(length(ml[['models']][[2]]), nrow(testPE))
   expect_is(ml[['models']][[1]][[2]], 'nls')
   expect_equal(names(attributes(ml)), c('names', 'loopCols', 'time', 'cond', 'assayName', 'mode'))
+
+  colnames(testPE) <- LETTERS[1:14]
+  rownames(testPE) <- LETTERS[1:10]
+
+  expect_silent(ml <- modelTurnover(x = testPE,
+                                    assayName = 'fraction',
+                                    formula = 'fraction ~ 1-exp(-k*t)',
+                                    start = list(k = 0.02),
+                                    robust = FALSE,
+                                    verbose = FALSE,
+                                    returnModel = TRUE))
+  expect_equal(rownames(ml[[1]]), rownames(testPE))
+  expect_equal(colnames(ml[[1]]), colnames(testPE))
+  expect_equal(rownames(ml[[2]]), rownames(testPE))
+  expect_equal(colnames(ml[[2]]), c('OW40', 'OW450'))
+
 })
 
 
@@ -172,6 +188,21 @@ test_that("modelturnover peptideExperiment works", {
   expect_is(ml[['models']][[1]][[6]], 'nls')
   expect_equal(names(attributes(ml)), c('names','loopCols', 'time', 'cond', 'assayName', 'mode'))
 
+  colnames(testPE) <- LETTERS[1:14]
+  rownames(testPE) <- rowData(testPE)$Sequence
+
+  expect_message(ml <- modelTurnover(x = testPE,
+                                    assayName = 'fraction',
+                                    formula = 'fraction ~ 1-exp(-k*t)',
+                                    start = list(k = 0.02),
+                                    robust = FALSE,
+                                    verbose = FALSE,
+                                    returnModel = TRUE,
+                                    mode = 'peptide'))
+  expect_equal(rownames(ml[[1]]), rownames(testPE))
+  expect_equal(colnames(ml[[1]]), colnames(testPE))
+  expect_equal(rownames(ml[[2]]), rownames(testPE))
+  expect_equal(colnames(ml[[2]]), c('OW40', 'OW450'))
 
 
   ## 1 model per protein
@@ -263,6 +294,21 @@ test_that("modelturnover peptideExperiment works", {
   expect_equal(length(ml[['models']][[2]]), 10)
   expect_is(ml[['models']][[1]][[2]], 'nls')
   expect_equal(names(attributes(ml)), c('names', 'loopCols', 'time', 'cond', 'prot', 'assayName', 'mode'))
+
+
+  expect_message(ml <- modelTurnover(x = testPE,
+                                     assayName = 'fraction',
+                                     formula = 'fraction ~ 1-exp(-k*t)',
+                                     start = list(k = 0.02),
+                                     robust = FALSE,
+                                     verbose = FALSE,
+                                     returnModel = TRUE,
+                                     mode = 'grouped'))
+  expect_equal(rownames(ml[[1]]), rownames(testPE))
+  expect_equal(colnames(ml[[1]]), colnames(testPE))
+  expect_equal(rownames(ml[[2]]),
+               unique(rowData(testPE)[,metaoptions(testPE)[['proteinCol']]]))
+  expect_equal(colnames(ml[[2]]), c('OW40', 'OW450'))
 
 
 })

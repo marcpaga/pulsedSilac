@@ -109,3 +109,28 @@ setGeneric('subsetProt', function(x, ...){
 setGeneric('subsetPept', function(x, ...){
   standardGeneric('subsetPept')
 })
+
+####### rownamesProt and rownamesPept ----
+
+###### assaysProt and assaysPept ----
+
+#' @export
+setGeneric('rownamesProt', function(x){
+  standardGeneric('rownamesProt')
+})
+
+#' @export
+setGeneric('rownamesProt<-', function(x, value){
+  standardGeneric('rownamesProt<-')
+})
+
+#' @export
+setGeneric('rownamesPept', function(x){
+  standardGeneric('rownamesPept')
+})
+
+#' @export
+setGeneric('rownamesPept<-', function(x, value){
+  standardGeneric('rownamesPept<-')
+})
+

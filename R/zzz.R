@@ -298,11 +298,14 @@ NULL
 #' ## linkerDf
 #' linkerDf(wormsPE)
 #'
-#' # Dimensions
+#' # Dimensions and dimensions names
 #' nrow(wormsPE)
 #' ncol(wormsPE)
 #' dim(wormsPE)
 #' length(wormsPE)
+#' colnames(wormsPE)
+#' rownamesProt(wormsPE)
+#' rownamesPept(wormsPE)
 #'
 #' # Subsetting
 #' wormsPE$line

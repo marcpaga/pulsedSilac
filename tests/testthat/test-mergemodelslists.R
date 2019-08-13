@@ -117,6 +117,41 @@ test_that("mergemodelslists works protein", {
   ## cannot use identical here because the model objects have some differences
   expect_equal(ml0, ml3)
   expect_identical(attributes(ml0), attributes(ml3))
+
+
+  wormsPE <- calculateIsotopeFraction(wormsPE, ratioAssay = 'ratio')
+  testPE <- wormsPE[1:10,]
+  metaoptions(testPE)[['proteinCol']] <- 'Leading.razor.protein'
+  colnames(testPE) <- LETTERS[1:14]
+  rownamesProt(testPE) <- LETTERS[1:10]
+
+  ml0 <- modelTurnover(x = testPE,
+                       assayName = 'fraction',
+                       formula = 'fraction ~ 1-exp(-k*t)',
+                       mode = 'protein',
+                       start = list(k = 0.02),
+                       robust = TRUE,
+                       returnModel = TRUE)
+
+  ml1 <- modelTurnover(x = testPE[,1:7],
+                       assayName = 'fraction',
+                       formula = 'fraction ~ 1-exp(-k*t)',
+                       mode = 'protein',
+                       start = list(k = 0.02),
+                       robust = TRUE,
+                       returnModel = TRUE)
+
+  ml2 <- modelTurnover(x = testPE[,8:14],
+                       assayName = 'fraction',
+                       formula = 'fraction ~ 1-exp(-k*t)',
+                       mode = 'protein',
+                       start = list(k = 0.02),
+                       robust = TRUE,
+                       returnModel = TRUE)
+
+  ml3 <- mergeModelsLists(ml1, ml2)
+  expect_equal(ml0, ml3)
+
 })
 
 
@@ -178,7 +213,7 @@ test_that("mergemodelslists works grouped", {
                        returnModel = FALSE))
 
   ml3 <- mergeModelsLists(ml1, ml2)
-  expect_identical(ml0, ml3)
+  expect_equal(ml0, ml3)
 
   expect_warning(ml0 <- modelTurnover(x = testPE,
                        assayName = 'fraction',
@@ -237,6 +272,40 @@ test_that("mergemodelslists works grouped", {
   ## cannot use identical here because the model objects have some differences
   expect_equal(ml0, ml3)
   expect_identical(attributes(ml0), attributes(ml3))
+
+  wormsPE <- calculateIsotopeFraction(wormsPE, ratioAssay = 'ratio')
+  testPE <- wormsPE[1:10,]
+  metaoptions(testPE)[['proteinCol']] <- 'Leading.razor.protein'
+  colnames(testPE) <- LETTERS[1:14]
+  rownamesPept(testPE) <- rowDataPept(testPE)$Sequence
+
+  expect_warning(ml0 <- modelTurnover(x = testPE,
+                       assayName = 'fraction',
+                       formula = 'fraction ~ 1-exp(-k*t)',
+                       mode = 'grouped',
+                       start = list(k = 0.02),
+                       robust = TRUE,
+                       returnModel = TRUE))
+
+  ml1 <- modelTurnover(x = testPE[,1:7],
+                       assayName = 'fraction',
+                       formula = 'fraction ~ 1-exp(-k*t)',
+                       mode = 'grouped',
+                       start = list(k = 0.02),
+                       robust = TRUE,
+                       returnModel = TRUE)
+
+  expect_warning(ml2 <- modelTurnover(x = testPE[,8:14],
+                       assayName = 'fraction',
+                       formula = 'fraction ~ 1-exp(-k*t)',
+                       mode = 'grouped',
+                       start = list(k = 0.02),
+                       robust = TRUE,
+                       returnModel = TRUE))
+
+  ml3 <- mergeModelsLists(ml1, ml2)
+  expect_equal(ml0, ml3)
+
 })
 
 
@@ -358,4 +427,37 @@ test_that("mergemodelslists works peptide", {
   ## cannot use identical here because the model objects have some differences
   expect_equal(ml0, ml3)
   expect_identical(attributes(ml0), attributes(ml3))
+
+  wormsPE <- calculateIsotopeFraction(wormsPE, ratioAssay = 'ratio')
+  testPE <- wormsPE[1:10,]
+  metaoptions(testPE)[['proteinCol']] <- 'Leading.razor.protein'
+  colnames(testPE) <- LETTERS[1:14]
+  rownamesPept(testPE) <- rowDataPept(testPE)$Sequence
+
+  expect_warning(ml0 <- modelTurnover(x = testPE,
+                       assayName = 'fraction',
+                       formula = 'fraction ~ 1-exp(-k*t)',
+                       mode = 'peptide',
+                       start = list(k = 0.02),
+                       robust = TRUE,
+                       returnModel = TRUE))
+
+  expect_warning(ml1 <- modelTurnover(x = testPE[,1:7],
+                       assayName = 'fraction',
+                       formula = 'fraction ~ 1-exp(-k*t)',
+                       mode = 'peptide',
+                       start = list(k = 0.02),
+                       robust = TRUE,
+                       returnModel = TRUE))
+
+  expect_warning(ml2 <- modelTurnover(x = testPE[,8:14],
+                       assayName = 'fraction',
+                       formula = 'fraction ~ 1-exp(-k*t)',
+                       mode = 'peptide',
+                       start = list(k = 0.02),
+                       robust = TRUE,
+                       returnModel = TRUE))
+
+  ml3 <- mergeModelsLists(ml1, ml2)
+  expect_equal(ml0, ml3)
 })

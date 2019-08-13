@@ -51,7 +51,9 @@ calculateAIC <- function(modelList,
 
   aicMatrix <- matrix(data = NA,
                       nrow = nrow(modelList$stderror),
-                      ncol = ncol(modelList$stderror))
+                      ncol = ncol(modelList$stderror),
+                      dimnames = list(rownames(modelList$stderror),
+                                      colnames(modelList$stderror)))
 
   for (i in seq_along(loopCols)) {
 
