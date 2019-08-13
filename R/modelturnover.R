@@ -302,6 +302,8 @@ setMethod('modelTurnover',
     metaoptions(x)[['proteinCol']] <- proteinCol
   }
 
+  ## too avoid a Cran check note since this is passed as an internal argument
+  ## by the ProteomicsExperiment method
   if (!exists('r_names_prot')) r_names_prot <- NULL
 
   ## data processing and configuration -----------------------------------------
