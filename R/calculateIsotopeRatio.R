@@ -18,6 +18,7 @@
 #' \code{ProteomicsExperiment} object with an added assay named 'ratio'.
 #'
 #' @examples
+#' data('wormsPE')
 #' calculateIsotopeRatio(x = wormsPE,
 #'                       newIsotopeAssay = 'int_heavy',
 #'                       oldIsotopeAssay = 'int_light')

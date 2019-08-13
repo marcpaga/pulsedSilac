@@ -26,6 +26,8 @@
 #' peptide assay entry named "oldIsotopePool".
 #'
 #' @examples
+#' data('wormsPE')
+#' data('recycleLightLysine')
 #' protPE <- ProtExp(wormsPE)
 #' missPE <- addMisscleavedPeptides(x = protPE,
 #'                                  newdata = recycleLightLysine,

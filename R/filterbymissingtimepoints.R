@@ -28,6 +28,7 @@
 #' pass the minimum number of desired timepoints.
 #'
 #' @examples
+#' data('wormsPE')
 #' filterByMissingTimepoints(wormsPE,
 #'                           assayName = 'ratio',
 #'                           maxMissing = 2,

@@ -100,7 +100,7 @@
 #' objects.
 #'
 #' @examples
-#'
+#' data('wormsPE')
 #' protPE <- ProtExp(wormsPE)
 #'
 #' # Accessors

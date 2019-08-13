@@ -27,6 +27,7 @@
 #' \code{ProteomicsExperiment} object with the n most stable proteins/peptides.
 #'
 #' @examples
+#' data('mefPE')
 #' mostStable(mefPE, assayName = 'fraction', n = 50)
 #'
 #' @export

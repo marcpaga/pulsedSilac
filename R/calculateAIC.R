@@ -17,6 +17,7 @@
 #' named "AIC" with the AIC for each value
 #'
 #' @examples
+#' data('wormsPE')
 #' wormsPE <- calculateIsotopeFraction(wormsPE, ratioAssay = 'ratio')
 #'
 #' modelList <- modelTurnover(x = wormsPE[1:10],

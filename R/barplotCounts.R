@@ -18,6 +18,7 @@
 #' @return A ggplot2 barplot object or a \code{data.frame}.
 #'
 #' @examples
+#' data('wormsPE')
 #' barplotCounts(wormsPE, assayName = 'ratio')
 #'
 #' @import ggplot2

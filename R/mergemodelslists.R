@@ -22,7 +22,7 @@
 #' @return A list of models.
 #'
 #' @examples
-#'
+#' data('wormsPE')
 #' wormsPE <- calculateIsotopeFraction(wormsPE, ratioAssay = 'ratio')
 #'
 #' modelList1 <- modelTurnover(x = wormsPE[1:10, 1:7],

@@ -18,7 +18,7 @@
 #' @return A barplot or a \code{data.frame}.
 #'
 #' @examples
-#'
+#' data('wormsPE')
 #' barplotTimeCoverage(wormsPE, assayName = 'ratio')
 #'
 #' @import ggplot2

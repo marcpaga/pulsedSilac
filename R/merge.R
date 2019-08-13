@@ -38,6 +38,7 @@
 #' \code{ProteomicsExperiment} object.
 #'
 #' @examples
+#' data('wormsPE')
 #' merge(wormsPE[1:10, 1:3], wormsPE[3:10, 4:5])
 NULL
 

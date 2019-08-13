@@ -30,6 +30,7 @@ BiocManager::install("pulsedSilac")
 
 ```
 
+
 # Introduction
 
 SILAC (Stable Isotope Label by Amino acids in Cell culture) is a method to differentially compare protein expression between samples. To measure protein turnover, the SILAC technique is applied over time by changing the medium and harvesting the cells at different time points. Each sample is then analyzed by mass spectrometry. The isotope ratio at each time point can then be used to calculate the turnover rate of each measured protein. 
@@ -369,6 +370,13 @@ The following are related to `ProteomicsExperiment` subsetting operations:
 These can be extended by the user to accomodate other experiment design and data analysis operations.
 
 # Example data
+
+```{r, echo = FALSE}
+## load objects required for the vignette
+data('wormsPE')
+data('mefPE')
+data('recycleLightLysine')
+```
 
 To demonstrate the use of the package functions, a reduced version of the pulsed-SILAC dataset from @Visscher2016 has been built into a `ProteomicsExperiment` object. It is stored in an object named `wormsPE`. This object has been constructed from the output files from MaxQuant 'proteinGroups.txt' and 'peptides.txt'.
 

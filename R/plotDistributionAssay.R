@@ -25,6 +25,7 @@
 #' plotted.
 #'
 #' @examples
+#' data('wormsPE')
 #' plotDistributionAssay(wormsPE, assayName = 'ratio')
 #'
 #' @importFrom ggridges geom_density_ridges

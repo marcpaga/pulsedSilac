@@ -25,6 +25,7 @@
 #' instead in the plot.
 #'
 #' @examples
+#' data('wormsPE')
 #' scatterCompareAssays(x = wormsPE,
 #'                      conditions = c('OW40', 'OW450'),
 #'                      assayName = 'ratio',

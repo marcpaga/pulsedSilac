@@ -17,7 +17,7 @@
 #' used to make the plot.
 #'
 #' @examples
-#'
+#' data('wormsPE')
 #' wormsPE <- calculateIsotopeFraction(wormsPE, ratioAssay = 'ratio')
 #'
 #' modelList <- modelTurnover(x = wormsPE[1:10],

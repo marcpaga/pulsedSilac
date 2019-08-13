@@ -19,7 +19,7 @@
 #' @return A barplot or a \code{data.frame}.
 #'
 #' @examples
-#'
+#' data('wormsPE')
 #' upsetTimeCoverage(x = ProtExp(wormsPE),
 #'                 assayName = 'ratio',
 #'                 maxMissing = 2)

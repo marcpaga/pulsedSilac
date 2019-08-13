@@ -35,6 +35,7 @@
 #' @return a \code{ProteinExperiment}, \code{PeptideExperiment} or
 #' \code{ProteomicsExperiment} object with additional assays named "fraction".
 #' @examples
+#' data('wormsPE')
 #' calculateIsotopeFraction(wormsPE)
 #'
 #' @seealso \code{\link{ProteomicsExperiment-class}}
