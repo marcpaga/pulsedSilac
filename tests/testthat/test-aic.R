@@ -1,5 +1,5 @@
 test_that("calculateAIC works", {
-
+  data('wormsPE')
   wormsPE <- calculateIsotopeFraction(wormsPE, ratioAssay = 'ratio')
   testPE <- wormsPE[1:10,]
   testPE <- ProtExp(testPE)
