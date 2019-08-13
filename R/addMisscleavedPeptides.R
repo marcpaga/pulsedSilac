@@ -69,7 +69,7 @@ setMethod('addMisscleavedPeptides',
                    dataCols,
                    idColPept) {
 
-  ## argument checks
+  ## argument checks -----------------------------------------------------------
   if (any(missing(x),
           missing(newdata),
           missing(modCol),
@@ -94,6 +94,7 @@ setMethod('addMisscleavedPeptides',
     stop('idColPept must be character')
   }
 
+  ## data processing -----------------------------------------------------------
   ## get the amount of peptide configurations
   modifications <- unique(newdata[, modCol])
 
@@ -152,7 +153,7 @@ setMethod('addMisscleavedPeptides',
                    dataCols,
                    idColPept) {
 
-  ## argument checks
+  ## argument checker ----------------------------------------------------------
   if (any(missing(x),
           missing(newdata),
           missing(modCol),
@@ -177,6 +178,7 @@ setMethod('addMisscleavedPeptides',
     stop('idColPept must be character')
   }
 
+  ## data processing -----------------------------------------------------------
   ## get the amount of peptide configurations
   modifications <- unique(newdata[, modCol])
 

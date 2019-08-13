@@ -12,7 +12,7 @@
 #' (rows).
 #'
 #' @examples
-#' data('wormsPE')s
+#' data('wormsPE')
 #' wormsPE <- calculateIsotopeFraction(wormsPE, ratioAssay = 'ratio')
 #'
 #' modelList1 <- modelTurnover(x = wormsPE[1:10],

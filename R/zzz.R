@@ -271,6 +271,7 @@ NULL
 #' @examples
 #' # Accessors
 #' ## assays
+#' data('wormsPE')
 #' assays(wormsPE)
 #' assaysProt(wormsPE)
 #' assaysPept(wormsPE)
