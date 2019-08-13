@@ -12,7 +12,7 @@ Description: This package provides with several tools for pulsed-SILAC data
     also some exploratory data analysis visualization functions.
 License: GPL-3
 Encoding: UTF-8
-LazyData: true
+LazyData: false
 Depends: R (>= 3.6.0)
 biocViews: Proteomics
 Suggests: 
