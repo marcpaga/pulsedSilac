@@ -330,7 +330,7 @@ setMethod('modelTurnover',
     r_names <- rownames(x)
   } else if (mode == 'grouped') {
     ## passed by the ProteomicsExperiment method
-    if (exists('r_names_prot')) {
+    if (exists('r_names_prot') & !is.null(r_names_prot)) {
       r_names <- r_names_prot
       r_names_pept <- rownames(x)
     } else {
