@@ -2,7 +2,7 @@ Package: pulsedSilac
 Type: Package
 Title: Analysis of pulsed-SILAC quantitative proteomics data
 Version: 0.99.0
-Author: Marc Pagès-Gallego
+Author: Marc Pagès-Gallego, Tobias B. Dansen
 Maintainer: Marc Pagès-Gallego <M.PagesGallego@umcutrecht.nl>
 Description: This package provides several tools for pulsed-SILAC data analysis.
     Functions are provided to organize the data, calculate isotope ratios, 
