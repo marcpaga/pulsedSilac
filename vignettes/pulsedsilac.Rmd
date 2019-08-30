@@ -32,7 +32,6 @@ BiocManager::install("pulsedSilac")
 
 ```
 
-
 # Introduction
 
 SILAC (Stable Isotope Label by Amino acids in Cell culture) is a method that is often used to differentially compare protein expression between samples. Pulsed SILAC is a variant that is used to measure protein turnover. Rather than comparing samples that are labeled to completion with either heavy or light isotopes of amino acids, in pulsed SILAC cells are harvested at a series of time points after the growth media containing light amino acids was switched to media containing heavy amino acids. Each sample is then processed and analyzed by mass spectrometry. The isotope ratio each peptide at each time point can now be used to calculate the turnover rate of each measured protein in a proteome-wide fashion (@Pratt2002, @Doherty2005, @Schwanhausser2009).
@@ -52,7 +51,6 @@ This package uses two `SummarizedExperiment` derived classes: `ProteinExperiment
 The `ProteinExperiment` and `PeptideExperiment` are, as their name indicates, dedicated to store either protein or peptide related data. These two objects are almost identical to a `SummarizedExperiment` object. Their only difference is the addition of a new slot called `metaoptions`. This slot contains a named `list` that contains values that are indicative of where certain information, required for the analysis, is located in the object. For example, the `conditionCol` value is used to indicate which column of `colData` has the information about the different experiment conditions.
 
 ![Figure 2: ProteinExperiment/PeptideExperiment object structure](protein_experiment.png)
-
 
 ### Object construction
 
@@ -158,7 +156,7 @@ peptExp$condition
 cbind(protExp[, 1], protExp[, 2:3])
 
 ## combining by rows
-rbind(peptExp[1:3, ], peptExp[4:5, ])
+rbind(peptExp[1:3,], peptExp[4:5, ])
 
 ## combine rows and columns
 merge(peptExp[1:3, 1], peptExp[3:5, 2:3])
@@ -335,7 +333,7 @@ For `cbind` the number of proteins and peptides must be the same and they are ex
 
 ```{r}
 ## cbind
-cbind(ProteomicsExp[,1], ProteomicsExp[,2])
+cbind(ProteomicsExp[, 1], ProteomicsExp[, 2])
 ```
 
 For `rbind` the number of samples must be the same and they are expected to be in the same order.
@@ -349,7 +347,7 @@ rbind(ProteomicsExp[1:2,], ProteomicsExp[3,])
 
 ```{r}
 ## merge
-merge(ProteomicsExp[1:3,1], ProteomicsExp[3:4, 2:3])
+merge(ProteomicsExp[1:3, 1], ProteomicsExp[3:4, 2:3])
 ```
 
 ## `metaoptions`
