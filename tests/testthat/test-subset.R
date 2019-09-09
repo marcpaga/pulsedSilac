@@ -29,7 +29,7 @@ test_that("subset operator works", {
                              idColProt = 'a',
                              idColPept = 'b')
 
-  metadata(PE) <- list(a = 1, b = 2)
+  metadata(PE)[['a']] <- 1
 
   ## protein level
   # test the rows

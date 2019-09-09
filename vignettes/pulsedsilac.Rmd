@@ -48,7 +48,7 @@ This package uses two `SummarizedExperiment` derived classes: `ProteinExperiment
 
 ## `ProteinExperiment` and `PeptideExperiment`
 
-The `ProteinExperiment` and `PeptideExperiment` are, as their name indicates, dedicated to store either protein or peptide related data. These two objects are almost identical to a `SummarizedExperiment` object. Their only difference is the addition of a new slot called `metaoptions`. This slot contains a named `list` that contains values that are indicative of where certain information, required for the analysis, is located in the object. For example, the `conditionCol` value is used to indicate which column of `colData` has the information about the different experiment conditions.
+The `ProteinExperiment` and `PeptideExperiment` are, as their name indicates, dedicated to store either protein or peptide related data. These two objects are almost identical to a `SummarizedExperiment` object. Their only difference is the initialization of the `metadata` slot with what will be called `metaoptions`. These `metaoptions` contain values that are indicative of where certain information, required for the analysis, is located in the object. For example, the `conditionCol` value is used to indicate which column of `colData` has the information about the different experiment conditions.
 
 ![Figure 2: ProteinExperiment/PeptideExperiment object structure](protein_experiment.png)
 
@@ -105,7 +105,7 @@ peptExp
 
 ### Accessor functions
 
-The accessor functions are exactly the same as in a `SummarizedExperiment` object: `rowData()`, `colData()`, `assays()` and `metadata()`. To access the `metaoptions` slot the `metaoptions()` function can be used.
+The accessor functions are exactly the same as in a `SummarizedExperiment` object: `rowData()`, `colData()`, `assays()` and `metadata()`. To access the `metaoptions` slot the both the `metaoptions()` and `metadata()` functions can be used.
 
 ```{r}
 ## assays
@@ -211,12 +211,6 @@ colData(ProteomicsExp)
 ## linkerDf
 linkerDf(ProteomicsExp)
 ```
-
-```{r}
-## metadata
-metadata(ProteomicsExp)
-```
-
 
 ```{r}
 ## metaoptions
@@ -352,7 +346,7 @@ merge(ProteomicsExp[1:3, 1], ProteomicsExp[3:4, 2:3])
 
 ## `metaoptions`
 
-The `metaoptions` slot contains a `list` with a set of "option" values used to indicate where critical analysis information is required. The idea is that these values are defined at the beginning of the analysis so that it is not required to give them as arguments in each function call. Nevertheless, all the analysis functions can have these values passed as arguments. There are several `metaoptions` values by default, some of them are shared between the three classes while others are unique.
+The `metaoptions` are a set of "option" values used to indicate where critical analysis information is required. The idea is that these values are defined at the beginning of the analysis so that it is not required to give them as arguments in each function call. Nevertheless, all the analysis functions can have these values passed as arguments. There are several `metaoptions` values by default, some of them are shared between the three classes while others are unique.
 
 The following are related to data analysis:
 

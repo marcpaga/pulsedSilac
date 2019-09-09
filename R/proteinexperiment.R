@@ -15,7 +15,6 @@
 #' in colData(x) that defines the different experiment timepoints.
 #' @param metadata A \code{list} to store any kind of experiment-wide
 #' data; like authors, dates, machines used...
-#' @param metaoptions A \code{list} to store user defined metaoptions.
 #'
 #' @return An object of class \code{ProteinExperiment}.
 #'
@@ -51,24 +50,22 @@ ProteinExperiment <- function(assays,
                               colData = NULL,
                               conditionCol = NA,
                               timeCol = NA,
-                              metadata = NULL,
-                              metaoptions = NULL) {
+                              metadata = NULL) {
 
-  ## initialize the metadata
-  metaoptions_init <- list(conditionCol = conditionCol,
-                           timeCol = timeCol)
-
-  if (!is.null(metaoptions) & is.list(metaoptions)) {
-    metaoptions_init <- c(metaoptions_init, metaoptions)
+  metaoptions_names <- c('conditionCol', 'timeCol')
+  if (any(metaoptions_names %in% names(metadata))) {
+    stop('"conditionCol" and "timeCol" are metaoptions reserved names')
   }
-
 
   se <- SummarizedExperiment(assays = assays,
                              colData = colData,
                              rowData = rowData,
                              metadata = metadata)
 
-  return(.ProteinExperiment(se, metaoptions = metaoptions_init))
+  metadata(se)[['conditionCol']] <- conditionCol
+  metadata(se)[['timeCol']] <- timeCol
+
+  return(.ProteinExperiment(se))
 
 }
 

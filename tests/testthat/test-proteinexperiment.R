@@ -18,8 +18,7 @@ test_that("constructor works", {
   expect_equal(ncol(rowData(proExp)), 1)
   expect_equal(nrow(colData(proExp)), 3)
   expect_equal(ncol(colData(proExp)), 1)
-  expect_equal(length(metadata(proExp)), 0)
-  expect_equal(length(metaoptions(proExp)), 2)
+  expect_equal(length(metadata(proExp)), 2)
 
   ## without assays
   expect_error(proExp <- ProteinExperiment(rowData = rowData,
@@ -38,13 +37,13 @@ test_that("constructor works", {
                                             rowData = rowData,
                                             colData = colData,
                                             metadata = list(author = 'me')))
-  expect_equal(length(metadata(proExp)), 1)
+  expect_equal(length(metadata(proExp)), 3)
   expect_silent(proExp <- ProteinExperiment(assays = assays_list,
                                             rowData = rowData,
                                             colData = colData,
                                             metadata = list(author = 'me'),
                                             conditionCol = 'sample'))
-  expect_equal(length(metadata(proExp)), 1)
+  expect_equal(length(metadata(proExp)), 3)
   expect_equal(length(metaoptions(proExp)), 2)
 
   colData <- data.frame(sample = LETTERS[1:3],
@@ -78,28 +77,18 @@ test_that("constructor works", {
 
 
   ## metaoptions in both direct argument and metadata argument
-  expect_silent(proExp <- ProteinExperiment(assays = assays_list,
+  expect_error(proExp <- ProteinExperiment(assays = assays_list,
                                            rowData = rowData,
                                            colData = colData,
                                            metadata = list(author = 'me', timeCol = 2),
                                            conditionCol = 1))
 
   ## user metaoptions
-  expect_silent(proExp <- ProteinExperiment(assays = assays_list,
+  expect_error(proExp <- ProteinExperiment(assays = assays_list,
                                             rowData = rowData,
                                             colData = colData,
                                             metadata = list(author = 'me', timeCol = 2),
-                                            conditionCol = 1,
-                                            metaoptions = list(a = 1)))
-  expect_length(metaoptions(proExp), 3)
-  expect_named(metaoptions(proExp), c('conditionCol', 'timeCol', 'a'), ignore.order = TRUE)
-
-  expect_error(proExp <- ProteinExperiment(assays = assays_list,
-                                           rowData = rowData,
-                                           colData = colData,
-                                           metadata = list(author = 'me', timeCol = 2),
-                                           conditionCol = 1,
-                                           metaoptions = list(timeCol = 1)))
+                                            conditionCol = 1))
 
 })
 

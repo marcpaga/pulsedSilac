@@ -52,7 +52,7 @@ setMethod('mostStable',
     stop(txt)
   }
   if (!missing(conditionCol)) {
-    metaoptions(x)[['conditionCol']] <- conditionCol
+    metadata(x)[['conditionCol']] <- conditionCol
   }
   if (missing(n)) {
     stop('Must provide an "n" value')

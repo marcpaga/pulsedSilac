@@ -31,7 +31,6 @@
 #' @param metadata A \code{list} to store any kind of experiment-wide
 #' data; like authors, dates, machines used... If not provided uses the metadata
 #' from the \code{ProteinExperiment} and \code{PeptideExperiment}.
-#' @param metaoptions A \code{list} to store user defined metaoptions.
 #'
 #' @return An object of class \code{ProteomicsExperiment}.
 #'
@@ -96,7 +95,6 @@ ProteomicsExperiment <- function(ProteinExperiment,
                                  colData,
                                  linkerDf,
                                  metadata,
-                                 metaoptions = NULL,
                                  idColProt = NA,
                                  idColPept = NA,
                                  linkedSubset = TRUE,
@@ -149,6 +147,7 @@ ProteomicsExperiment <- function(ProteinExperiment,
       metadataPept <- PeptideExperiment@metadata
 
       metadata <- merge.list(metadataProt, metadataPept)
+      metadata <- metadata[-which(names(metadata) %in% names(PEmetaoptions))]
     }
   }
 
@@ -157,21 +156,18 @@ ProteomicsExperiment <- function(ProteinExperiment,
   }
 
   metaoptions_input <- mergeMetaoptions(PEmetaoptions,
-                                        ProteinExperiment@metaoptions)
+                                        metaoptions(ProteinExperiment))
   metaoptions_input <- mergeMetaoptions(metaoptions_input,
-                                        PeptideExperiment@metaoptions)
+                                        metaoptions(ProteinExperiment))
 
-  if (!is.null(metaoptions) & is.list(metaoptions)) {
-    metaoptions_input <- c(metaoptions_input, metaoptions)
-  }
+  metadata <- c(metadata, metaoptions_input)
 
   PE <- new(Class = 'ProteomicsExperiment',
             ProteinExperiment = ProteinExperiment,
             PeptideExperiment = PeptideExperiment,
             colData = colData,
             linkerDf = linkerDf,
-            metadata = metadata,
-            metaoptions = metaoptions_input)
+            metadata = metadata)
 
   PE <- synchronizeMetaoptions(PE)
 

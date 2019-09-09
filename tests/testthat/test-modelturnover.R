@@ -5,7 +5,7 @@ test_that("modelturnover proteinExperiment works", {
   wormsPE <- calculateIsotopeFraction(wormsPE, ratioAssay = 'ratio')
   testPE <- wormsPE[1:10,]
   testPE <- testPE@ProteinExperiment
-  metaoptions(testPE)[['proteinCol']] <- 'Leading.razor.protein'
+  metadata(testPE)[['proteinCol']] <- 'Leading.razor.protein'
 
 
   expect_silent(ml <- modelTurnover(x = testPE,
@@ -106,7 +106,7 @@ test_that("modelturnover peptideExperiment works", {
   wormsPE <- calculateIsotopeFraction(wormsPE, ratioAssay = 'ratio')
   testPE <- wormsPE[1:10,]
   testPE <- testPE@PeptideExperiment
-  metaoptions(testPE)[['proteinCol']] <- 'Leading.razor.protein'
+  metadata(testPE)[['proteinCol']] <- 'Leading.razor.protein'
 
   ## 1 model per peptide
 

@@ -6,8 +6,7 @@ setMethod('cbind', 'ProteinExperiment', function(..., deparse.level = 1) {
   x <- unname(list(...))[[1]]
   out <- callNextMethod()
 
-  metaoptions(out) <- metaoptions(x)
-  metadata(out) <- metadata(x)
+  out <- .removeDuplicatesMetaoptions(out)
   return(out)
 })
 
@@ -19,8 +18,6 @@ setMethod('cbind', 'PeptideExperiment', function(..., deparse.level = 1) {
   x <- unname(list(...))[[1]]
   out <- callNextMethod()
 
-  metaoptions(out) <- metaoptions(x)
-  metadata(out) <- metadata(x)
   return(out)
 })
 
@@ -40,7 +37,6 @@ setMethod('cbind', 'ProteomicsExperiment', function(..., deparse.level = 1) {
             PeptideExperiment = new.pept,
             colData = colData(new.prot),
             linkerDf = x@linkerDf,
-            metadata = x@metadata,
-            metaoptions = x@metaoptions)
+            metadata = x@metadata)
   return(PE)
 })

@@ -54,10 +54,10 @@ setMethod('scatterCompareAssays', 'ProteinExperiment',
     stop(txt)
   }
   if (!missing(conditionCol)) {
-    metaoptions(x)[['conditionCol']] <- conditionCol
+    metadata(x)[['conditionCol']] <- conditionCol
   }
   if (!missing(timeCol)) {
-    metaoptions(x)[['timeCol']] <- timeCol
+    metadata(x)[['timeCol']] <- timeCol
   }
   if (length(conditions) != 2) {
     stop('conditions must be a character vector of lenght 2')

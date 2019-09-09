@@ -50,7 +50,7 @@ setMethod('barplotCounts',
 
   ## if metaoption given as argument put them in the object
   if (!missing(conditionCol)) {
-    metaoptions(x)[['conditionCol']] <- conditionCol
+    metadata(x)[['conditionCol']] <- conditionCol
   }
 
   ## data processing -----------------------------------------------------------

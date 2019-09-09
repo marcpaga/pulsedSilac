@@ -50,7 +50,7 @@ setMethod('subsetProt', 'ProteinExperiment', function(x, ...) {
 setMethod('subsetProt', 'ProteomicsExperiment', function(x, ...) {
 
   rows <- which(with(rowData(x@ProteinExperiment), ...))
-  metaoptions(x)[['subsetMode']] <- 'protein'
+  metadata(x)[['subsetMode']] <- 'protein'
   return(x[rows, ])
 
 })
@@ -75,7 +75,7 @@ setMethod('subsetPept', 'PeptideExperiment', function(x, ...) {
 setMethod('subsetPept', 'ProteomicsExperiment', function(x, ...) {
 
   rows <- which(with(rowData(x@PeptideExperiment), ...))
-  metaoptions(x)[['subsetMode']] <- 'peptide'
+  metadata(x)[['subsetMode']] <- 'peptide'
   return(x[rows, ])
 
 })
@@ -88,7 +88,6 @@ setMethod('[', c('ProteomicsExperiment', 'ANY', 'ANY'),
 
   ## slots not affected by subset
   new.metadata <- metadata(x)
-  new.metaoptions <- metaoptions(x)
 
   ## check the metaoptions -----------------------------------------------------
   ## should linked subsetting be used
@@ -171,8 +170,7 @@ setMethod('[', c('ProteomicsExperiment', 'ANY', 'ANY'),
               PeptideExperiment = new.PeptideExperiment,
               colData = new.colData,
               linkerDf = new.linkerDf,
-              metadata = new.metadata,
-              metaoptions = new.metaoptions)
+              metadata = new.metadata)
 
     return(PE)
 
@@ -213,8 +211,7 @@ setMethod('[', c('ProteomicsExperiment', 'ANY', 'ANY'),
               PeptideExperiment = new.PeptideExperiment,
               colData = new.colData,
               linkerDf = new.linkerDf,
-              metadata = new.metadata,
-              metaoptions = new.metaoptions)
+              metadata = new.metadata)
 
     return(PE)
 

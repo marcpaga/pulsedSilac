@@ -6,8 +6,7 @@
 \title{ProteinExperiment constructor}
 \usage{
 ProteinExperiment(assays, rowData = NULL, colData = NULL,
-  conditionCol = NA, timeCol = NA, metadata = NULL,
-  metaoptions = NULL)
+  conditionCol = NA, timeCol = NA, metadata = NULL)
 }
 \arguments{
 \item{assays}{A named \code{list} of matrices (assays) with protein level
@@ -27,8 +26,6 @@ in colData(x) that defines the different experiment timepoints.}
 
 \item{metadata}{A \code{list} to store any kind of experiment-wide
 data; like authors, dates, machines used...}
-
-\item{metaoptions}{A \code{list} to store user defined metaoptions.}
 }
 \value{
 An object of class \code{ProteinExperiment}.

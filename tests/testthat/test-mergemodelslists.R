@@ -4,7 +4,7 @@ test_that("mergemodelslists works protein", {
 
   wormsPE <- calculateIsotopeFraction(wormsPE, ratioAssay = 'ratio')
   testPE <- wormsPE[1:10,]
-  metaoptions(testPE)[['proteinCol']] <- 'Leading.razor.protein'
+  metadata(testPE)[['proteinCol']] <- 'Leading.razor.protein'
 
   ml0 <- modelTurnover(x = testPE,
                        assayName = 'fraction',
@@ -121,7 +121,7 @@ test_that("mergemodelslists works protein", {
 
   wormsPE <- calculateIsotopeFraction(wormsPE, ratioAssay = 'ratio')
   testPE <- wormsPE[1:10,]
-  metaoptions(testPE)[['proteinCol']] <- 'Leading.razor.protein'
+  metadata(testPE)[['proteinCol']] <- 'Leading.razor.protein'
   colnames(testPE) <- LETTERS[1:14]
   rownamesProt(testPE) <- LETTERS[1:10]
 
@@ -159,7 +159,7 @@ test_that("mergemodelslists works grouped", {
 
   wormsPE <- calculateIsotopeFraction(wormsPE, ratioAssay = 'ratio')
   testPE <- wormsPE[1:10,]
-  metaoptions(testPE)[['proteinCol']] <- 'Leading.razor.protein'
+  metadata(testPE)[['proteinCol']] <- 'Leading.razor.protein'
 
   ml0 <- modelTurnover(x = testPE,
                        assayName = 'fraction',
@@ -275,7 +275,7 @@ test_that("mergemodelslists works grouped", {
 
   wormsPE <- calculateIsotopeFraction(wormsPE, ratioAssay = 'ratio')
   testPE <- wormsPE[1:10,]
-  metaoptions(testPE)[['proteinCol']] <- 'Leading.razor.protein'
+  metadata(testPE)[['proteinCol']] <- 'Leading.razor.protein'
   colnames(testPE) <- LETTERS[1:14]
   rownamesPept(testPE) <- rowDataPept(testPE)$Sequence
 
@@ -314,7 +314,7 @@ test_that("mergemodelslists works peptide", {
 
   wormsPE <- calculateIsotopeFraction(wormsPE, ratioAssay = 'ratio')
   testPE <- wormsPE[1:10,]
-  metaoptions(testPE)[['proteinCol']] <- 'Leading.razor.protein'
+  metadata(testPE)[['proteinCol']] <- 'Leading.razor.protein'
 
   ml0 <- modelTurnover(x = testPE,
                        assayName = 'fraction',
@@ -430,7 +430,7 @@ test_that("mergemodelslists works peptide", {
 
   wormsPE <- calculateIsotopeFraction(wormsPE, ratioAssay = 'ratio')
   testPE <- wormsPE[1:10,]
-  metaoptions(testPE)[['proteinCol']] <- 'Leading.razor.protein'
+  metadata(testPE)[['proteinCol']] <- 'Leading.razor.protein'
   colnames(testPE) <- LETTERS[1:14]
   rownamesPept(testPE) <- rowDataPept(testPE)$Sequence
 

@@ -48,7 +48,7 @@ setMethod('upsetTimeCoverage',
     stop(txt)
   }
   if (!missing(conditionCol)) {
-    metaoptions(x)[['conditionCol']] <- conditionCol
+    metadata(x)[['conditionCol']] <- conditionCol
   }
 
   ## data and options processing -----------------------------------------------

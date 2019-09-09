@@ -8,7 +8,8 @@
 \description{
 S4 class that extends the \code{\link{SummarizedExperiment}}
 class. This class is designed for proteomics data, more especifically
-protein level data. It contains one additional slot: \code{metaoptions}.
+protein level data. The \code{metadata} slot comes already initialized with
+the metaoptions (see details).
 }
 \details{
 The \code{ProteinExperiment} class has been designed to store
@@ -17,13 +18,12 @@ for pulsed SILAC data analysis; in combination with the other two classes
 from the package: the \code{\link{PeptideExperiment}} and
 \code{\link{ProteomicsExperiment}} classes.
 
-ProteinExperiment options are stored in the \code{metaoptions} slot, which
-is accessed through the \code{metatopions} function. This contains a
-\code{list} with some parameters that are automatically initialized by the
-constructor. Some parameters are mandatory for certain functions or
-operations. The user can add or remove items at their discretion. These
-parameters are meant to help automate certain pipeline or data analysis
-steps. These metaoptions are:
+ProteinExperiment metaoptions are stored in the \code{metadata} slot
+This contains a \code{list} with some parameters that are automatically
+initialized by the constructor. Some parameters are mandatory for certain
+functions or operations. The user can add or remove items at their
+discretion. These parameters are meant to help automate certain pipeline or
+data analysis steps. These metaoptions are:
 \describe{
   \item{conditionCol}{\code{character} indicating the column name of
   \code{colData(x)} that defines the different experiment conditions.}
@@ -31,15 +31,6 @@ steps. These metaoptions are:
   \code{colData(x)} that defines the different timepoints of the experiment.}
 }
 }
-\section{Slots}{
-
-\describe{
-\item{\code{metaoptions}}{Contains a \code{list} to store configuration variables for
-data processing, analysis and plotting purposes.}
-
-\item{\code{...}}{Other slots from \code{\link{SummarizedExperiment}}.}
-}}
-
 \section{Constructor}{
 
 See \link{ProteinExperiment-constructor} for details.

@@ -61,10 +61,10 @@ setMethod('plotDistributionAssay', 'ProteinExperiment',
                  "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 
   if (!missing(conditionCol)) {
-    metaoptions(x)[['conditionCol']] <- conditionCol
+    metadata(x)[['conditionCol']] <- conditionCol
   }
   if (!missing(timeCol)) {
-    metaoptions(x)[['timeCol']] <- timeCol
+    metadata(x)[['timeCol']] <- timeCol
   }
 
   ## Data and options processing -----------------------------------------------

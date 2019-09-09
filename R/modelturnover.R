@@ -76,10 +76,10 @@ setMethod('modelTurnover',
     stop(txt)
   }
   if (!missing(conditionCol)) {
-    metaoptions(x)[['conditionCol']] <- conditionCol
+    metadata(x)[['conditionCol']] <- conditionCol
   }
   if (!missing(timeCol)) {
-    metaoptions(x)[['timeCol']] <- timeCol
+    metadata(x)[['timeCol']] <- timeCol
   }
 
   ## data processing and configuration -----------------------------------------
@@ -274,7 +274,7 @@ setMethod('modelTurnover',
 
   ## argument checker ----------------------------------------------------------
   if (!mode %in% c('grouped', 'peptide')) {
-    stop('Mode must be either "grouped" or "peptide".')
+    stop('Mode must be either "grouped" or "peptide"')
   }
   ## a model for each peptide
   if (mode == 'peptide') {
@@ -293,13 +293,13 @@ setMethod('modelTurnover',
 
   ## metaoptions part
   if (!missing(conditionCol)) {
-    metaoptions(x)[['conditionCol']] <- conditionCol
+    metadata(x)[['conditionCol']] <- conditionCol
   }
   if (!missing(timeCol)) {
-    metaoptions(x)[['timeCol']] <- timeCol
+    metadata(x)[['timeCol']] <- timeCol
   }
   if (!missing(proteinCol)) {
-    metaoptions(x)[['proteinCol']] <- proteinCol
+    metadata(x)[['proteinCol']] <- proteinCol
   }
 
   ## too avoid a Cran check note since this is passed as an internal argument

@@ -7,7 +7,7 @@
 \usage{
 PeptideExperiment(assays, rowData = NULL, colData = NULL,
   conditionCol = NA, timeCol = NA, proteinCol = NA,
-  metadata = NULL, metaoptions = NULL)
+  metadata = NULL)
 }
 \arguments{
 \item{assays}{A named \code{list} of matrices (assays) with peptide level
@@ -30,8 +30,6 @@ in rowData(x) that defines to which protein a peptide is assigned.}
 
 \item{metadata}{A \code{list} to store any kind of experiment-wide
 data; like authors, dates, machines used...}
-
-\item{metaoptions}{A \code{list} to store user defined metaoptions.}
 }
 \value{
 An object of class \code{PeptideExperiment}.

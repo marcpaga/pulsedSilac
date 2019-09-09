@@ -82,7 +82,7 @@ setMethod('calculateIsotopeFraction', 'ProteinExperiment',
     stop(txt)
   }
   if (!missing(conditionCol)) {
-    metaoptions(x)[['conditionCol']] <- conditionCol
+    metadata(x)[['conditionCol']] <- conditionCol
   }
 
   ## data processing -----------------------------------------------------------

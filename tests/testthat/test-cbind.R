@@ -9,7 +9,6 @@ test_that("cbind works", {
   expect_equivalent(testPE, testPE2)
   expect_equivalent(colData(testPE), colData(testPE2))
   expect_equivalent(rowData(testPE), rowData(testPE2))
-  expect_equivalent(metadata(testPE), metadata(testPE2))
   expect_equivalent(metaoptions(testPE), metaoptions(testPE2))
 
   ## PeptideExperiment
@@ -19,7 +18,6 @@ test_that("cbind works", {
   expect_equivalent(testPE, testPE2)
   expect_equivalent(colData(testPE), colData(testPE2))
   expect_equivalent(rowData(testPE), rowData(testPE2))
-  expect_equivalent(metadata(testPE), metadata(testPE2))
   expect_equivalent(metaoptions(testPE), metaoptions(testPE2))
 
   ## ProteomicsExperiment
@@ -31,7 +29,6 @@ test_that("cbind works", {
   expect_equivalent(colData(testPE), colData(testPE2))
   expect_equivalent(rowDataProt(testPE), rowDataProt(testPE2))
   expect_equivalent(rowDataPept(testPE), rowDataPept(testPE2))
-  expect_equivalent(metadata(testPE), metadata(testPE2))
   expect_equivalent(metaoptions(testPE), metaoptions(testPE2))
   expect_equivalent(linkerDf(testPE), linkerDf(testPE2))
 })

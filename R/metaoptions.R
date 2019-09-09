@@ -3,7 +3,8 @@
 #' @export
 setMethod('metaoptions', 'ProteinExperiment', function(x){
 
-  return(x@metaoptions)
+  meta_opts <- metadata(x)[c('conditionCol', 'timeCol')]
+  return(meta_opts)
 
 })
 
@@ -12,7 +13,7 @@ setMethod('metaoptions', 'ProteinExperiment', function(x){
 #' @export
 setMethod('metaoptions<-', 'ProteinExperiment', function(x, value){
 
-  x@metaoptions <- value
+  x@metadata <- value
   validObject(x)
   return(x)
 
@@ -23,7 +24,8 @@ setMethod('metaoptions<-', 'ProteinExperiment', function(x, value){
 #' @export
 setMethod('metaoptions', 'PeptideExperiment', function(x){
 
-  return(x@metaoptions)
+  meta_opts <- metadata(x)[c('conditionCol', 'timeCol', 'proteinCol')]
+  return(meta_opts)
 
 })
 
@@ -32,7 +34,7 @@ setMethod('metaoptions', 'PeptideExperiment', function(x){
 #' @export
 setMethod('metaoptions<-', 'PeptideExperiment', function(x, value){
 
-  x@metaoptions <- value
+  x@metadata <- value
   validObject(x)
   return(x)
 
@@ -44,7 +46,15 @@ setMethod('metaoptions<-', 'PeptideExperiment', function(x, value){
 #' @export
 setMethod('metaoptions', 'ProteomicsExperiment', function(x){
 
-  return(x@metaoptions)
+  metaoptions_names <- c('conditionCol',
+                         'timeCol',
+                         'idColProt',
+                         'idColPept',
+                         'linkedSubset',
+                         'subsetMode',
+                         'proteinCol')
+  meta_opts <- metadata(x)[metaoptions_names]
+  return(meta_opts)
 
 })
 
@@ -54,7 +64,7 @@ setMethod('metaoptions', 'ProteomicsExperiment', function(x){
 #' @export
 setMethod('metaoptions<-', 'ProteomicsExperiment', function(x, value){
 
-  x@metaoptions <- value
+  x@metadata <- value
   validObject(x)
   x <- synchronizeMetaoptions(x)
   return(x)

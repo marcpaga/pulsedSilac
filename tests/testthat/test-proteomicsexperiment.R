@@ -24,7 +24,7 @@ test_that("constructor works", {
 
   expect_silent(PE <- ProteomicsExperiment(ProteinExperiment = proExp,
                                            PeptideExperiment = pepExp))
-  expect_equal(length(metadata(PE)), 0)
+  expect_equal(length(metadata(PE)), 7)
   expect_equal(length(metaoptions(PE)), 7)
 
   expect_is(ProtExp(PE), 'ProteinExperiment')
@@ -34,15 +34,5 @@ test_that("constructor works", {
   expect_error(PE <- ProteomicsExperiment(PeptideExperiment = pepExp))
   expect_error(PE <- ProteomicsExperiment(ProteinExperiment = pepExp,
                                           PeptideExperiment = proExp))
-
-  expect_silent(PE <- ProteomicsExperiment(ProteinExperiment = proExp,
-                                           PeptideExperiment = pepExp,
-                                           metaoptions = list(a = 1)))
-
-  expect_length(metaoptions(PE), 8)
-
-  expect_error(PE <- ProteomicsExperiment(ProteinExperiment = pepExp,
-                                          PeptideExperiment = proExp,
-                                          metaoptions = list(subsetMode = 1)))
 
 })

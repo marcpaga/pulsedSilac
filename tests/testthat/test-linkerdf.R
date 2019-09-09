@@ -19,7 +19,7 @@ test_that("linkerDf setter", {
   expect_silent(linkerDf(testPE) <- df)
   expect_error(linkerDf(testPE) <- df[,1:3])
   expect_error(linkerDf(testPE) <- df[1:2,])
-  metaoptions(testPE)[['linkedSubset']] <- FALSE
+  metadata(testPE)[['linkedSubset']] <- FALSE
   expect_silent(linkerDf(testPE) <- df[1:2,])
 
 })

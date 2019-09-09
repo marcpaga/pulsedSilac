@@ -6,25 +6,21 @@
 #'
 #' @description S4 class that extends the \code{\link{SummarizedExperiment}}
 #' class. This class is designed for proteomics data, more especifically
-#' protein level data. It contains one additional slot: \code{metaoptions}.
+#' protein level data. The \code{metadata} slot comes already initialized with
+#' the metaoptions (see details).
 #'
-#' @slot metaoptions Contains a \code{list} to store configuration variables for
-#' data processing, analysis and plotting purposes.
-#' @slot ... Other slots from \code{\link{SummarizedExperiment}}.
-
 #' @details The \code{ProteinExperiment} class has been designed to store
 #' protein level data and to be used in the functions provided in this package
 #' for pulsed SILAC data analysis; in combination with the other two classes
 #' from the package: the \code{\link{PeptideExperiment}} and
 #' \code{\link{ProteomicsExperiment}} classes.
 #'
-#' ProteinExperiment options are stored in the \code{metaoptions} slot, which
-#' is accessed through the \code{metatopions} function. This contains a
-#' \code{list} with some parameters that are automatically initialized by the
-#' constructor. Some parameters are mandatory for certain functions or
-#' operations. The user can add or remove items at their discretion. These
-#' parameters are meant to help automate certain pipeline or data analysis
-#' steps. These metaoptions are:
+#' ProteinExperiment metaoptions are stored in the \code{metadata} slot
+#' This contains a \code{list} with some parameters that are automatically
+#' initialized by the constructor. Some parameters are mandatory for certain
+#' functions or operations. The user can add or remove items at their
+#' discretion. These parameters are meant to help automate certain pipeline or
+#' data analysis steps. These metaoptions are:
 #' \describe{
 #'   \item{conditionCol}{\code{character} indicating the column name of
 #'   \code{colData(x)} that defines the different experiment conditions.}
@@ -45,7 +41,6 @@
 #' @import SummarizedExperiment
 #' @export
 .ProteinExperiment <- setClass(Class = 'ProteinExperiment',
-                               slots = representation(metaoptions = 'list'),
                                contains = 'SummarizedExperiment'
 )
 
@@ -56,7 +51,7 @@
 
   ## missing one or more of the metaoptions
   if (!all(metaoptions_names %in% names(metaoptions(x)))) {
-    missing_names_pos <- which(!metaoptions_names %in% names(metaoptions))
+    missing_names_pos <- which(!metaoptions_names %in% names(metaoptions(x)))
     missing_names <- metaoptions_names[missing_names_pos]
 
     txt <- sprintf(
@@ -65,21 +60,6 @@
     )
     return(txt)
   }
-
-  ## duplicated metaoptions entries
-  if (sum(names(metaoptions(x)) %in% metaoptions_names) > 2) {
-
-    names_pos <- which(names(metaoptions(x)) %in% metaoptions_names)
-    names_met <- names(metaoptions(x))[names_pos]
-    dup <- names_met[which(table(names_met) > 1)]
-
-    txt <- sprintf(
-      'Duplicated metaoptions, the following are duplicated: %s',
-      paste(dup, collapse = ' ')
-    )
-    return(txt)
-  }
-
 
   ## all validity is passed
   return(NULL)
@@ -136,25 +116,21 @@ setValidity2('ProteinExperiment', .valid.ProteinExperiment)
 #'
 #' @description S4 class that extends the \code{\link{SummarizedExperiment}}
 #' class. This class is designed for proteomics data, more especifically
-#' peptide level data. It contains one additional slot: \code{metaoptions}.
+#' peptide level data. The \code{metadata} slot comes already initialized with
+#' the metaoptions (see details).
 #'
-#' @slot metaoptions Contains a \code{list} to store configuration variables for
-#' data processing, analysis and plotting purposes.
-#' @slot ... Other slots from \code{\link{SummarizedExperiment}}.
-
 #' @details The \code{PeptideExperiment} class has been designed to store
 #' peptide level data and to be used in the functions provided in this package
 #' for pulsed SILAC data analysis; in combination with the other two classes
 #' from the package: the \code{\link{ProteinExperiment}} and
 #' \code{\link{ProteomicsExperiment}} classes.
 #'
-#' PeptideExperiment options are stored in the \code{metaoptions} slot, which
-#' is accessed through the \code{metatopions} function. This contains a
-#' \code{list} with some parameters that are automatically initialized by the
-#' constructor. Some parameters are mandatory for certain functions or
-#' operations. The user can add or remove items at their discretion. These
-#' parameters are meant to help automate certain pipeline or data analysis
-#' steps. These metaoptions are:
+#' ProteinExperiment metaoptions are stored in the \code{metadata} slot
+#' This contains a \code{list} with some parameters that are automatically
+#' initialized by the constructor. Some parameters are mandatory for certain
+#' functions or operations. The user can add or remove items at their
+#' discretion. These parameters are meant to help automate certain pipeline or
+#' data analysis steps. These metaoptions are:
 #' \describe{
 #'   \item{conditionCol}{\code{character} indicating the column name of
 #'   \code{colData(x)} that defines the different experiment conditions.}
@@ -187,27 +163,13 @@ setValidity2('ProteinExperiment', .valid.ProteinExperiment)
                          'proteinCol')
 
   ## missing one or more of the metaoptions
-  if (!all(metaoptions_names %in% names(metaoptions(x)))) {
+  if (!all(metaoptions_names %in% names(metadata(x)))) {
     missing_names_pos <- which(!metaoptions_names %in% names(metaoptions(x)))
     missing_names <- metaoptions_names[missing_names_pos]
 
     txt <- sprintf(
       'Incomplete metaoptions, the following are missing: %s',
       paste(missing_names, collapse = ' ')
-    )
-    return(txt)
-  }
-
-  ## duplicated metaoptions entries
-  if (sum(names(metaoptions(x)) %in% metaoptions_names) > 3) {
-
-    names_pos <- which(names(metaoptions(x)) %in% metaoptions_names)
-    names_met <- names(metaoptions(x))[names_pos]
-    dup <- names_met[which(table(names_met) > 1)]
-
-    txt <- sprintf(
-      'Duplicated metaoptions, the following are duplicated: %s',
-      paste(dup, collapse = ' ')
     )
     return(txt)
   }
@@ -277,9 +239,7 @@ setValidity2('PeptideExperiment', .valid.PeptideExperiment)
 #' \code{\link{buildLinkerDf}}. It contains the relationships between proteins
 #' and peptides.
 #' @slot metadata Contains a \code{list} to store any kind of experiment-wide
-#' data.
-#' @slot metaoptions Contains a \code{list} to store configuration variables for
-#' data processing, analysis and plotting purposes.
+#' data and the metaoptions.
 
 #' @details The \code{ProteomicsExperiment} object is just a ProteinExperiment
 #' object and a PeptideExperiment object together.
@@ -296,14 +256,12 @@ setValidity2('PeptideExperiment', .valid.PeptideExperiment)
 #' possible examples could be: data of the experiment, author, machine used,
 #' etc.
 #'
-#' ProteomicsExperiment options are stored in the \code{metaoptions} slot, which
-#' is accessed through the \code{metatopions} function. This contains a
-#' \code{list} with some parameters that are automatically initialized by the
-#' constructor. Some parameters are mandatory for certain functions or
-#' operations. The user can add or remove items at their discretion. These
-#' parameters are meant to help automate certain pipeline or data analysis
-#' steps. Here there are the  same metaoptions as in \code{ProteinExperiment}
-#' and \code{PeptideExperiment} objects plus some extras.
+#' ProteomicsExperiment options are stored in the \code{metadata} slot.
+#' This contains a \code{list} with some parameters that are automatically
+#' initialized by the constructor. Some parameters are mandatory for certain
+#' functions or operations. The user can add or remove items at their
+#' discretion. These parameters are meant to help automate certain pipeline or
+#' data analysis steps. These metaoptions are:
 #' These metaoptions are:
 #' \describe{
 #'   \item{conditionCol}{\code{character} indicating the column name of
@@ -338,8 +296,7 @@ setValidity2('PeptideExperiment', .valid.PeptideExperiment)
                          PeptideExperiment = 'PeptideExperiment',
                          colData = 'DataFrame',
                          linkerDf = 'data.frame',
-                         metadata = 'list',
-                         metaoptions = 'list')
+                         metadata = 'list')
 
 )
 
@@ -379,20 +336,6 @@ setValidity2('PeptideExperiment', .valid.PeptideExperiment)
     txt <- sprintf(
       'Incomplete metaoptions, the following are missing: %s',
       paste(missing_names, collapse = ' ')
-    )
-    return(txt)
-  }
-
-  ## duplicated metaoptions entries
-  if (sum(names(metaoptions(x)) %in% metaoptions_names) > 7) {
-
-    names_pos <- which(names(metaoptions(x)) %in% metaoptions_names)
-    names_met <- names(metaoptions(x))[names_pos]
-    dup <- names_met[which(table(names_met) > 1)]
-
-    txt <- sprintf(
-      'Duplicated metaoptions, the following are duplicated: %s',
-      paste(dup, collapse = ' ')
     )
     return(txt)
   }
@@ -444,7 +387,7 @@ setValidity2('PeptideExperiment', .valid.PeptideExperiment)
     return('The linkerDf should have 4 columns')
   }
 
-  if (x@metaoptions[['linkedSubset']]) {
+  if (metaoptions(x)[['linkedSubset']]) {
 
     if (length(unique(linkM[, 3])) < nrow(rowDataProt(x))) {
       return('Not all proteins have a link')

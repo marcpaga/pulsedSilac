@@ -3,7 +3,7 @@ context("test-filterMissingTimepoints")
 test_that("filterByMissingTimepoints works", {
 
   PE <- testList[[1]]
-  metaoptions(PE)[['conditionCol']] <- 'condition'
+  metadata(PE)[['conditionCol']] <- 'condition'
   assays(PE)[[2]][2, 1:2] <- NA
   assays(PE)[[2]][3, 3:4] <- NA
 
@@ -41,7 +41,7 @@ test_that("filterByMissingTimepoints works", {
 test_that("upsetTimeCoverage works", {
 
   PE <- testList[[1]]
-  metaoptions(PE)[['conditionCol']] <- 'condition'
+  metadata(PE)[['conditionCol']] <- 'condition'
   assays(PE)[[2]][2, 1:2] <- NA
   assays(PE)[[2]][3, 3:4] <- NA
 

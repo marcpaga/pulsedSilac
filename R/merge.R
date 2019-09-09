@@ -137,14 +137,14 @@ setMethod('merge', 'ProteinExperiment', function(x, y,
       if (i <= length(assays(x))) {
 
         ## get the rows based on the old and new rowData
-        rows <- match(rD.x[,by.x[1]], new.rowData[,by.x[1]])
+        rows <- match(rD.x[, by.x[1]], new.rowData[, by.x[1]])
         new.assayTemplate[rows, cols.x] <- assays(x)[[i]]
 
       }
 
       if (i <= length(assays(y))) {
 
-        rows <- match(rD.y[,by.y[1]], new.rowData[,by.y[1]])
+        rows <- match(rD.y[, by.y[1]], new.rowData[, by.y[1]])
         new.assayTemplate[rows, cols.y] <- assays(y)[[i]]
 
       }
@@ -157,12 +157,15 @@ setMethod('merge', 'ProteinExperiment', function(x, y,
 
   ## metaoptions and metadata is all from x
   metaopts <- metaoptions(x)
+  new.metadata <- metadata(x)[-which(names(metadata(x)) %in%
+                                     names(metaoptions(x)))]
+
   PE <- ProteinExperiment(assays = new.assays,
                           rowData = new.rowData,
                           colData = new.colData,
                           conditionCol = metaopts[['conditionCol']],
                           timeCol = metaopts[['timeCol']],
-                          metadata = x@metadata)
+                          metadata = new.metadata)
 
   return(PE)
 })
@@ -179,13 +182,15 @@ setMethod('merge', 'PeptideExperiment', function(x, y,
 
   ## because the previous creates a ProteomicsExperiment need to make a
   ## PeptideExperiment with the added metaoptions
+  new.metadata <- metadata(x)[-which(names(metadata(x)) %in%
+                                     names(metaoptions(x)))]
   PE <- PeptideExperiment(assays = assays(PE),
                           rowData = rowData(PE),
                           colData = colData(PE),
                           conditionCol = metaoptions(PE)[['conditionCol']],
                           timeCol = metaoptions(PE)[['timeCol']],
                           proteinCol = metaoptions(x)[['proteinCol']],
-                          metadata = metadata(PE))
+                          metadata = new.metadata)
   return(PE)
 
 })
@@ -257,8 +262,7 @@ setMethod('merge', 'ProteomicsExperiment', function(x, y,
             PeptideExperiment = new.PeptideExperiment,
             colData = colData(new.ProteinExperiment),
             linkerDf = new.linkerDf,
-            metadata = x@metadata,
-            metaoptions = x@metaoptions)
+            metadata = x@metadata)
 
   return(PE)
 

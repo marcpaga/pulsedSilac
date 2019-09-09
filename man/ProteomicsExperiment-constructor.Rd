@@ -6,9 +6,9 @@
 \title{ProteomicsExperiment constructor}
 \usage{
 ProteomicsExperiment(ProteinExperiment, PeptideExperiment, colData,
-  linkerDf, metadata, metaoptions = NULL, idColProt = NA,
-  idColPept = NA, linkedSubset = TRUE, subsetMode = "protein",
-  conditionCol = NA, timeCol = NA, proteinCol = NA)
+  linkerDf, metadata, idColProt = NA, idColPept = NA,
+  linkedSubset = TRUE, subsetMode = "protein", conditionCol = NA,
+  timeCol = NA, proteinCol = NA)
 }
 \arguments{
 \item{ProteinExperiment}{A \code{ProteinExperiment} object.}
@@ -24,8 +24,6 @@ the \code{ProteinExperiment} and \code{PeptideExperiment}.}
 \item{metadata}{A \code{list} to store any kind of experiment-wide
 data; like authors, dates, machines used... If not provided uses the metadata
 from the \code{ProteinExperiment} and \code{PeptideExperiment}.}
-
-\item{metaoptions}{A \code{list} to store user defined metaoptions.}
 
 \item{idColProt}{A \code{character} indicating which column from the
 rowData (protein) should be used as ids. Should be the same used in

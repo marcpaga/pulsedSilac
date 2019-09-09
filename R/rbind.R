@@ -44,8 +44,7 @@ setMethod('rbind', 'ProteomicsExperiment', function(..., deparse.level = 1) {
             PeptideExperiment = new.pept,
             colData = x@colData,
             linkerDf = new.linkerDf,
-            metadata = x@metadata,
-            metaoptions = x@metaoptions)
+            metadata = x@metadata)
   return(PE)
 
 })

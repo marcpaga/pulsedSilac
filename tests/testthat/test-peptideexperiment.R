@@ -18,7 +18,7 @@ expect_equal(nrow(rowData(pepExp)), 4)
 expect_equal(ncol(rowData(pepExp)), 1)
 expect_equal(nrow(colData(pepExp)), 3)
 expect_equal(ncol(colData(pepExp)), 1)
-expect_equal(length(metadata(pepExp)), 0)
+expect_equal(length(metadata(pepExp)), 3)
 expect_equal(length(metaoptions(pepExp)), 3)
 
 ## without assays
@@ -38,13 +38,13 @@ expect_silent(pepExp <- PeptideExperiment(assays = assays_list,
                                           rowData = rowData,
                                           colData = colData,
                                           metadata = list(author = 'me')))
-expect_equal(length(metadata(pepExp)), 1)
+expect_equal(length(metadata(pepExp)), 4)
 expect_silent(pepExp <- PeptideExperiment(assays = assays_list,
                                           rowData = rowData,
                                           colData = colData,
                                           metadata = list(author = 'me'),
                                           conditionCol = 'sample'))
-expect_equal(length(metadata(pepExp)), 1)
+expect_equal(length(metadata(pepExp)), 4)
 expect_equal(length(metaoptions(pepExp)), 3)
 
 colData <- data.frame(sample = LETTERS[1:3],
@@ -61,7 +61,7 @@ expect_silent(pepExp <- PeptideExperiment(assays = assays_list,
                                          timeCol = 'time',
                                          proteinCol = 'id'))
 
-expect_equal(length(metadata(pepExp)), 1)
+expect_equal(length(metadata(pepExp)), 4)
 expect_equal(length(metaoptions(pepExp)), 3)
 
 ## mixed character and numeric metadata
@@ -82,35 +82,26 @@ expect_silent(pepExp <- PeptideExperiment(assays = assays_list,
 
 ## metaoptions in both direct argument and metadata argument
 
-expect_silent(pepExp <- PeptideExperiment(assays = assays_list,
+expect_error(pepExp <- PeptideExperiment(assays = assays_list,
                             rowData = rowData,
                             colData = colData,
                             metadata = list(author = 'me', timeCol = 2),
                             conditionCol = 1))
 
 ## other class metaoptions
-expect_silent(pepExp <- PeptideExperiment(assays = assays_list,
+expect_error(pepExp <- PeptideExperiment(assays = assays_list,
                                           rowData = rowData,
                                           colData = colData,
                                           metadata = list(author = 'me', timeCol = 2),
                                           conditionCol = TRUE))
 
-expect_silent(pepExp <- PeptideExperiment(assays = assays_list,
+expect_error(pepExp <- PeptideExperiment(assays = assays_list,
                                          rowData = rowData,
                                          colData = colData,
                                          metadata = list(author = 'me', timeCol = 2),
                                          conditionCol = factor('a')))
 
-## user metaoptions
-expect_silent(proExp <- PeptideExperiment(assays = assays_list,
-                                          rowData = rowData,
-                                          colData = colData,
-                                          metadata = list(author = 'me', timeCol = 2),
-                                          conditionCol = 1,
-                                          metaoptions = list(a = 1)))
-
-expect_length(metaoptions(proExp), 4)
-expect_named(metaoptions(proExp), c('conditionCol', 'timeCol', 'proteinCol','a'), ignore.order = TRUE)
+expect_named(metaoptions(pepExp), c('conditionCol', 'timeCol', 'proteinCol'), ignore.order = TRUE)
 
 expect_error(proExp <- PeptideExperiment(assays = assays_list,
                                          rowData = rowData,

@@ -27,14 +27,12 @@ object in which each item is left to the discretion of the user. Some
 possible examples could be: data of the experiment, author, machine used,
 etc.
 
-ProteomicsExperiment options are stored in the \code{metaoptions} slot, which
-is accessed through the \code{metatopions} function. This contains a
-\code{list} with some parameters that are automatically initialized by the
-constructor. Some parameters are mandatory for certain functions or
-operations. The user can add or remove items at their discretion. These
-parameters are meant to help automate certain pipeline or data analysis
-steps. Here there are the  same metaoptions as in \code{ProteinExperiment}
-and \code{PeptideExperiment} objects plus some extras.
+ProteomicsExperiment options are stored in the \code{metadata} slot.
+This contains a \code{list} with some parameters that are automatically
+initialized by the constructor. Some parameters are mandatory for certain
+functions or operations. The user can add or remove items at their
+discretion. These parameters are meant to help automate certain pipeline or
+data analysis steps. These metaoptions are:
 These metaoptions are:
 \describe{
   \item{conditionCol}{\code{character} indicating the column name of
@@ -66,10 +64,7 @@ conditions, replicates, etc.}
 and peptides.}
 
 \item{\code{metadata}}{Contains a \code{list} to store any kind of experiment-wide
-data.}
-
-\item{\code{metaoptions}}{Contains a \code{list} to store configuration variables for
-data processing, analysis and plotting purposes.}
+data and the metaoptions.}
 }}
 
 \section{Constructor}{

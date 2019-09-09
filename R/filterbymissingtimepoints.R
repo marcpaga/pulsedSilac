@@ -56,7 +56,7 @@ setMethod('filterByMissingTimepoints',
   }
 
   if (!missing(conditionCol)) {
-    metaoptions(x)[['conditionCol']] <- conditionCol
+    metadata(x)[['conditionCol']] <- conditionCol
   }
 
   ## data processing -----------------------------------------------------------
@@ -133,7 +133,7 @@ setMethod('filterByMissingTimepoints',
                                            assayName = assayName,
                                            maxMissing = maxMissing,
                                            strict = strict,
-                                           conditionCol,
+                                           conditionCol = conditionCol,
                                            returnVector = TRUE)
 
   } else {
@@ -142,7 +142,7 @@ setMethod('filterByMissingTimepoints',
                                            assayName = assayName,
                                            maxMissing = maxMissing,
                                            strict = strict,
-                                           conditionCol,
+                                           conditionCol = conditionCol,
                                            returnVector = TRUE)
   }
 
@@ -150,7 +150,7 @@ setMethod('filterByMissingTimepoints',
     return(subsetVec)
   }
 
-  new.x <- x[which(subsetVec),]
+  new.x <- x[which(subsetVec), ]
   validObject(new.x)
   return(new.x)
 

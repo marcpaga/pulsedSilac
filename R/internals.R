@@ -213,11 +213,11 @@ synchronizeMetaoptions <- function(x) {
 
     value <- metaoptions(x)[[meta]]
     if (meta %in% names(metaoptions(x@ProteinExperiment))) {
-      metaoptions(x@ProteinExperiment)[[meta]] <- value
+      metadata(x@ProteinExperiment)[[meta]] <- value
     }
 
     if (meta %in% names(metaoptions(x@PeptideExperiment))) {
-      metaoptions(x@PeptideExperiment)[[meta]] <- value
+      metadata(x@PeptideExperiment)[[meta]] <- value
     }
   }
   validObject(x)
@@ -398,4 +398,24 @@ rbindLinkerDf <- function(x, y) {
     return(new.lm)
   }
 
+}
+
+
+.removeDuplicatesMetaoptions <- function(x) {
+
+  metaoptions_names <- c('conditionCol',
+                         'timeCol',
+                         'idColProt',
+                         'idColPept',
+                         'linkedSubset',
+                         'subsetMode',
+                         'proteinCol')
+
+  w1 <- which(duplicated(names(metadata(x))))
+  w2 <- which(names(metadata(x)) %in% metaoptions_names)
+  new.metadata <- metadata(x)[-intersect(w1, w2)]
+
+  metadata(x) <- new.metadata
+
+  return(x)
 }
