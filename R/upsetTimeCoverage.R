@@ -5,8 +5,8 @@
 #' @description How many proteins/peptides are detected in each sample. Anything
 #' else than NA is considered detected.
 #'
-#' @param x A \code{ProteinExperiment}, \code{PeptideExperiment} or a
-#' \code{ProteomicsExperiment} object.
+#' @param x A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or a
+#' \code{SilacProteomicsExperiment} object.
 #' @param assayName Name of the assay to use in the plot.
 #' @param maxMissing A \code{numerical} indicating how many timepoints can a
 #' protein/peptide miss.
@@ -34,7 +34,7 @@ setGeneric('upsetTimeCoverage', function(x, ...){
 #' @rdname upsetTimeCoverage
 #' @export
 setMethod('upsetTimeCoverage',
-          'ProteinExperiment',
+          'SilacProteinExperiment',
           function(x,
                    assayName,
                    conditionCol,
@@ -93,7 +93,7 @@ setMethod('upsetTimeCoverage',
 #' @rdname upsetTimeCoverage
 #' @export
 setMethod('upsetTimeCoverage',
-          'PeptideExperiment',
+          'SilacPeptideExperiment',
           function(x,
                    assayName,
                    maxMissing = 0,
@@ -110,7 +110,7 @@ setMethod('upsetTimeCoverage',
 #' @importFrom grid grid.grab
 #' @export
 setMethod('upsetTimeCoverage',
-          'ProteomicsExperiment',
+          'SilacProteomicsExperiment',
           function(x,
                    assayName,
                    maxMissing = 0,
@@ -119,14 +119,14 @@ setMethod('upsetTimeCoverage',
                    ...) {
 
   if (returnList) {
-    prot_plot <- upsetTimeCoverage(x@ProteinExperiment,
+    prot_plot <- upsetTimeCoverage(x@SilacProteinExperiment,
                                  assayName = assayName,
                                  maxMissing = maxMissing,
                                  conditionCol = conditionCol,
                                  returnList = returnList,
                                  ... = ...)
 
-    pept_plot <- upsetTimeCoverage(x@PeptideExperiment,
+    pept_plot <- upsetTimeCoverage(x@SilacPeptideExperiment,
                                  assayName = assayName,
                                  maxMissing = maxMissing,
                                  conditionCol = conditionCol,
@@ -141,7 +141,7 @@ setMethod('upsetTimeCoverage',
   ## upsetPlots cannot be saved into a variable, therefore this grid trick
   ## has to be used for side by side plotting
 
-  upsetTimeCoverage(x@ProteinExperiment,
+  upsetTimeCoverage(x@SilacProteinExperiment,
                   assayName = assayName,
                   maxMissing = maxMissing,
                   conditionCol = conditionCol,
@@ -150,7 +150,7 @@ setMethod('upsetTimeCoverage',
   grid.edit('arrange', name = 'arrange2', redraw = FALSE)
   vp1 <- grid.grab()
 
-  upsetTimeCoverage(x@PeptideExperiment,
+  upsetTimeCoverage(x@SilacPeptideExperiment,
                   assayName = assayName,
                   maxMissing = maxMissing,
                   conditionCol = conditionCol,

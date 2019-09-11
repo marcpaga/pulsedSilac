@@ -3,28 +3,28 @@
 \docType{methods}
 \name{calculateIsotopeFraction}
 \alias{calculateIsotopeFraction}
-\alias{calculateIsotopeFraction,ProteinExperiment-method}
-\alias{calculateIsotopeFraction,PeptideExperiment-method}
-\alias{calculateIsotopeFraction,ProteomicsExperiment-method}
+\alias{calculateIsotopeFraction,SilacProteinExperiment-method}
+\alias{calculateIsotopeFraction,SilacPeptideExperiment-method}
+\alias{calculateIsotopeFraction,SilacProteomicsExperiment-method}
 \title{Calculates the incorporated isotope fraction}
 \usage{
 calculateIsotopeFraction(x, ...)
 
-\S4method{calculateIsotopeFraction}{ProteinExperiment}(x,
+\S4method{calculateIsotopeFraction}{SilacProteinExperiment}(x,
   ratioAssay = "ratio", oldIsoAssay, newIsoAssay, earlyTimepoints,
   lateTimepoints, conditionCol)
 
-\S4method{calculateIsotopeFraction}{PeptideExperiment}(x,
+\S4method{calculateIsotopeFraction}{SilacPeptideExperiment}(x,
   ratioAssay = "ratio", oldIsoAssay, newIsoAssay, earlyTimepoints,
   lateTimepoints, conditionCol)
 
-\S4method{calculateIsotopeFraction}{ProteomicsExperiment}(x,
+\S4method{calculateIsotopeFraction}{SilacProteomicsExperiment}(x,
   ratioAssay = "ratio", oldIsoAssay, newIsoAssay, earlyTimepoints,
   lateTimepoints, conditionCol)
 }
 \arguments{
-\item{x}{A \code{ProteinExperiment}, \code{PeptideExperiment} or
-\code{ProteomicsExperiment} object.}
+\item{x}{A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or a
+\code{SilacProteomicsExperiment} object.}
 
 \item{...}{Unused.}
 
@@ -47,8 +47,9 @@ be considered late.}
 data.frame indicates the different conditions.}
 }
 \value{
-a \code{ProteinExperiment}, \code{PeptideExperiment} or
-\code{ProteomicsExperiment} object with additional assays named "fraction".
+a \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or
+\code{SilacProteomicsExperiment} object with additional assays named
+"fraction".
 }
 \description{
 Calculates the fraction of an isotope ratio using the following
@@ -70,7 +71,4 @@ late timepoint but with the isotopes in reverse.
 data('wormsPE')
 calculateIsotopeFraction(wormsPE)
 
-}
-\seealso{
-\code{\link{ProteomicsExperiment-class}}
 }

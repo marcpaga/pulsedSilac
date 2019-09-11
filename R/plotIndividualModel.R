@@ -5,8 +5,8 @@
 #' @description Plot the model fit for a specific protein/peptide in different
 #' conditions.
 #'
-#' @param x A \code{ProteinExperiment}, \code{PeptideExperiment} or
-#' \code{ProteomicsExperiment} object.
+#' @param x A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or
+#' \code{SilacProteomicsExperiment} object.
 #' @param modelList A list containing all the model objects, this should be the
 #' output of \code{\link{modelTurnover}} with returnModel as TRUE.
 #' @param num The feature number to be plotted.
@@ -42,7 +42,7 @@ setGeneric('plotIndividualModel', function(x, ...){
 #' @rdname plotIndividualModel
 #' @export
 setMethod('plotIndividualModel',
-          'ProteinExperiment',
+          'SilacProteinExperiment',
           function(x,
                    modelList,
                    num,
@@ -131,7 +131,7 @@ setMethod('plotIndividualModel',
 #' @rdname plotIndividualModel
 #' @export
 setMethod('plotIndividualModel',
-          'PeptideExperiment',
+          'SilacPeptideExperiment',
           function(x,
                    modelList,
                    num,
@@ -235,7 +235,7 @@ setMethod('plotIndividualModel',
 #' @rdname plotIndividualModel
 #' @export
 setMethod('plotIndividualModel',
-          'ProteomicsExperiment',
+          'SilacProteomicsExperiment',
           function(x,
                    modelList,
                    num,
@@ -243,21 +243,21 @@ setMethod('plotIndividualModel',
 
   if (attributes(modelList)[['mode']] == 'protein') {
 
-    plotIndividualModel(x = x@ProteinExperiment,
+    plotIndividualModel(x = x@SilacProteinExperiment,
                         modelList = modelList,
                         num = num,
                         returnDataFrame = returnDataFrame)
 
   } else if (attributes(modelList)[['mode']] == 'peptide') {
 
-    plotIndividualModel(x = x@PeptideExperiment,
+    plotIndividualModel(x = x@SilacPeptideExperiment,
                         modelList = modelList,
                         num = num,
                         returnDataFrame = returnDataFrame)
 
   } else if (attributes(modelList)[['mode']] == 'grouped') {
 
-    plotIndividualModel(x = x@PeptideExperiment,
+    plotIndividualModel(x = x@SilacPeptideExperiment,
                         modelList = modelList,
                         num = num,
                         returnDataFrame = returnDataFrame)

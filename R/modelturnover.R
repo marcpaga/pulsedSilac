@@ -4,8 +4,8 @@
 #'
 #' @description Method to apply turnover models on protein/peptide data
 #'
-#' @param x A \code{ProteinExperiment}, \code{PeptideExperiment} or
-#' \code{ProteomicsExperiment} object.
+#' @param x A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or
+#' \code{SilacProteomicsExperiment} object.
 #' @param assayName \code{character} indicating which assay to use as data
 #' input for the model.
 #' @param formula \code{formula} to be used. Time must always be named "t" and
@@ -57,7 +57,7 @@ setGeneric('modelTurnover', function(x, ...) {
 #' @rdname modelTurnover
 #' @export
 setMethod('modelTurnover',
-          'ProteinExperiment',
+          'SilacProteinExperiment',
           function(x,
                    assayName = 'fraction',
                    formula = 'fraction ~ 1-exp(-k*t)',
@@ -258,7 +258,7 @@ setMethod('modelTurnover',
 #' @rdname modelTurnover
 #' @export
 setMethod('modelTurnover',
-          'PeptideExperiment',
+          'SilacPeptideExperiment',
           function(x,
                    assayName = 'fraction',
                    formula = 'fraction ~ 1-exp(-k*t)',
@@ -505,7 +505,7 @@ setMethod('modelTurnover',
 #' @rdname modelTurnover
 #' @export
 setMethod('modelTurnover',
-          'ProteomicsExperiment',
+          'SilacProteomicsExperiment',
           function(x,
                    assayName = 'fraction',
                    formula = 'fraction ~ 1-exp(-k*t)',
@@ -525,7 +525,7 @@ setMethod('modelTurnover',
 
   if (mode == 'protein') {
 
-    outList <- modelTurnover(x = x@ProteinExperiment,
+    outList <- modelTurnover(x = x@SilacProteinExperiment,
                              assayName = assayName,
                              formula = formula,
                              start = start,
@@ -538,7 +538,7 @@ setMethod('modelTurnover',
 
   } else if (mode == 'peptide') {
 
-    outList <- modelTurnover(x = x@PeptideExperiment,
+    outList <- modelTurnover(x = x@SilacPeptideExperiment,
                              assayName = assayName,
                              formula = formula,
                              start = start,
@@ -553,7 +553,7 @@ setMethod('modelTurnover',
 
   } else if (mode == 'grouped') {
 
-    outList <- modelTurnover(x = x@PeptideExperiment,
+    outList <- modelTurnover(x = x@SilacPeptideExperiment,
                              assayName = assayName,
                              formula = formula,
                              start = start,

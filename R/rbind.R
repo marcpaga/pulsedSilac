@@ -1,7 +1,7 @@
-#' @rdname ProteinPeptideExperiment-accessors
-#' @aliases rbind,ProteinExperiment-method
+#' @rdname SilacProteinPeptideExperiment-accessors
+#' @aliases rbind,SilacProteinExperiment-method
 #' @export
-setMethod('rbind', 'ProteinExperiment', function(..., deparse.level = 1) {
+setMethod('rbind', 'SilacProteinExperiment', function(..., deparse.level = 1) {
 
   x <- unname(list(...))[[1]]
   out <- callNextMethod()
@@ -12,10 +12,10 @@ setMethod('rbind', 'ProteinExperiment', function(..., deparse.level = 1) {
 
 })
 
-#' @rdname ProteinPeptideExperiment-accessors
-#' @aliases rbind,PeptideExperiment-method
+#' @rdname SilacProteinPeptideExperiment-accessors
+#' @aliases rbind,SilacPeptideExperiment-method
 #' @export
-setMethod('rbind', 'PeptideExperiment', function(..., deparse.level = 1) {
+setMethod('rbind', 'SilacPeptideExperiment', function(..., deparse.level = 1) {
 
   x <- unname(list(...))[[1]]
   out <- callNextMethod()
@@ -26,22 +26,22 @@ setMethod('rbind', 'PeptideExperiment', function(..., deparse.level = 1) {
 
 })
 
-#' @rdname ProteomicsExperiment-accessors
-#' @aliases rbind,ProteomicsExperiment-method
+#' @rdname SilacProteomicsExperiment-accessors
+#' @aliases rbind,SilacProteomicsExperiment-method
 #' @export
-setMethod('rbind', 'ProteomicsExperiment', function(..., deparse.level = 1) {
+setMethod('rbind', 'SilacProteomicsExperiment', function(..., deparse.level = 1) {
 
   x <- unname(list(...))[[1]]
   y <- unname(list(...))[[2]]
 
-  new.prot <- rbind(x@ProteinExperiment, y@ProteinExperiment)
-  new.pept <- rbind(x@PeptideExperiment, y@PeptideExperiment)
+  new.prot <- rbind(x@SilacProteinExperiment, y@SilacProteinExperiment)
+  new.pept <- rbind(x@SilacPeptideExperiment, y@SilacPeptideExperiment)
 
   new.linkerDf <- rbindLinkerDf(x@linkerDf, y@linkerDf)
 
-  PE <- new(Class = 'ProteomicsExperiment',
-            ProteinExperiment = new.prot,
-            PeptideExperiment = new.pept,
+  PE <- new(Class = 'SilacProteomicsExperiment',
+            SilacProteinExperiment = new.prot,
+            SilacPeptideExperiment = new.pept,
             colData = x@colData,
             linkerDf = new.linkerDf,
             metadata = x@metadata)

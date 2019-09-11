@@ -6,8 +6,8 @@
 #' @description How many proteins/peptides are detected in each sample. Anything
 #' else than NA is considered detected.
 #'
-#' @param x A \code{ProteinExperiment}, \code{PeptideExperiment} or a
-#' \code{ProteomicsExperiment} object.
+#' @param x A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or a
+#' \code{SilacProteomicsExperiment} object.
 #' @param assayName Name of the assay to use in the plot.
 #' @param returnDataFrame A \code{logical} indicating if the \code{data.frame}
 #' used for the plot should be returned instead.
@@ -30,7 +30,7 @@ setGeneric('barplotTimeCoverage', function(x, ...){
 #' @rdname barplotTimeCoverage
 #' @export
 setMethod('barplotTimeCoverage',
-          'ProteinExperiment',
+          'SilacProteinExperiment',
           function(x,
                    assayName,
                    returnDataFrame = FALSE,
@@ -119,7 +119,7 @@ setMethod('barplotTimeCoverage',
 #' @rdname barplotTimeCoverage
 #' @export
 setMethod('barplotTimeCoverage',
-          'PeptideExperiment',
+          'SilacPeptideExperiment',
           function(x,
                    assayName,
                    returnDataFrame = FALSE,
@@ -133,7 +133,7 @@ setMethod('barplotTimeCoverage',
 #' @rdname barplotTimeCoverage
 #' @export
 setMethod('barplotTimeCoverage',
-          'ProteomicsExperiment',
+          'SilacProteomicsExperiment',
           function(x,
                    assayName,
                    returnDataFrame = FALSE,
@@ -143,12 +143,12 @@ setMethod('barplotTimeCoverage',
   cbPalette <- c("#E69F00", "#56B4E9", "#009E73",
                  "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 
-  protPart <- barplotTimeCoverage(x = x@ProteinExperiment,
+  protPart <- barplotTimeCoverage(x = x@SilacProteinExperiment,
                                   assayName = assayName,
                                   returnDataFrame = TRUE,
                                   conditionCol = conditionCol)
 
-  peptPart <- barplotTimeCoverage(x = x@PeptideExperiment,
+  peptPart <- barplotTimeCoverage(x = x@SilacPeptideExperiment,
                                   assayName = assayName,
                                   returnDataFrame = TRUE,
                                   conditionCol = conditionCol)

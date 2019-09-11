@@ -5,8 +5,8 @@
 #' @description Scatter plot of two conditions/replicates for a selected assay.
 #' Timepoints are separated using \code{facet_wrap}.
 #'
-#' @param x A \code{ProteinExperiment}, \code{PeptideExperiment} or a
-#' \code{ProteomicsExperiment} object.
+#' @param x A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or a
+#' \code{SilacProteomicsExperiment} object.
 #' @param conditions A \code{character} of length 2 indicating which 2
 #' conditions should be compared.
 #' @param assayName Name of the assay to use in the plot.
@@ -39,7 +39,7 @@ setGeneric('scatterCompareAssays', function(x, ...){
 
 #' @rdname scatterCompareAssays
 #' @export
-setMethod('scatterCompareAssays', 'ProteinExperiment',
+setMethod('scatterCompareAssays', 'SilacProteinExperiment',
           function(x,
                    conditions,
                    assayName,
@@ -145,7 +145,7 @@ setMethod('scatterCompareAssays', 'ProteinExperiment',
 
 #' @rdname scatterCompareAssays
 #' @export
-setMethod('scatterCompareAssays', 'PeptideExperiment',
+setMethod('scatterCompareAssays', 'SilacPeptideExperiment',
           function(x,
                    conditions,
                    assayName,
@@ -159,7 +159,7 @@ setMethod('scatterCompareAssays', 'PeptideExperiment',
 
 #' @rdname scatterCompareAssays
 #' @export
-setMethod('scatterCompareAssays', 'ProteomicsExperiment',
+setMethod('scatterCompareAssays', 'SilacProteomicsExperiment',
           function(x,
                    conditions,
                    assayName,
@@ -170,7 +170,7 @@ setMethod('scatterCompareAssays', 'ProteomicsExperiment',
 
   if (mode == 'protein') {
 
-    scatterCompareAssays(x = x@ProteinExperiment,
+    scatterCompareAssays(x = x@SilacProteinExperiment,
                          conditions = conditions,
                          assayName = assayName,
                          returnDataFrame = returnDataFrame,
@@ -179,7 +179,7 @@ setMethod('scatterCompareAssays', 'ProteomicsExperiment',
 
   } else if (mode == 'peptide') {
 
-    scatterCompareAssays(x = x@PeptideExperiment,
+    scatterCompareAssays(x = x@SilacPeptideExperiment,
                          conditions = conditions,
                          assayName = assayName,
                          returnDataFrame = returnDataFrame,

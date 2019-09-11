@@ -1,8 +1,8 @@
-#' @rdname ProteinPeptideExperiment-accessors
-#' @name ProteinPeptideExperiment-accessors
-#' @aliases assays<-,ProteinExperiment,ANY-method
+#' @rdname SilacProteinPeptideExperiment-accessors
+#' @name SilacProteinPeptideExperiment-accessors
+#' @aliases assays<-,SilacProteinExperiment,ANY-method
 #' @export
-setMethod('assays<-', 'ProteinExperiment', function(x, value) {
+setMethod('assays<-', 'SilacProteinExperiment', function(x, value) {
 
   assays(x) <- value
   validObject(x)
@@ -10,11 +10,11 @@ setMethod('assays<-', 'ProteinExperiment', function(x, value) {
 
 })
 
-#' @rdname ProteinPeptideExperiment-accessors
-#' @name ProteinPeptideExperiment-accessors
-#' @aliases assays<-,PeptideExperiment,ANY-method
+#' @rdname SilacProteinPeptideExperiment-accessors
+#' @name SilacProteinPeptideExperiment-accessors
+#' @aliases assays<-,SilacPeptideExperiment,ANY-method
 #' @export
-setMethod('assays<-', 'PeptideExperiment', function(x, value) {
+setMethod('assays<-', 'SilacPeptideExperiment', function(x, value) {
 
   assays(x) <- value
   validObject(x)
@@ -22,33 +22,33 @@ setMethod('assays<-', 'PeptideExperiment', function(x, value) {
 
 })
 
-#' @rdname ProteomicsExperiment-accessors
+#' @rdname SilacProteomicsExperiment-accessors
 #' @name assays
-#' @aliases assays,ProteomicsExperiment-method
+#' @aliases assays,SilacProteomicsExperiment-method
 #' @export
-setMethod('assays', 'ProteomicsExperiment', function(x, ..., withDimnames){
+setMethod('assays', 'SilacProteomicsExperiment', function(x, ..., withDimnames){
 
-  return(list(protein = assays(x@ProteinExperiment),
-              peptide = assays(x@PeptideExperiment)))
+  return(list(protein = assays(x@SilacProteinExperiment),
+              peptide = assays(x@SilacPeptideExperiment)))
 
 })
 
 
-#' @rdname ProteomicsExperiment-accessors
+#' @rdname SilacProteomicsExperiment-accessors
 #' @name assaysProt
-#' @aliases assaysProt,ProteinExperiment-method
+#' @aliases assaysProt,SilacProteinExperiment-method
 #' @export
-setMethod('assaysProt', 'ProteinExperiment', function(x) {
+setMethod('assaysProt', 'SilacProteinExperiment', function(x) {
 
   return(assays(x))
 
 })
 
-#' @rdname ProteomicsExperiment-accessors
+#' @rdname SilacProteomicsExperiment-accessors
 #' @name assaysProt<-
-#' @aliases assaysProt<-,ProteinExperiment-method
+#' @aliases assaysProt<-,SilacProteinExperiment-method
 #' @export
-setMethod('assaysProt<-', 'ProteinExperiment', function(x, value) {
+setMethod('assaysProt<-', 'SilacProteinExperiment', function(x, value) {
 
   assays(x) <- value
   validObject(x)
@@ -56,44 +56,44 @@ setMethod('assaysProt<-', 'ProteinExperiment', function(x, value) {
 
 })
 
-#' @rdname ProteomicsExperiment-accessors
+#' @rdname SilacProteomicsExperiment-accessors
 #' @name assaysProt
-#' @aliases assaysProt,ProteomicsExperiment-method
+#' @aliases assaysProt,SilacProteomicsExperiment-method
 #' @export
-setMethod('assaysProt', 'ProteomicsExperiment', function(x) {
+setMethod('assaysProt', 'SilacProteomicsExperiment', function(x) {
 
-  return(assays(x@ProteinExperiment))
+  return(assays(x@SilacProteinExperiment))
 
 })
 
-#' @rdname ProteomicsExperiment-accessors
+#' @rdname SilacProteomicsExperiment-accessors
 #' @name assaysProt<-
-#' @aliases assaysProt<-,ProteomicsExperiment-method
+#' @aliases assaysProt<-,SilacProteomicsExperiment-method
 #' @export
-setMethod('assaysProt<-', 'ProteomicsExperiment', function(x, value) {
+setMethod('assaysProt<-', 'SilacProteomicsExperiment', function(x, value) {
 
-  assays(x@ProteinExperiment) <- value
+  assays(x@SilacProteinExperiment) <- value
   validObject(x)
   return(x)
 
 })
 
 
-#' @rdname ProteomicsExperiment-accessors
+#' @rdname SilacProteomicsExperiment-accessors
 #' @name assaysPept
-#' @aliases assaysPept,PeptideExperiment-method
+#' @aliases assaysPept,SilacPeptideExperiment-method
 #' @export
-setMethod('assaysPept', 'PeptideExperiment', function(x) {
+setMethod('assaysPept', 'SilacPeptideExperiment', function(x) {
 
   return(assays(x))
 
 })
 
-#' @rdname ProteomicsExperiment-accessors
+#' @rdname SilacProteomicsExperiment-accessors
 #' @name assaysPept<-
-#' @aliases assaysPept<-,PeptideExperiment-method
+#' @aliases assaysPept<-,SilacPeptideExperiment-method
 #' @export
-setMethod('assaysPept<-', 'PeptideExperiment', function(x, value) {
+setMethod('assaysPept<-', 'SilacPeptideExperiment', function(x, value) {
 
   assays(x) <- value
   validObject(x)
@@ -101,23 +101,23 @@ setMethod('assaysPept<-', 'PeptideExperiment', function(x, value) {
 
 })
 
-#' @rdname ProteomicsExperiment-accessors
+#' @rdname SilacProteomicsExperiment-accessors
 #' @name assaysPept
-#' @aliases assaysPept,ProteomicsExperiment-method
+#' @aliases assaysPept,SilacProteomicsExperiment-method
 #' @export
-setMethod('assaysPept', 'ProteomicsExperiment', function(x) {
+setMethod('assaysPept', 'SilacProteomicsExperiment', function(x) {
 
-  return(assays(x@PeptideExperiment))
+  return(assays(x@SilacPeptideExperiment))
 
 })
 
-#' @rdname ProteomicsExperiment-accessors
+#' @rdname SilacProteomicsExperiment-accessors
 #' @name assaysPept<-
-#' @aliases assaysPept<-,ProteomicsExperiment-method
+#' @aliases assaysPept<-,SilacProteomicsExperiment-method
 #' @export
-setMethod('assaysPept<-', 'ProteomicsExperiment', function(x, value) {
+setMethod('assaysPept<-', 'SilacProteomicsExperiment', function(x, value) {
 
-  assays(x@PeptideExperiment) <- value
+  assays(x@SilacPeptideExperiment) <- value
   validObject(x)
   return(x)
 

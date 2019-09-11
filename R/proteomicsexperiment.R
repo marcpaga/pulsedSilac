@@ -1,16 +1,16 @@
-#' @title ProteomicsExperiment constructor
-#' @name ProteomicsExperiment-constructor
+#' @title SilacProteomicsExperiment constructor
+#' @name SilacProteomicsExperiment-constructor
 #'
 #' @description Constructor function for the ProteomicsExperiment class object.
-#' It requires at minimum a \code{ProteinExperiment} and a
-#' \code{PeptideExperiment}. If the colData, metadata and metaoptions have been
-#' already defined in those it is not necessary to give them again.
+#' It requires at minimum a \code{SilacProteinExperiment} and a
+#' \code{SilacPeptideExperiment}. If the colData, metadata and metaoptions have
+#' been already defined in those it is not necessary to give them again.
 #'
-#' @param ProteinExperiment A \code{ProteinExperiment} object.
-#' @param PeptideExperiment A \code{PeptideExperiment} object.
+#' @param SilacProteinExperiment A \code{SilacProteinExperiment} object.
+#' @param SilacPeptideExperiment A \code{SilacPeptideExperiment} object.
 #' @param colData A \code{data.frame} with sample information like
 #' conditions, replicates, etc. If not provided uses the colData slot from
-#' the \code{ProteinExperiment} and \code{PeptideExperiment}.
+#' the \code{SilacProteinExperiment} and \code{SilacPeptideExperiment}.
 #' @param linkerDf A \code{data.frame} output from \code{\link{buildLinkerDf}}.
 #' @param idColProt A \code{character} indicating which column from the
 #' rowData (protein) should be used as ids. Should be the same used in
@@ -30,15 +30,15 @@
 #' in rowData(x) that defines to which protein a peptide is assigned.
 #' @param metadata A \code{list} to store any kind of experiment-wide
 #' data; like authors, dates, machines used... If not provided uses the metadata
-#' from the \code{ProteinExperiment} and \code{PeptideExperiment}.
+#' from the \code{SilacProteinExperiment} and \code{SilacPeptideExperiment}.
 #'
-#' @return An object of class \code{ProteomicsExperiment}.
+#' @return An object of class \code{SilacProteomicsExperiment}.
 #'
 #' @section Class description:
-#' See \link{ProteomicsExperiment-class} for details.
+#' See \link{SilacProteomicsExperiment-class} for details.
 #'
 #' @section Accessors:
-#' See \link{ProteomicsExperiment-accessors} for details.
+#' See \link{SilacProteomicsExperiment-accessors} for details.
 #'
 #' @examples
 #'
@@ -53,11 +53,11 @@
 #' rowData_protein <- data.frame(prot_id = LETTERS[1:3])
 #'
 #' ## construct the ProteinExperiment
-#' protExp <- ProteinExperiment(assays = assays_protein,
-#'                              rowData = rowData_protein,
-#'                              colData = colData,
-#'                              conditionCol = 'condition',
-#'                              timeCol = 'time')
+#' protExp <- SilacProteinExperiment(assays = assays_protein,
+#'                                   rowData = rowData_protein,
+#'                                   colData = colData,
+#'                                   conditionCol = 'condition',
+#'                                   timeCol = 'time')
 #'
 #' ## assays
 #' assays_peptide <- list(expression = matrix(1:15, ncol = 3))
@@ -70,11 +70,11 @@
 #' rowData_peptide <- data.frame(pept_id = letters[1:5],
 #'                               prot_id = c('A', 'A', 'B', 'C', 'C'))
 #' ## construct the ProteinExperiment
-#' peptExp <- PeptideExperiment(assays = assays_peptide,
-#'                              rowData = rowData_peptide,
-#'                              colData = colData,
-#'                              conditionCol = 'condition',
-#'                              timeCol = 'time')
+#' peptExp <- SilacPeptideExperiment(assays = assays_peptide,
+#'                                   rowData = rowData_peptide,
+#'                                   colData = colData,
+#'                                   conditionCol = 'condition',
+#'                                   timeCol = 'time')
 #'
 #' ## list with the relationships
 #' protein_to_peptide <- list(A = c('a', 'b'), B = c('c'), C = c('d', 'e'))
@@ -83,15 +83,15 @@
 #'                           pepIDs  = letters[1:5],
 #'                           protToPep = protein_to_peptide)
 #'
-#' ProteomicsExp <- ProteomicsExperiment(ProteinExperiment = protExp,
-#'                                       PeptideExperiment = peptExp,
-#'                                       linkerDf = linkerDf)
+#' ProteomicsExp <- SilacProteomicsExperiment(SilacProteinExperiment = protExp,
+#'                                            SilacPeptideExperiment = peptExp,
+#'                                            linkerDf = linkerDf)
 #'
 #' @importFrom taRifx merge.list
 #' @import methods S4Vectors
 #' @export
-ProteomicsExperiment <- function(ProteinExperiment,
-                                 PeptideExperiment,
+SilacProteomicsExperiment <- function(SilacProteinExperiment,
+                                 SilacPeptideExperiment,
                                  colData,
                                  linkerDf,
                                  metadata,
@@ -120,22 +120,22 @@ ProteomicsExperiment <- function(ProteinExperiment,
 
 
   ## both experiments are mandatory, otherwise you would use the other classes
-  if (missing(ProteinExperiment) | missing(PeptideExperiment)) {
+  if (missing(SilacProteinExperiment) | missing(SilacPeptideExperiment)) {
 
-    stop('For a ProteomicsExperiment you need both a ProteinExperiment and a ',
-         'PeptideExperiment.')
+    stop('For a SilacProteomicsExperiment you need both a SilacProteinExperiment and a ',
+         'SilacPeptideExperiment.')
   ## both present
   } else {
 
     ## if not given colData check that the two levels have the same colData and
     ## use the protein one
     if (missing(colData)) {
-      colDataProt <- ProteinExperiment@colData
-      colDataPept <- PeptideExperiment@colData
+      colDataProt <- SilacProteinExperiment@colData
+      colDataPept <- SilacPeptideExperiment@colData
       if (identical(colDataProt, colDataPept)) {
         colData <- colDataProt
       } else {
-        stop('"colData" from ProteinExperiment and PeptideExperiment are not',
+        stop('"colData" from SilacProteinExperiment and SilacPeptideExperiment are not',
              ' equal')
       }
     }
@@ -143,8 +143,8 @@ ProteomicsExperiment <- function(ProteinExperiment,
     ## if not given metadata check that the two levels have the same metadata
     ## and use the protein one
     if (missing(metadata)) {
-      metadataProt <- ProteinExperiment@metadata
-      metadataPept <- PeptideExperiment@metadata
+      metadataProt <- SilacProteinExperiment@metadata
+      metadataPept <- SilacPeptideExperiment@metadata
 
       metadata <- merge.list(metadataProt, metadataPept)
       metadata <- metadata[-which(names(metadata) %in% names(PEmetaoptions))]
@@ -156,15 +156,15 @@ ProteomicsExperiment <- function(ProteinExperiment,
   }
 
   metaoptions_input <- mergeMetaoptions(PEmetaoptions,
-                                        metaoptions(ProteinExperiment))
+                                        metaoptions(SilacProteinExperiment))
   metaoptions_input <- mergeMetaoptions(metaoptions_input,
-                                        metaoptions(ProteinExperiment))
+                                        metaoptions(SilacProteinExperiment))
 
   metadata <- c(metadata, metaoptions_input)
 
-  PE <- new(Class = 'ProteomicsExperiment',
-            ProteinExperiment = ProteinExperiment,
-            PeptideExperiment = PeptideExperiment,
+  PE <- new(Class = 'SilacProteomicsExperiment',
+            SilacProteinExperiment = SilacProteinExperiment,
+            SilacPeptideExperiment = SilacPeptideExperiment,
             colData = colData,
             linkerDf = linkerDf,
             metadata = metadata)

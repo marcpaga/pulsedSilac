@@ -5,8 +5,8 @@
 #' @description Plot the distribution of the data stored in an assay using
 #' boxplots or density distributions.
 #'
-#' @param x A \code{ProteinExperiment}, \code{PeptideExperiment} or a
-#' \code{ProteomicsExperiment} object.
+#' @param x A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or a
+#' \code{SilacProteomicsExperiment} object.
 #' @param assayName Name of the assay to use in the plot.
 #' @param plotType  A \code{character} indicating which geometry to plot:
 #' 'boxplot' or 'density'. (default = 'density')
@@ -37,7 +37,7 @@ setGeneric('plotDistributionAssay', function(x, ...){
 
 #' @rdname plotDistributionAssay
 #' @export
-setMethod('plotDistributionAssay', 'ProteinExperiment',
+setMethod('plotDistributionAssay', 'SilacProteinExperiment',
           function(x,
                    assayName,
                    plotType = 'boxplot',
@@ -139,7 +139,7 @@ setMethod('plotDistributionAssay', 'ProteinExperiment',
 
 #' @rdname plotDistributionAssay
 #' @export
-setMethod('plotDistributionAssay', 'PeptideExperiment',
+setMethod('plotDistributionAssay', 'SilacPeptideExperiment',
           function(x,
                    assayName,
                    plotType = 'boxplot',
@@ -153,7 +153,7 @@ setMethod('plotDistributionAssay', 'PeptideExperiment',
 
 #' @rdname plotDistributionAssay
 #' @export
-setMethod('plotDistributionAssay', 'ProteomicsExperiment',
+setMethod('plotDistributionAssay', 'SilacProteomicsExperiment',
           function(x,
                    assayName,
                    mode = 'protein',
@@ -164,7 +164,7 @@ setMethod('plotDistributionAssay', 'ProteomicsExperiment',
 
   if (mode == 'protein') {
 
-    plotDistributionAssay(x = x@ProteinExperiment,
+    plotDistributionAssay(x = x@SilacProteinExperiment,
               assayName = assayName,
               plotType = plotType,
               returnDataFrame = returnDataFrame,
@@ -173,7 +173,7 @@ setMethod('plotDistributionAssay', 'ProteomicsExperiment',
 
   } else if (mode == 'peptide') {
 
-    plotDistributionAssay(x = x@PeptideExperiment,
+    plotDistributionAssay(x = x@SilacPeptideExperiment,
               assayName = assayName,
               plotType = plotType,
               returnDataFrame = returnDataFrame,

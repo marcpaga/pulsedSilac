@@ -3,8 +3,8 @@
 \docType{methods}
 \name{calculateOldIsotopePool}
 \alias{calculateOldIsotopePool}
-\alias{calculateOldIsotopePool,PeptideExperiment-method}
-\alias{calculateOldIsotopePool,ProteomicsExperiment-method}
+\alias{calculateOldIsotopePool,SilacPeptideExperiment-method}
+\alias{calculateOldIsotopePool,SilacProteomicsExperiment-method}
 \title{Estimates the fraction of old isotope for each time point
 
 To estimate how much of the "old" isotope is being used in "new" proteins we
@@ -20,14 +20,15 @@ found in a time point to calculate the fraction of old isotope.}
 \usage{
 calculateOldIsotopePool(x, ...)
 
-\S4method{calculateOldIsotopePool}{PeptideExperiment}(x,
+\S4method{calculateOldIsotopePool}{SilacPeptideExperiment}(x,
   newIsotopeAssayName, mixIsotopeAssayName)
 
-\S4method{calculateOldIsotopePool}{ProteomicsExperiment}(x,
+\S4method{calculateOldIsotopePool}{SilacProteomicsExperiment}(x,
   newIsotopeAssayName, mixIsotopeAssayName)
 }
 \arguments{
-\item{x}{A \code{PeptideExperiment} or \code{ProteomicsExperiment} object.}
+\item{x}{A \code{SilacPeptideExperiment} or \code{SilacProteomicsExperiment}
+object.}
 
 \item{...}{Unused.}
 
@@ -40,8 +41,8 @@ contains quantification data for miss-cleaved peptides with one old isotope
 and one new isotope incorporated.}
 }
 \value{
-A \code{PeptideExperiment} or \code{ProteomicsExperiment} with a
-peptide assay entry named "oldIsotopePool".
+A \code{SilacPeptideExperiment} or \code{SilacProteomicsExperiment}
+with a peptide assay entry named "oldIsotopePool".
 }
 \description{
 Estimates the fraction of old isotope for each time point

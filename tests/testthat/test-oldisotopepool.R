@@ -34,7 +34,7 @@ test_that("addMiscleavedPeptides works", {
                                                  modCol = 'mod',
                                                  dataCols = 3:6))
 
-  expect_is(missPE, 'PeptideExperiment')
+  expect_is(missPE, 'SilacPeptideExperiment')
   expect_equal(dim(missPE), c(4, 4))
   expect_length(assays(missPE), 2)
   expect_named(assays(missPE), c('NN', 'ON'))
@@ -75,7 +75,7 @@ test_that("addMiscleavedPeptides works", {
                                                  modCol = 'mod',
                                                  dataCols = 3:6))
 
-  expect_is(missPE, 'PeptideExperiment')
+  expect_is(missPE, 'SilacPeptideExperiment')
   expect_equal(dim(missPE), c(5, 4))
   expect_length(assays(missPE), 4)
   expect_named(assays(missPE)[3:4], c('NN', 'ON'))
@@ -115,7 +115,7 @@ test_that("addMiscleavedPeptides works", {
                                                  modCol = 'mod',
                                                  dataCols = 3:6))
 
-  expect_is(missPE, 'ProteomicsExperiment')
+  expect_is(missPE, 'SilacProteomicsExperiment')
   expect_equal(unname(dim(missPE)[2, ]), c(5, 4))
   expect_length(assaysPept(missPE), 4)
   expect_named(assaysPept(missPE)[3:4], c('NN', 'ON'))

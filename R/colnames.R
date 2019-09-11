@@ -1,23 +1,23 @@
-#' @rdname ProteomicsExperiment-accessors
-#' @aliases colnames,ProteomicsExperiment-method
+#' @rdname SilacProteomicsExperiment-accessors
+#' @aliases colnames,SilacProteomicsExperiment-method
 #' @export
-setMethod('colnames', 'ProteomicsExperiment', function(x) {
+setMethod('colnames', 'SilacProteomicsExperiment', function(x) {
 
   return(rownames(x@colData))
 
 })
 
-#' @rdname ProteomicsExperiment-accessors
-#' @aliases colnames<-,ProteomicsExperiment-method
+#' @rdname SilacProteomicsExperiment-accessors
+#' @aliases colnames<-,SilacProteomicsExperiment-method
 #' @export
-setMethod('colnames<-', 'ProteomicsExperiment', function(x, value) {
+setMethod('colnames<-', 'SilacProteomicsExperiment', function(x, value) {
 
   if (length(value) != length(unique(value))) {
     stop('Colnames must be unique')
   }
 
-  rownames(colData(x@ProteinExperiment)) <- value
-  rownames(colData(x@PeptideExperiment)) <- value
+  rownames(colData(x@SilacProteinExperiment)) <- value
+  rownames(colData(x@SilacPeptideExperiment)) <- value
   validObject(x)
   return(x)
 

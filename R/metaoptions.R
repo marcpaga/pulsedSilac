@@ -1,17 +1,17 @@
-#' @rdname ProteinPeptideExperiment-accessors
-#' @aliases metaoptions,ProteinExperiment-method
+#' @rdname SilacProteinPeptideExperiment-accessors
+#' @aliases metaoptions,SilacProteinExperiment-method
 #' @export
-setMethod('metaoptions', 'ProteinExperiment', function(x){
+setMethod('metaoptions', 'SilacProteinExperiment', function(x){
 
   meta_opts <- metadata(x)[c('conditionCol', 'timeCol')]
   return(meta_opts)
 
 })
 
-#' @rdname ProteinPeptideExperiment-accessors
-#' @aliases metaoptions<-,ProteinExperiment-method
+#' @rdname SilacProteinPeptideExperiment-accessors
+#' @aliases metaoptions<-,SilacProteinExperiment-method
 #' @export
-setMethod('metaoptions<-', 'ProteinExperiment', function(x, value){
+setMethod('metaoptions<-', 'SilacProteinExperiment', function(x, value){
 
   x@metadata <- value
   validObject(x)
@@ -19,20 +19,20 @@ setMethod('metaoptions<-', 'ProteinExperiment', function(x, value){
 
 })
 
-#' @rdname ProteinPeptideExperiment-accessors
-#' @aliases metaoptions,PeptideExperiment-method
+#' @rdname SilacProteinPeptideExperiment-accessors
+#' @aliases metaoptions,SilacPeptideExperiment-method
 #' @export
-setMethod('metaoptions', 'PeptideExperiment', function(x){
+setMethod('metaoptions', 'SilacPeptideExperiment', function(x){
 
   meta_opts <- metadata(x)[c('conditionCol', 'timeCol', 'proteinCol')]
   return(meta_opts)
 
 })
 
-#' @rdname ProteinPeptideExperiment-accessors
-#' @aliases metaoptions<-,PeptideExperiment-method
+#' @rdname SilacProteinPeptideExperiment-accessors
+#' @aliases metaoptions<-,SilacPeptideExperiment-method
 #' @export
-setMethod('metaoptions<-', 'PeptideExperiment', function(x, value){
+setMethod('metaoptions<-', 'SilacPeptideExperiment', function(x, value){
 
   x@metadata <- value
   validObject(x)
@@ -40,11 +40,11 @@ setMethod('metaoptions<-', 'PeptideExperiment', function(x, value){
 
 })
 
-#' @rdname ProteomicsExperiment-accessors
+#' @rdname SilacProteomicsExperiment-accessors
 #' @name metaoptions
-#' @aliases metaoptions,ProteomicsExperiment-method
+#' @aliases metaoptions,SilacProteomicsExperiment-method
 #' @export
-setMethod('metaoptions', 'ProteomicsExperiment', function(x){
+setMethod('metaoptions', 'SilacProteomicsExperiment', function(x){
 
   metaoptions_names <- c('conditionCol',
                          'timeCol',
@@ -58,11 +58,11 @@ setMethod('metaoptions', 'ProteomicsExperiment', function(x){
 
 })
 
-#' @rdname ProteomicsExperiment-accessors
+#' @rdname SilacProteomicsExperiment-accessors
 #' @name metaoptions<-
-#' @aliases metaoptions<-,ProteomicsExperiment-method
+#' @aliases metaoptions<-,SilacProteomicsExperiment-method
 #' @export
-setMethod('metaoptions<-', 'ProteomicsExperiment', function(x, value){
+setMethod('metaoptions<-', 'SilacProteomicsExperiment', function(x, value){
 
   x@metadata <- value
   validObject(x)

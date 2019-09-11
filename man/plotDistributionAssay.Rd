@@ -3,26 +3,26 @@
 \docType{methods}
 \name{plotDistributionAssay}
 \alias{plotDistributionAssay}
-\alias{plotDistributionAssay,ProteinExperiment-method}
-\alias{plotDistributionAssay,PeptideExperiment-method}
-\alias{plotDistributionAssay,ProteomicsExperiment-method}
+\alias{plotDistributionAssay,SilacProteinExperiment-method}
+\alias{plotDistributionAssay,SilacPeptideExperiment-method}
+\alias{plotDistributionAssay,SilacProteomicsExperiment-method}
 \title{Distribution of assay data per condition and timepoint.}
 \usage{
 plotDistributionAssay(x, ...)
 
-\S4method{plotDistributionAssay}{ProteinExperiment}(x, assayName,
+\S4method{plotDistributionAssay}{SilacProteinExperiment}(x, assayName,
   plotType = "boxplot", returnDataFrame = FALSE, conditionCol, timeCol)
 
-\S4method{plotDistributionAssay}{PeptideExperiment}(x, assayName,
+\S4method{plotDistributionAssay}{SilacPeptideExperiment}(x, assayName,
   plotType = "boxplot", returnDataFrame = FALSE, conditionCol, timeCol)
 
-\S4method{plotDistributionAssay}{ProteomicsExperiment}(x, assayName,
+\S4method{plotDistributionAssay}{SilacProteomicsExperiment}(x, assayName,
   mode = "protein", plotType = "boxplot", returnDataFrame = FALSE,
   conditionCol, timeCol)
 }
 \arguments{
-\item{x}{A \code{ProteinExperiment}, \code{PeptideExperiment} or a
-\code{ProteomicsExperiment} object.}
+\item{x}{A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or a
+\code{SilacProteomicsExperiment} object.}
 
 \item{...}{Unused.}
 

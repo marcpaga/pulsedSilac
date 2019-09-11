@@ -1,27 +1,27 @@
-#' @rdname ProteinPeptideExperiment-accessors
-#' @aliases subset,ProteinExperiment-method
+#' @rdname SilacProteinPeptideExperiment-accessors
+#' @aliases subset,SilacProteinExperiment-method
 #' @export
-setMethod('subset', 'ProteinExperiment', function(x, ...) {
+setMethod('subset', 'SilacProteinExperiment', function(x, ...) {
 
   rows <- which(with(rowData(x), ...))
   return(x[rows, ])
 
 })
 
-#' @rdname ProteinPeptideExperiment-accessors
-#' @aliases subset,PeptideExperiment-method
+#' @rdname SilacProteinPeptideExperiment-accessors
+#' @aliases subset,SilacPeptideExperiment-method
 #' @export
-setMethod('subset', 'PeptideExperiment', function(x, ...) {
+setMethod('subset', 'SilacPeptideExperiment', function(x, ...) {
 
   rows <- which(with(rowData(x), ...))
   return(x[rows, ])
 
 })
 
-#' @rdname ProteomicsExperiment-accessors
-#' @aliases subset,ProteomicsExperiment-method
+#' @rdname SilacProteomicsExperiment-accessors
+#' @aliases subset,SilacProteomicsExperiment-method
 #' @export
-setMethod('subset', 'ProteomicsExperiment', function(x, ...) {
+setMethod('subset', 'SilacProteomicsExperiment', function(x, ...) {
 
   if (.giveMetaoption(x, 'subsetMode') == 'protein') {
     return(subsetProt(x, ...))
@@ -33,23 +33,23 @@ setMethod('subset', 'ProteomicsExperiment', function(x, ...) {
 
 ###### subsetProt
 
-#' @rdname ProteomicsExperiment-accessors
+#' @rdname SilacProteomicsExperiment-accessors
 #' @name subsetProt
-#' @aliases subsetProt,ProteinExperiment-method
+#' @aliases subsetProt,SilacProteinExperiment-method
 #' @export
-setMethod('subsetProt', 'ProteinExperiment', function(x, ...) {
+setMethod('subsetProt', 'SilacProteinExperiment', function(x, ...) {
 
   return(subset(x, ...))
 
 })
 
-#' @rdname ProteomicsExperiment-accessors
+#' @rdname SilacProteomicsExperiment-accessors
 #' @name subsetProt
-#' @aliases subsetProt,ProteomicsExperiment-method
+#' @aliases subsetProt,SilacProteomicsExperiment-method
 #' @export
-setMethod('subsetProt', 'ProteomicsExperiment', function(x, ...) {
+setMethod('subsetProt', 'SilacProteomicsExperiment', function(x, ...) {
 
-  rows <- which(with(rowData(x@ProteinExperiment), ...))
+  rows <- which(with(rowData(x@SilacProteinExperiment), ...))
   metadata(x)[['subsetMode']] <- 'protein'
   return(x[rows, ])
 
@@ -57,33 +57,33 @@ setMethod('subsetProt', 'ProteomicsExperiment', function(x, ...) {
 
 ###### subsetPept
 
-#' @rdname ProteomicsExperiment-accessors
+#' @rdname SilacProteomicsExperiment-accessors
 #' @name subsetPept
-#' @aliases subsetPept,PeptideExperiment-method
+#' @aliases subsetPept,SilacPeptideExperiment-method
 #' @export
-setMethod('subsetPept', 'PeptideExperiment', function(x, ...) {
+setMethod('subsetPept', 'SilacPeptideExperiment', function(x, ...) {
 
   return(subset(x, ...))
 
 })
 
-#' @rdname ProteomicsExperiment-accessors
+#' @rdname SilacProteomicsExperiment-accessors
 #' @name subsetPept
-#' @aliases subsetPept,ProteomicsExperiment-method
+#' @aliases subsetPept,SilacProteomicsExperiment-method
 
 #' @export
-setMethod('subsetPept', 'ProteomicsExperiment', function(x, ...) {
+setMethod('subsetPept', 'SilacProteomicsExperiment', function(x, ...) {
 
-  rows <- which(with(rowData(x@PeptideExperiment), ...))
+  rows <- which(with(rowData(x@SilacPeptideExperiment), ...))
   metadata(x)[['subsetMode']] <- 'peptide'
   return(x[rows, ])
 
 })
 
-#' @rdname ProteomicsExperiment-accessors
-#' @aliases [,ProteomicsExperiment-ANY-ANY-method
+#' @rdname SilacProteomicsExperiment-accessors
+#' @aliases [,SilacProteomicsExperiment-ANY-ANY-method
 #' @export
-setMethod('[', c('ProteomicsExperiment', 'ANY', 'ANY'),
+setMethod('[', c('SilacProteomicsExperiment', 'ANY', 'ANY'),
           function(x, i, j, ..., drop = TRUE) {
 
   ## slots not affected by subset
@@ -137,7 +137,7 @@ setMethod('[', c('ProteomicsExperiment', 'ANY', 'ANY'),
   if (subsetMode == 'protein') {
 
     ## for the protein part use the SummarizedExperiment method
-    new.ProteinExperiment <- x@ProteinExperiment[i, j]
+    new.ProteinExperiment <- x@SilacProteinExperiment[i, j]
 
     if (linked) {
 
@@ -146,7 +146,7 @@ setMethod('[', c('ProteomicsExperiment', 'ANY', 'ANY'),
       ## for the peptide part get which peptide rows belong to the proteins
       ## and use the SummarizedExperiment method too
       peptiderows <- unique(new.linkerDf[,'pepRow'])
-      new.PeptideExperiment <- x@PeptideExperiment[peptiderows, j]
+      new.PeptideExperiment <- x@SilacPeptideExperiment[peptiderows, j]
 
       ## recalculate the new rows for the linkerDf
       ## protein part
@@ -161,13 +161,13 @@ setMethod('[', c('ProteomicsExperiment', 'ANY', 'ANY'),
 
     } else {
       new.linkerDf <- linkerDf(x)
-      new.PeptideExperiment <- x@PeptideExperiment[, j]
+      new.PeptideExperiment <- x@SilacPeptideExperiment[, j]
     }
 
 
-    PE <- new(Class = 'ProteomicsExperiment',
-              ProteinExperiment = new.ProteinExperiment,
-              PeptideExperiment = new.PeptideExperiment,
+    PE <- new(Class = 'SilacProteomicsExperiment',
+              SilacProteinExperiment = new.ProteinExperiment,
+              SilacPeptideExperiment = new.PeptideExperiment,
               colData = new.colData,
               linkerDf = new.linkerDf,
               metadata = new.metadata)
@@ -180,7 +180,7 @@ setMethod('[', c('ProteomicsExperiment', 'ANY', 'ANY'),
   if (subsetMode == 'peptide') {
 
     ## for the protein part use the SummarizedExperiment method
-    new.PeptideExperiment <- x@PeptideExperiment[i, j]
+    new.PeptideExperiment <- x@SilacPeptideExperiment[i, j]
 
     if (linked) {
 
@@ -189,7 +189,7 @@ setMethod('[', c('ProteomicsExperiment', 'ANY', 'ANY'),
       ## for the peptide part get which peptide rows belong to the proteins
       ## and use the SummarizedExperiment method too
       proteinrows <- unique(new.linkerDf[, 'protRow'])
-      new.ProteinExperiment <- x@ProteinExperiment[proteinrows, j]
+      new.ProteinExperiment <- x@SilacProteinExperiment[proteinrows, j]
 
       ## recalculate the new rows for the linkerDf
       newProtRows <- match(new.linkerDf[,'protID'],
@@ -202,13 +202,13 @@ setMethod('[', c('ProteomicsExperiment', 'ANY', 'ANY'),
 
     } else {
       new.linkerDf <- linkerDf(x)
-      new.ProteinExperiment <- x@ProteinExperiment[, j]
+      new.ProteinExperiment <- x@SilacProteinExperiment[, j]
     }
 
 
-    PE <- new(Class = 'ProteomicsExperiment',
-              ProteinExperiment = new.ProteinExperiment,
-              PeptideExperiment = new.PeptideExperiment,
+    PE <- new(Class = 'SilacProteomicsExperiment',
+              SilacProteinExperiment = new.ProteinExperiment,
+              SilacPeptideExperiment = new.PeptideExperiment,
               colData = new.colData,
               linkerDf = new.linkerDf,
               metadata = new.metadata)

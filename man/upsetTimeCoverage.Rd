@@ -3,25 +3,25 @@
 \docType{methods}
 \name{upsetTimeCoverage}
 \alias{upsetTimeCoverage}
-\alias{upsetTimeCoverage,ProteinExperiment-method}
-\alias{upsetTimeCoverage,PeptideExperiment-method}
-\alias{upsetTimeCoverage,ProteomicsExperiment-method}
+\alias{upsetTimeCoverage,SilacProteinExperiment-method}
+\alias{upsetTimeCoverage,SilacPeptideExperiment-method}
+\alias{upsetTimeCoverage,SilacProteomicsExperiment-method}
 \title{Number of detected features per sample}
 \usage{
 upsetTimeCoverage(x, ...)
 
-\S4method{upsetTimeCoverage}{ProteinExperiment}(x, assayName, conditionCol,
-  maxMissing = 0, returnList = FALSE, ...)
+\S4method{upsetTimeCoverage}{SilacProteinExperiment}(x, assayName,
+  conditionCol, maxMissing = 0, returnList = FALSE, ...)
 
-\S4method{upsetTimeCoverage}{PeptideExperiment}(x, assayName,
+\S4method{upsetTimeCoverage}{SilacPeptideExperiment}(x, assayName,
   maxMissing = 0, conditionCol, returnList = FALSE, ...)
 
-\S4method{upsetTimeCoverage}{ProteomicsExperiment}(x, assayName,
+\S4method{upsetTimeCoverage}{SilacProteomicsExperiment}(x, assayName,
   maxMissing = 0, conditionCol, returnList = FALSE, ...)
 }
 \arguments{
-\item{x}{A \code{ProteinExperiment}, \code{PeptideExperiment} or a
-\code{ProteomicsExperiment} object.}
+\item{x}{A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or a
+\code{SilacProteomicsExperiment} object.}
 
 \item{...}{Further arguments passed to \code{upset()}.}
 

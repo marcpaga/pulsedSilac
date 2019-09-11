@@ -3,9 +3,9 @@
 \docType{data}
 \name{mefPE}
 \alias{mefPE}
-\title{ProteomicsExperiment with pulsed silac data from MEFs}
-\format{A \code{ProteinExperiment} object with 5223 proteins in a total of
-10 samples.
+\title{SilacProteomicsExperiment with pulsed silac data from MEFs}
+\format{A \code{SilacProteinExperiment} object with 5223 proteins in a total
+of 10 samples.
 \describe{
   \item{colData}{A \code{DataFrame} with the design of the experiment:
   samples, timepoints, replicates...}
@@ -18,9 +18,9 @@
 mefPE
 }
 \description{
-A pre-built \code{ProteinExperiment} object with data from a pulsed silac
-experiment done in mouse embryonic fibroblasts (MEFs). Two cell cultures are
-compared: cultured with or without serum.
+A pre-built \code{SilacProteinExperiment} object with data from a pulsed
+silac experiment done in mouse embryonic fibroblasts (MEFs). Two cell
+cultures are compared: cultured with or without serum.
 }
 \details{
 This dataset is used as an example, in the pulsed silac vignette, to show

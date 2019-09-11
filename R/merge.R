@@ -3,8 +3,9 @@
 #'
 #' @title Merge
 #'
-#' @description Merges two objects of the same class: \code{ProteinExperiment},
-#' \code{PeptideExperiment} or \code{ProteomicsExperiment}.
+#' @description Merges two objects of the same class:
+#' \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or
+#' \code{SilacProteomicsExperiment}.
 #'
 #' @details This function is designed to be able to merge different samples
 #' from different experiments since it is probable that not the exact same
@@ -13,29 +14,29 @@
 #' merges the assays based on such merge. The colData \code{data.frame} are
 #' joined.
 #'
-#' For a \code{ProteomicsExperiment} object it gets a bit more complicated since
-#' it is possible that some peptides that were assigned to one protein in
+#' For a \code{SilacProteomicsExperiment} object it gets a bit more complicated
+#' since it is possible that some peptides that were assigned to one protein in
 #' one experiment are assigned to another one in another experiment. Therefore
 #' the linkerDf \code{data.frame} is recalculated.
 #'
-#' @param x A \code{ProteinExperiment}, \code{PeptideExperiment} or a
-#' \code{ProteomicsExperiment} object.
-#' @param y A \code{ProteinExperiment}, \code{PeptideExperiment} or a
-#' \code{ProteomicsExperiment} object.
+#' @param x A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or a
+#' \code{SilacProteomicsExperiment} object.
+#' @param y A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or a
+#' \code{SilacProteomicsExperiment} object.
 #' @param by,by.x,by.y A \code{character} indicating the columns used for the
 #' merging.
-#' @param by.prot,by.prot.x,by.prot.y For \code{ProteomicsExperiment} objects
-#' a \code{character} indicating the columns used for the merging of the
+#' @param by.prot,by.prot.x,by.prot.y For \code{SilacProteomicsExperiment}
+#' objects a \code{character} indicating the columns used for the merging of the
 #' protein level.
-#' @param by.pept,by.pept.x,by.pept.y For \code{ProteomicsExperiment} objects
-#' a \code{character} indicating the columns used for the merging of the
+#' @param by.pept,by.pept.x,by.pept.y For \code{SilacProteomicsExperiment}
+#' objects a \code{character} indicating the columns used for the merging of the
 #' protein level.
 #' @param all A \code{logical} indicating if all proteins/peptides should
 #' be returned or only the intersect.
 #' @param ... Further parameters passed into \code{base::merge}.
 #'
-#' @return A \code{ProteinExperiment}, \code{PeptideExperiment} or a
-#' \code{ProteomicsExperiment} object.
+#' @return A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or a
+#' \code{SilacProteomicsExperiment} object.
 #'
 #' @examples
 #' data('wormsPE')
@@ -44,7 +45,7 @@ NULL
 
 #' @rdname merge
 #' @export
-setMethod('merge', 'ProteinExperiment', function(x, y,
+setMethod('merge', 'SilacProteinExperiment', function(x, y,
                                                  by, by.x = by, by.y = by,
                                                  all = TRUE, ...) {
 
@@ -160,12 +161,12 @@ setMethod('merge', 'ProteinExperiment', function(x, y,
   new.metadata <- metadata(x)[-which(names(metadata(x)) %in%
                                      names(metaoptions(x)))]
 
-  PE <- ProteinExperiment(assays = new.assays,
-                          rowData = new.rowData,
-                          colData = new.colData,
-                          conditionCol = metaopts[['conditionCol']],
-                          timeCol = metaopts[['timeCol']],
-                          metadata = new.metadata)
+  PE <- SilacProteinExperiment(assays = new.assays,
+                              rowData = new.rowData,
+                              colData = new.colData,
+                              conditionCol = metaopts[['conditionCol']],
+                              timeCol = metaopts[['timeCol']],
+                              metadata = new.metadata)
 
   return(PE)
 })
@@ -173,7 +174,7 @@ setMethod('merge', 'ProteinExperiment', function(x, y,
 
 #' @rdname merge
 #' @export
-setMethod('merge', 'PeptideExperiment', function(x, y,
+setMethod('merge', 'SilacPeptideExperiment', function(x, y,
                                                  by, by.x = by, by.y = by,
                                                  all = TRUE, ...) {
 
@@ -184,20 +185,20 @@ setMethod('merge', 'PeptideExperiment', function(x, y,
   ## PeptideExperiment with the added metaoptions
   new.metadata <- metadata(x)[-which(names(metadata(x)) %in%
                                      names(metaoptions(x)))]
-  PE <- PeptideExperiment(assays = assays(PE),
-                          rowData = rowData(PE),
-                          colData = colData(PE),
-                          conditionCol = metaoptions(PE)[['conditionCol']],
-                          timeCol = metaoptions(PE)[['timeCol']],
-                          proteinCol = metaoptions(x)[['proteinCol']],
-                          metadata = new.metadata)
+  PE <- SilacPeptideExperiment(assays = assays(PE),
+                              rowData = rowData(PE),
+                              colData = colData(PE),
+                              conditionCol = metaoptions(PE)[['conditionCol']],
+                              timeCol = metaoptions(PE)[['timeCol']],
+                              proteinCol = metaoptions(x)[['proteinCol']],
+                              metadata = new.metadata)
   return(PE)
 
 })
 
 #' @rdname merge
 #' @export
-setMethod('merge', 'ProteomicsExperiment', function(x, y,
+setMethod('merge', 'SilacProteomicsExperiment', function(x, y,
                                                     by.prot,
                                                     by.prot.x = by.prot,
                                                     by.prot.y = by.prot,
@@ -234,15 +235,15 @@ setMethod('merge', 'ProteomicsExperiment', function(x, y,
 
 
   ## do each merge separately from their correspondent merge methods
-  new.ProteinExperiment <- merge(x = x@ProteinExperiment,
-                                 y = y@ProteinExperiment,
+  new.ProteinExperiment <- merge(x = x@SilacProteinExperiment,
+                                 y = y@SilacProteinExperiment,
                                  by = by.prot,
                                  by.x = by.prot.x,
                                  by.y = by.prot.y,
                                  all = all, ...)
 
-  new.PeptideExperiment <- merge(x = x@PeptideExperiment,
-                                 y = y@PeptideExperiment,
+  new.PeptideExperiment <- merge(x = x@SilacPeptideExperiment,
+                                 y = y@SilacPeptideExperiment,
                                  by = by.pept,
                                  by.x = by.pept.x,
                                  by.y = by.pept.y,
@@ -257,9 +258,9 @@ setMethod('merge', 'ProteomicsExperiment', function(x, y,
     new.linkerDf <- data.frame()
   }
 
-  PE <- new(Class = 'ProteomicsExperiment',
-            ProteinExperiment = new.ProteinExperiment,
-            PeptideExperiment = new.PeptideExperiment,
+  PE <- new(Class = 'SilacProteomicsExperiment',
+            SilacProteinExperiment = new.ProteinExperiment,
+            SilacPeptideExperiment = new.PeptideExperiment,
             colData = colData(new.ProteinExperiment),
             linkerDf = new.linkerDf,
             metadata = x@metadata)

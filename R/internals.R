@@ -1,6 +1,6 @@
 ###### Logical checks ==========================================================
 
-setMethod('hasRowData', 'ProteinExperiment', function(x){
+setMethod('hasRowData', 'SilacProteinExperiment', function(x){
 
   rd <- rowData(x)
   if (is(rd, 'DataFrame') & ncol(rd) > 0) {
@@ -11,7 +11,7 @@ setMethod('hasRowData', 'ProteinExperiment', function(x){
 
 })
 
-setMethod('hasRowData', 'PeptideExperiment', function(x){
+setMethod('hasRowData', 'SilacPeptideExperiment', function(x){
 
   rd <- rowData(x)
   if (is(rd, 'DataFrame') & ncol(rd) > 0) {
@@ -22,17 +22,17 @@ setMethod('hasRowData', 'PeptideExperiment', function(x){
 
 })
 
-setMethod('hasRowData', 'ProteomicsExperiment', function(x){
+setMethod('hasRowData', 'SilacProteomicsExperiment', function(x){
 
   outVec <- c(NA, NA)
-  rd <- rowData(x@ProteinExperiment)
+  rd <- rowData(x@SilacProteinExperiment)
   if (is(rd, 'DataFrame') & ncol(rd) > 0) {
     outVec[1] <- TRUE
   } else {
     outVec[1] <- FALSE
   }
 
-  rd <- rowData(x@PeptideExperiment)
+  rd <- rowData(x@SilacPeptideExperiment)
   if (is(rd, 'DataFrame') & ncol(rd) > 0) {
     outVec[2] <- TRUE
   } else {
@@ -212,12 +212,12 @@ synchronizeMetaoptions <- function(x) {
   for (meta in names(metaoptions(x))) {
 
     value <- metaoptions(x)[[meta]]
-    if (meta %in% names(metaoptions(x@ProteinExperiment))) {
-      metadata(x@ProteinExperiment)[[meta]] <- value
+    if (meta %in% names(metaoptions(x@SilacProteinExperiment))) {
+      metadata(x@SilacProteinExperiment)[[meta]] <- value
     }
 
-    if (meta %in% names(metaoptions(x@PeptideExperiment))) {
-      metadata(x@PeptideExperiment)[[meta]] <- value
+    if (meta %in% names(metaoptions(x@SilacPeptideExperiment))) {
+      metadata(x@SilacPeptideExperiment)[[meta]] <- value
     }
   }
   validObject(x)

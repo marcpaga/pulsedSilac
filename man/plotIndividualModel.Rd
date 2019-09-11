@@ -3,25 +3,25 @@
 \docType{methods}
 \name{plotIndividualModel}
 \alias{plotIndividualModel}
-\alias{plotIndividualModel,ProteinExperiment-method}
-\alias{plotIndividualModel,PeptideExperiment-method}
-\alias{plotIndividualModel,ProteomicsExperiment-method}
+\alias{plotIndividualModel,SilacProteinExperiment-method}
+\alias{plotIndividualModel,SilacPeptideExperiment-method}
+\alias{plotIndividualModel,SilacProteomicsExperiment-method}
 \title{Fitted model(s) for a feature}
 \usage{
 plotIndividualModel(x, ...)
 
-\S4method{plotIndividualModel}{ProteinExperiment}(x, modelList, num,
+\S4method{plotIndividualModel}{SilacProteinExperiment}(x, modelList, num,
   returnDataFrame = FALSE)
 
-\S4method{plotIndividualModel}{PeptideExperiment}(x, modelList, num,
+\S4method{plotIndividualModel}{SilacPeptideExperiment}(x, modelList, num,
   returnDataFrame = FALSE)
 
-\S4method{plotIndividualModel}{ProteomicsExperiment}(x, modelList, num,
-  returnDataFrame = FALSE)
+\S4method{plotIndividualModel}{SilacProteomicsExperiment}(x, modelList,
+  num, returnDataFrame = FALSE)
 }
 \arguments{
-\item{x}{A \code{ProteinExperiment}, \code{PeptideExperiment} or
-\code{ProteomicsExperiment} object.}
+\item{x}{A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or
+\code{SilacProteomicsExperiment} object.}
 
 \item{...}{Unused.}
 

@@ -2,11 +2,11 @@
 
 # works for both ProteinExperiment and PeptideExperiment
 
-#' @rdname ProteinPeptideExperiment-accessors
+#' @rdname SilacProteinPeptideExperiment-accessors
 #' @name coerce
-#' @aliases coerce,ProteinExperiment,SummarizedExperiment-method
+#' @aliases coerce,SilacProteinExperiment,SummarizedExperiment-method
 #' @exportMethod coerce
-setAs('ProteinExperiment', 'SummarizedExperiment',
+setAs('SilacProteinExperiment', 'SummarizedExperiment',
       function(from){
 
         SummarizedExperiment(assays = assays(from),
@@ -22,11 +22,11 @@ setAs('ProteinExperiment', 'SummarizedExperiment',
 
 # works for both ProteinExperiment and PeptideExperiment
 
-#' @rdname ProteinPeptideExperiment-accessors
+#' @rdname SilacProteinPeptideExperiment-accessors
 #' @name coerce
-#' @aliases coerce,ProteinExperiment,data.frame-method
+#' @aliases coerce,SilacProteinExperiment,data.frame-method
 #' @exportMethod coerce
-setAs('ProteinExperiment', 'data.frame',
+setAs('SilacProteinExperiment', 'data.frame',
       function(from){
 
         n_samples <- ncol(from)

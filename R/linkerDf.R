@@ -1,18 +1,18 @@
-#' @rdname ProteomicsExperiment-accessors
+#' @rdname SilacProteomicsExperiment-accessors
 #' @name linkerDf
-#' @aliases linkerDf,ProteomicsExperiment-method
+#' @aliases linkerDf,SilacProteomicsExperiment-method
 #' @export
-setMethod('linkerDf', 'ProteomicsExperiment', function(x){
+setMethod('linkerDf', 'SilacProteomicsExperiment', function(x){
 
   return(x@linkerDf)
 
 })
 
-#' @rdname ProteomicsExperiment-accessors
+#' @rdname SilacProteomicsExperiment-accessors
 #' @name linkerDf<-
-#' @aliases linkerDf<-,ProteomicsExperiment-method
+#' @aliases linkerDf<-,SilacProteomicsExperiment-method
 #' @export
-setMethod('linkerDf<-', 'ProteomicsExperiment', function(x, value){
+setMethod('linkerDf<-', 'SilacProteomicsExperiment', function(x, value){
 
   x@linkerDf <- value
   validObject(x)

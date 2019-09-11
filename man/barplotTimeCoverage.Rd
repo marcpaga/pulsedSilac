@@ -3,25 +3,25 @@
 \docType{methods}
 \name{barplotTimeCoverage}
 \alias{barplotTimeCoverage}
-\alias{barplotTimeCoverage,ProteinExperiment-method}
-\alias{barplotTimeCoverage,PeptideExperiment-method}
-\alias{barplotTimeCoverage,ProteomicsExperiment-method}
+\alias{barplotTimeCoverage,SilacProteinExperiment-method}
+\alias{barplotTimeCoverage,SilacPeptideExperiment-method}
+\alias{barplotTimeCoverage,SilacProteomicsExperiment-method}
 \title{Number of detected features per sample}
 \usage{
 barplotTimeCoverage(x, ...)
 
-\S4method{barplotTimeCoverage}{ProteinExperiment}(x, assayName,
+\S4method{barplotTimeCoverage}{SilacProteinExperiment}(x, assayName,
   returnDataFrame = FALSE, conditionCol)
 
-\S4method{barplotTimeCoverage}{PeptideExperiment}(x, assayName,
+\S4method{barplotTimeCoverage}{SilacPeptideExperiment}(x, assayName,
   returnDataFrame = FALSE, conditionCol)
 
-\S4method{barplotTimeCoverage}{ProteomicsExperiment}(x, assayName,
+\S4method{barplotTimeCoverage}{SilacProteomicsExperiment}(x, assayName,
   returnDataFrame = FALSE, conditionCol)
 }
 \arguments{
-\item{x}{A \code{ProteinExperiment}, \code{PeptideExperiment} or a
-\code{ProteomicsExperiment} object.}
+\item{x}{A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or a
+\code{SilacProteomicsExperiment} object.}
 
 \item{...}{Unused.}
 

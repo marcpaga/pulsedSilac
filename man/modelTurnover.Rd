@@ -3,32 +3,33 @@
 \docType{methods}
 \name{modelTurnover}
 \alias{modelTurnover}
-\alias{modelTurnover,ProteinExperiment-method}
-\alias{modelTurnover,PeptideExperiment-method}
-\alias{modelTurnover,ProteomicsExperiment-method}
+\alias{modelTurnover,SilacProteinExperiment-method}
+\alias{modelTurnover,SilacPeptideExperiment-method}
+\alias{modelTurnover,SilacProteomicsExperiment-method}
 \title{Estimate protein/peptide turnover}
 \usage{
 modelTurnover(x, ...)
 
-\S4method{modelTurnover}{ProteinExperiment}(x, assayName = "fraction",
-  formula = "fraction ~ 1-exp(-k*t)", start = list(k = 0.02),
-  robust = FALSE, mode = "protein", verbose = FALSE,
-  returnModel = FALSE, conditionCol, timeCol, ...)
+\S4method{modelTurnover}{SilacProteinExperiment}(x,
+  assayName = "fraction", formula = "fraction ~ 1-exp(-k*t)",
+  start = list(k = 0.02), robust = FALSE, mode = "protein",
+  verbose = FALSE, returnModel = FALSE, conditionCol, timeCol, ...)
 
-\S4method{modelTurnover}{PeptideExperiment}(x, assayName = "fraction",
-  formula = "fraction ~ 1-exp(-k*t)", start = list(k = 0.02),
-  robust = FALSE, mode = c("grouped", "peptide"), verbose = FALSE,
-  returnModel = FALSE, conditionCol, timeCol, proteinCol, ...)
+\S4method{modelTurnover}{SilacPeptideExperiment}(x,
+  assayName = "fraction", formula = "fraction ~ 1-exp(-k*t)",
+  start = list(k = 0.02), robust = FALSE, mode = c("grouped",
+  "peptide"), verbose = FALSE, returnModel = FALSE, conditionCol,
+  timeCol, proteinCol, ...)
 
-\S4method{modelTurnover}{ProteomicsExperiment}(x, assayName = "fraction",
-  formula = "fraction ~ 1-exp(-k*t)", start = list(k = 0.02),
-  robust = FALSE, mode = c("protein", "grouped", "peptide"),
-  verbose = FALSE, returnModel = FALSE, conditionCol, timeCol,
-  proteinCol, ...)
+\S4method{modelTurnover}{SilacProteomicsExperiment}(x,
+  assayName = "fraction", formula = "fraction ~ 1-exp(-k*t)",
+  start = list(k = 0.02), robust = FALSE, mode = c("protein",
+  "grouped", "peptide"), verbose = FALSE, returnModel = FALSE,
+  conditionCol, timeCol, proteinCol, ...)
 }
 \arguments{
-\item{x}{A \code{ProteinExperiment}, \code{PeptideExperiment} or
-\code{ProteomicsExperiment} object.}
+\item{x}{A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or
+\code{SilacProteomicsExperiment} object.}
 
 \item{...}{further parameters passed into \code{nls} or \code{nlrob}.}
 

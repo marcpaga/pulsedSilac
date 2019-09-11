@@ -8,7 +8,7 @@ test_that("constructor works", {
   colData <- data.frame(sample = LETTERS[1:3])
   rowData <- data.frame(peptide = letters[1:3])
 
-  proExp <- ProteinExperiment(assays = assays_list,
+  proExp <- SilacProteinExperiment(assays = assays_list,
                               rowData = rowData,
                               colData = colData)
 
@@ -18,21 +18,21 @@ test_that("constructor works", {
   colData <- data.frame(sample = LETTERS[1:3])
   rowData <- data.frame(peptide = letters[1:4])
 
-  pepExp <- PeptideExperiment(assays = assays_list,
+  pepExp <- SilacPeptideExperiment(assays = assays_list,
                               rowData = rowData,
                               colData = colData)
 
-  expect_silent(PE <- ProteomicsExperiment(ProteinExperiment = proExp,
-                                           PeptideExperiment = pepExp))
+  expect_silent(PE <- SilacProteomicsExperiment(SilacProteinExperiment = proExp,
+                                                SilacPeptideExperiment = pepExp))
   expect_equal(length(metadata(PE)), 7)
   expect_equal(length(metaoptions(PE)), 7)
 
-  expect_is(ProtExp(PE), 'ProteinExperiment')
-  expect_is(PeptExp(PE), 'PeptideExperiment')
+  expect_is(ProtExp(PE), 'SilacProteinExperiment')
+  expect_is(PeptExp(PE), 'SilacPeptideExperiment')
 
-  expect_error(PE <- ProteomicsExperiment(ProteinExperiment = proExp))
-  expect_error(PE <- ProteomicsExperiment(PeptideExperiment = pepExp))
-  expect_error(PE <- ProteomicsExperiment(ProteinExperiment = pepExp,
-                                          PeptideExperiment = proExp))
+  expect_error(PE <- SilacProteomicsExperiment(SilacProteinExperiment = proExp))
+  expect_error(PE <- SilacProteomicsExperiment(SilacPeptideExperiment = pepExp))
+  expect_error(PE <- SilacProteomicsExperiment(SilacProteinExperiment = pepExp,
+                                               SilacPeptideExperiment = proExp))
 
 })

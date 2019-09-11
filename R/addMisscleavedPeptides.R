@@ -9,18 +9,18 @@
 #' is required:
 #' \itemize{
 #'   \item A column with ids that can be mapped to the peptide rowData (not
-#'   necessary for \code{ProteinExperiment} objects).
+#'   necessary for \code{SilacProteinExperiment} objects).
 #'   \item A column indicating which isotope configuration the peptide has: two
 #'   heavy isotopes, mix of light and heavy isotope, etc.
 #'   \item A set of columns with peptide expression quantification. The number
 #'   of columns should be the same, and in the same order, as the number of
-#'   samples in the \code{ProteinExperiment}, \code{PeptideExperiment} or
-#'   \code{ProteomicsExperiment}.
+#'   samples in the \code{SilacProteinExperiment}, \code{SilacPeptideExperiment}
+#'   or \code{SilacProteomicsExperiment}.
 #' }
 #' Non-detected measurements should be \code{NA}.
 #'
-#' @param x A \code{ProteinExperiment}, \code{PeptideExperiment} or
-#' \code{ProteomicsExperiment}.
+#' @param x A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or
+#' \code{SilacProteomicsExperiment}.
 #' @param newdata a \code{data.frame} containing the data described in the
 #' description.
 #' @param modCol \code{character} or \code{numeric} indicating which column of
@@ -34,9 +34,9 @@
 #' should have the same name as in rowDataPept(x).
 #' @param ... Unused.
 #'
-#' @return A \code{PeptideExperiment} or \code{ProteomicsExperiment} with new
-#' assay entries. If x is a \code{ProteinExperiment} then a
-#' \code{PeptideExperiment} is returned.
+#' @return A \code{SilacPeptideExperiment} or \code{SilacProteomicsExperiment}
+#' with new assay entries. If x is a \code{SilacProteinExperiment} then a
+#' \code{SilacPeptideExperiment} is returned.
 #'
 #' @examples
 #' data('wormsPE')
@@ -62,7 +62,7 @@ setGeneric('addMisscleavedPeptides', function(x, ...){
 #' @rdname addMisscleavedPeptides
 #' @export
 setMethod('addMisscleavedPeptides',
-          'ProteinExperiment',
+          'SilacProteinExperiment',
           function(x,
                    newdata,
                    modCol,
@@ -134,7 +134,7 @@ setMethod('addMisscleavedPeptides',
   names(assaysList) <- modifications
 
 
-  pe <- PeptideExperiment(assays = assaysList,
+  pe <- SilacPeptideExperiment(assays = assaysList,
                     rowData = rowData,
                     colData = colData(x),
                     conditionCol = metaoptions(x)[['conditionCol']],
@@ -146,7 +146,7 @@ setMethod('addMisscleavedPeptides',
 #' @rdname addMisscleavedPeptides
 #' @export
 setMethod('addMisscleavedPeptides',
-          'PeptideExperiment',
+          'SilacPeptideExperiment',
           function(x,
                    newdata,
                    modCol,
@@ -233,7 +233,7 @@ setMethod('addMisscleavedPeptides',
 #' @rdname addMisscleavedPeptides
 #' @export
 setMethod('addMisscleavedPeptides',
-          'ProteomicsExperiment',
+          'SilacProteomicsExperiment',
           function(x,
                    newdata,
                    modCol,
@@ -241,13 +241,13 @@ setMethod('addMisscleavedPeptides',
                    idColPept) {
 
 
-  new.pept <- addMisscleavedPeptides(x = x@PeptideExperiment,
+  new.pept <- addMisscleavedPeptides(x = x@SilacPeptideExperiment,
                                     newdata = newdata,
                                     modCol = modCol,
                                     dataCols = dataCols,
                                     idColPept = idColPept)
 
-  x@PeptideExperiment <- new.pept
+  x@SilacPeptideExperiment <- new.pept
   return(x)
 })
 

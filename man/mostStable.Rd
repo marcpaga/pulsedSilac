@@ -3,23 +3,25 @@
 \docType{methods}
 \name{mostStable}
 \alias{mostStable}
-\alias{mostStable,ProteinExperiment-method}
-\alias{mostStable,PeptideExperiment-method}
-\alias{mostStable,ProteomicsExperiment-method}
+\alias{mostStable,SilacProteinExperiment-method}
+\alias{mostStable,SilacPeptideExperiment-method}
+\alias{mostStable,SilacProteomicsExperiment-method}
 \title{Most stable proteins/peptides}
 \usage{
 mostStable(x, ...)
 
-\S4method{mostStable}{ProteinExperiment}(x, assayName, n, conditionCol)
+\S4method{mostStable}{SilacProteinExperiment}(x, assayName, n,
+  conditionCol)
 
-\S4method{mostStable}{PeptideExperiment}(x, assayName, n, conditionCol)
+\S4method{mostStable}{SilacPeptideExperiment}(x, assayName, n,
+  conditionCol)
 
-\S4method{mostStable}{ProteomicsExperiment}(x, assayName, n, mode,
+\S4method{mostStable}{SilacProteomicsExperiment}(x, assayName, n, mode,
   conditionCol)
 }
 \arguments{
-\item{x}{A \code{ProteinExperiment}, \code{PeptideExperiment} or a
-\code{ProteomicsExperiment} object.}
+\item{x}{A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or a
+\code{SilacProteomicsExperiment} object.}
 
 \item{...}{Unused.}
 
@@ -35,8 +37,9 @@ either "protein" or "peptide". Only relevant for ProteomicsExperiment
 inputs.}
 }
 \value{
-A \code{ProteinExperiment}, \code{PeptideExperiment} or a
-\code{ProteomicsExperiment} object with the n most stable proteins/peptides.
+A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or a
+\code{SilacProteomicsExperiment} object with the n most stable
+proteins/peptides.
 }
 \description{
 Finds which are the most stable proteins/peptides across

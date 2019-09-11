@@ -2,86 +2,88 @@
 % Please edit documentation in R/assays.R, R/cbind.R, R/coercers.R, R/coldata.R,
 %   R/metaoptions.R, R/rbind.R, R/rowdata.R, R/subset.R, R/zzz.R
 \docType{methods}
-\name{ProteinPeptideExperiment-accessors}
-\alias{ProteinPeptideExperiment-accessors}
-\alias{assays<-,ProteinExperiment,ANY-method}
-\alias{assays<-,PeptideExperiment,ANY-method}
-\alias{cbind,ProteinExperiment-method}
-\alias{cbind,PeptideExperiment-method}
+\name{SilacProteinPeptideExperiment-accessors}
+\alias{SilacProteinPeptideExperiment-accessors}
+\alias{assays<-,SilacProteinExperiment,ANY-method}
+\alias{assays<-,SilacPeptideExperiment,ANY-method}
+\alias{cbind,SilacProteinExperiment-method}
+\alias{cbind,SilacPeptideExperiment-method}
 \alias{coerce}
-\alias{coerce,ProteinExperiment,SummarizedExperiment-method}
-\alias{coerce,ProteinExperiment,data.frame-method}
-\alias{colData<-,ProteinExperiment,ANY-method}
-\alias{colData<-,ProteinExperiment-method}
-\alias{colData<-,PeptideExperiment,ANY-method}
-\alias{colData<-,PeptideExperiment-method}
-\alias{metaoptions,ProteinExperiment-method}
-\alias{metaoptions<-,ProteinExperiment-method}
-\alias{metaoptions,PeptideExperiment-method}
-\alias{metaoptions<-,PeptideExperiment-method}
-\alias{rbind,ProteinExperiment-method}
-\alias{rbind,PeptideExperiment-method}
-\alias{rowData<-,ProteinExperiment-method}
-\alias{rowData<-,PeptideExperiment-method}
-\alias{subset,ProteinExperiment-method}
-\alias{subset,PeptideExperiment-method}
-\title{Accessors for the ProteinExperiment and PeptideExperiment classes}
+\alias{coerce,SilacProteinExperiment,SummarizedExperiment-method}
+\alias{coerce,SilacProteinExperiment,data.frame-method}
+\alias{colData<-,SilacProteinExperiment,ANY-method}
+\alias{colData<-,SilacProteinExperiment-method}
+\alias{colData<-,SilacPeptideExperiment,ANY-method}
+\alias{colData<-,SilacPeptideExperiment-method}
+\alias{metaoptions,SilacProteinExperiment-method}
+\alias{metaoptions<-,SilacProteinExperiment-method}
+\alias{metaoptions,SilacPeptideExperiment-method}
+\alias{metaoptions<-,SilacPeptideExperiment-method}
+\alias{rbind,SilacProteinExperiment-method}
+\alias{rbind,SilacPeptideExperiment-method}
+\alias{rowData<-,SilacProteinExperiment-method}
+\alias{rowData<-,SilacPeptideExperiment-method}
+\alias{subset,SilacProteinExperiment-method}
+\alias{subset,SilacPeptideExperiment-method}
+\title{Accessors for the SilacProteinExperiment and SilacPeptideExperiment
+classes}
 \usage{
-\S4method{assays}{ProteinExperiment,ANY}(x) <- value
+\S4method{assays}{SilacProteinExperiment,ANY}(x) <- value
 
-\S4method{assays}{PeptideExperiment,ANY}(x) <- value
+\S4method{assays}{SilacPeptideExperiment,ANY}(x) <- value
 
-\S4method{cbind}{ProteinExperiment}(..., deparse.level = 1)
+\S4method{cbind}{SilacProteinExperiment}(..., deparse.level = 1)
 
-\S4method{cbind}{PeptideExperiment}(..., deparse.level = 1)
+\S4method{cbind}{SilacPeptideExperiment}(..., deparse.level = 1)
 
-\S4method{colData}{ProteinExperiment,ANY}(x, ...) <- value
+\S4method{colData}{SilacProteinExperiment,ANY}(x, ...) <- value
 
-\S4method{colData}{PeptideExperiment,ANY}(x, ...) <- value
+\S4method{colData}{SilacPeptideExperiment,ANY}(x, ...) <- value
 
-\S4method{metaoptions}{ProteinExperiment}(x)
+\S4method{metaoptions}{SilacProteinExperiment}(x)
 
-\S4method{metaoptions}{ProteinExperiment}(x) <- value
+\S4method{metaoptions}{SilacProteinExperiment}(x) <- value
 
-\S4method{metaoptions}{PeptideExperiment}(x)
+\S4method{metaoptions}{SilacPeptideExperiment}(x)
 
-\S4method{metaoptions}{PeptideExperiment}(x) <- value
+\S4method{metaoptions}{SilacPeptideExperiment}(x) <- value
 
-\S4method{rbind}{ProteinExperiment}(..., deparse.level = 1)
+\S4method{rbind}{SilacProteinExperiment}(..., deparse.level = 1)
 
-\S4method{rbind}{PeptideExperiment}(..., deparse.level = 1)
+\S4method{rbind}{SilacPeptideExperiment}(..., deparse.level = 1)
 
-\S4method{rowData}{ProteinExperiment}(x, ...) <- value
+\S4method{rowData}{SilacProteinExperiment}(x, ...) <- value
 
-\S4method{rowData}{PeptideExperiment}(x, ...) <- value
+\S4method{rowData}{SilacPeptideExperiment}(x, ...) <- value
 
-\S4method{subset}{ProteinExperiment}(x, ...)
+\S4method{subset}{SilacProteinExperiment}(x, ...)
 
-\S4method{subset}{PeptideExperiment}(x, ...)
+\S4method{subset}{SilacPeptideExperiment}(x, ...)
 }
 \arguments{
-\item{x}{A \code{ProteinExperiment} or a \code{PeptideExperiment} object.}
+\item{x}{A \code{SilacProteinExperiment} or a \code{SilacPeptideExperiment}
+object.}
 
 \item{value}{An object of class specified in the S4 method signature or as
 described in the following sections.}
 
-\item{...}{For \code{rbind} and \code{cbind} are \code{ProteinExperiment} or
-\code{PeptideExperiment} objects to be joined together. For \code{subset}
-it is a logical comparison using a column name from the respective rowData
-\code{data.frame}. Otherwise unused.}
+\item{...}{For \code{rbind} and \code{cbind} are \code{SilacProteinExperiment}
+or \code{SilacPeptideExperiment} objects to be joined together.
+For \code{subset} it is a logical comparison using a column name from the
+respective rowData \code{data.frame}. Otherwise unused.}
 
 \item{deparse.level}{Unused.}
 }
 \value{
-Elements from \code{ProteinExperiment} or \code{PeptideExperiment}
-objects.
+Elements from \code{SilacProteinExperiment} or
+\code{SilacPeptideExperiment} objects.
 }
 \description{
 All the accessors, dimension, subsetting, merging and coercers
-that work on \code{ProteinExperiment} and \code{PeptideExperiment} objects.
-Functions that work on \code{SummarizedExperiment} objects should also work
-on these two objects. Detailed examples of these functions can be found in
-the vignette of this package.
+that work on \code{SilacProteinExperiment} and \code{SilacPeptideExperiment}
+objects. Functions that work on \code{SummarizedExperiment} objects should
+also work on these two objects. Detailed examples of these functions can be
+found in the vignette of this package.
 }
 \section{Accessors}{
 
@@ -156,8 +158,8 @@ Merge methods are explained in detail in \link{merge}.
 \section{Coercers}{
 
 
-The folloing functions can be used to transform a \code{ProteinExperiment}
-or a \code{PeptideExperiment} into a \code{SummarizedExperiment} or a
+The folloing functions can be used to transform a \code{SilacProteinExperiment}
+or a \code{SilacPeptideExperiment} into a \code{SummarizedExperiment} or a
 \code{data.frame}.
 
 \describe{

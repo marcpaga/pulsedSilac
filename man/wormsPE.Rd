@@ -4,7 +4,7 @@
 \name{wormsPE}
 \alias{wormsPE}
 \title{ProteomicsExperiment with pulsed silac data from C. elegans strains}
-\format{A \code{ProteomicsExperiment} object with 250 proteins and 3574
+\format{A \code{SilacProteomicsExperiment} object with 250 proteins and 3574
 peptides in a total of 14 samples.
 \describe{
   \item{colData}{A \code{DataFrame} with the design of the experiment:
@@ -29,8 +29,8 @@ peptides in a total of 14 samples.
 wormsPE
 }
 \description{
-A pre-built \code{ProteomicsExperiment} object with data from a pulsed silac
-experiment done in \emph{C. elegans} by Visscher et al. 2016. It only
+A pre-built \code{SilacProteomicsExperiment} object with data from a pulsed
+silac experiment done in \emph{C. elegans} by Visscher et al. 2016. It only
 contains the data from the first 250 priteins and two old worms strains
 (OW40 and OW450).
 }

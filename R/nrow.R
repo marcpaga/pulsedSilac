@@ -1,10 +1,10 @@
-#' @rdname ProteomicsExperiment-accessors
-#' @aliases nrow,ProteomicsExperiment-method
+#' @rdname SilacProteomicsExperiment-accessors
+#' @aliases nrow,SilacProteomicsExperiment-method
 #' @usage NULL
 #' @export
-setMethod('nrow', 'ProteomicsExperiment', function(x){
+setMethod('nrow', 'SilacProteomicsExperiment', function(x){
 
-  return(c(protein = nrow(x@ProteinExperiment),
-           peptide = nrow(x@PeptideExperiment)))
+  return(c(protein = nrow(x@SilacProteinExperiment),
+           peptide = nrow(x@SilacPeptideExperiment)))
 
 })

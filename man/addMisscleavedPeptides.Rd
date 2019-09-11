@@ -3,26 +3,26 @@
 \docType{methods}
 \name{addMisscleavedPeptides}
 \alias{addMisscleavedPeptides}
-\alias{addMisscleavedPeptides,ProteinExperiment-method}
-\alias{addMisscleavedPeptides,PeptideExperiment-method}
-\alias{addMisscleavedPeptides,ProteomicsExperiment-method}
+\alias{addMisscleavedPeptides,SilacProteinExperiment-method}
+\alias{addMisscleavedPeptides,SilacPeptideExperiment-method}
+\alias{addMisscleavedPeptides,SilacProteomicsExperiment-method}
 \title{Add miss-cleaved peptide expression levels for old isotope recycling
 estimation}
 \usage{
 addMisscleavedPeptides(x, ...)
 
-\S4method{addMisscleavedPeptides}{ProteinExperiment}(x, newdata, modCol,
-  dataCols, idColPept)
+\S4method{addMisscleavedPeptides}{SilacProteinExperiment}(x, newdata,
+  modCol, dataCols, idColPept)
 
-\S4method{addMisscleavedPeptides}{PeptideExperiment}(x, newdata, modCol,
-  dataCols, idColPept)
+\S4method{addMisscleavedPeptides}{SilacPeptideExperiment}(x, newdata,
+  modCol, dataCols, idColPept)
 
-\S4method{addMisscleavedPeptides}{ProteomicsExperiment}(x, newdata, modCol,
-  dataCols, idColPept)
+\S4method{addMisscleavedPeptides}{SilacProteomicsExperiment}(x, newdata,
+  modCol, dataCols, idColPept)
 }
 \arguments{
-\item{x}{A \code{ProteinExperiment}, \code{PeptideExperiment} or
-\code{ProteomicsExperiment}.}
+\item{x}{A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or
+\code{SilacProteomicsExperiment}.}
 
 \item{...}{Unused.}
 
@@ -42,9 +42,9 @@ that will be used in the merge with rowDataPept(x). The column in newdata
 should have the same name as in rowDataPept(x).}
 }
 \value{
-A \code{PeptideExperiment} or \code{ProteomicsExperiment} with new
-assay entries. If x is a \code{ProteinExperiment} then a
-\code{PeptideExperiment} is returned.
+A \code{SilacPeptideExperiment} or \code{SilacProteomicsExperiment}
+with new assay entries. If x is a \code{SilacProteinExperiment} then a
+\code{SilacPeptideExperiment} is returned.
 }
 \description{
 To estimate how much of the "old" isotope is being used in
@@ -55,13 +55,13 @@ To add this information  a \code{data.frame} with the following information
 is required:
 \itemize{
   \item A column with ids that can be mapped to the peptide rowData (not
-  necessary for \code{ProteinExperiment} objects).
+  necessary for \code{SilacProteinExperiment} objects).
   \item A column indicating which isotope configuration the peptide has: two
   heavy isotopes, mix of light and heavy isotope, etc.
   \item A set of columns with peptide expression quantification. The number
   of columns should be the same, and in the same order, as the number of
-  samples in the \code{ProteinExperiment}, \code{PeptideExperiment} or
-  \code{ProteomicsExperiment}.
+  samples in the \code{SilacProteinExperiment}, \code{SilacPeptideExperiment}
+  or \code{SilacProteomicsExperiment}.
 }
 Non-detected measurements should be \code{NA}.
 }

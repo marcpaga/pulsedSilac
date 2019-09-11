@@ -1,17 +1,17 @@
 #' @keywords internal
-setMethod('show', 'ProteinExperiment', function(object){
+setMethod('show', 'SilacProteinExperiment', function(object){
   callNextMethod()
 })
 
 #' @keywords internal
-setMethod('show', 'PeptideExperiment', function(object){
+setMethod('show', 'SilacPeptideExperiment', function(object){
   callNextMethod()
 })
 
 #' @importMethodsFrom SummarizedExperiment show
 #' @keywords internal
 setMethod('show',
-          'ProteomicsExperiment',
+          'SilacProteomicsExperiment',
           function(object){
 
   ## this is the unexported function from the S4Vectors:::selectSome
@@ -71,7 +71,7 @@ setMethod('show',
 
   ## protein part
   cat("protein:", "\n")
-  cat("  |-- dim:", dim(object@ProteinExperiment), "\n")
+  cat("  |-- dim:", dim(object@SilacProteinExperiment), "\n")
 
   ## assaysProt
   nms <- assayNamesProt(object)
@@ -95,7 +95,7 @@ setMethod('show',
 
   ## peptide part
   cat("peptide:", "\n")
-  cat("  |-- dim:", dim(object@PeptideExperiment), "\n")
+  cat("  |-- dim:", dim(object@SilacPeptideExperiment), "\n")
 
   nms <- assayNamesPept(object)
   if (is.null(nms)) {

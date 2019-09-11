@@ -1,50 +1,50 @@
-#' @rdname ProteomicsExperiment-accessors
+#' @rdname SilacProteomicsExperiment-accessors
 #' @name rownamesProt
-#' @aliases rownamesProt,ProteomicsExperiment-method
+#' @aliases rownamesProt,SilacProteomicsExperiment-method
 #' @export
-setMethod('rownamesProt', 'ProteomicsExperiment', function(x) {
+setMethod('rownamesProt', 'SilacProteomicsExperiment', function(x) {
 
   return(rownames(rowDataProt(x)))
 
 })
 
-#' @rdname ProteomicsExperiment-accessors
+#' @rdname SilacProteomicsExperiment-accessors
 #' @name rownamesProt<-
-#' @aliases rownamesProt<-,ProteomicsExperiment-method
+#' @aliases rownamesProt<-,SilacProteomicsExperiment-method
 #' @export
-setMethod('rownamesProt<-', 'ProteomicsExperiment', function(x, value) {
+setMethod('rownamesProt<-', 'SilacProteomicsExperiment', function(x, value) {
 
   if (length(value) != length(unique(value))) {
     stop('Rownames must be unique')
   }
 
-  rownames(x@ProteinExperiment) <- value
+  rownames(x@SilacProteinExperiment) <- value
   validObject(x)
   return(x)
 
 })
 
-#' @rdname ProteomicsExperiment-accessors
+#' @rdname SilacProteomicsExperiment-accessors
 #' @name rownamesPept
-#' @aliases rownamesPept,ProteomicsExperiment-method
+#' @aliases rownamesPept,SilacProteomicsExperiment-method
 #' @export
-setMethod('rownamesPept', 'ProteomicsExperiment', function(x) {
+setMethod('rownamesPept', 'SilacProteomicsExperiment', function(x) {
 
   return(rownames(rowDataPept(x)))
 
 })
 
-#' @rdname ProteomicsExperiment-accessors
+#' @rdname SilacProteomicsExperiment-accessors
 #' @name rownamesPept<-
-#' @aliases rownamesPept<-,ProteomicsExperiment-method
+#' @aliases rownamesPept<-,SilacProteomicsExperiment-method
 #' @export
-setMethod('rownamesPept<-', 'ProteomicsExperiment', function(x, value) {
+setMethod('rownamesPept<-', 'SilacProteomicsExperiment', function(x, value) {
 
   if (length(value) != length(unique(value))) {
     stop('Rownames must be unique')
   }
 
-  rownames(x@PeptideExperiment) <- value
+  rownames(x@SilacPeptideExperiment) <- value
   validObject(x)
   return(x)
 

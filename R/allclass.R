@@ -1,21 +1,21 @@
 ###### PROTEIN EXPERIMENT ======================================================
 
-#' @rdname ProteinExperiment-class
-#' @name ProteinExperiment-class
-#' @title  ProteinExperiment class
+#' @rdname SilacProteinExperiment-class
+#' @name SilacProteinExperiment-class
+#' @title  SilacProteinExperiment class
 #'
 #' @description S4 class that extends the \code{\link{SummarizedExperiment}}
 #' class. This class is designed for proteomics data, more especifically
 #' protein level data. The \code{metadata} slot comes already initialized with
 #' the metaoptions (see details).
 #'
-#' @details The \code{ProteinExperiment} class has been designed to store
+#' @details The \code{SilacProteinExperiment} class has been designed to store
 #' protein level data and to be used in the functions provided in this package
 #' for pulsed SILAC data analysis; in combination with the other two classes
-#' from the package: the \code{\link{PeptideExperiment}} and
-#' \code{\link{ProteomicsExperiment}} classes.
+#' from the package: the \code{\link{SilacPeptideExperiment}} and
+#' \code{\link{SilacProteomicsExperiment}} classes.
 #'
-#' ProteinExperiment metaoptions are stored in the \code{metadata} slot
+#' SilacProteinExperiment metaoptions are stored in the \code{metadata} slot
 #' This contains a \code{list} with some parameters that are automatically
 #' initialized by the constructor. Some parameters are mandatory for certain
 #' functions or operations. The user can add or remove items at their
@@ -29,22 +29,22 @@
 #'}
 #'
 #' @section Constructor:
-#' See \link{ProteinExperiment-constructor} for details.
+#' See \link{SilacProteinExperiment-constructor} for details.
 #'
 #' @section Accessors:
-#' See \link{ProteinPeptideExperiment-accessors} for details.
+#' See \link{SilacProteinPeptideExperiment-accessors} for details.
 #'
-#' @seealso \code{\link{ProteinExperiment-constructor}},
-#'          \code{\link{ProteinPeptideExperiment-accessors}},
+#' @seealso \code{\link{SilacProteinExperiment-constructor}},
+#'          \code{\link{SilacProteinPeptideExperiment-accessors}},
 #'          \code{\link{SummarizedExperiment}}
 #' @importClassesFrom SummarizedExperiment SummarizedExperiment
 #' @import SummarizedExperiment
 #' @export
-.ProteinExperiment <- setClass(Class = 'ProteinExperiment',
+.SilacProteinExperiment <- setClass(Class = 'SilacProteinExperiment',
                                contains = 'SummarizedExperiment'
 )
 
-.valid.ProteinExperiment.metaoptions <- function(x) {
+.valid.SilacProteinExperiment.metaoptions <- function(x) {
 
   metaoptions_names <- c('conditionCol',
                          'timeCol')
@@ -65,7 +65,7 @@
   return(NULL)
 }
 
-.valid.ProteinExperiment.rowData <- function(x) {
+.valid.SilacProteinExperiment.rowData <- function(x) {
 
   if (is.null(x@elementMetadata)) {
     return(NULL)
@@ -84,7 +84,7 @@
 
 }
 
-.valid.ProteinExperiment.colData <- function(x) {
+.valid.SilacProteinExperiment.colData <- function(x) {
 
   if (any(duplicated(colData(x)))) {
     return('colData cannot have duplicated entries')
@@ -96,34 +96,34 @@
 
 
 ## Wrapper for all the validity check functions
-.valid.ProteinExperiment <- function(x) {
+.valid.SilacProteinExperiment <- function(x) {
 
-  c(.valid.ProteinExperiment.metaoptions(x),
-    .valid.ProteinExperiment.rowData(x),
-    .valid.ProteinExperiment.colData(x))
+  c(.valid.SilacProteinExperiment.metaoptions(x),
+    .valid.SilacProteinExperiment.rowData(x),
+    .valid.SilacProteinExperiment.colData(x))
 
 }
 
 #' @importFrom S4Vectors setValidity2
 #' @keywords internal
-setValidity2('ProteinExperiment', .valid.ProteinExperiment)
+setValidity2('SilacProteinExperiment', .valid.SilacProteinExperiment)
 
 ###### PEPTIDE EXPERIMENT ======================================================
 
-#' @rdname PeptideExperiment-class
-#' @name PeptideExperiment-class
-#' @title  PeptideExperiment class
+#' @rdname SilacPeptideExperiment-class
+#' @name SilacPeptideExperiment-class
+#' @title  SilacPeptideExperiment class
 #'
 #' @description S4 class that extends the \code{\link{SummarizedExperiment}}
 #' class. This class is designed for proteomics data, more especifically
 #' peptide level data. The \code{metadata} slot comes already initialized with
 #' the metaoptions (see details).
 #'
-#' @details The \code{PeptideExperiment} class has been designed to store
+#' @details The \code{SilacPeptideExperiment} class has been designed to store
 #' peptide level data and to be used in the functions provided in this package
 #' for pulsed SILAC data analysis; in combination with the other two classes
-#' from the package: the \code{\link{ProteinExperiment}} and
-#' \code{\link{ProteomicsExperiment}} classes.
+#' from the package: the \code{\link{SilacProteinExperiment}} and
+#' \code{\link{SilacProteomicsExperiment}} classes.
 #'
 #' ProteinExperiment metaoptions are stored in the \code{metadata} slot
 #' This contains a \code{list} with some parameters that are automatically
@@ -141,22 +141,22 @@ setValidity2('ProteinExperiment', .valid.ProteinExperiment)
 #'}
 #'
 #' @section Constructor:
-#' See \link{PeptideExperiment-constructor} for details.
+#' See \link{SilacPeptideExperiment-constructor} for details.
 #'
 #' @section Accessors:
-#' See \link{ProteinPeptideExperiment-accessors} for details.
+#' See \link{SilacProteinPeptideExperiment-accessors} for details.
 #'
-#' @seealso \code{\link{PeptideExperiment-constructor}},
-#'          \code{\link{ProteinPeptideExperiment-accessors}},
+#' @seealso \code{\link{SilacPeptideExperiment-constructor}},
+#'          \code{\link{SilacProteinPeptideExperiment-accessors}},
 #'          \code{\link{SummarizedExperiment}}
 #' @importClassesFrom SummarizedExperiment SummarizedExperiment
 #' @export
-.PeptideExperiment <- setClass(Class = 'PeptideExperiment',
-                               contains = 'ProteinExperiment'
+.SilacPeptideExperiment <- setClass(Class = 'SilacPeptideExperiment',
+                               contains = 'SilacProteinExperiment'
 )
 
 
-.valid.PeptideExperiment.metaoptions<- function(x) {
+.valid.SilacPeptideExperiment.metaoptions<- function(x) {
 
   metaoptions_names <- c('conditionCol',
                          'timeCol',
@@ -178,7 +178,7 @@ setValidity2('ProteinExperiment', .valid.ProteinExperiment)
   return(NULL)
 }
 
-.valid.PeptideExperiment.rowData <- function(x) {
+.valid.SilacPeptideExperiment.rowData <- function(x) {
 
   if (is.null(x@elementMetadata)) {
     return(NULL)
@@ -197,7 +197,7 @@ setValidity2('ProteinExperiment', .valid.ProteinExperiment)
 
 }
 
-.valid.PeptideExperiment.colData <- function(x) {
+.valid.SilacPeptideExperiment.colData <- function(x) {
 
   if (any(duplicated(colData(x)))) {
     return('colData cannot have duplicated entries')
@@ -208,31 +208,31 @@ setValidity2('ProteinExperiment', .valid.ProteinExperiment)
 }
 
 ## Wrapper for all the validity check functions
-.valid.PeptideExperiment <- function(x) {
+.valid.SilacPeptideExperiment <- function(x) {
 
-  c(.valid.PeptideExperiment.metaoptions(x),
-    .valid.PeptideExperiment.rowData(x),
-    .valid.PeptideExperiment.colData(x))
+  c(.valid.SilacPeptideExperiment.metaoptions(x),
+    .valid.SilacPeptideExperiment.rowData(x),
+    .valid.SilacPeptideExperiment.colData(x))
 
 }
 
 #' @importFrom S4Vectors setValidity2
 #' @keywords internal
-setValidity2('PeptideExperiment', .valid.PeptideExperiment)
+setValidity2('SilacPeptideExperiment', .valid.SilacPeptideExperiment)
 
 ###### PROTEOMICS EXPERIMENT ===================================================
 
-#' @rdname ProteomicsExperiment-class
-#' @name ProteomicsExperiment-class
-#' @title  ProteomicsExperiment class
+#' @rdname SilacProteomicsExperiment-class
+#' @name SilacProteomicsExperiment-class
+#' @title  SilacProteomicsExperiment class
 #'
-#' @description S4 class that contains a \code{ProteinExperiment} object and
-#' a \code{PeptideExperiment} object. The two objects are linked by a
+#' @description S4 class that contains a \code{SilacProteinExperiment} object
+#' and a \code{SilacPeptideExperiment} object. The two objects are linked by a
 #' \code{data.frame} (linkerDf). This class can be used to manage both protein
 #' and peptide data at the same time.
 #'
-#' @slot ProteinExperiment Contains \code{ProteinExperiment} object.
-#' @slot PeptideExperiment Contains \code{PeptideExperiment} object.
+#' @slot SilacProteinExperiment Contains a \code{SilacProteinExperiment} object.
+#' @slot SilacPeptideExperiment Contains a \code{SilacPeptideExperiment} object.
 #' @slot colData Contains a \code{data.frame} with sample information like
 #' conditions, replicates, etc.
 #' @slot linkerDf Contains a \code{data.frame} that has been created with
@@ -241,13 +241,14 @@ setValidity2('PeptideExperiment', .valid.PeptideExperiment)
 #' @slot metadata Contains a \code{list} to store any kind of experiment-wide
 #' data and the metaoptions.
 
-#' @details The \code{ProteomicsExperiment} object is just a ProteinExperiment
-#' object and a PeptideExperiment object together.
+#' @details The \code{SilacProteomicsExperiment} object is just a
+#' \code{SilacProteinExperiment} object and a \code{SilacPeptideExperiment}
+#' object together.
 #'
-#' The rows of the \code{ProteinExperiment} object represents proteins. The rows
-#' of the \code{PeptideExperiment} object represents peptides.
+#' The rows of the \code{SilacProteinExperiment} object represent proteins.
+#' The rows of the \code{SilacPeptideExperiment} object represent peptides.
 #'
-#' The columns of the \code{ProteomicsExperiment} object represent samples.
+#' The columns of the \code{SilacProteomicsExperiment} object represent samples.
 #' Samples are shared at both protein and peptide levels.
 #'
 #' Experiment-wide information can be stored in the \code{metadata} slot, which
@@ -256,7 +257,7 @@ setValidity2('PeptideExperiment', .valid.PeptideExperiment)
 #' possible examples could be: data of the experiment, author, machine used,
 #' etc.
 #'
-#' ProteomicsExperiment options are stored in the \code{metadata} slot.
+#' SilacProteomicsExperiment options are stored in the \code{metadata} slot.
 #' This contains a \code{list} with some parameters that are automatically
 #' initialized by the constructor. Some parameters are mandatory for certain
 #' functions or operations. The user can add or remove items at their
@@ -279,21 +280,21 @@ setValidity2('PeptideExperiment', .valid.PeptideExperiment)
 #'}
 #'
 #' @section Constructor:
-#' See \link{ProteomicsExperiment-constructor} for details.
+#' See \link{SilacProteomicsExperiment-constructor} for details.
 #'
 #' @section Accessors:
-#' See \link{ProteomicsExperiment-accessors} for details.
+#' See \link{SilacProteomicsExperiment-accessors} for details.
 #'
-#' @seealso \code{\link{ProteomicsExperiment-constructor}},
-#'          \code{\link{ProteomicsExperiment-accessors}},
-#'          \code{\link{ProteinExperiment}},
-#'          \code{\link{PeptideExperiment}}
+#' @seealso \code{\link{SilacProteomicsExperiment-constructor}},
+#'          \code{\link{SilacProteomicsExperiment-accessors}},
+#'          \code{\link{SilacProteinExperiment}},
+#'          \code{\link{SilacPeptideExperiment}}
 
 #' @export
-.ProteomicsExperiment <- setClass('ProteomicsExperiment',
+.SilacProteomicsExperiment <- setClass('SilacProteomicsExperiment',
 
-  slots = representation(ProteinExperiment = 'ProteinExperiment',
-                         PeptideExperiment = 'PeptideExperiment',
+  slots = representation(SilacProteinExperiment = 'SilacProteinExperiment',
+                         SilacPeptideExperiment = 'SilacPeptideExperiment',
                          colData = 'DataFrame',
                          linkerDf = 'data.frame',
                          metadata = 'list')
@@ -301,10 +302,10 @@ setValidity2('PeptideExperiment', .valid.PeptideExperiment)
 )
 
 
-.valid.ProteomicsExperiment.ncol <- function(x) {
+.valid.SilacProteomicsExperiment.ncol <- function(x) {
 
-  ncol_prot <- ncol(x@ProteinExperiment)
-  ncol_pept <- ncol(x@PeptideExperiment)
+  ncol_prot <- ncol(x@SilacProteinExperiment)
+  ncol_pept <- ncol(x@SilacPeptideExperiment)
   if (ncol_prot != ncol_pept) {
     txt <- sprintf(
       paste('\n Number of columns of ProteinExperiment (%d) must be equal to',
@@ -318,7 +319,7 @@ setValidity2('PeptideExperiment', .valid.PeptideExperiment)
 
 }
 
-.valid.ProteomicsExperiment.metaoptions <- function(x) {
+.valid.SilacProteomicsExperiment.metaoptions <- function(x) {
 
   metaoptions_names <- c('conditionCol',
                          'timeCol',
@@ -370,7 +371,7 @@ setValidity2('PeptideExperiment', .valid.PeptideExperiment)
 
 }
 
-.valid.ProteomicsExperiment.linkerDf <- function(x){
+.valid.SilacProteomicsExperiment.linkerDf <- function(x){
 
   linkM <- x@linkerDf
 
@@ -402,7 +403,7 @@ setValidity2('PeptideExperiment', .valid.PeptideExperiment)
 
 }
 
-.valid.ProteomicsExperiment.colData <- function(x) {
+.valid.SilacProteomicsExperiment.colData <- function(x) {
 
   if (any(duplicated(colData(x)))) {
     return('colData cannot have duplicated entries')
@@ -413,16 +414,16 @@ setValidity2('PeptideExperiment', .valid.PeptideExperiment)
 }
 
 ## Wrapper for all the validity check functions
-.valid.ProteomicsExperiment <- function(x) {
+.valid.SilacProteomicsExperiment <- function(x) {
 
-  c(.valid.ProteomicsExperiment.ncol(x),
-    .valid.ProteomicsExperiment.metaoptions(x),
-    .valid.ProteomicsExperiment.linkerDf(x),
-    .valid.ProteomicsExperiment.colData(x))
+  c(.valid.SilacProteomicsExperiment.ncol(x),
+    .valid.SilacProteomicsExperiment.metaoptions(x),
+    .valid.SilacProteomicsExperiment.linkerDf(x),
+    .valid.SilacProteomicsExperiment.colData(x))
 
 }
 
 #' @importFrom S4Vectors setValidity2
 #' @keywords internal
-setValidity2('ProteomicsExperiment', .valid.ProteomicsExperiment)
+setValidity2('SilacProteomicsExperiment', .valid.SilacProteomicsExperiment)
 

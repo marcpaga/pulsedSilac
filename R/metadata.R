@@ -1,18 +1,18 @@
-#' @rdname ProteomicsExperiment-accessors
-#' @aliases metadata,ProteomicsExperiment-method
+#' @rdname SilacProteomicsExperiment-accessors
+#' @aliases metadata,SilacProteomicsExperiment-method
 #' @importMethodsFrom S4Vectors metadata
 #' @export
-setMethod('metadata', 'ProteomicsExperiment', function(x, ...){
+setMethod('metadata', 'SilacProteomicsExperiment', function(x, ...){
 
   return(x@metadata)
 
 })
 
-#' @rdname ProteomicsExperiment-accessors
-#' @aliases metadata<-,ProteomicsExperiment-method
+#' @rdname SilacProteomicsExperiment-accessors
+#' @aliases metadata<-,SilacProteomicsExperiment-method
 #' @importMethodsFrom S4Vectors metadata
 #' @export
-setMethod('metadata<-', 'ProteomicsExperiment', function(x, ..., value){
+setMethod('metadata<-', 'SilacProteomicsExperiment', function(x, ..., value){
 
   x@metadata <- value
   validObject(x)

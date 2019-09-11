@@ -3,27 +3,27 @@
 \docType{methods}
 \name{merge}
 \alias{merge}
-\alias{merge,ProteinExperiment,ANY-method}
-\alias{merge,PeptideExperiment,ANY-method}
-\alias{merge,ProteomicsExperiment,ANY-method}
+\alias{merge,SilacProteinExperiment,ANY-method}
+\alias{merge,SilacPeptideExperiment,ANY-method}
+\alias{merge,SilacProteomicsExperiment,ANY-method}
 \title{Merge}
 \usage{
-\S4method{merge}{ProteinExperiment,ANY}(x, y, by, by.x = by, by.y = by,
-  all = TRUE, ...)
+\S4method{merge}{SilacProteinExperiment,ANY}(x, y, by, by.x = by,
+  by.y = by, all = TRUE, ...)
 
-\S4method{merge}{PeptideExperiment,ANY}(x, y, by, by.x = by, by.y = by,
-  all = TRUE, ...)
+\S4method{merge}{SilacPeptideExperiment,ANY}(x, y, by, by.x = by,
+  by.y = by, all = TRUE, ...)
 
-\S4method{merge}{ProteomicsExperiment,ANY}(x, y, by.prot,
+\S4method{merge}{SilacProteomicsExperiment,ANY}(x, y, by.prot,
   by.prot.x = by.prot, by.prot.y = by.prot, by.pept,
   by.pept.x = by.pept, by.pept.y = by.pept, all = TRUE, ...)
 }
 \arguments{
-\item{x}{A \code{ProteinExperiment}, \code{PeptideExperiment} or a
-\code{ProteomicsExperiment} object.}
+\item{x}{A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or a
+\code{SilacProteomicsExperiment} object.}
 
-\item{y}{A \code{ProteinExperiment}, \code{PeptideExperiment} or a
-\code{ProteomicsExperiment} object.}
+\item{y}{A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or a
+\code{SilacProteomicsExperiment} object.}
 
 \item{by, by.x, by.y}{A \code{character} indicating the columns used for the
 merging.}
@@ -33,21 +33,22 @@ be returned or only the intersect.}
 
 \item{...}{Further parameters passed into \code{base::merge}.}
 
-\item{by.prot, by.prot.x, by.prot.y}{For \code{ProteomicsExperiment} objects
-a \code{character} indicating the columns used for the merging of the
+\item{by.prot, by.prot.x, by.prot.y}{For \code{SilacProteomicsExperiment}
+objects a \code{character} indicating the columns used for the merging of the
 protein level.}
 
-\item{by.pept, by.pept.x, by.pept.y}{For \code{ProteomicsExperiment} objects
-a \code{character} indicating the columns used for the merging of the
+\item{by.pept, by.pept.x, by.pept.y}{For \code{SilacProteomicsExperiment}
+objects a \code{character} indicating the columns used for the merging of the
 protein level.}
 }
 \value{
-A \code{ProteinExperiment}, \code{PeptideExperiment} or a
-\code{ProteomicsExperiment} object.
+A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or a
+\code{SilacProteomicsExperiment} object.
 }
 \description{
-Merges two objects of the same class: \code{ProteinExperiment},
-\code{PeptideExperiment} or \code{ProteomicsExperiment}.
+Merges two objects of the same class:
+\code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or
+\code{SilacProteomicsExperiment}.
 }
 \details{
 This function is designed to be able to merge different samples
@@ -57,8 +58,8 @@ used. It uses the merge base function to merge the rowData data frames and
 merges the assays based on such merge. The colData \code{data.frame} are
 joined.
 
-For a \code{ProteomicsExperiment} object it gets a bit more complicated since
-it is possible that some peptides that were assigned to one protein in
+For a \code{SilacProteomicsExperiment} object it gets a bit more complicated
+since it is possible that some peptides that were assigned to one protein in
 one experiment are assigned to another one in another experiment. Therefore
 the linkerDf \code{data.frame} is recalculated.
 }

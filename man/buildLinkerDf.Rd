@@ -3,7 +3,7 @@
 \name{buildLinkerDf}
 \alias{buildLinkerDf}
 \title{Constructs a linkerDf that can be used as input when constructing a
-ProteomicsExperiment}
+SilacProteomicsExperiment}
 \usage{
 buildLinkerDf(protIDs, pepIDs, protToPep, pepToProt)
 }
@@ -40,7 +40,7 @@ vice versa.
 }
 \details{
 This data frame is used in several functions and operations involving the
-\code{ProteomicsExperiment} class. Especially in object merging and
+\code{SilacProteomicsExperiment} class. Especially in object merging and
 subsetting. The arguments protIDs and pepIDs are mandatory, but only one of
 the protToPep or pepToProt arguments is necessary to build the linkerDf.
 }

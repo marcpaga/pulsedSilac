@@ -1,14 +1,14 @@
 #' ProteomicsExperiment with pulsed silac data from C. elegans strains
 #'
-#' A pre-built \code{ProteomicsExperiment} object with data from a pulsed silac
-#' experiment done in \emph{C. elegans} by Visscher et al. 2016. It only
+#' A pre-built \code{SilacProteomicsExperiment} object with data from a pulsed
+#' silac experiment done in \emph{C. elegans} by Visscher et al. 2016. It only
 #' contains the data from the first 250 priteins and two old worms strains
 #' (OW40 and OW450).
 #'
 #' It is used as example in the pulsed silac vignette to illustrate the main
 #' data analysis functions and in the examples of the documentation.
 #'
-#' @format A \code{ProteomicsExperiment} object with 250 proteins and 3574
+#' @format A \code{SilacProteomicsExperiment} object with 250 proteins and 3574
 #' peptides in a total of 14 samples.
 #' \describe{
 #'   \item{colData}{A \code{DataFrame} with the design of the experiment:
@@ -32,18 +32,18 @@
 #' @references \url{https://www.ncbi.nlm.nih.gov/pubmed/28679685}
 'wormsPE'
 
-#' ProteomicsExperiment with pulsed silac data from MEFs
+#' SilacProteomicsExperiment with pulsed silac data from MEFs
 #'
-#' A pre-built \code{ProteinExperiment} object with data from a pulsed silac
-#' experiment done in mouse embryonic fibroblasts (MEFs). Two cell cultures are
-#' compared: cultured with or without serum.
+#' A pre-built \code{SilacProteinExperiment} object with data from a pulsed
+#' silac experiment done in mouse embryonic fibroblasts (MEFs). Two cell
+#' cultures are compared: cultured with or without serum.
 #'
 #' This dataset is used as an example, in the pulsed silac vignette, to show
 #' the effect of comparing protein turnover between cell lines growing at
 #' different rates.
 #'
-#' @format A \code{ProteinExperiment} object with 5223 proteins in a total of
-#' 10 samples.
+#' @format A \code{SilacProteinExperiment} object with 5223 proteins in a total
+#' of 10 samples.
 #' \describe{
 #'   \item{colData}{A \code{DataFrame} with the design of the experiment:
 #'   samples, timepoints, replicates...}

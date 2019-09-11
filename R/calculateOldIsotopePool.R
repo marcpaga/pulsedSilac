@@ -13,7 +13,8 @@
 #' Both peptide types, mix of old/new isotope and two new isotopes, have to be
 #' found in a time point to calculate the fraction of old isotope.
 #'
-#' @param x A \code{PeptideExperiment} or \code{ProteomicsExperiment} object.
+#' @param x A \code{SilacPeptideExperiment} or \code{SilacProteomicsExperiment}
+#' object.
 #' @param newIsotopeAssayName \code{character} indicating the assay that
 #' contains quantification data for miss-cleaved peptides with two new isotopes
 #' incorporated.
@@ -22,8 +23,8 @@
 #' and one new isotope incorporated.
 #' @param ... Unused.
 #'
-#' @return A \code{PeptideExperiment} or \code{ProteomicsExperiment} with a
-#' peptide assay entry named "oldIsotopePool".
+#' @return A \code{SilacPeptideExperiment} or \code{SilacProteomicsExperiment}
+#' with a peptide assay entry named "oldIsotopePool".
 #'
 #' @examples
 #' data('wormsPE')
@@ -48,7 +49,7 @@ setGeneric('calculateOldIsotopePool', function(x, ...){
 #' @rdname calculateOldIsotopePool
 #' @export
 setMethod('calculateOldIsotopePool',
-          'PeptideExperiment',
+          'SilacPeptideExperiment',
           function(x,
                    newIsotopeAssayName,
                    mixIsotopeAssayName) {
@@ -72,16 +73,16 @@ setMethod('calculateOldIsotopePool',
 #' @rdname calculateOldIsotopePool
 #' @export
 setMethod('calculateOldIsotopePool',
-          'ProteomicsExperiment',
+          'SilacProteomicsExperiment',
           function(x,
                    newIsotopeAssayName,
                    mixIsotopeAssayName) {
 
-  new.pe <- calculateOldIsotopePool(x = x@PeptideExperiment,
+  new.pe <- calculateOldIsotopePool(x = x@SilacPeptideExperiment,
                                     newIsotopeAssayName = newIsotopeAssayName,
                                     mixIsotopeAssayName = mixIsotopeAssayName)
 
-  x@PeptideExperiment <- new.pe
+  x@SilacPeptideExperiment <- new.pe
 
   return(x)
 

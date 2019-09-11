@@ -6,16 +6,16 @@
 #' @description Calculates the ratio between the new isotope and the old
 #' isotope (new/old).
 #'
-#' @param x A \code{ProteinExperiment}, \code{PeptideExperiment} or a
-#' \code{ProteomicsExperiment} object.
+#' @param x A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or a
+#' \code{SilacProteomicsExperiment} object.
 #' @param newIsotopeAssay A \code{character} indicating the assay name that
 #' has the new isotope intensity data.
 #' @param oldIsotopeAssay A \code{character} indicating the assay name that
 #' has the old isotope intensity data.
 #' @param ... Unused.
 #'
-#' @return A \code{ProteinExperiment}, \code{PeptideExperiment} or a
-#' \code{ProteomicsExperiment} object with an added assay named 'ratio'.
+#' @return A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or a
+#' \code{SilacProteomicsExperiment} object with an added assay named 'ratio'.
 #'
 #' @examples
 #' data('wormsPE')
@@ -31,7 +31,7 @@ setGeneric('calculateIsotopeRatio', function(x, newIsotopeAssay,
 
 #' @rdname calculateIsotopeRatio
 #' @export
-setMethod('calculateIsotopeRatio', 'ProteinExperiment',
+setMethod('calculateIsotopeRatio', 'SilacProteinExperiment',
           function(x, newIsotopeAssay, oldIsotopeAssay) {
 
   ratio_assay <- assays(x)[[newIsotopeAssay]]/assays(x)[[oldIsotopeAssay]]
@@ -42,7 +42,7 @@ setMethod('calculateIsotopeRatio', 'ProteinExperiment',
 
 #' @rdname calculateIsotopeRatio
 #' @export
-setMethod('calculateIsotopeRatio', 'PeptideExperiment',
+setMethod('calculateIsotopeRatio', 'SilacPeptideExperiment',
           function(x, newIsotopeAssay, oldIsotopeAssay) {
 
   ratio_assay <- assays(x)[[newIsotopeAssay]]/assays(x)[[oldIsotopeAssay]]
@@ -53,7 +53,7 @@ setMethod('calculateIsotopeRatio', 'PeptideExperiment',
 
 #' @rdname calculateIsotopeRatio
 #' @export
-setMethod('calculateIsotopeRatio', 'ProteomicsExperiment',
+setMethod('calculateIsotopeRatio', 'SilacProteomicsExperiment',
           function(x, newIsotopeAssay, oldIsotopeAssay) {
 
   if (length(newIsotopeAssay) == 1) {
@@ -64,11 +64,11 @@ setMethod('calculateIsotopeRatio', 'ProteomicsExperiment',
     oldIsotopeAssay <- rep(oldIsotopeAssay, 2)
   }
 
-  x@ProteinExperiment <- calculateIsotopeRatio(x@ProteinExperiment,
+  x@SilacProteinExperiment <- calculateIsotopeRatio(x@SilacProteinExperiment,
                                         newIsotopeAssay = newIsotopeAssay[1],
                                         oldIsotopeAssay = oldIsotopeAssay[1])
 
-  x@PeptideExperiment <- calculateIsotopeRatio(x@PeptideExperiment,
+  x@SilacPeptideExperiment <- calculateIsotopeRatio(x@SilacPeptideExperiment,
                                         newIsotopeAssay = newIsotopeAssay[2],
                                         oldIsotopeAssay = oldIsotopeAssay[2])
 

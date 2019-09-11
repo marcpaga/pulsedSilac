@@ -1,7 +1,8 @@
-#' @title ProteinExperiment constructor
-#' @name ProteinExperiment-constructor
+#' @title SilacProteinExperiment constructor
+#' @name SilacProteinExperiment-constructor
 #'
-#' @description Constructor function for the ProteinExperiment class object.
+#' @description Constructor function for the SilacProteinExperiment class
+#' object.
 #'
 #' @param assays A named \code{list} of matrices (assays) with protein level
 #' data.
@@ -16,13 +17,13 @@
 #' @param metadata A \code{list} to store any kind of experiment-wide
 #' data; like authors, dates, machines used...
 #'
-#' @return An object of class \code{ProteinExperiment}.
+#' @return An object of class \code{SilacProteinExperiment}.
 #'
 #' @section Class description:
-#' See \link{ProteinExperiment-class} for details.
+#' See \link{SilacProteinExperiment-class} for details.
 #'
 #' @section Accessors:
-#' See \link{ProteinPeptideExperiment-accessors} for details.
+#' See \link{SilacProteinPeptideExperiment-accessors} for details.
 #'
 #' @examples
 #'
@@ -37,15 +38,15 @@
 #' rowData_protein <- data.frame(prot_id = LETTERS[1:3])
 #'
 #' ## construct the ProteinExperiment
-#' protExp <- ProteinExperiment(assays = assays_protein,
-#'                              rowData = rowData_protein,
-#'                              colData = colData,
-#'                              conditionCol = 'condition',
-#'                              timeCol = 'time')
+#' protExp <- SilacProteinExperiment(assays = assays_protein,
+#'                                   rowData = rowData_protein,
+#'                                   colData = colData,
+#'                                   conditionCol = 'condition',
+#'                                   timeCol = 'time')
 #'
 #' @importFrom SummarizedExperiment SummarizedExperiment
 #' @export
-ProteinExperiment <- function(assays,
+SilacProteinExperiment <- function(assays,
                               rowData = NULL,
                               colData = NULL,
                               conditionCol = NA,
@@ -65,17 +66,17 @@ ProteinExperiment <- function(assays,
   metadata(se)[['conditionCol']] <- conditionCol
   metadata(se)[['timeCol']] <- timeCol
 
-  return(.ProteinExperiment(se))
+  return(.SilacProteinExperiment(se))
 
 }
 
 # ProteinExperiment accessor for a ProteomicsExperiment object
 
-#' @rdname ProteomicsExperiment-accessors
+#' @rdname SilacProteomicsExperiment-accessors
 #'
 #' @export
 ProtExp <- function(x) {
 
-  return(x@ProteinExperiment)
+  return(x@SilacProteinExperiment)
 
 }

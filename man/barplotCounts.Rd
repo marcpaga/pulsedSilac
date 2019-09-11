@@ -3,25 +3,25 @@
 \docType{methods}
 \name{barplotCounts}
 \alias{barplotCounts}
-\alias{barplotCounts,ProteinExperiment-method}
-\alias{barplotCounts,PeptideExperiment-method}
-\alias{barplotCounts,ProteomicsExperiment-method}
+\alias{barplotCounts,SilacProteinExperiment-method}
+\alias{barplotCounts,SilacPeptideExperiment-method}
+\alias{barplotCounts,SilacProteomicsExperiment-method}
 \title{Number of detected features per sample}
 \usage{
 barplotCounts(x, ...)
 
-\S4method{barplotCounts}{ProteinExperiment}(x, assayName,
+\S4method{barplotCounts}{SilacProteinExperiment}(x, assayName,
   returnDataFrame = FALSE, conditionCol)
 
-\S4method{barplotCounts}{PeptideExperiment}(x, assayName,
+\S4method{barplotCounts}{SilacPeptideExperiment}(x, assayName,
   returnDataFrame = FALSE, conditionCol)
 
-\S4method{barplotCounts}{ProteomicsExperiment}(x, assayName,
+\S4method{barplotCounts}{SilacProteomicsExperiment}(x, assayName,
   returnDataFrame = FALSE, conditionCol)
 }
 \arguments{
-\item{x}{A \code{ProteinExperiment}, \code{PeptideExperiment} or a
-\code{ProteomicsExperiment} object.}
+\item{x}{A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or a
+\code{SilacProteomicsExperiment} object.}
 
 \item{...}{Unused.}
 

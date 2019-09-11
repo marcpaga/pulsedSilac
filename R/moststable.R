@@ -12,8 +12,8 @@
 #' heavy label incorporation for each timepoint; therefore, lower values
 #' are correlated to higher stability.
 #'
-#' @param x A \code{ProteinExperiment}, \code{PeptideExperiment} or a
-#' \code{ProteomicsExperiment} object.
+#' @param x A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or a
+#' \code{SilacProteomicsExperiment} object.
 #' @param assayName Name of the assay to use.
 #' @param n A \code{numeric} indicating how many proteins should be returned.
 #' @param mode A \code{character} indicating which level of data to use,
@@ -23,8 +23,9 @@
 #' in colData(x) that defines the different experiment conditions.
 #' @param ... Unused.
 #'
-#' @return A \code{ProteinExperiment}, \code{PeptideExperiment} or a
-#' \code{ProteomicsExperiment} object with the n most stable proteins/peptides.
+#' @return A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or a
+#' \code{SilacProteomicsExperiment} object with the n most stable
+#' proteins/peptides.
 #'
 #' @examples
 #' data('mefPE')
@@ -39,7 +40,7 @@ setGeneric('mostStable', function(x, ...){
 #' @rdname mostStable
 #' @export
 setMethod('mostStable',
-          'ProteinExperiment',
+          'SilacProteinExperiment',
           function(x,
                    assayName,
                    n,
@@ -88,7 +89,7 @@ setMethod('mostStable',
 #' @rdname mostStable
 #' @export
 setMethod('mostStable',
-          'PeptideExperiment',
+          'SilacPeptideExperiment',
           function(x,
                    assayName,
                    n,
@@ -101,7 +102,7 @@ setMethod('mostStable',
 #' @rdname mostStable
 #' @export
 setMethod('mostStable',
-          'ProteomicsExperiment',
+          'SilacProteomicsExperiment',
           function(x,
                    assayName,
                    n,
@@ -109,12 +110,12 @@ setMethod('mostStable',
                    conditionCol) {
 
   if (mode == 'protein') {
-    mostStable(x = x@ProteinExperiment,
+    mostStable(x = x@SilacProteinExperiment,
                assayName = assayName,
                n = n,
                conditionCol = conditionCol)
   } else if (mode == 'peptide') {
-    mostStable(x = x@PeptideExperiment,
+    mostStable(x = x@SilacPeptideExperiment,
                assayName = assayName,
                n = n,
                conditionCol = conditionCol)

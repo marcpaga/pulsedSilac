@@ -1,7 +1,8 @@
-#' @title PeptideExperiment constructor
-#' @name PeptideExperiment-constructor
+#' @title SilacPeptideExperiment constructor
+#' @name SilacPeptideExperiment-constructor
 #'
-#' @description Constructor function for the PeptideExperiment class object.
+#' @description Constructor function for the SilacPeptideExperiment class
+#' object.
 #'
 #' @param assays A named \code{list} of matrices (assays) with peptide level
 #' data.
@@ -18,13 +19,13 @@
 #' @param metadata A \code{list} to store any kind of experiment-wide
 #' data; like authors, dates, machines used...
 #'
-#' @return An object of class \code{PeptideExperiment}.
+#' @return An object of class \code{SilacPeptideExperiment}.
 #'
 #' @section Class description:
-#' See \link{PeptideExperiment-class} for details.
+#' See \link{SilacPeptideExperiment-class} for details.
 #'
 #' @section Accessors:
-#' See \link{ProteinPeptideExperiment-accessors} for details.
+#' See \link{SilacProteinPeptideExperiment-accessors} for details.
 #'
 #' @examples
 #'
@@ -39,15 +40,15 @@
 #' rowData_peptide <- data.frame(pept_id = letters[1:5],
 #'                               prot_id = c('A', 'A', 'B', 'C', 'C'))
 #' ## construct the ProteinExperiment
-#' peptExp <- PeptideExperiment(assays = assays_peptide,
-#'                              rowData = rowData_peptide,
-#'                              colData = colData,
-#'                              conditionCol = 'condition',
-#'                              timeCol = 'time')
+#' peptExp <- SilacPeptideExperiment(assays = assays_peptide,
+#'                                   rowData = rowData_peptide,
+#'                                   colData = colData,
+#'                                   conditionCol = 'condition',
+#'                                   timeCol = 'time')
 #'
 #' @importFrom SummarizedExperiment SummarizedExperiment
 #' @export
-PeptideExperiment <- function(assays,
+SilacPeptideExperiment <- function(assays,
                               rowData = NULL,
                               colData = NULL,
                               conditionCol = NA,
@@ -55,7 +56,7 @@ PeptideExperiment <- function(assays,
                               proteinCol = NA,
                               metadata = NULL) {
 
-  pe <- ProteinExperiment(assays = assays,
+  pe <- SilacProteinExperiment(assays = assays,
                           colData = colData,
                           rowData = rowData,
                           metadata = metadata,
@@ -63,20 +64,20 @@ PeptideExperiment <- function(assays,
                           timeCol = timeCol)
 
   metadata(pe)[['proteinCol']] <- proteinCol
-  pe <- .PeptideExperiment(pe)
+  pe <- .SilacPeptideExperiment(pe)
 
 }
 
-# PeptideExperiment accessor for a ProteomicsExperiment object
+# SilacPeptideExperiment accessor for a SilacProteomicsExperiment object
 # the @name ProteomicsExperiment-accessors is a bit hacky, but otherwise
 # the doc of ProteomicsExperiment-accessors gets PeptExp as name...
 
-#' @rdname ProteomicsExperiment-accessors
-#' @name ProteomicsExperiment-accessors
+#' @rdname SilacProteomicsExperiment-accessors
+#' @name SilacProteomicsExperiment-accessors
 #' @aliases PeptExp
 #' @export
 PeptExp <- function(x) {
 
-  return(x@PeptideExperiment)
+  return(x@SilacPeptideExperiment)
 
 }

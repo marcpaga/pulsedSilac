@@ -8,8 +8,8 @@
 #' The ratio should be calculated as:
 #' \deqn{ratio = isotope_{A}/isotope_{B}}
 #'
-#' @param x A \code{ProteinExperiment}, \code{PeptideExperiment} or
-#' \code{ProteomicsExperiment} object.
+#' @param x A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or a
+#' \code{SilacProteomicsExperiment} object.
 #' @param ratioAssay A \code{character} with the assay name that has the ratio
 #' data.
 #' @param oldIsoAssay A \code{character} with the assay name that has the new
@@ -32,13 +32,14 @@
 #' a fraction of 0 for new isotope is given. Same principle applies for the
 #' late timepoint but with the isotopes in reverse.
 #'
-#' @return a \code{ProteinExperiment}, \code{PeptideExperiment} or
-#' \code{ProteomicsExperiment} object with additional assays named "fraction".
+#' @return a \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or
+#' \code{SilacProteomicsExperiment} object with additional assays named
+#' "fraction".
+#'
 #' @examples
 #' data('wormsPE')
 #' calculateIsotopeFraction(wormsPE)
 #'
-#' @seealso \code{\link{ProteomicsExperiment-class}}
 #' @export
 setGeneric('calculateIsotopeFraction', function(x, ...){
   standardGeneric('calculateIsotopeFraction')
@@ -46,7 +47,7 @@ setGeneric('calculateIsotopeFraction', function(x, ...){
 
 #' @rdname calculateIsotopeFraction
 #' @export
-setMethod('calculateIsotopeFraction', 'ProteinExperiment',
+setMethod('calculateIsotopeFraction', 'SilacProteinExperiment',
           function(x,
                    ratioAssay = 'ratio',
                    oldIsoAssay,
@@ -141,7 +142,7 @@ setMethod('calculateIsotopeFraction', 'ProteinExperiment',
 
 #' @rdname calculateIsotopeFraction
 #' @export
-setMethod('calculateIsotopeFraction', 'PeptideExperiment',
+setMethod('calculateIsotopeFraction', 'SilacPeptideExperiment',
           function(x,
                    ratioAssay = 'ratio',
                    oldIsoAssay,
@@ -156,7 +157,7 @@ setMethod('calculateIsotopeFraction', 'PeptideExperiment',
 
 #' @rdname calculateIsotopeFraction
 #' @export
-setMethod('calculateIsotopeFraction', 'ProteomicsExperiment',
+setMethod('calculateIsotopeFraction', 'SilacProteomicsExperiment',
           function(x,
                    ratioAssay = 'ratio',
                    oldIsoAssay,
@@ -167,23 +168,23 @@ setMethod('calculateIsotopeFraction', 'ProteomicsExperiment',
 
 
   if (any(missing(oldIsoAssay), missing(newIsoAssay))) {
-    x@ProteinExperiment <- calculateIsotopeFraction(x@ProteinExperiment,
+    x@SilacProteinExperiment <- calculateIsotopeFraction(x@SilacProteinExperiment,
                                                     ratioAssay = ratioAssay)
 
-    x@PeptideExperiment <- calculateIsotopeFraction(x@PeptideExperiment,
+    x@SilacPeptideExperiment <- calculateIsotopeFraction(x@SilacPeptideExperiment,
                                                     ratioAssay = ratioAssay)
 
     return(x)
   }
 
-  x@ProteinExperiment <- calculateIsotopeFraction(x@ProteinExperiment,
+  x@SilacProteinExperiment <- calculateIsotopeFraction(x@SilacProteinExperiment,
                                           oldIsoAssay = oldIsoAssay,
                                           newIsoAssay = newIsoAssay,
                                           earlyTimepoints = earlyTimepoints,
                                           lateTimepoints = lateTimepoints,
                                           conditionCol = conditionCol)
 
-  x@PeptideExperiment <- calculateIsotopeFraction(x@PeptideExperiment,
+  x@SilacPeptideExperiment <- calculateIsotopeFraction(x@SilacPeptideExperiment,
                                           oldIsoAssay = oldIsoAssay,
                                           newIsoAssay = newIsoAssay,
                                           earlyTimepoints = earlyTimepoints,

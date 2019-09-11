@@ -6,8 +6,8 @@
 #' @description How many proteins/peptides are detected in each sample.
 #' \code{NA} are considered missing values.
 #'
-#' @param x A \code{ProteinExperiment}, \code{PeptideExperiment} or a
-#' \code{ProteomicsExperiment} object.
+#' @param x A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or a
+#' \code{SilacProteomicsExperiment} object.
 #' @param assayName Name of the assay to use in the plot.
 #' @param returnDataFrame A \code{logical} indicating if the \code{data.frame}
 #' used for the plot should be returned instead.
@@ -31,7 +31,7 @@ setGeneric('barplotCounts', function(x, ...){
 #' @rdname barplotCounts
 #' @export
 setMethod('barplotCounts',
-          'ProteinExperiment',
+          'SilacProteinExperiment',
           function(x,
                    assayName,
                    returnDataFrame = FALSE,
@@ -108,7 +108,7 @@ setMethod('barplotCounts',
 #' @rdname barplotCounts
 #' @export
 setMethod('barplotCounts',
-          'PeptideExperiment',
+          'SilacPeptideExperiment',
           function(x,
                    assayName,
                    returnDataFrame = FALSE,
@@ -121,7 +121,7 @@ setMethod('barplotCounts',
 #' @rdname barplotCounts
 #' @export
 setMethod('barplotCounts',
-          'ProteomicsExperiment',
+          'SilacProteomicsExperiment',
           function(x,
                    assayName,
                    returnDataFrame = FALSE,
@@ -132,12 +132,12 @@ setMethod('barplotCounts',
                  "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
   ## argument checking is done in the Protein and Peptide experiment functions
 
-  protPart <- barplotCounts(x = x@ProteinExperiment,
+  protPart <- barplotCounts(x = x@SilacProteinExperiment,
                             assayName = assayName,
                             return = TRUE,
                             conditionCol = conditionCol)
 
-  peptPart <- barplotCounts(x = x@PeptideExperiment,
+  peptPart <- barplotCounts(x = x@SilacPeptideExperiment,
                             assayName = assayName,
                             return = TRUE,
                             conditionCol = conditionCol)

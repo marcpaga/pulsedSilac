@@ -44,19 +44,19 @@ This package contains a set of functions to analyze pulsed SILAC quantitative da
 
 Many Bioconductor packages use `SummarizedExperiment` objects or derivatives from it to organize omics data. This is a rectangular class of object that contains assays (matrix-like organized data) in which rows represent features (genes, proteins, metabolites, ...) and columns represent samples. If you are unfamiliar with this format, please read this introductory [vignette](https://bioconductor.org/packages/3.8/bioc/vignettes/SummarizedExperiment/inst/doc/SummarizedExperiment.html).
 
-This package uses two `SummarizedExperiment` derived classes: `ProteinExperiment` and `PeptideExperiment`. It also introduces a new class, the `ProteomicsExperiment`, which encapsulates both the previous classes.
+This package uses two `SummarizedExperiment` derived classes: `SilacProteinExperiment` and `SilacPeptideExperiment`. It also introduces a new class, the `SilacProteomicsExperiment`, which encapsulates both the previous classes.
 
-## `ProteinExperiment` and `PeptideExperiment`
+## `SilacProteinExperiment` and `SilacPeptideExperiment`
 
-The `ProteinExperiment` and `PeptideExperiment` are, as their name indicates, dedicated to store either protein or peptide related data. These two objects are almost identical to a `SummarizedExperiment` object. Their only difference is the initialization of the `metadata` slot with what will be called `metaoptions`. These `metaoptions` contain values that are indicative of where certain information, required for the analysis, is located in the object. For example, the `conditionCol` value is used to indicate which column of `colData` has the information about the different experiment conditions.
+The `SilacProteinExperiment` and `SilacPeptideExperiment` are, as their name indicates, dedicated to store either protein or peptide related data. These two objects are almost identical to a `SummarizedExperiment` object. Their only difference is the initialization of the `metadata` slot with what will be called `metaoptions`. These `metaoptions` contain values that are indicative of where certain information, required for the analysis, is located in the object. For example, the `conditionCol` value is used to indicate which column of `colData` has the information about the different experiment conditions.
 
-![Figure 2: ProteinExperiment/PeptideExperiment object structure](protein_experiment.png)
+![Figure 2: SilacProteinExperiment/SilacPeptideExperiment object structure](protein_experiment.png)
 
 ### Object construction
 
-Constructing a `ProteinExperiment` or a `PeptideExperiment` is extremely similar to constructing a `SummarizedExperiment`. The only additional arguments are the different `metaoptions` values. 
+Constructing a `SilacProteinExperiment` or a `SilacPeptideExperiment` is extremely similar to constructing a `SummarizedExperiment`. The only additional arguments are the different `metaoptions` values. 
 
-Here is an example of constructing a `ProteinExperiment`:
+Here is an example of constructing a `SilacProteinExperiment`:
 
 ```{r, message = FALSE}
 require(pulsedSilac)
@@ -71,16 +71,16 @@ colData <- data.frame(sample = c('A1', 'A2', 'A3'),
 ## rowData
 rowData_protein <- data.frame(prot_id = LETTERS[1:3])
 
-## construct the ProteinExperiment
-protExp <- ProteinExperiment(assays = assays_protein, 
-                             rowData = rowData_protein, 
-                             colData = colData, 
-                             conditionCol = 'condition', 
-                             timeCol = 'time')
+## construct the SilacProteinExperiment
+protExp <- SilacProteinExperiment(assays = assays_protein, 
+                                  rowData = rowData_protein, 
+                                  colData = colData, 
+                                  conditionCol = 'condition', 
+                                  timeCol = 'time')
 protExp
 ```
 
-Here is an example of constructing a `PeptideExperiment`:
+Here is an example of constructing a `SilacPeptideExperiment`:
 
 ```{r}
 
@@ -94,12 +94,12 @@ colData <- data.frame(sample = c('A1', 'A2', 'A3'),
 ## rowData
 rowData_peptide <- data.frame(pept_id = letters[1:5], 
                               prot_id = c('A', 'A', 'B', 'C', 'C')) 
-## construct the ProteinExperiment
-peptExp <- PeptideExperiment(assays = assays_peptide, 
-                             rowData = rowData_peptide, 
-                             colData = colData, 
-                             conditionCol = 'condition', 
-                             timeCol = 'time')
+## construct the SilacProteinExperiment
+peptExp <- SilacPeptideExperiment(assays = assays_peptide, 
+                                  rowData = rowData_peptide, 
+                                  colData = colData, 
+                                  conditionCol = 'condition', 
+                                  timeCol = 'time')
 peptExp
 ```
 
@@ -163,19 +163,19 @@ merge(peptExp[1:3, 1], peptExp[3:5, 2:3])
 ```
 
 
-## `ProteomicsExperiment`
+## `SilacProteomicsExperiment`
 
-The `ProteomicsExperiment` object contains both a `ProteinExperiment` and a `PeptideExperiment` object. Therefore it can be used to store both levels of information in a single object. The protein and peptide level are aligned/linked by the `colData` slot and by the `linkerDf` slot. The `linkerDf` slot contains a `data.frame` that indicates which peptides are assigned to each protein and *vice versa*.
+The `SilacProteomicsExperiment` object contains both a `SilacProteinExperiment` and a `SilacPeptideExperiment` object. Therefore it can be used to store both levels of information in a single object. The protein and peptide level are aligned/linked by the `colData` slot and by the `linkerDf` slot. The `linkerDf` slot contains a `data.frame` that indicates which peptides are assigned to each protein and *vice versa*.
 
-![Figure 3: ProteomicsExperiment object structure](proteomics_experiment.png)
+![Figure 3: SilacProteomicsExperiment object structure](proteomics_experiment.png)
 
 ### Object construction
 
-To construct a `ProteomicsExperiment` we need both a `ProteinExperiment` object and a `PeptideExperiment` object.
+To construct a `SilacProteomicsExperiment` we need both a `SilacProteinExperiment` object and a `SilacPeptideExperiment` object.
 
 ```{r}
-ProteomicsExp <- ProteomicsExperiment(ProteinExperiment = protExp, 
-                                      PeptideExperiment = peptExp)
+ProteomicsExp <- SilacProteomicsExperiment(SilacProteinExperiment = protExp, 
+                                           SilacPeptideExperiment = peptExp)
 ProteomicsExp
 ```
 
@@ -190,16 +190,16 @@ linkerDf <- buildLinkerDf(protIDs = LETTERS[1:3],
                           protToPep = protein_to_peptide)
 linkerDf
 
-ProteomicsExp <- ProteomicsExperiment(ProteinExperiment = protExp, 
-                                      PeptideExperiment = peptExp, 
-                                      linkerDf = linkerDf)
+ProteomicsExp <- SilacProteomicsExperiment(SilacProteinExperiment = protExp, 
+                                           SilacPeptideExperiment = peptExp, 
+                                           linkerDf = linkerDf)
 ```
 
-Linked `ProteomicsExperiment` objects can be useful to apply linked subsetting operations or to recalculate protein level data from peptide data.
+Linked `SilacProteomicsExperiment` objects can be useful to apply linked subsetting operations or to recalculate protein level data from peptide data.
 
 ### Accessor functions
 
-If the slot is general to the `ProteomicsExperiment` object then the same functions as in a `SummarizedExperiment` can be used.
+If the slot is general to the `SilacProteomicsExperiment` object then the same functions as in a `SummarizedExperiment` can be used.
 
 ```{r}
 ## colData
@@ -247,7 +247,7 @@ rowDataProt(ProteomicsExp)
 rowDataPept(ProteomicsExp)
 ```
 
-Finally, to extract the `ProteinExperiment` and `PeptideExperiment` one can use the `ProtExp` and `PeptExp` functions.
+Finally, to extract the `SilacProteinExperiment` and `SilacPeptideExperiment` one can use the `ProtExp` and `PeptExp` functions.
 
 ```{r}
 
@@ -259,7 +259,7 @@ PeptExp(ProteomicsExp)
 
 ### Subsetting and aggregation
 
-When subsetting row-wise on a `ProteomicsExperiment` there will be two main questions: 
+When subsetting row-wise on a `SilacProteomicsExperiment` there will be two main questions: 
 
 - To which level (protein or peptide) is the subset applied?
 - Is the subset from one level applied also to the other? For example, when I subset a protein, do I also want to subset also only those peptides related to that protein.
@@ -352,14 +352,14 @@ The following are related to data analysis:
 
 - `conditionCol`: which column in `colData` indicates the different experiment conditions.
 - `timeCol`: which column in `colData` indicates the different timepoints of the experiment.
-- `proteinCol`:  which column in `rowData` indicates the assigned protein to a peptide. (unique to `PeptideExperiment`)
+- `proteinCol`:  which column in `rowData` indicates the assigned protein to a peptide. (unique to `SilacPeptideExperiment`)
 
-The following are related to `ProteomicsExperiment` subsetting operations:
+The following are related to `SilacProteomicsExperiment` subsetting operations:
 
-- `idColProt`: which column in `rowDataProt` indicates unique protein IDs. (unique to `ProteomicsExperiment`)
-- `idColPept`: which column in `rowDataPept` indicates unique peptide IDs. (unique to `ProteomicsExperiment`)
-- `linkedSubset`: logical that indicates if the subsetting operation should be applied to both data levels (protein and peptide). (unique to `ProteomicsExperiment`)
-- `subsetMode`: which level should be used for reference when subsetting (protein or peptide). (unique to `ProteomicsExperiment`)
+- `idColProt`: which column in `rowDataProt` indicates unique protein IDs. (unique to `SilacProteomicsExperiment`)
+- `idColPept`: which column in `rowDataPept` indicates unique peptide IDs. (unique to `SilacProteomicsExperiment`)
+- `linkedSubset`: logical that indicates if the subsetting operation should be applied to both data levels (protein and peptide). (unique to `SilacProteomicsExperiment`)
+- `subsetMode`: which level should be used for reference when subsetting (protein or peptide). (unique to `SilacProteomicsExperiment`)
 
 These can be extended by the user to accommodate other experiment design and data analysis operations.
 
@@ -372,7 +372,7 @@ data('mefPE')
 data('recycleLightLysine')
 ```
 
-To demonstrate the use of the package functions, a reduced version of the pulsed-SILAC dataset from @Visscher2016 has been built into a `ProteomicsExperiment` object. It is stored in an object named `wormsPE`. This object has been constructed from the output files from MaxQuant 'proteinGroups.txt' and 'peptides.txt'.
+To demonstrate the use of the package functions, a reduced version of the pulsed-SILAC dataset from @Visscher2016 has been built into a `SilacProteomicsExperiment` object. It is stored in an object named `wormsPE`. This object has been constructed from the output files from MaxQuant 'proteinGroups.txt' and 'peptides.txt'.
 
 ```{r}
 wormsPE
@@ -640,8 +640,8 @@ This plot shows the distribution of the error of all the models for each conditi
 ```{r, warning = FALSE, message = FALSE}
 
 plotDistributionModel(modelList = modelList,
-                 value = 'stderror',
-                 plotType = 'density')
+                      value = 'stderror',
+                      plotType = 'density')
 
 ```
 
@@ -652,8 +652,8 @@ This plot shows the distribution of the values for every fitted parameter. In th
 ```{r, warning = FALSE, message = FALSE}
 
 plotDistributionModel(modelList = modelList,
-                 value = 'param_values',
-                 plotType = 'density')
+                      value = 'param_values',
+                      plotType = 'density')
 
 ```
 
@@ -765,6 +765,7 @@ modelList1 <- modelTurnover(x = wormsPE,
                             mode = 'protein', 
                             robust = FALSE,
                             returnModel = TRUE)
+
 modelList1 <- calculateAIC(modelList = modelList1, 
                            smallSampleSize = TRUE)
 
@@ -938,7 +939,7 @@ Unfortunately MaxQuant does not search for mixed isotope peptides by default. Th
 
 ## Adding the information
 
-To add the information on muss-cleaved peptides the `addMiscleavedPeptides()` function can be used. This function adds the data from the second search into a `PeptideExperiment` or a `ProteomicsExperiment`. If the analysis has been done using protein data, then a `PeptideExperiment` object with this information is created. In this example the ProteinExperiment object will be used because the peptide data in `wormsPE` is not complete.
+To add the information on muss-cleaved peptides the `addMiscleavedPeptides()` function can be used. This function adds the data from the second search into a `SilacPeptideExperiment` or a `SilacProteomicsExperiment`. If the analysis has been done using protein data, then a `SilacPeptideExperiment` object with this information is created. In this example the SilacProteinExperiment object will be used because the peptide data in `wormsPE` is not complete.
 
 ```{r}
 
@@ -976,7 +977,7 @@ The supplemental figure 6B of @Visscher2016 can be reproduced using the above me
 
 # Transferability to other packages
 
-The main objective of this package is proteomics turnover analysis, but there are other types of analysis that can be done with the same data: enrichment analysis, differential protein expression, etc. To facilitate the transferability from `ProteinExperiment` and `PeptideExperiment` objects there are coercion methods available to the more general classes such as `SummarizedExperiment` and `data.frame`.
+The main objective of this package is proteomics turnover analysis, but there are other types of analysis that can be done with the same data: enrichment analysis, differential protein expression, etc. To facilitate the transferability from `SilacProteinExperiment` and `SilacPeptideExperiment` objects there are coercion methods available to the more general classes such as `SummarizedExperiment` and `data.frame`.
 
 For example, the `DEP` [package](https://bioconductor.org/packages/release/bioc/vignettes/DEP/inst/doc/DEP.html#overview-of-the-analysis) uses the `SummarizedExperiment` class for their differential protein expression analysis functions.
 

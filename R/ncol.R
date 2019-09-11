@@ -1,9 +1,9 @@
-#' @rdname ProteomicsExperiment-accessors
+#' @rdname SilacProteomicsExperiment-accessors
 #' @aliases ncol
-#' @name ncol,ProteomicsExperiment-method
+#' @name ncol,SilacProteomicsExperiment-method
 #' @export
 #' @importFrom SummarizedExperiment colData
-setMethod('ncol', 'ProteomicsExperiment', function(x){
+setMethod('ncol', 'SilacProteomicsExperiment', function(x){
 
   return(nrow(colData(x)))
 

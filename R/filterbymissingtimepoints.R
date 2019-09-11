@@ -7,8 +7,8 @@
 #' timepoints. This can be done for each condition independently
 #' (strict = FALSE) or shared across conditions (strict = TRUE).
 #'
-#' @param x A \code{ProteinExperiment}, \code{PeptideExperiment} or a
-#' \code{ProteomicsExperiment} object.
+#' @param x A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or a
+#' \code{SilacProteomicsExperiment} object.
 #' @param assayName A character indicating which assay will be used to count
 #' the number of missed timepoints.
 #' @param maxMissing A numeric indicating how many timepoints are allowed to be
@@ -23,8 +23,8 @@
 #' subset is returned.
 #' @param ... Unused.
 #'
-#' @return A \code{ProteinExperiment}, \code{PeptideExperiment} or a
-#' \code{ProteomicsExperiment} object or a logical vector with the rows that
+#' @return A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or a
+#' \code{SilacProteomicsExperiment} object or a logical vector with the rows that
 #' pass the minimum number of desired timepoints.
 #'
 #' @examples
@@ -41,7 +41,7 @@ setGeneric('filterByMissingTimepoints', function(x, ...){
 #' @rdname filterByMissingTimepoints
 #' @export
 setMethod('filterByMissingTimepoints',
-          'ProteinExperiment',
+          'SilacProteinExperiment',
           function(x,
                    assayName,
                    maxMissing = 0,
@@ -103,7 +103,7 @@ setMethod('filterByMissingTimepoints',
 #' @rdname filterByMissingTimepoints
 #' @export
 setMethod('filterByMissingTimepoints',
-          'PeptideExperiment',
+          'SilacPeptideExperiment',
           function(x,
                    assayName,
                    maxMissing = 0,
@@ -118,7 +118,7 @@ setMethod('filterByMissingTimepoints',
 #' @rdname filterByMissingTimepoints
 #' @export
 setMethod('filterByMissingTimepoints',
-          'ProteomicsExperiment',
+          'SilacProteomicsExperiment',
           function(x,
                    assayName,
                    maxMissing = 0,
@@ -129,7 +129,7 @@ setMethod('filterByMissingTimepoints',
   ## filtering is dependent on the subsetMode
   if (.giveMetaoption(x, 'subsetMode') == 'peptide') {
 
-    subsetVec <- filterByMissingTimepoints(x@PeptideExperiment,
+    subsetVec <- filterByMissingTimepoints(x@SilacPeptideExperiment,
                                            assayName = assayName,
                                            maxMissing = maxMissing,
                                            strict = strict,
@@ -138,7 +138,7 @@ setMethod('filterByMissingTimepoints',
 
   } else {
 
-    subsetVec <- filterByMissingTimepoints(x@ProteinExperiment,
+    subsetVec <- filterByMissingTimepoints(x@SilacProteinExperiment,
                                            assayName = assayName,
                                            maxMissing = maxMissing,
                                            strict = strict,

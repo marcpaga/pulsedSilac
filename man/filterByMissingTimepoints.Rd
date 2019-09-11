@@ -3,25 +3,26 @@
 \docType{methods}
 \name{filterByMissingTimepoints}
 \alias{filterByMissingTimepoints}
-\alias{filterByMissingTimepoints,ProteinExperiment-method}
-\alias{filterByMissingTimepoints,PeptideExperiment-method}
-\alias{filterByMissingTimepoints,ProteomicsExperiment-method}
+\alias{filterByMissingTimepoints,SilacProteinExperiment-method}
+\alias{filterByMissingTimepoints,SilacPeptideExperiment-method}
+\alias{filterByMissingTimepoints,SilacProteomicsExperiment-method}
 \title{Filter proteins/peptides by the amount of measurements overtime}
 \usage{
 filterByMissingTimepoints(x, ...)
 
-\S4method{filterByMissingTimepoints}{ProteinExperiment}(x, assayName,
+\S4method{filterByMissingTimepoints}{SilacProteinExperiment}(x, assayName,
   maxMissing = 0, strict = TRUE, conditionCol, returnVector = FALSE)
 
-\S4method{filterByMissingTimepoints}{PeptideExperiment}(x, assayName,
+\S4method{filterByMissingTimepoints}{SilacPeptideExperiment}(x, assayName,
   maxMissing = 0, strict = TRUE, conditionCol, returnVector = FALSE)
 
-\S4method{filterByMissingTimepoints}{ProteomicsExperiment}(x, assayName,
-  maxMissing = 0, strict = TRUE, conditionCol, returnVector = FALSE)
+\S4method{filterByMissingTimepoints}{SilacProteomicsExperiment}(x,
+  assayName, maxMissing = 0, strict = TRUE, conditionCol,
+  returnVector = FALSE)
 }
 \arguments{
-\item{x}{A \code{ProteinExperiment}, \code{PeptideExperiment} or a
-\code{ProteomicsExperiment} object.}
+\item{x}{A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or a
+\code{SilacProteomicsExperiment} object.}
 
 \item{...}{Unused.}
 
@@ -43,8 +44,8 @@ in colData(x) that defines the different experiment conditions.}
 subset is returned.}
 }
 \value{
-A \code{ProteinExperiment}, \code{PeptideExperiment} or a
-\code{ProteomicsExperiment} object or a logical vector with the rows that
+A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or a
+\code{SilacProteomicsExperiment} object or a logical vector with the rows that
 pass the minimum number of desired timepoints.
 }
 \description{

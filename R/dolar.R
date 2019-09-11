@@ -1,14 +1,14 @@
-#' @rdname ProteomicsExperiment-accessors
-#' @aliases $,ProteomicsExperiment-method
+#' @rdname SilacProteomicsExperiment-accessors
+#' @aliases $,SilacProteomicsExperiment-method
 #' @export
-setMethod('$', 'ProteomicsExperiment', function(x, name) {
+setMethod('$', 'SilacProteomicsExperiment', function(x, name) {
   return(colData(x)[[name]])
 })
 
-#' @rdname ProteomicsExperiment-accessors
-#' @aliases $<-,ProteomicsExperiment-method
+#' @rdname SilacProteomicsExperiment-accessors
+#' @aliases $<-,SilacProteomicsExperiment-method
 #' @export
-setReplaceMethod('$', 'ProteomicsExperiment', function(x, name, value) {
+setReplaceMethod('$', 'SilacProteomicsExperiment', function(x, name, value) {
   colData(x)[[name]] <- value
   return(x)
 })

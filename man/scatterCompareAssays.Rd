@@ -3,26 +3,26 @@
 \docType{methods}
 \name{scatterCompareAssays}
 \alias{scatterCompareAssays}
-\alias{scatterCompareAssays,ProteinExperiment-method}
-\alias{scatterCompareAssays,PeptideExperiment-method}
-\alias{scatterCompareAssays,ProteomicsExperiment-method}
+\alias{scatterCompareAssays,SilacProteinExperiment-method}
+\alias{scatterCompareAssays,SilacPeptideExperiment-method}
+\alias{scatterCompareAssays,SilacProteomicsExperiment-method}
 \title{Scatter plot of two conditions for each timepoint of an assay.}
 \usage{
 scatterCompareAssays(x, ...)
 
-\S4method{scatterCompareAssays}{ProteinExperiment}(x, conditions,
+\S4method{scatterCompareAssays}{SilacProteinExperiment}(x, conditions,
   assayName, returnDataFrame = FALSE, conditionCol, timeCol)
 
-\S4method{scatterCompareAssays}{PeptideExperiment}(x, conditions,
+\S4method{scatterCompareAssays}{SilacPeptideExperiment}(x, conditions,
   assayName, returnDataFrame = FALSE, conditionCol, timeCol)
 
-\S4method{scatterCompareAssays}{ProteomicsExperiment}(x, conditions,
+\S4method{scatterCompareAssays}{SilacProteomicsExperiment}(x, conditions,
   assayName, mode = "protein", returnDataFrame = FALSE, conditionCol,
   timeCol)
 }
 \arguments{
-\item{x}{A \code{ProteinExperiment}, \code{PeptideExperiment} or a
-\code{ProteomicsExperiment} object.}
+\item{x}{A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or a
+\code{SilacProteomicsExperiment} object.}
 
 \item{...}{Unused.}
 

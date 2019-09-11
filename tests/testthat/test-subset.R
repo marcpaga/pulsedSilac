@@ -14,16 +14,16 @@ test_that("subset operator works", {
 
   coldata <- data.frame(experiment = c('A', 'B', 'C'))
 
-  protExp <- ProteinExperiment(assays = protmatrix,
+  protExp <- SilacProteinExperiment(assays = protmatrix,
                                rowData = protdata,
                                colData = coldata)
-  peptExp <- PeptideExperiment(assays = pepmatrix,
+  peptExp <- SilacPeptideExperiment(assays = pepmatrix,
                                rowData = pepdata,
                                colData = coldata)
 
 
-  PE <- ProteomicsExperiment(ProteinExperiment = protExp,
-                             PeptideExperiment = peptExp,
+  PE <- SilacProteomicsExperiment(SilacProteinExperiment = protExp,
+                                  SilacPeptideExperiment = peptExp,
                              colData = coldata,
                              linkerDf = linkM,
                              idColProt = 'a',

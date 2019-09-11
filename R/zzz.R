@@ -1,22 +1,24 @@
 # Documentation for the getters and setters for the ProteinExperiment,
 # PeptideExperiment and ProteomicsExperiment classes
 
-#' @rdname ProteinPeptideExperiment-accessors
-#' @name ProteinPeptideExperiment-accessors
+#' @rdname SilacProteinPeptideExperiment-accessors
+#' @name SilacProteinPeptideExperiment-accessors
 #'
-#' @title Accessors for the ProteinExperiment and PeptideExperiment classes
+#' @title Accessors for the SilacProteinExperiment and SilacPeptideExperiment
+#' classes
 #'
 #' @description All the accessors, dimension, subsetting, merging and coercers
-#' that work on \code{ProteinExperiment} and \code{PeptideExperiment} objects.
-#' Functions that work on \code{SummarizedExperiment} objects should also work
-#' on these two objects. Detailed examples of these functions can be found in
-#' the vignette of this package.
+#' that work on \code{SilacProteinExperiment} and \code{SilacPeptideExperiment}
+#' objects. Functions that work on \code{SummarizedExperiment} objects should
+#' also work on these two objects. Detailed examples of these functions can be
+#' found in the vignette of this package.
 #'
-#' @param x A \code{ProteinExperiment} or a \code{PeptideExperiment} object.
-#' @param ... For \code{rbind} and \code{cbind} are \code{ProteinExperiment} or
-#' \code{PeptideExperiment} objects to be joined together. For \code{subset}
-#' it is a logical comparison using a column name from the respective rowData
-#' \code{data.frame}. Otherwise unused.
+#' @param x A \code{SilacProteinExperiment} or a \code{SilacPeptideExperiment}
+#'  object.
+#' @param ... For \code{rbind} and \code{cbind} are \code{SilacProteinExperiment}
+#' or \code{SilacPeptideExperiment} objects to be joined together.
+#' For \code{subset} it is a logical comparison using a column name from the
+#' respective rowData \code{data.frame}. Otherwise unused.
 #' @param value An object of class specified in the S4 method signature or as
 #' described in the following sections.
 #' @param deparse.level Unused.
@@ -85,8 +87,8 @@
 #'
 #' @section Coercers:
 #'
-#' The folloing functions can be used to transform a \code{ProteinExperiment}
-#' or a \code{PeptideExperiment} into a \code{SummarizedExperiment} or a
+#' The folloing functions can be used to transform a \code{SilacProteinExperiment}
+#' or a \code{SilacPeptideExperiment} into a \code{SummarizedExperiment} or a
 #' \code{data.frame}.
 #'
 #' \describe{
@@ -96,8 +98,8 @@
 #'   object of class \code{data.frame}.}
 #' }
 #'
-#' @return Elements from \code{ProteinExperiment} or \code{PeptideExperiment}
-#' objects.
+#' @return Elements from \code{SilacProteinExperiment} or
+#' \code{SilacPeptideExperiment} objects.
 #'
 #' @examples
 #' data('wormsPE')
@@ -146,27 +148,27 @@ NULL
 
 
 
-#' @rdname ProteomicsExperiment-accessors
-#' @name ProteomicsExperiment-accessors
+#' @rdname SilacProteomicsExperiment-accessors
+#' @name SilacProteomicsExperiment-accessors
 #'
-#' @title Accessors for the ProteomicsExperiment class
+#' @title Accessors for the SilacProteomicsExperiment class
 #'
 #' @description All the accessors, dimension, subsetting, merging and coercers
-#' that work on \code{ProteomicsExperiment} objects. Since the
-#' \code{ProteomicsExperiment} object has both protein and peptide level data,
+#' that work on \code{SilacProteomicsExperiment} objects. Since the
+#' \code{SilacProteomicsExperiment} object has both protein and peptide level data,
 #' most of the functions have a 'Prot' or 'Pept' suffix to indicate which
 #' level should be used. If the non-suffix function is used, then a list with
 #' both protein and peptide data is returned.
-#' These functions also work on \code{ProteinExperiment}
-#' and \code{PeptideExperiment} objects.
+#' These functions also work on \code{SilacProteinExperiment}
+#' and \code{SilacPeptideExperiment} objects.
 #'
-#' @param x A \code{ProteomicsExperiment} object.
+#' @param x A \code{SilacSilacProteomicsExperiment} object.
 #' @param i,j For \code{`[`}, \code{i}, \code{j} are subscripts that can act to
 #' subset the rows and columns of \code{x}.
 #' @param drop A \code{logical} indicating if dimensions should be lowered if
 #' possible when subsetting.
-#' @param ... For \code{rbind} and \code{cbind} are \code{ProteinExperiment} or
-#' \code{PeptideExperiment} objects to be joined together. For \code{subset}
+#' @param ... For \code{rbind} and \code{cbind} are \code{SilacProteinExperiment} or
+#' \code{SilacPeptideExperiment} objects to be joined together. For \code{subset}
 #' it is a logical comparison using a column name from the respective rowData
 #' \code{data.frame}. Otherwise unused.
 #' @param value An object of class specified in the S4 method signature or as
@@ -199,7 +201,7 @@ NULL
 #'   (only ProteomicsExperiment). Value should be a \code{data.frame} output
 #'   from \code{\link{buildLinkerDf}}.}
 #'   \item{\code{ProtExp} and \code{PeptExp}:}{Access the experiment objects
-#'   in a \code{ProteomicsExperiment}.}
+#'   in a \code{SilacProteomicsExperiment}.}
 #' }
 #'
 #' @section Dimensions:
@@ -261,12 +263,12 @@ NULL
 #'   proteins/peptides). Must have the same samples and in the same order.}
 #'   \item{\code{merge}:}{Joins two objects by adding new samples and tries
 #'   to merge the proteins/peptide rowData data.frames and recalculate the
-#'   linkerDf \code{data.frame} for the \code{ProteomicsExperiment} class.}
+#'   linkerDf \code{data.frame} for the \code{SilacProteomicsExperiment} class.}
 #' }
 #'
 #' Merge methods are explained in detail in \link{merge}.
 #'
-#' @return Elements from a \code{ProteomicsExperiment} object.
+#' @return Elements from a \code{SilacProteomicsExperiment} object.
 #'
 #' @examples
 #' # Accessors

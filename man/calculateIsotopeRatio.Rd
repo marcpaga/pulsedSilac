@@ -3,25 +3,25 @@
 \docType{methods}
 \name{calculateIsotopeRatio}
 \alias{calculateIsotopeRatio}
-\alias{calculateIsotopeRatio,ProteinExperiment-method}
-\alias{calculateIsotopeRatio,PeptideExperiment-method}
-\alias{calculateIsotopeRatio,ProteomicsExperiment-method}
+\alias{calculateIsotopeRatio,SilacProteinExperiment-method}
+\alias{calculateIsotopeRatio,SilacPeptideExperiment-method}
+\alias{calculateIsotopeRatio,SilacProteomicsExperiment-method}
 \title{Ratio calculation}
 \usage{
 calculateIsotopeRatio(x, newIsotopeAssay, oldIsotopeAssay, ...)
 
-\S4method{calculateIsotopeRatio}{ProteinExperiment}(x, newIsotopeAssay,
-  oldIsotopeAssay)
+\S4method{calculateIsotopeRatio}{SilacProteinExperiment}(x,
+  newIsotopeAssay, oldIsotopeAssay)
 
-\S4method{calculateIsotopeRatio}{PeptideExperiment}(x, newIsotopeAssay,
-  oldIsotopeAssay)
+\S4method{calculateIsotopeRatio}{SilacPeptideExperiment}(x,
+  newIsotopeAssay, oldIsotopeAssay)
 
-\S4method{calculateIsotopeRatio}{ProteomicsExperiment}(x, newIsotopeAssay,
-  oldIsotopeAssay)
+\S4method{calculateIsotopeRatio}{SilacProteomicsExperiment}(x,
+  newIsotopeAssay, oldIsotopeAssay)
 }
 \arguments{
-\item{x}{A \code{ProteinExperiment}, \code{PeptideExperiment} or a
-\code{ProteomicsExperiment} object.}
+\item{x}{A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or a
+\code{SilacProteomicsExperiment} object.}
 
 \item{newIsotopeAssay}{A \code{character} indicating the assay name that
 has the new isotope intensity data.}
@@ -32,8 +32,8 @@ has the old isotope intensity data.}
 \item{...}{Unused.}
 }
 \value{
-A \code{ProteinExperiment}, \code{PeptideExperiment} or a
-\code{ProteomicsExperiment} object with an added assay named 'ratio'.
+A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or a
+\code{SilacProteomicsExperiment} object with an added assay named 'ratio'.
 }
 \description{
 Calculates the ratio between the new isotope and the old

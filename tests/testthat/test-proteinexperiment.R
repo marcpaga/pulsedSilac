@@ -1,4 +1,4 @@
-context("test-proteinexperiment")
+context("test-SilacProteinExperiment")
 
 test_that("constructor works", {
 
@@ -9,7 +9,7 @@ test_that("constructor works", {
   colData <- data.frame(sample = LETTERS[1:3])
   rowData <- data.frame(peptide = letters[1:3])
 
-  expect_silent(proExp <- ProteinExperiment(assays = assays_list,
+  expect_silent(proExp <- SilacProteinExperiment(assays = assays_list,
                                             rowData = rowData,
                                             colData = colData))
 
@@ -21,24 +21,24 @@ test_that("constructor works", {
   expect_equal(length(metadata(proExp)), 2)
 
   ## without assays
-  expect_error(proExp <- ProteinExperiment(rowData = rowData,
+  expect_error(proExp <- SilacProteinExperiment(rowData = rowData,
                                            colData = colData))
 
   ## without rowData
-  expect_silent(proExp <- ProteinExperiment(assays = assays_list,
+  expect_silent(proExp <- SilacProteinExperiment(assays = assays_list,
                                             colData = colData))
 
   ## without colData
-  expect_error(proExp <- ProteinExperiment(assays = assays_list,
+  expect_error(proExp <- SilacProteinExperiment(assays = assays_list,
                                            rowData = rowData))
 
   ## with added metadata
-  expect_silent(proExp <- ProteinExperiment(assays = assays_list,
+  expect_silent(proExp <- SilacProteinExperiment(assays = assays_list,
                                             rowData = rowData,
                                             colData = colData,
                                             metadata = list(author = 'me')))
   expect_equal(length(metadata(proExp)), 3)
-  expect_silent(proExp <- ProteinExperiment(assays = assays_list,
+  expect_silent(proExp <- SilacProteinExperiment(assays = assays_list,
                                             rowData = rowData,
                                             colData = colData,
                                             metadata = list(author = 'me'),
@@ -52,7 +52,7 @@ test_that("constructor works", {
                         repTime = c(1, 1, 1))
 
   ## all metadata given
-  expect_silent(proExp <- ProteinExperiment(assays = assays_list,
+  expect_silent(proExp <- SilacProteinExperiment(assays = assays_list,
                                             rowData = rowData,
                                             colData = colData,
                                             metadata = list(author = 'me'),
@@ -60,7 +60,7 @@ test_that("constructor works", {
                                             timeCol = 'time'))
 
   ## mixed character and numeric metadata
-  expect_silent(proExp <- ProteinExperiment(assays = assays_list,
+  expect_silent(proExp <- SilacProteinExperiment(assays = assays_list,
                                             rowData = rowData,
                                             colData = colData,
                                             metadata = list(author = 'me'),
@@ -68,7 +68,7 @@ test_that("constructor works", {
                                             timeCol = 2))
 
   ## metaoptions target the same colData columns
-  expect_silent(proExp <- ProteinExperiment(assays = assays_list,
+  expect_silent(proExp <- SilacProteinExperiment(assays = assays_list,
                                            rowData = rowData,
                                            colData = colData,
                                            metadata = list(author = 'me'),
@@ -77,14 +77,14 @@ test_that("constructor works", {
 
 
   ## metaoptions in both direct argument and metadata argument
-  expect_error(proExp <- ProteinExperiment(assays = assays_list,
+  expect_error(proExp <- SilacProteinExperiment(assays = assays_list,
                                            rowData = rowData,
                                            colData = colData,
                                            metadata = list(author = 'me', timeCol = 2),
                                            conditionCol = 1))
 
   ## user metaoptions
-  expect_error(proExp <- ProteinExperiment(assays = assays_list,
+  expect_error(proExp <- SilacProteinExperiment(assays = assays_list,
                                             rowData = rowData,
                                             colData = colData,
                                             metadata = list(author = 'me', timeCol = 2),

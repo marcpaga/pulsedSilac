@@ -1,8 +1,8 @@
-#' @rdname ProteinPeptideExperiment-accessors
-#' @aliases rowData<-,ProteinExperiment-method
+#' @rdname SilacProteinPeptideExperiment-accessors
+#' @aliases rowData<-,SilacProteinExperiment-method
 #' @importFrom S4Vectors DataFrame
 #' @export
-setMethod('rowData<-', 'ProteinExperiment', function(x, ..., value){
+setMethod('rowData<-', 'SilacProteinExperiment', function(x, ..., value){
 
   if (is(value, 'data.frame')) {
     value <- DataFrame(value)
@@ -17,11 +17,11 @@ setMethod('rowData<-', 'ProteinExperiment', function(x, ..., value){
 
 })
 
-#' @rdname ProteinPeptideExperiment-accessors
-#' @aliases rowData<-,PeptideExperiment-method
+#' @rdname SilacProteinPeptideExperiment-accessors
+#' @aliases rowData<-,SilacPeptideExperiment-method
 #' @importFrom S4Vectors DataFrame
 #' @export
-setMethod('rowData<-', 'PeptideExperiment', function(x, ..., value){
+setMethod('rowData<-', 'SilacPeptideExperiment', function(x, ..., value){
 
   if (is(value, 'data.frame')) {
     value <- DataFrame(value)
@@ -36,115 +36,115 @@ setMethod('rowData<-', 'PeptideExperiment', function(x, ..., value){
 
 })
 
-#' @rdname ProteomicsExperiment-accessors
-#' @aliases rowData,ProteomicsExperiment-method
+#' @rdname SilacProteomicsExperiment-accessors
+#' @aliases rowData,SilacProteomicsExperiment-method
 #' @export
-setMethod('rowData', 'ProteomicsExperiment', function(x, use.names, ...){
+setMethod('rowData', 'SilacProteomicsExperiment', function(x, use.names, ...){
 
-  return(list(protein = rowData(x@ProteinExperiment),
-              peptide = rowData(x@PeptideExperiment)))
+  return(list(protein = rowData(x@SilacProteinExperiment),
+              peptide = rowData(x@SilacPeptideExperiment)))
 
 })
 
-#' @rdname ProteomicsExperiment-accessors
-#' @aliases rowData<-,ProteomicsExperiment-method
+#' @rdname SilacProteomicsExperiment-accessors
+#' @aliases rowData<-,SilacProteomicsExperiment-method
 #' @export
-setMethod('rowData<-', 'ProteomicsExperiment', function(x, ..., value){
+setMethod('rowData<-', 'SilacProteomicsExperiment', function(x, ..., value){
 
   if (!is.list(value) | length(value) != 2) {
     stop('Value must be a list of length 2')
   }
 
-  rowData(x@ProteinExperiment) <- value[[1]]
-  rowData(x@PeptideExperiment) <- value[[2]]
+  rowData(x@SilacProteinExperiment) <- value[[1]]
+  rowData(x@SilacPeptideExperiment) <- value[[2]]
   validObject(x)
   return(x)
 })
 
 
-#' @rdname ProteomicsExperiment-accessors
+#' @rdname SilacProteomicsExperiment-accessors
 #' @name rowDataProt
-#' @aliases rowDataProt,ProteinExperiment-method
+#' @aliases rowDataProt,SilacProteinExperiment-method
 #' @export
-setMethod('rowDataProt', 'ProteinExperiment', function(x) {
+setMethod('rowDataProt', 'SilacProteinExperiment', function(x) {
 
   return(rowData(x))
 
 })
 
-#' @rdname ProteomicsExperiment-accessors
+#' @rdname SilacProteomicsExperiment-accessors
 #' @name rowDataProt<-
-#' @aliases rowDataProt<-,ProteinExperiment-method
+#' @aliases rowDataProt<-,SilacProteinExperiment-method
 #' @export
-setMethod('rowDataProt<-', 'ProteinExperiment', function(x, value) {
+setMethod('rowDataProt<-', 'SilacProteinExperiment', function(x, value) {
 
   rowData(x) <- value
   return(x)
 
 })
 
-#' @rdname ProteomicsExperiment-accessors
+#' @rdname SilacProteomicsExperiment-accessors
 #' @name rowDataProt
-#' @aliases rowDataProt,ProteomicsExperiment-method
+#' @aliases rowDataProt,SilacProteomicsExperiment-method
 #' @export
-setMethod('rowDataProt', 'ProteomicsExperiment', function(x) {
+setMethod('rowDataProt', 'SilacProteomicsExperiment', function(x) {
 
-  return(rowData(x@ProteinExperiment))
+  return(rowData(x@SilacProteinExperiment))
 
 })
 
-#' @rdname ProteomicsExperiment-accessors
+#' @rdname SilacProteomicsExperiment-accessors
 #' @name rowDataProt<-
-#' @aliases rowDataProt<-,ProteomicsExperiment-method
+#' @aliases rowDataProt<-,SilacProteomicsExperiment-method
 #' @export
-setMethod('rowDataProt<-', 'ProteomicsExperiment', function(x, value) {
+setMethod('rowDataProt<-', 'SilacProteomicsExperiment', function(x, value) {
 
-  rowData(x@ProteinExperiment) <- value
+  rowData(x@SilacProteinExperiment) <- value
   validObject(x)
   return(x)
 
 })
 
 
-#' @rdname ProteomicsExperiment-accessors
+#' @rdname SilacProteomicsExperiment-accessors
 #' @name rowDataPept
-#' @aliases rowDataPept,PeptideExperiment-method
+#' @aliases rowDataPept,SilacPeptideExperiment-method
 #' @export
-setMethod('rowDataPept', 'PeptideExperiment', function(x) {
+setMethod('rowDataPept', 'SilacPeptideExperiment', function(x) {
 
   return(rowData(x))
 
 })
 
-#' @rdname ProteomicsExperiment-accessors
+#' @rdname SilacProteomicsExperiment-accessors
 #' @name rowDataPept<-
-#' @aliases rowDataPept<-,PeptideExperiment-method
+#' @aliases rowDataPept<-,SilacPeptideExperiment-method
 #' @export
-setMethod('rowDataPept<-', 'PeptideExperiment', function(x, value) {
+setMethod('rowDataPept<-', 'SilacPeptideExperiment', function(x, value) {
 
   rowData(x) <- value
   return(x)
 
 })
 
-#' @rdname ProteomicsExperiment-accessors
+#' @rdname SilacProteomicsExperiment-accessors
 #' @name rowDataPept
-#' @aliases rowDataPept,ProteomicsExperiment-method
+#' @aliases rowDataPept,SilacProteomicsExperiment-method
 #' @export
-setMethod('rowDataPept', 'ProteomicsExperiment', function(x) {
+setMethod('rowDataPept', 'SilacProteomicsExperiment', function(x) {
 
-  return(rowData(x@PeptideExperiment))
+  return(rowData(x@SilacPeptideExperiment))
 
 })
 
-#' @rdname ProteomicsExperiment-accessors
+#' @rdname SilacProteomicsExperiment-accessors
 #' @name rowDataPept<-
-#' @aliases rowDataPept<-,ProteomicsExperiment-method
+#' @aliases rowDataPept<-,SilacProteomicsExperiment-method
 #' @usage NULL
 #' @export
-setMethod('rowDataPept<-', 'ProteomicsExperiment', function(x, value) {
+setMethod('rowDataPept<-', 'SilacProteomicsExperiment', function(x, value) {
 
-  rowData(x@PeptideExperiment) <- value
+  rowData(x@SilacPeptideExperiment) <- value
   validObject(x)
   return(x)
 

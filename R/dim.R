@@ -1,9 +1,10 @@
-#' @rdname ProteomicsExperiment-accessors
-#' @aliases dim,ProteomicsExperiment-method
+#' @rdname SilacProteomicsExperiment-accessors
+#' @aliases dim,SilacProteomicsExperiment-method
 #' @export
-setMethod('dim', 'ProteomicsExperiment', function(x){
+setMethod('dim', 'SilacProteomicsExperiment', function(x){
 
-  return(matrix(data = c(dim(x@ProteinExperiment), dim(x@PeptideExperiment)),
+  return(matrix(data = c(dim(x@SilacProteinExperiment),
+                         dim(x@SilacPeptideExperiment)),
                 ncol = 2,
                 byrow = T,
                 dimnames = list(c('protein', 'peptide'), c('row', 'column'))))
