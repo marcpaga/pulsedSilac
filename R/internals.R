@@ -1,6 +1,6 @@
 ###### Logical checks ==========================================================
 
-setMethod('hasRowData', 'SilacProteinExperiment', function(x){
+setMethod('hasRowData', 'SilacProteinExperiment', function(x) {
 
   rd <- rowData(x)
   if (is(rd, 'DataFrame') & ncol(rd) > 0) {
@@ -11,7 +11,7 @@ setMethod('hasRowData', 'SilacProteinExperiment', function(x){
 
 })
 
-setMethod('hasRowData', 'SilacPeptideExperiment', function(x){
+setMethod('hasRowData', 'SilacPeptideExperiment', function(x) {
 
   rd <- rowData(x)
   if (is(rd, 'DataFrame') & ncol(rd) > 0) {
@@ -22,22 +22,10 @@ setMethod('hasRowData', 'SilacPeptideExperiment', function(x){
 
 })
 
-setMethod('hasRowData', 'SilacProteomicsExperiment', function(x){
+setMethod('hasRowData', 'SilacProteomicsExperiment', function(x) {
 
-  outVec <- c(NA, NA)
-  rd <- rowData(x@SilacProteinExperiment)
-  if (is(rd, 'DataFrame') & ncol(rd) > 0) {
-    outVec[1] <- TRUE
-  } else {
-    outVec[1] <- FALSE
-  }
-
-  rd <- rowData(x@SilacPeptideExperiment)
-  if (is(rd, 'DataFrame') & ncol(rd) > 0) {
-    outVec[2] <- TRUE
-  } else {
-    outVec[2] <- FALSE
-  }
+  outVec <- c(hasRowData(x@SilacProteinExperiment),
+              hasRowData(x@SilacPeptideExperiment))
 
   return(outVec)
 })
