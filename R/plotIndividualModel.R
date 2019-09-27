@@ -241,27 +241,16 @@ setMethod('plotIndividualModel',
                    num,
                    returnDataFrame = FALSE) {
 
-  if (attributes(modelList)[['mode']] == 'protein') {
+  experiment <- switch(attributes(modelList)[['mode']],
+                       protein = x@SilacProteinExperiment,
+                       peptide = x@SilacPeptideExperiment,
+                       grouped = x@SilacPeptideExperiment)
 
-    plotIndividualModel(x = x@SilacProteinExperiment,
-                        modelList = modelList,
-                        num = num,
-                        returnDataFrame = returnDataFrame)
 
-  } else if (attributes(modelList)[['mode']] == 'peptide') {
+  plotIndividualModel(x = experiment,
+                      modelList = modelList,
+                      num = num,
+                      returnDataFrame = returnDataFrame)
 
-    plotIndividualModel(x = x@SilacPeptideExperiment,
-                        modelList = modelList,
-                        num = num,
-                        returnDataFrame = returnDataFrame)
-
-  } else if (attributes(modelList)[['mode']] == 'grouped') {
-
-    plotIndividualModel(x = x@SilacPeptideExperiment,
-                        modelList = modelList,
-                        num = num,
-                        returnDataFrame = returnDataFrame)
-
-  }
 
 })

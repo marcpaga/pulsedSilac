@@ -162,23 +162,16 @@ setMethod('plotDistributionAssay', 'SilacProteomicsExperiment',
                    conditionCol,
                    timeCol) {
 
-  if (mode == 'protein') {
+  experiment <- switch(mode,
+                       protein = x@SilacProteinExperiment,
+                       peptide = x@SilacPeptideExperiment)
 
-    plotDistributionAssay(x = x@SilacProteinExperiment,
-              assayName = assayName,
-              plotType = plotType,
-              returnDataFrame = returnDataFrame,
-              conditionCol = conditionCol,
-              timeCol = timeCol)
+  plotDistributionAssay(x = experiment,
+            assayName = assayName,
+            plotType = plotType,
+            returnDataFrame = returnDataFrame,
+            conditionCol = conditionCol,
+            timeCol = timeCol)
 
-  } else if (mode == 'peptide') {
-
-    plotDistributionAssay(x = x@SilacPeptideExperiment,
-              assayName = assayName,
-              plotType = plotType,
-              returnDataFrame = returnDataFrame,
-              conditionCol = conditionCol,
-              timeCol = timeCol)
-  }
 
 })
