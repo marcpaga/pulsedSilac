@@ -32,6 +32,14 @@ BiocManager::install("pulsedSilac")
 
 ```
 
+To install the development version of the package, please do it from the development branch in github.
+
+```{r, eval = FALSE}
+
+BiocManager::install('marcpaga/pulsedSilac')
+
+```
+
 # Introduction
 
 SILAC (Stable Isotope Label by Amino acids in Cell culture) is a method that is often used to differentially compare protein expression between samples. Pulsed SILAC is a variant that is used to measure protein turnover. Rather than comparing samples that are labeled to completion with either heavy or light isotopes of amino acids, in pulsed SILAC cells are harvested at a series of time points after the growth media containing light amino acids was switched to media containing heavy amino acids. Each sample is then processed and analyzed by mass spectrometry. The isotope ratio each peptide at each time point can now be used to calculate the turnover rate of each measured protein in a proteome-wide fashion (@Pratt2002, @Doherty2005, @Schwanhausser2009).
