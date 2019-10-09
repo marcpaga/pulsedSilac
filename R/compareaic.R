@@ -3,7 +3,7 @@
 #' For a given set of AIC from models, the probability of each model relative
 #' to the rest of the models of the set is calculated using the following
 #' formula:
-#' \deqn{\prod AIC_{i} = \frac{exp(\frac{AIC_{min}-AIC_{i}}{2})}{\sum_{j}exp(\frac{AIC_{min}-AIC_{j}}{2})}}
+#' \ifelse{html}{\out{<img src="https://latex.codecogs.com/svg.latex?\inline&space;\prod&space;AIC_{i}&space;=&space;\frac{exp(\frac{AIC_{min}-AIC_{i}}{2})}{\sum_{j}exp(\frac{AIC_{min}-AIC_{j}}{2})}" title="\prod AIC_{i} = \frac{exp(\frac{AIC_{min}-AIC_{i}}{2})}{\sum_{j}exp(\frac{AIC_{min}-AIC_{j}}{2})}" />}}{\deqn{\prod AIC_{i} = \frac{exp(\frac{AIC_{min}-AIC_{i}}{2})}{\sum_{j}exp(\frac{AIC_{min}-AIC_{j}}{2})}}}
 #'
 #' @param ... a \code{list} with the model metrics,
 #' the output from \code{\link{modelTurnover}} and \code{\link{calculateAIC}}.

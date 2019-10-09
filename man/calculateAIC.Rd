@@ -24,8 +24,10 @@ Calculates the AIC for each of the computed models. Requires that
 \details{
 The following formulas are used to compute the AIC and AICc (small sample
 size correction):
-\deqn{AIC = 2k - 2ln(logLik)}
-\deqn{AICc = AIC + \frac{2k(k + 1)}{n - k - 1}}
+
+\ifelse{html}{\out{<img src="https://latex.codecogs.com/svg.latex?\inline&space;AIC&space;=&space;2k&space;-&space;2ln(logLik)" title="AIC = 2k - 2ln(logLik)" />}}{\deqn{AIC = 2k - 2ln(logLik)}}
+
+\ifelse{html}{\out{<img src="https://latex.codecogs.com/svg.latex?\inline&space;AICc&space;=&space;AIC&space;&plus;&space;\frac{2k(k&space;&plus;&space;1)}{n&space;-&space;k&space;-&space;1}" title="AICc = AIC + \frac{2k(k + 1)}{n - k - 1}" />}}{\deqn{AICc = AIC + \frac{2k(k + 1)}{n - k - 1}}}
 }
 \examples{
 data('wormsPE')

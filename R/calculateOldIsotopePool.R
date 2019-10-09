@@ -2,11 +2,13 @@
 #' @name calculateOldIsotopePool
 #' @title Estimates the fraction of old isotope for each time point
 #'
-#' To estimate how much of the "old" isotope is being used in "new" proteins we
-#' can use the expression level of miss-cleaved peptides that contain a mix of
-#' isotopes (one old and one new) and miss-cleaved peptides that contain only
-#' new isotopes. This can be done using the following formula:
-#' \deqn{\frac{1}{2\frac{Intensity_{lys8lys8}}{Intensity_{lys8lys0}} + 1} = lys_0 (Fraction)}
+#' @description To estimate how much of the "old" isotope is being used in "new"
+#' proteins we can use the expression level of miss-cleaved peptides that
+#' contain a mix of isotopes (one old and one new) and miss-cleaved peptides
+#' that contain only new isotopes. This can be done using the following formula:
+#'
+#' \ifelse{html}{\out{<img src="https://latex.codecogs.com/svg.latex?\inline&space;\frac{1}{2\frac{Intensity_{lys8lys8}}{Intensity_{lys8lys0}}&space;&plus;&space;1}&space;=&space;lys_0&space;(Fraction)" title="\frac{1}{2\frac{Intensity_{lys8lys8}}{Intensity_{lys8lys0}} + 1} = lys_0 (Fraction)" />}}{\deqn{\frac{1}{2\frac{Intensity_{lys8lys8}}{Intensity_{lys8lys0}} + 1} = lys_0 (Fraction)}}
+#'
 #' Which gives an idea of how much recyling (turnover understimation) is
 #' happening.
 #'

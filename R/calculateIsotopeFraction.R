@@ -4,9 +4,10 @@
 #'
 #' @description Calculates the fraction of an isotope ratio using the following
 #' formula:
-#' \deqn{Isotope fraction_{A} = \frac{ratio}{ratio + 1}}
+#' \ifelse{html}{\out{<img src="https://latex.codecogs.com/svg.latex?\inline&space;Isotope&space;fraction_{A}&space;=&space;\frac{ratio}{ratio&space;&plus;&space;1}" title="Isotope fraction_{A} = \frac{ratio}{ratio + 1}" />}}{\deqn{Isotope fraction_{A} = \frac{ratio}{ratio + 1}}}
+#'
 #' The ratio should be calculated as:
-#' \deqn{ratio = isotope_{A}/isotope_{B}}
+#' \ifelse{html}{\out{<img src="https://latex.codecogs.com/svg.latex?\inline&space;ratio&space;=&space;isotope_{A}/isotope_{B}" title="ratio = isotope_{A}/isotope_{B}" />}}{\deqn{ratio = isotope_{A}/isotope_{B}}}
 #'
 #' @param x A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or a
 #' \code{SilacProteomicsExperiment} object.
