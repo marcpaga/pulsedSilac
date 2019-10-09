@@ -983,9 +983,9 @@ plotDistributionAssay(missPE, assayName = 'oldIsotopePool')
 
 The supplemental figure 6B of @Visscher2016 can be reproduced using the above method.
 
-# Transferability to other packages
+# Interoperability with other packages
 
-The main objective of this package is proteomics turnover analysis, but there are other types of analysis that can be done with the same data: enrichment analysis, differential protein expression, etc. To facilitate the transferability from `SilacProteinExperiment` and `SilacPeptideExperiment` objects there are coercion methods available to the more general classes such as `SummarizedExperiment` and `data.frame`.
+The main objective of this package is proteomics turnover analysis, but there are other types of analysis that can be done with the same data: enrichment analysis, differential protein expression, etc. To facilitate the interoperability from `SilacProteinExperiment` and `SilacPeptideExperiment` objects there are coercion methods available to the more general classes such as `SummarizedExperiment` and `data.frame`.
 
 For example, the `DEP` [package](https://bioconductor.org/packages/release/bioc/vignettes/DEP/inst/doc/DEP.html#overview-of-the-analysis) uses the `SummarizedExperiment` class for their differential protein expression analysis functions.
 
