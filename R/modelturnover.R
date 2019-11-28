@@ -189,7 +189,8 @@ setMethod('modelTurnover',
                                   formula = formula,
                                   start = start,
                                   robust = robust,
-                                  returnModel = returnModel)
+                                  returnModel = returnModel,
+                                  ...)
 
       if (returnModel) {
         if (is.null(modeldata)) {
@@ -431,7 +432,8 @@ setMethod('modelTurnover',
                                   formula = formula,
                                   start = start,
                                   robust = robust,
-                                  returnModel = returnModel)
+                                  returnModel = returnModel,
+                                  ...)
 
       if (returnModel) {
         if (is.null(modeldata)) {
