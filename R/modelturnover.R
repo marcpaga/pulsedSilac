@@ -566,7 +566,7 @@ setMethod('modelTurnover',
                              conditionCol = conditionCol,
                              timeCol = timeCol,
                              proteinCol = proteinCol,
-                             r_names_prot = rownames(x@ProteinExperiment),
+                             r_names_prot = rownames(x@SilacProteinExperiment),
                              ...)
 
   }
@@ -635,7 +635,7 @@ setMethod('modelTurnover',
   } else {
     model  <- try(nls(formula = as.formula(formula),
                       data = data,
-                      start = start, ...), silent = FALSE)
+                      start = start, ...), silent = TRUE)
 
     if (is(model, 'try-error')) {
       return(NULL)
@@ -652,7 +652,7 @@ setMethod('modelTurnover',
     if (!is.null(isna)) {
       residuals <- rep(NA, originalnrow)
       residuals[isna] <- residuals2
-    }else {
+    } else {
       residuals <- residuals2
     }
 
