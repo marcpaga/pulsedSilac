@@ -4,6 +4,19 @@
 #'
 #' @description Method to apply turnover models on protein/peptide data
 #'
+#' @details The nls and nlrob functions have many arguments that can be tunned
+#' for parameter fitting. Unfortunately, not all the possible argument
+#' combinations have been tested. It is recommended to first test one model
+#' with the desired parameters with silent = FALSE to see that it runs smoothly
+#' and then run the whole proteome with silent = TRUE to supress failed
+#' convergence errors. For example, some methods for nlrob use upper and lower
+#' bounds instead of start.
+#'
+#' Please open an issue on github if the function is having trouble with a
+#' particular argument.
+#'
+#' For robust modelling the method 'CM' and 'mtl' are not yet supported.
+#'
 #' @param x A \code{SilacProteinExperiment}, \code{SilacPeptideExperiment} or
 #' \code{SilacProteomicsExperiment} object.
 #' @param assayName \code{character} indicating which assay to use as data
@@ -27,6 +40,8 @@
 #' describes time.
 #' @param proteinCol \code{character} indicating which column of rowData(x)
 #' describes the assigned protein to a peptide. (Only for peptide data)
+#' @param silent \code{logical} indicating if the errors given by nls/nlrob
+#' should be printed.
 #' @param ... further parameters passed into \code{nls} or \code{nlrob}.
 #'
 #' @return A named \code{list} with either model metrics in matrices or the
@@ -42,7 +57,8 @@
 #'                            start = list(k = 0.02),
 #'                            mode = 'protein',
 #'                            robust = FALSE,
-#'                            returnModel = TRUE)
+#'                            returnModel = TRUE,
+#'                            silent = TRUE)
 #'
 #' @importFrom robustbase nlrob
 #' @importFrom R.utils insert
@@ -68,6 +84,7 @@ setMethod('modelTurnover',
                    returnModel = FALSE,
                    conditionCol,
                    timeCol,
+                   silent = TRUE,
                    ...){
 
   ## argument checker ----------------------------------------------------------
@@ -190,6 +207,7 @@ setMethod('modelTurnover',
                                   start = start,
                                   robust = robust,
                                   returnModel = returnModel,
+                                  silent = silent,
                                   ...)
 
       if (returnModel) {
@@ -271,6 +289,7 @@ setMethod('modelTurnover',
                    conditionCol,
                    timeCol,
                    proteinCol,
+                   silent = TRUE,
                    ...){
 
   ## argument checker ----------------------------------------------------------
@@ -433,6 +452,7 @@ setMethod('modelTurnover',
                                   start = start,
                                   robust = robust,
                                   returnModel = returnModel,
+                                  silent = silent,
                                   ...)
 
       if (returnModel) {
@@ -519,6 +539,7 @@ setMethod('modelTurnover',
                    conditionCol,
                    timeCol,
                    proteinCol,
+                   silent = TRUE,
                    ...){
 
   if (!mode %in% c('protein', 'grouped', 'peptide')) {
@@ -536,6 +557,7 @@ setMethod('modelTurnover',
                              returnModel = returnModel,
                              conditionCol = conditionCol,
                              timeCol = timeCol,
+                             silent = silent,
                              ...)
 
   } else if (mode == 'peptide') {
@@ -550,6 +572,7 @@ setMethod('modelTurnover',
                              returnModel = returnModel,
                              conditionCol = conditionCol,
                              timeCol = timeCol,
+                             silent = silent,
                              ...)
 
   } else if (mode == 'grouped') {
@@ -566,6 +589,7 @@ setMethod('modelTurnover',
                              timeCol = timeCol,
                              proteinCol = proteinCol,
                              r_names_prot = rownames(x@SilacProteinExperiment),
+                             silent = silent,
                              ...)
 
   }
@@ -575,7 +599,8 @@ setMethod('modelTurnover',
 
 
 #' @keywords internal
-.modelTurnover <- function(data, formula, start, robust, returnModel, ...) {
+.modelTurnover <- function(data, formula, start, robust, returnModel,
+                           silent = TRUE, ...) {
 
   ## internal function that does the actual modelling, robust or not,
   ## and takes care of NAs
@@ -592,19 +617,20 @@ setMethod('modelTurnover',
   if (robust) {
     model  <- try(nlrob(formula = as.formula(formula),
                         data = data,
-                        start = start, ...), silent = TRUE)
+                        start = start, ...), silent = silent)
 
     if (is(model, 'try-error')) {
       return(NULL)
     }
 
-    residuals2 <- summary(model)[[2]]
-    stderror <- summary(model)[[3]]
-    weights2 <- summary(model)[[4]]
-    params.vals <- summary(model)[[12]][, 1]
-    params.stderror <- summary(model)[[12]][, 2]
-    params.tval <- summary(model)[[12]][, 3]
-    params.pval <- summary(model)[[12]][, 4]
+    summ <- summary(model)
+    residuals2 <- residuals(model)
+    stderror <- sigma(model)
+    weights2 <- summ[['rweights']]
+    params.vals <- coefficients(summ)[,1]
+    params.stderror <- coefficients(summ)[,2]
+    params.tval <- coefficients(summ)[,3]
+    params.pval <- coefficients(summ)[,4]
 
     if (!is.null(isna)) {
 
@@ -634,7 +660,7 @@ setMethod('modelTurnover',
   } else {
     model  <- try(nls(formula = as.formula(formula),
                       data = data,
-                      start = start, ...), silent = TRUE)
+                      start = start, ...), silent = silent)
 
 
     if (is(model, 'try-error')) {
