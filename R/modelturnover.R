@@ -575,7 +575,6 @@ setMethod('modelTurnover',
 })
 
 
-
 #' @keywords internal
 .modelTurnover <- function(data, formula, start, robust, returnModel, ...) {
 
@@ -636,19 +635,19 @@ setMethod('modelTurnover',
   } else {
     model  <- try(nls(formula = as.formula(formula),
                       data = data,
-                      start = start, ...), silent = TRUE)
+                      start = start, ...), silent = FALSE)
 
     if (is(model, 'try-error')) {
       return(NULL)
     }
 
-
-    residuals2 <- summary(model)[[2]]
-    stderror <- summary(model)[[3]]
-    params.vals <- summary(model)[[10]][, 1]
-    params.stderror <- summary(model)[[10]][, 2]
-    params.tval <- summary(model)[[10]][, 3]
-    params.pval <- summary(model)[[10]][, 4]
+    summ <- summary(model)
+    residuals2 <- residuals(model)
+    stderror <- deviance(model)
+    params.vals <- coefficients(summ)[seq_along(start), 1]
+    params.stderror <- coefficients(summ)[seq_along(start), 2]
+    params.tval <- coefficients(summ)[seq_along(start), 3]
+    params.pval <- coefficients(summ)[seq_along(start), 4]
 
     if (!is.null(isna)) {
       residuals <- rep(NA, originalnrow)
@@ -670,3 +669,4 @@ setMethod('modelTurnover',
     return(outList)
   }
 }
+

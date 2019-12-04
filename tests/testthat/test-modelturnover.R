@@ -312,3 +312,155 @@ test_that("modelturnover peptideExperiment works", {
 
 
 })
+
+
+test_that("modelturnover differet model algorithms works", {
+
+
+  frac <- 1 - exp(-0.02 * c(4, 8, 16, 24, 36, 48)) + rnorm(6, mean = 0, sd = 0.02)
+  data <- data.frame(t = c(4, 8, 16, 24, 36, 48),
+                     fraction =frac)
+  formula <- as.formula('fraction ~ 1 - exp(-k * t) + b')
+  start <- list(k = 0.025, b = 0)
+  robust <- FALSE
+
+  modeldata <- .modelTurnover(data = data,
+                              formula = formula,
+                              start = start,
+                              robust = robust,
+                              returnModel = FALSE)
+
+  expect_length(modeldata$residuals, nrow(data))
+  expect_length(modeldata$stderror, 1)
+  expect_length(modeldata$params.vals, length(start))
+  expect_length(modeldata$params.stderror,length(start))
+  expect_length(modeldata$params.tval, length(start))
+  expect_length(modeldata$params.pval, length(start))
+
+  modeldata <- .modelTurnover(data = data,
+                              formula = formula,
+                              start = start,
+                              robust = robust,
+                              returnModel = FALSE,
+                              algorithm = 'plinear')
+
+  expect_length(modeldata$residuals, nrow(data))
+  expect_length(modeldata$stderror, 1)
+  expect_length(modeldata$params.vals, length(start))
+  expect_length(modeldata$params.stderror, length(start))
+  expect_length(modeldata$params.tval, length(start))
+  expect_length(modeldata$params.pval, length(start))
+
+
+  modeldata <- .modelTurnover(data = data,
+                              formula = formula,
+                              start = start,
+                              robust = robust,
+                              returnModel = FALSE,
+                              algorithm = 'port')
+
+  expect_length(modeldata$residuals, nrow(data))
+  expect_length(modeldata$stderror, 1)
+  expect_length(modeldata$params.vals, length(start))
+  expect_length(modeldata$params.stderror,length(start))
+  expect_length(modeldata$params.tval, length(start))
+  expect_length(modeldata$params.pval, length(start))
+
+
+})
+
+
+.modelTurnover <- function(data, formula, start, robust, returnModel, ...) {
+
+  ## internal function that does the actual modelling, robust or not,
+  ## and takes care of NAs
+
+  originalnrow <- nrow(data)
+
+  if (sum(is.na(data[,2])) > 0) {
+    isna <- which(!is.na(data[,2]))
+    data <- data[isna, ]
+  } else {
+    isna <- NULL
+  }
+
+  if (robust) {
+    model  <- try(nlrob(formula = as.formula(formula),
+                        data = data,
+                        start = start, ...), silent = TRUE)
+
+    if (is(model, 'try-error')) {
+      return(NULL)
+    }
+
+    residuals2 <- summary(model)[[2]]
+    stderror <- summary(model)[[3]]
+    weights2 <- summary(model)[[4]]
+    params.vals <- summary(model)[[12]][, 1]
+    params.stderror <- summary(model)[[12]][, 2]
+    params.tval <- summary(model)[[12]][, 3]
+    params.pval <- summary(model)[[12]][, 4]
+
+    if (!is.null(isna)) {
+
+      residuals <- rep(NA, originalnrow)
+      weights <- rep(NA, originalnrow)
+      residuals[isna] <- residuals2
+      weights[isna] <- weights2
+    } else {
+      residuals <- residuals2
+      weights <- weights2
+    }
+
+    outList <- list(residuals = residuals,
+                    stderror = stderror,
+                    weights = weights,
+                    params.vals = params.vals,
+                    params.stderror = params.stderror,
+                    params.tval = params.tval,
+                    params.pval = params.pval)
+
+    if (returnModel) {
+      outList[['model']] <- model
+    }
+
+    return(outList)
+
+  } else {
+    model  <- try(nls(formula = as.formula(formula),
+                      data = data,
+                      start = start, ...), silent = FALSE)
+
+    if (is(model, 'try-error')) {
+      return(NULL)
+    }
+
+    summ <- summary(model)
+    residuals2 <- residuals(model)
+    stderror <- deviance(model)
+    params.vals <- coefficients(summ)[seq_along(start), 1]
+    params.stderror <- coefficients(summ)[seq_along(start), 2]
+    params.tval <- coefficients(summ)[seq_along(start), 3]
+    params.pval <- coefficients(summ)[seq_along(start), 4]
+
+    if (!is.null(isna)) {
+      residuals <- rep(NA, originalnrow)
+      residuals[isna] <- residuals2
+    }else {
+      residuals <- residuals2
+    }
+
+    outList <- list(residuals = residuals,
+                    stderror = stderror,
+                    params.vals = params.vals,
+                    params.stderror = params.stderror,
+                    params.tval = params.tval,
+                    params.pval = params.pval)
+
+    if (returnModel) {
+      outList[['model']] <- model
+    }
+    return(outList)
+  }
+}
+
