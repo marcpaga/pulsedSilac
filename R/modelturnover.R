@@ -550,7 +550,6 @@ setMethod('modelTurnover',
                              returnModel = returnModel,
                              conditionCol = conditionCol,
                              timeCol = timeCol,
-                             proteinCol = proteinCol,
                              ...)
 
   } else if (mode == 'grouped') {
@@ -636,6 +635,7 @@ setMethod('modelTurnover',
     model  <- try(nls(formula = as.formula(formula),
                       data = data,
                       start = start, ...), silent = TRUE)
+
 
     if (is(model, 'try-error')) {
       return(NULL)
