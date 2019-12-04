@@ -597,7 +597,7 @@ setMethod('modelTurnover',
   return(outList)
 })
 
-
+#' @importFrom stats coefficients sigma
 #' @keywords internal
 .modelTurnover <- function(data, formula, start, robust, returnModel,
                            silent = TRUE, ...) {
@@ -669,7 +669,7 @@ setMethod('modelTurnover',
 
     summ <- summary(model)
     residuals2 <- residuals(model)
-    stderror <- deviance(model)
+    stderror <- sigma(model)
     params.vals <- coefficients(summ)[seq_along(start), 1]
     params.stderror <- coefficients(summ)[seq_along(start), 2]
     params.tval <- coefficients(summ)[seq_along(start), 3]
