@@ -312,3 +312,189 @@ test_that("modelturnover peptideExperiment works", {
 
 
 })
+
+
+test_that("modelturnover differet nls algorithms works", {
+
+
+  frac <- 1 - exp(-0.02 * c(4, 8, 16, 24, 36, 48)) + rnorm(6, mean = 0, sd = 0.02)
+  data <- data.frame(t = c(4, 8, 16, 24, 36, 48),
+                     fraction =frac)
+  formula <- as.formula('fraction ~ 1 - exp(-k * t)')
+  start <- list(k = 0.025)
+  robust <- FALSE
+
+  modeldata <- .modelTurnover(data = data,
+                              formula = formula,
+                              start = start,
+                              robust = robust,
+                              returnModel = FALSE)
+
+  expect_length(modeldata$residuals, nrow(data))
+  expect_length(modeldata$stderror, 1)
+  expect_length(modeldata$params.vals, length(start))
+  expect_length(modeldata$params.stderror,length(start))
+  expect_length(modeldata$params.tval, length(start))
+  expect_length(modeldata$params.pval, length(start))
+
+  modeldata <- .modelTurnover(data = data,
+                              formula = formula,
+                              start = start,
+                              robust = robust,
+                              returnModel = FALSE,
+                              algorithm = 'plinear')
+
+  expect_length(modeldata$residuals, nrow(data))
+  expect_length(modeldata$stderror, 1)
+  expect_length(modeldata$params.vals, length(start))
+  expect_length(modeldata$params.stderror, length(start))
+  expect_length(modeldata$params.tval, length(start))
+  expect_length(modeldata$params.pval, length(start))
+
+
+  modeldata <- .modelTurnover(data = data,
+                              formula = formula,
+                              start = start,
+                              robust = robust,
+                              returnModel = FALSE,
+                              algorithm = 'port')
+
+  expect_length(modeldata$residuals, nrow(data))
+  expect_length(modeldata$stderror, 1)
+  expect_length(modeldata$params.vals, length(start))
+  expect_length(modeldata$params.stderror,length(start))
+  expect_length(modeldata$params.tval, length(start))
+  expect_length(modeldata$params.pval, length(start))
+
+
+  frac <- 1 - exp(-0.02 * c(4, 8, 16, 24, 36, 48)) + rnorm(6, mean = 0, sd = 0.02)
+  data <- data.frame(t = c(4, 8, 16, 24, 36, 48),
+                     fraction =frac)
+  formula <- as.formula('fraction ~ 1 - exp(-k * t) + b')
+  start <- list(k = 0.025, b = 0)
+  robust <- FALSE
+
+  modeldata <- .modelTurnover(data = data,
+                              formula = formula,
+                              start = start,
+                              robust = robust,
+                              returnModel = FALSE)
+
+  expect_length(modeldata$residuals, nrow(data))
+  expect_length(modeldata$stderror, 1)
+  expect_length(modeldata$params.vals, length(start))
+  expect_length(modeldata$params.stderror,length(start))
+  expect_length(modeldata$params.tval, length(start))
+  expect_length(modeldata$params.pval, length(start))
+
+  modeldata <- .modelTurnover(data = data,
+                              formula = formula,
+                              start = start,
+                              robust = robust,
+                              returnModel = FALSE,
+                              algorithm = 'plinear')
+
+  expect_length(modeldata$residuals, nrow(data))
+  expect_length(modeldata$stderror, 1)
+  expect_length(modeldata$params.vals, length(start))
+  expect_length(modeldata$params.stderror, length(start))
+  expect_length(modeldata$params.tval, length(start))
+  expect_length(modeldata$params.pval, length(start))
+
+
+  modeldata <- .modelTurnover(data = data,
+                              formula = formula,
+                              start = start,
+                              robust = robust,
+                              returnModel = FALSE,
+                              algorithm = 'port')
+
+  expect_length(modeldata$residuals, nrow(data))
+  expect_length(modeldata$stderror, 1)
+  expect_length(modeldata$params.vals, length(start))
+  expect_length(modeldata$params.stderror,length(start))
+  expect_length(modeldata$params.tval, length(start))
+  expect_length(modeldata$params.pval, length(start))
+
+
+
+})
+
+
+
+test_that("modelturnover differet nlrob algorithms works", {
+
+
+  frac <- 1 - exp(-0.02 * c(4, 8, 16, 24, 36, 48)) + rnorm(6, mean = 0, sd = 0.02)
+  data <- data.frame(t = c(4, 8, 16, 24, 36, 48),
+                     fraction =frac)
+  formula <- as.formula('fraction ~ 1 - exp(-k * t) + b')
+  start <- list(k = 0.025, b = 0)
+  lower <- c(k = 0, b = 0)
+  upper <- c(k = 0.5, b = 0.1)
+  robust <- TRUE
+
+  modeldata <- .modelTurnover(data = data,
+                              formula = formula,
+                              start = start,
+                              robust = robust,
+                              returnModel = FALSE,
+                              method = 'M')
+
+  expect_length(modeldata$residuals, nrow(data))
+  expect_length(modeldata$stderror, 1)
+  expect_length(modeldata$params.vals, length(start))
+  expect_length(modeldata$params.stderror,length(start))
+  expect_length(modeldata$params.tval, length(start))
+  expect_length(modeldata$params.pval, length(start))
+
+  modeldata <- .modelTurnover(data = data,
+                              formula = formula,
+                              lower = lower,
+                              upper = upper,
+                              robust = robust,
+                              returnModel = FALSE,
+                              method = 'MM')
+
+  expect_length(modeldata$residuals, nrow(data))
+  expect_length(modeldata$stderror, 1)
+  expect_length(modeldata$params.vals, length(start))
+  expect_length(modeldata$params.stderror, length(start))
+  expect_length(modeldata$params.tval, length(start))
+  expect_length(modeldata$params.pval, length(start))
+
+
+  modeldata <- .modelTurnover(data = data,
+                              formula = formula,
+                              lower = lower,
+                              upper = upper,
+                              robust = robust,
+                              returnModel = FALSE,
+                              method = 'tau')
+
+  expect_length(modeldata$residuals, nrow(data))
+  expect_length(modeldata$stderror, 1)
+  expect_length(modeldata$params.vals, length(start))
+  expect_length(modeldata$params.stderror,length(start))
+  expect_length(modeldata$params.tval, length(start))
+  expect_length(modeldata$params.pval, length(start))
+
+  modeldata <- expect_error(.modelTurnover(data = data,
+                              formula = formula,
+                              lower = lower,
+                              upper = upper,
+                              robust = robust,
+                              returnModel = FALSE,
+                              method = 'CM'))
+
+
+  modeldata <- expect_error(.modelTurnover(data = data,
+                              formula = formula,
+                              lower = lower,
+                              upper = upper,
+                              robust = robust,
+                              returnModel = FALSE,
+                              method = 'mtl', silent = FALSE))
+})
+
+
