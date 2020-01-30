@@ -35,7 +35,7 @@
 #' @seealso \code{\link{compareAIC}},
 #'          \code{\link{modelTurnover}}
 #' @importFrom stats AIC
-#' @importFrom sme AICc
+#' @importFrom MuMIn AICc
 #' @export
 calculateAIC <- function(modelList,
                          smallSampleSize = TRUE) {

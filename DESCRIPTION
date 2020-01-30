@@ -1,7 +1,7 @@
 Package: pulsedSilac
 Type: Package
 Title: Analysis of pulsed-SILAC quantitative proteomics data
-Version: 1.1.1
+Version: 1.1.2
 Author: Marc Pagès-Gallego, Tobias B. Dansen
 Maintainer: Marc Pagès-Gallego <M.PagesGallego@umcutrecht.nl>
 Description: This package provides several tools for pulsed-SILAC data analysis.
@@ -34,6 +34,6 @@ Imports:
     UpSetR,
     cowplot,
     grid,
-    sme
-RoxygenNote: 6.1.1
+    MuMIn
+RoxygenNote: 7.0.2
 VignetteBuilder: knitr

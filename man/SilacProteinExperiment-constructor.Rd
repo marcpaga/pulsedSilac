@@ -5,8 +5,14 @@
 \alias{SilacProteinExperiment}
 \title{SilacProteinExperiment constructor}
 \usage{
-SilacProteinExperiment(assays, rowData = NULL, colData = NULL,
-  conditionCol = NA, timeCol = NA, metadata = NULL)
+SilacProteinExperiment(
+  assays,
+  rowData = NULL,
+  colData = NULL,
+  conditionCol = NA,
+  timeCol = NA,
+  metadata = NULL
+)
 }
 \arguments{
 \item{assays}{A named \code{list} of matrices (assays) with protein level
