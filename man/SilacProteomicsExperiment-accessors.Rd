@@ -114,7 +114,7 @@ ProtExp(x)
 
 \S4method{assayNamesPept}{SilacProteomicsExperiment}(x) <- value
 
-\S4method{assays}{SilacProteomicsExperiment}(x, ..., withDimnames = TRUE)
+\S4method{assays}{SilacProteomicsExperiment}(x, withDimnames = TRUE, ...)
 
 \S4method{assaysProt}{SilacProteinExperiment}(x)
 

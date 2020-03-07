@@ -26,7 +26,7 @@ setMethod('assays<-', 'SilacPeptideExperiment', function(x, value) {
 #' @name assays
 #' @aliases assays,SilacProteomicsExperiment-method
 #' @export
-setMethod('assays', 'SilacProteomicsExperiment', function(x, ..., withDimnames){
+setMethod('assays', 'SilacProteomicsExperiment', function(x, withDimnames, ...){
 
   return(list(protein = assays(x@SilacProteinExperiment),
               peptide = assays(x@SilacPeptideExperiment)))
