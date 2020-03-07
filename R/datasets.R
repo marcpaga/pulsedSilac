@@ -29,6 +29,7 @@
 #'   contains the relationships between proteins and peptides in the
 #'   ProteomicsExperiment object.}
 #' }
+#' @usage data(wormsPE)
 #' @references \url{https://www.ncbi.nlm.nih.gov/pubmed/28679685}
 'wormsPE'
 
@@ -52,6 +53,7 @@
 #'   \item{rowData}{A \code{DataFrame} with 3 columns that general protein
 #'   id information.}
 #' }
+#' @usage data(mefPE)
 'mefPE'
 
 #' Data frame with miss cleaved peptides quantifications from MaxQuant
@@ -79,6 +81,7 @@
 #'   \item{Intensity.*}{Columns containing quantification data in each sample.}
 #'   \item{...}{Other columns containing peptide related information.}
 #' }
+#' @usage data(recycleLightLysine)
 #' @references \url{https://www.ncbi.nlm.nih.gov/pubmed/28679685}
 'recycleLightLysine'
 

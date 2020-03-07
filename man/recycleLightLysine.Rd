@@ -14,7 +14,7 @@
   \item{...}{Other columns containing peptide related information.}
 }}
 \usage{
-recycleLightLysine
+data(recycleLightLysine)
 }
 \description{
 A \code{data.frame} that contains the output from searching heavy label

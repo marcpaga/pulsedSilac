@@ -26,7 +26,7 @@ peptides in a total of 14 samples.
   ProteomicsExperiment object.}
 }}
 \usage{
-wormsPE
+data(wormsPE)
 }
 \description{
 A pre-built \code{SilacProteomicsExperiment} object with data from a pulsed

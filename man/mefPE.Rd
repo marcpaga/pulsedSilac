@@ -15,7 +15,7 @@ of 10 samples.
   id information.}
 }}
 \usage{
-mefPE
+data(mefPE)
 }
 \description{
 A pre-built \code{SilacProteinExperiment} object with data from a pulsed
