@@ -5,9 +5,15 @@
 \alias{SilacPeptideExperiment}
 \title{SilacPeptideExperiment constructor}
 \usage{
-SilacPeptideExperiment(assays, rowData = NULL, colData = NULL,
-  conditionCol = NA, timeCol = NA, proteinCol = NA,
-  metadata = NULL)
+SilacPeptideExperiment(
+  assays,
+  rowData = NULL,
+  colData = NULL,
+  conditionCol = NA,
+  timeCol = NA,
+  proteinCol = NA,
+  metadata = NULL
+)
 }
 \arguments{
 \item{assays}{A named \code{list} of matrices (assays) with peptide level

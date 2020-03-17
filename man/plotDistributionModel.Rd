@@ -4,8 +4,12 @@
 \alias{plotDistributionModel}
 \title{Distribution of modelling output}
 \usage{
-plotDistributionModel(modelList, value = "param_values",
-  plotType = "density", returnDataFrame = FALSE)
+plotDistributionModel(
+  modelList,
+  value = "param_values",
+  plotType = "density",
+  returnDataFrame = FALSE
+)
 }
 \arguments{
 \item{modelList}{A list containing all the model objects, this should be the

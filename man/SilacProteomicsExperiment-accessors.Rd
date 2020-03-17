@@ -4,7 +4,6 @@
 %   R/dolar.R, R/length.R, R/linkerDf.R, R/metadata.R, R/metaoptions.R,
 %   R/ncol.R, R/nrow.R, R/rbind.R, R/rowdata.R, R/rownames.R, R/subset.R,
 %   R/zzz.R
-\docType{methods}
 \name{SilacProteomicsExperiment-accessors}
 \alias{SilacProteomicsExperiment-accessors}
 \alias{PeptExp}
@@ -203,8 +202,7 @@ ProtExp(x)
 
 \S4method{subsetPept}{SilacProteomicsExperiment}(x, ...)
 
-\S4method{[}{SilacProteomicsExperiment,ANY,ANY,ANY}(x, i, j, ...,
-  drop = TRUE)
+\S4method{[}{SilacProteomicsExperiment,ANY,ANY,ANY}(x, i, j, ..., drop = TRUE)
 }
 \arguments{
 \item{x}{A \code{SilacSilacProteomicsExperiment} object.}

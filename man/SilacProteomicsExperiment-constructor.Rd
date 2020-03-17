@@ -5,10 +5,20 @@
 \alias{SilacProteomicsExperiment}
 \title{SilacProteomicsExperiment constructor}
 \usage{
-SilacProteomicsExperiment(SilacProteinExperiment, SilacPeptideExperiment,
-  colData, linkerDf, metadata, idColProt = NA, idColPept = NA,
-  linkedSubset = TRUE, subsetMode = "protein", conditionCol = NA,
-  timeCol = NA, proteinCol = NA)
+SilacProteomicsExperiment(
+  SilacProteinExperiment,
+  SilacPeptideExperiment,
+  colData,
+  linkerDf,
+  metadata,
+  idColProt = NA,
+  idColPept = NA,
+  linkedSubset = TRUE,
+  subsetMode = "protein",
+  conditionCol = NA,
+  timeCol = NA,
+  proteinCol = NA
+)
 }
 \arguments{
 \item{SilacProteinExperiment}{A \code{SilacProteinExperiment} object.}

@@ -4,8 +4,12 @@
 \alias{scatterCompareModels}
 \title{Scatter plot of two conditions for a model metric.}
 \usage{
-scatterCompareModels(modelList, conditions, value = "param_values",
-  returnDataFrame = FALSE)
+scatterCompareModels(
+  modelList,
+  conditions,
+  value = "param_values",
+  returnDataFrame = FALSE
+)
 }
 \arguments{
 \item{modelList}{A list containing all the model objects, this should be the
